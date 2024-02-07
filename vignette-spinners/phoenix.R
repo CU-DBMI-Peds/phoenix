@@ -1,0 +1,38 @@
+#'---
+#'title: "Phoenix Sepsis Score"
+#'output:
+#'  rmarkdown::html_vignette:
+#'    toc: true
+#'    number_sections: false
+#'bibliography: references.bib
+#'vignette: >
+#'  %\VignetteIndexEntry{Phoenix Sepsis Score}
+#'  %\VignetteEngine{knitr::rmarkdown}
+#'  %\VignetteEncoding{UTF-8}
+#'---
+#'
+#+ label = "setup", include = FALSE
+library(qwraps2)
+options(qwraps2_markup = "markdown")
+knitr::opts_chunk$set(collapse = TRUE)
+#'
+# /*
+devtools::load_all()
+# */
+library(phoenix)
+packageVersion("phoenix")
+
+#'
+#' This is a place holder.
+#'
+#' Don't forget to cite @sanchez_2024_development and
+#' @schlapback_2024_international.
+#'
+#' # References
+#'<div id="refs"></div>
+#'
+#' # Session Info
+#+ label = "sessioninfo"
+sessionInfo()
+
+# /* ---------------------------- END OF FILE ------------------------------- */

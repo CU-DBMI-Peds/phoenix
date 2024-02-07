@@ -1,0 +1,8 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^.gitignore$
+^Makefile$
+^data-raw$
+^vignette-spinners
+^\.document\.Rout$
+^\.github$
