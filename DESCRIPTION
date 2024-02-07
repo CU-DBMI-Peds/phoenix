@@ -24,5 +24,7 @@ LazyData: true
 Imports:
 LinkingTo:
 Suggests:
+  knitr,
+  qwraps2 (>= 0.6.0)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.1
