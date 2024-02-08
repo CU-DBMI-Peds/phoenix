@@ -25,6 +25,7 @@ Imports:
 LinkingTo:
 Suggests:
   knitr,
-  qwraps2 (>= 0.6.0)
+  qwraps2 (>= 0.6.0),
+  rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 7.3.1
