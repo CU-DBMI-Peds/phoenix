@@ -71,10 +71,8 @@
 #'
 #' @examples
 #' 
-#' x <- 1:3
-#' DF <- data.frame(pfr = 3:10, sfr = 2:9, vent = 0:1, o2 = 0)
+#' DF <- data.frame(pfr = 3:10, sfr = rev(2:9), vent = 0:1, o2 = 0)
 #' phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_support = o2, data = DF)
-#' phoenix_respiratory(pf_ratio = x, sf_ratio = sfr, imv = vent, other_support = o2)
 #'
 #' @export
 phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_support, data = parent.frame(), ...) {
@@ -82,7 +80,22 @@ phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_support, data = p
   pfr <- eval(expr = substitute(pf_ratio),      envir = data)
   sfr <- eval(expr = substitute(sf_ratio),      envir = data)
   imv <- eval(expr = substitute(imv),           envir = data)
-  os  <- eval(expr = substitute(other_support), envir = data)
+  ors <- eval(expr = substitute(other_support), envir = data)
 
-  phoenixRespiratory(pfr, sfr, imv, os)
+  if ( (length(pfr) != length(sfr)) | (length(pfr) != length(imv)) | (length(pfr) != length(ors)) ) {
+    stop("length of all input variables are not equal")
+  }
+
+  # set "healthy" value for missing data
+  pfr <- replace(pfr, which(is.na(pfr)), 500)
+  sfr <- replace(sfr, which(is.na(sfr)), 500)
+  imv <- replace(imv, which(is.na(imv)), 0)
+  ors <- replace(ors, which(is.na(ors)), 0)
+  ors <- pmax(imv, ors)
+
+  #pmax(imv * ((pfr < 100) + (pfr < 200)) + (ors) * (pfr < 400),
+  #     imv * ((sfr < 148) + (sfr < 220)) + (ors) * (pfr < 292))
+
+  phoenixRespiratory(pfr, sfr, imv, ors)[, 1]
+
 }

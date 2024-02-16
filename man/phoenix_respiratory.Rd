@@ -61,10 +61,8 @@ high-flow, non-invasive positive pressure, or imv.
 }
 \examples{
 
-x <- 1:3
-DF <- data.frame(pfr = 3:10, sfr = 2:9, vent = 0:1, o2 = 0)
+DF <- data.frame(pfr = 3:10, sfr = rev(2:9), vent = 0:1, o2 = 0)
 phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_support = o2, data = DF)
-phoenix_respiratory(pf_ratio = x, sf_ratio = sfr, imv = vent, other_support = o2)
 
 }
 \references{

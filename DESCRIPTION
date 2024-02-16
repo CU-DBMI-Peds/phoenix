@@ -22,7 +22,7 @@ BugReports: https://github.com/dewittpe/phoenix/issues
 Language: en-us
 LazyData: true
 Imports:
-  Rcpp, RcppArmadillo
+  Rcpp
 LinkingTo:
   Rcpp, RcppArmadillo
 Suggests:

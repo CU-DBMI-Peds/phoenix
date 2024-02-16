@@ -5,7 +5,7 @@
 #ifndef PHOENIX_H
 #define PHOENIX_H
 
-arma::vec phoenixRespiratory(arma::vec pfRatio, arma::vec sfRatio, arma::vec imv, arma::vec respSupport);
+Rcpp::IntegerVector phoenixRespiratory(arma::vec pfRatio, arma::vec sfRatio, arma::vec imv, arma::vec respSupport);
 
 
 #endif

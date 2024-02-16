@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // phoenixRespiratory
-arma::vec phoenixRespiratory(arma::vec pfRatio, arma::vec sfRatio, arma::vec imv, arma::vec respSupport);
+Rcpp::IntegerVector phoenixRespiratory(arma::vec pfRatio, arma::vec sfRatio, arma::vec imv, arma::vec respSupport);
 RcppExport SEXP _phoenix_phoenixRespiratory(SEXP pfRatioSEXP, SEXP sfRatioSEXP, SEXP imvSEXP, SEXP respSupportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
