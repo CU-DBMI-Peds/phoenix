@@ -1,3 +1,5 @@
 *.tar.gz
 .document.Rout
 *.Rcheck
+*.so
+*.o
