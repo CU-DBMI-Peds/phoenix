@@ -70,7 +70,7 @@
 #' 2024. doi:10.1001/jama.2024.0179
 #'
 #' @examples
-#' 
+#'
 #' DF <- data.frame(pfr = 3:10, sfr = rev(2:9), vent = 0:1, o2 = 0)
 #' phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_support = o2, data = DF)
 #'
@@ -89,8 +89,10 @@ phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_support, data = p
   # set "healthy" value for missing data
   pfr <- replace(pfr, which(is.na(pfr)), 500)
   sfr <- replace(sfr, which(is.na(sfr)), 500)
-  imv <- replace(imv, which(is.na(imv)), 0)
-  ors <- replace(ors, which(is.na(ors)), 0)
+  imv <- as.integer(replace(imv, which(is.na(imv)), 0))
+  stopifnot(all(imv %in% c(0L, 1L)))
+  ors <- as.integer(replace(ors, which(is.na(ors)), 0))
+  stopifnot(all(ors %in% c(0L, 1L)))
   ors <- pmax(imv, ors)
 
   #pmax(imv * ((pfr < 100) + (pfr < 200)) + (ors) * (pfr < 400),
