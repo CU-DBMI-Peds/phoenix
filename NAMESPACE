@@ -2,7 +2,11 @@
 
 export(phoenix_cardiovascular)
 export(phoenix_coagulation)
+export(phoenix_endocrine)
+export(phoenix_hepatic)
+export(phoenix_immunolgic)
 export(phoenix_neurologic)
+export(phoenix_renal)
 export(phoenix_respiratory)
 importFrom(Rcpp,sourceCpp)
 useDynLib(phoenix)
