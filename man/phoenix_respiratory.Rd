@@ -8,7 +8,7 @@ phoenix_respiratory(
   pf_ratio,
   sf_ratio,
   imv,
-  other_support,
+  other_respiratory_support,
   data = parent.frame(),
   ...
 )
@@ -21,7 +21,7 @@ phoenix_respiratory(
 \item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not
 intubated; 1 = intubated)}
 
-\item{other_support}{other respiratory support; numeric or integer vector, (0
+\item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0
 = no support; 1 = support)}
 
 \item{data}{a \code{list}, \code{data.frame}, or object that can be coerced
@@ -56,13 +56,13 @@ account for this when building the \code{sf_ratio} vector.
 \code{imv} Invasive mechanical ventilation - integer vector where 0 = not
 intubated and 1 = intubated.
 
-\code{other_support} other respiratory support such as receiving oxygen,
+\code{other_respiratory_support} other respiratory support such as receiving oxygen,
 high-flow, non-invasive positive pressure, or imv.
 }
 \examples{
 
 DF <- data.frame(pfr = 3:10, sfr = rev(2:9), vent = 0:1, o2 = 0)
-phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_support = o2, data = DF)
+phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, data = DF)
 
 }
 \references{
@@ -76,7 +76,7 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
 }
 \seealso{
 \itemize{
-  \item \code{\link{phoenix_sepsis}} for generating the diagnostic Phoenix
+  \item \code{\link{phoenix}} for generating the diagnostic Phoenix
     Sepsis score based on the four organ systems:
     \itemize{
       \code{\link{phoenix_cardiovascular}},
@@ -84,7 +84,7 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
       \code{\link{phoenix_neurologic}},
       \code{\link{phoenix_respiratory}},
     }
-  \item \code{\link{phoenix8_sepsis}} for generating the diagnostic Phoenix 8
+  \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
     Spesis criteria based on the four organ systems noted above and
     \itemize{
       \code{\link{phoenix_endocrine}},

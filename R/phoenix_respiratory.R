@@ -18,14 +18,14 @@
 #' \code{imv} Invasive mechanical ventilation - integer vector where 0 = not
 #' intubated and 1 = intubated.
 #'
-#' \code{other_support} other respiratory support such as receiving oxygen,
+#' \code{other_respiratory_support} other respiratory support such as receiving oxygen,
 #' high-flow, non-invasive positive pressure, or imv.
 #'
 #' @param pf_ratio numeric vector
 #' @param sf_ratio numeric vector
 #' @param imv invasive mechanical ventilation; numeric or integer vector, (0 = not
 #' intubated; 1 = intubated)
-#' @param other_support other respiratory support; numeric or integer vector, (0
+#' @param other_respiratory_support other respiratory support; numeric or integer vector, (0
 #' = no support; 1 = support)
 #' @param data a \code{list}, \code{data.frame}, or object that can be coerced
 #' to a \code{data.frame}, containing the input vectors
@@ -39,7 +39,7 @@
 #'
 #' @seealso
 #' \itemize{
-#'   \item \code{\link{phoenix_sepsis}} for generating the diagnostic Phoenix
+#'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
 #'     Sepsis score based on the four organ systems:
 #'     \itemize{
 #'       \code{\link{phoenix_cardiovascular}},
@@ -47,7 +47,7 @@
 #'       \code{\link{phoenix_neurologic}},
 #'       \code{\link{phoenix_respiratory}},
 #'     }
-#'   \item \code{\link{phoenix8_sepsis}} for generating the diagnostic Phoenix 8
+#'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
 #'     Spesis criteria based on the four organ systems noted above and
 #'     \itemize{
 #'       \code{\link{phoenix_endocrine}},
@@ -72,15 +72,15 @@
 #' @examples
 #'
 #' DF <- data.frame(pfr = 3:10, sfr = rev(2:9), vent = 0:1, o2 = 0)
-#' phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_support = o2, data = DF)
+#' phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, data = DF)
 #'
 #' @export
-phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_support, data = parent.frame(), ...) {
+phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_respiratory_support, data = parent.frame(), ...) {
 
-  pfr <- eval(expr = substitute(pf_ratio),      envir = data)
-  sfr <- eval(expr = substitute(sf_ratio),      envir = data)
-  imv <- eval(expr = substitute(imv),           envir = data)
-  ors <- eval(expr = substitute(other_support), envir = data)
+  pfr <- eval(expr = substitute(pf_ratio), envir = data)
+  sfr <- eval(expr = substitute(sf_ratio), envir = data)
+  imv <- eval(expr = substitute(imv),      envir = data)
+  ors <- eval(expr = substitute(other_respiratory_support), envir = data)
 
   if ( (length(pfr) != length(sfr)) | (length(pfr) != length(imv)) | (length(pfr) != length(ors)) ) {
     stop("length of all input variables are not equal")

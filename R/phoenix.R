@@ -1,14 +1,11 @@
-#' Phoenix Coagulation Score
+#' The Phoenix Sepsis Score
 #'
-#' @param platelets numeric vector for platelets counts in units of 1,000/uL
-#' @param inr numeric vector for the internation normlised ratio blood test
-#' @param d_dimer numeric vector for D-Dimer, units of mg/L FEU
-#' @param fibrinogen numeric vector units of mg/dL
-#' @param data a \code{list}, \code{data.frame}, or object that can be coerced
-#' to a \code{data.frame}, containing the input vectors
-#' @param ... pass through
+#' @inheritParams phoenix_respiratory
+#' @inheritParams phoenix_cardiovascular
+#' @inheritParams phoenix_coagulation
+#' @inheritParams phoenix_neurologic
 #'
-#' @return a integer vector with values 0, 1, or 2
+#' @return a integer vector with values 0, through 13
 #'
 #' As with all other Phoenix oragan system scores, missing values in the data
 #' set will map to a score of zero - this is consistent with the development of
@@ -50,22 +47,26 @@
 #'
 #'
 #' @export
-phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data, ...) {
-  plt <- eval(expr = substitute(platelets), envir = data)
-  inr <- eval(expr = substitute(inr), envir = data)
-  ddm <- eval(expr = substitute(d_dimer), envir = data)
-  fib <- eval(expr = substitute(fibrinogen), envir = data)
+phoenix <- function(vasoactives, lactate, age, map,
+                    pf_ratio, sf_ratio, imv, other_respiratory_support,
+                    platelets, inr, d_dimer, fibrinogen,
+                    gcs, fixed_pupils,
+                    data, ...) {
 
-  if ( (length(plt) != length(inr)) | (length(plt) != length(ddm)) | (length(plt) != length(fib)) ) {
-    stop("length of all input variables are not equal")
-  }
+  cl <- as.list(match.call())
 
-  # set "healthy" value for missing data
-  plt <- replace(plt, which(is.na(plt)), Inf)
-  inr <- replace(inr, which(is.na(inr)), 0)
-  ddm <- replace(ddm, which(is.na(ddm)), 0)
-  fib <- replace(fib, which(is.na(fib)), Inf)
+  cl[[1]] <- quote(phoenix_cardiovascular)
+  card <- eval(cl)
+  cl[[1]] <- quote(phoenix_respiratory)
+  resp <- eval(cl)
+  cl[[1]] <- quote(phoenix_coagulation)
+  coag <- eval(cl)
+  cl[[1]] <- quote(phoenix_neurologic)
+  neur <- eval(cl)
 
-  rtn <- (plt < 100) + (inr > 1.3) + (ddm > 2) + (fib < 100)
-  pmax(rtn, 2)
+  data.frame(phoenix_cardiovascular_score = card,
+             phoenix_respiratory_score = resp,
+             phoenix_coagulation_score = coag,
+             phoenix_neurologic_score = neur,
+             phoenix_total_score = card + resp + coag + neur)
 }

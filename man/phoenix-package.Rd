@@ -2,7 +2,6 @@
 % Please edit documentation in R/phoenix-package.R
 \docType{package}
 \name{phoenix-package}
-\alias{phoenix}
 \alias{phoenix-package}
 \title{phoenix: Phoenix and Phoenix-8 Sepsis Criteria}
 \description{

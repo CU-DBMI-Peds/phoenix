@@ -13,7 +13,7 @@
 #'
 #' @seealso
 #' \itemize{
-#'   \item \code{\link{phoenix_sepsis}} for generating the diagnostic Phoenix
+#'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
 #'     Sepsis score based on the four organ systems:
 #'     \itemize{
 #'       \code{\link{phoenix_cardiovascular}},
@@ -21,7 +21,7 @@
 #'       \code{\link{phoenix_neurologic}},
 #'       \code{\link{phoenix_respiratory}},
 #'     }
-#'   \item \code{\link{phoenix8_sepsis}} for generating the diagnostic Phoenix 8
+#'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
 #'     Spesis criteria based on the four organ systems noted above and
 #'     \itemize{
 #'       \code{\link{phoenix_endocrine}},
