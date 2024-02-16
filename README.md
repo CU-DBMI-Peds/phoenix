@@ -1,4 +1,4 @@
-# phoenix: Phoenix Sepsis and Phoenix-8 Spesis Criteria <img src="man/figures/logo120x139.png" align="right"/>
+# phoenix: Phoenix Sepsis and Phoenix-8 Spesis Criteria <img src="man/figures/phoenix_hex.png" width="150px" align="right"/>
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/dewittpe/phoenix/workflows/R-CMD-check/badge.svg)](https://github.com/dewittpe/phoenix/actions)
