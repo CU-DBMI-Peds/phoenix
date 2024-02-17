@@ -30,6 +30,18 @@ the criteria.
 \description{
 Phoenix Coagulation Score
 }
+\examples{
+
+DF <-
+  expand.grid(plts = c(NA, 20, 100, 150),
+              inr  = c(NA, 0.2, 1.3, 1.8),
+              ddmr = c(NA, 1.7, 2.0, 2.8),
+              fib  = c(NA, 88, 100, 120))
+
+DF$coag <- phoenix_coagulation(plts, inr, ddmr, fib, DF)
+DF
+
+}
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
 the Phoenix Criteria for Pediatric Sepsis and Septic Shock. JAMA. Published

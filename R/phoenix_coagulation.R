@@ -48,6 +48,14 @@
 #'
 #' @examples
 #'
+#' DF <-
+#'   expand.grid(plts = c(NA, 20, 100, 150),
+#'               inr  = c(NA, 0.2, 1.3, 1.8),
+#'               ddmr = c(NA, 1.7, 2.0, 2.8),
+#'               fib  = c(NA, 88, 100, 120))
+#'
+#' DF$coag <- phoenix_coagulation(plts, inr, ddmr, fib, DF)
+#' DF
 #'
 #' @export
 phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data, ...) {
@@ -67,5 +75,5 @@ phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data, ...) 
   fib <- replace(fib, which(is.na(fib)), Inf)
 
   rtn <- (plt < 100) + (inr > 1.3) + (ddm > 2) + (fib < 100)
-  pmax(rtn, 2)
+  pmin(rtn, 2)
 }

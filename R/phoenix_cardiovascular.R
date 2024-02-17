@@ -61,7 +61,13 @@
 #' 2024. doi:10.1001/jama.2024.0179
 #'
 #' @examples
-#'
+#' DF <-
+#'   expand.grid(vasos = c(NA, 0:6),
+#'               lactate = c(NA, 3.2, 5, 7.8, 11, 14),
+#'               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
+#'               map = c(NA, 16:52))
+#' DF$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF)
+#' head(DF)
 #'
 #' @export
 phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data, ...) {
