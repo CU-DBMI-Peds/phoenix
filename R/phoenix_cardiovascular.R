@@ -124,12 +124,13 @@ phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data, ...) {
   lct <- replace(lct, which(is.na(lct)), 0)
 
   # if age is missing then the MAP can not be assessed.  So, set the age value
-  # to 18 _and_ the map to a high value too such that zero points will be scored
+  # more than 18 years _and_ the map to a high value too such that zero points
+  # will be scored
   missing_age_map <- which(is.na(age) | is.na(map))
   age <- replace(age, missing_age_map, 222)
   map <- replace(map, missing_age_map, 100)
 
-  vas_score <- (vas >= 2L) + (vas >= 1L)
+  vas_score <- (vas > 1) + (vas > 0)
   lct_score <- (lct >= 11) + (lct >= 5)
   map_score <-
      (

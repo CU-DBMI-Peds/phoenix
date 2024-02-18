@@ -63,7 +63,7 @@ A \code{data.frame} with five columns:
   \item phoenix_cardiovascular_score
   \item phoenix_coagulation_score
   \item phoenix_neurologic_score
-  \item phoenix_spesis_score
+  \item phoenix_sepsis_score
 }
 
 As with all other Phoenix oragan system scores, missing values in the data

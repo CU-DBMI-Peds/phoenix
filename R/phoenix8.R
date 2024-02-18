@@ -162,12 +162,10 @@ phoenix8 <- function(
   rtn$phoenix_hepatic_score <- eval(as.call(cl))
 
   rtn$phoenix8_sepsis_score <-
-    with(rtn,
-         phoenix_sepsis_score +
-         phoenix_endocrine_score +
-         phoenix_immunologic_score +
-         phoenix_renal_score +
-         phoenix_hepatic_score
-         )
+    rtn[["phoenix_sepsis_score"]] +
+    rtn[["phoenix_endocrine_score"]] +
+    rtn[["phoenix_immunologic_score"]] +
+    rtn[["phoenix_renal_score"]] +
+    rtn[["phoenix_hepatic_score"]]
   rtn
 }

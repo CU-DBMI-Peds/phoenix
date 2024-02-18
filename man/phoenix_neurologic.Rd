@@ -53,9 +53,9 @@ abnormal flexion to pain, \item widthdrawal from pain, \item localized pain,
 }
 \examples{
 DF <- expand.grid(gcs = c(3:15, NA), pupils = c(0, 1, NA))
-DF$target <- 0
-DF$target[DF$gcs <= 10] <- 1
-DF$target[DF$pupils == 1] <- 2
+DF$target <- 0L
+DF$target[DF$gcs <= 10] <- 1L
+DF$target[DF$pupils == 1] <- 2L
 DF$current <- phoenix_neurologic(gcs, pupils, DF)
 stopifnot(identical(DF$target, DF$current))
 DF

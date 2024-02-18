@@ -44,7 +44,7 @@
 #'
 #'
 #' @export
-phoenix_renal <- function(creatinine, age, data, ...) {
+phoenix_renal <- function(creatinine, age, data = parent.frame(), ...) {
   crt <- eval(expr = substitute(creatinine), envir = data)
   age <- eval(expr = substitute(age), envir = data)
 

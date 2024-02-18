@@ -15,7 +15,7 @@
 #'   \item phoenix_cardiovascular_score
 #'   \item phoenix_coagulation_score
 #'   \item phoenix_neurologic_score
-#'   \item phoenix_spesis_score
+#'   \item phoenix_sepsis_score
 #' }
 #'
 #' As with all other Phoenix oragan system scores, missing values in the data
@@ -120,9 +120,9 @@ phoenix <- function(vasoactives, lactate, age, map,
   cl[[1]] <- quote(phoenix_neurologic)
   neur <- eval(as.call(cl))
 
-  data.frame(phoenix_cardiovascular_score = card,
-             phoenix_respiratory_score = resp,
+  data.frame(phoenix_respiratory_score = resp,
+             phoenix_cardiovascular_score = card,
              phoenix_coagulation_score = coag,
              phoenix_neurologic_score = neur,
-             phoenix_spesis_score = card + resp + coag + neur)
+             phoenix_sepsis_score = card + resp + coag + neur)
 }

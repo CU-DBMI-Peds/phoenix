@@ -4,7 +4,7 @@
 \alias{phoenix_renal}
 \title{Phoenix Renal Score}
 \usage{
-phoenix_renal(creatinine, age, data, ...)
+phoenix_renal(creatinine, age, data = parent.frame(), ...)
 }
 \arguments{
 \item{creatinine}{numeric vector; units of mg/dL}
