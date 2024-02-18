@@ -22,6 +22,33 @@
     <loc>/reference/phoenix-package.html</loc>
   </url>
   <url>
-    <loc>/reference/phoenix_sepsis_neurologic.html</loc>
+    <loc>/reference/phoenix.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix8.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_cardiovascular.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_coagulation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_endocrine.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_hepatic.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_immunologic.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_neurologic.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_renal.html</loc>
+  </url>
+  <url>
+    <loc>/reference/phoenix_respiratory.html</loc>
   </url>
 </urlset>
