@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">phoenix_renal</span><span class="op">(</span><span class="va">creatinine</span>, <span class="va">age</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">phoenix_renal</span><span class="op">(</span><span class="va">creatinine</span>, <span class="va">age</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -112,6 +112,24 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
 </ul><p><code><a href="../articles/phoenix.html">vignette('phoenix')</a></code> for more details and examples.</p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">DF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.4</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">12</span>, <span class="fl">18</span>, <span class="fl">24</span>, <span class="fl">45</span>, <span class="fl">60</span>, <span class="fl">61</span>, <span class="fl">144</span>, <span class="fl">145</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  creatinine <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.0</span>, <span class="fl">1.1</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">DF</span><span class="op">$</span><span class="va">card</span> <span class="op">&lt;-</span> <span class="fu">phoenix_renal</span><span class="op">(</span>age <span class="op">=</span> <span class="va">age</span>, creatinine <span class="op">=</span> <span class="va">creatinine</span>, data <span class="op">=</span> <span class="va">DF</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">DF</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    age creatinine card</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   NA         NA    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.4         NA    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1.0         NA    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  3.0         NA    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 12.0         NA    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 18.0         NA    0</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
