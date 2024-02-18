@@ -110,5 +110,5 @@ phoenix <- function(vasoactives, lactate, age, map,
              phoenix_respiratory_score = resp,
              phoenix_coagulation_score = coag,
              phoenix_neurologic_score = neur,
-             phoenix_total_score = card + resp + coag + neur)
+             phoenix_spesis_score = card + resp + coag + neur)
 }
