@@ -99,9 +99,7 @@ phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_respiratory_suppo
   stopifnot(all(ors %in% c(0L, 1L)))
   ors <- pmax(imv, ors)
 
-  #pmax(imv * ((pfr < 100) + (pfr < 200)) + (ors) * (pfr < 400),
-  #     imv * ((sfr < 148) + (sfr < 220)) + (ors) * (pfr < 292))
-
-  phoenixRespiratory(pfr, sfr, imv, ors)[, 1]
+  imv * ( ((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220)) ) +
+  ors * ((pfr < 400) | (sfr < 292))
 
 }

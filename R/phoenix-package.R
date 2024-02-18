@@ -24,7 +24,5 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @useDynLib phoenix
-#' @importFrom Rcpp sourceCpp
 ## usethis namespace: end
 NULL

@@ -22,9 +22,7 @@ BugReports: https://github.com/dewittpe/phoenix/issues
 Language: en-us
 LazyData: true
 Imports:
-  Rcpp
 LinkingTo:
-  Rcpp, RcppArmadillo
 Suggests:
   knitr,
   qwraps2 (>= 0.6.0),
