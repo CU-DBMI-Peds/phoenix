@@ -25,6 +25,10 @@ the criteria.
 \description{
 Phoenix Hepatic Score
 }
+\examples{
+DF <- expand.grid(bil = c(NA, 3.2, 4.0, 4.3), alt = c(NA, 99, 102, 106))
+phoenix_hepatic(bilirubin = bil, alt = alt, data = DF)
+}
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
 the Phoenix Criteria for Pediatric Sepsis and Septic Shock. JAMA. Published

@@ -25,6 +25,11 @@ the criteria.
 \description{
 Phoenix Immunolgic Score
 }
+\examples{
+DF <- expand.grid(anc = c(NA, 200, 500, 600), alc = c(NA, 500, 1000, 2000))
+phoenix_immunologic(anc = anc, alc = alc, data = DF)
+
+}
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
 the Phoenix Criteria for Pediatric Sepsis and Septic Shock. JAMA. Published

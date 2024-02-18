@@ -25,6 +25,15 @@ the criteria.
 \description{
 Phoenix Renal Score
 }
+\examples{
+
+DF <- expand.grid(age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
+                  creatinine = c(NA, seq(0.0, 1.1, by = 0.1)))
+DF$card <- phoenix_renal(age = age, creatinine = creatinine, data = DF)
+
+head(DF)
+
+}
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
 the Phoenix Criteria for Pediatric Sepsis and Septic Shock. JAMA. Published

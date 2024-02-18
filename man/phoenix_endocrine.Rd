@@ -23,6 +23,11 @@ the criteria.
 \description{
 Phoenix Endocrine Score
 }
+\examples{
+DF <- data.frame(glc = c(NA, 12, 50, 55, 100, 150, 178))
+phoenix_endocrine(glucose = glc, data = DF)
+
+}
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
 the Phoenix Criteria for Pediatric Sepsis and Septic Shock. JAMA. Published

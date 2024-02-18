@@ -41,7 +41,8 @@
 #' 2024. doi:10.1001/jama.2024.0179
 #'
 #' @examples
-#'
+#' DF <- data.frame(glc = c(NA, 12, 50, 55, 100, 150, 178))
+#' phoenix_endocrine(glucose = glc, data = DF)
 #'
 #' @export
 phoenix_endocrine <- function(glucose, data, ...) {

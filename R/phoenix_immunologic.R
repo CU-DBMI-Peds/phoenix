@@ -41,7 +41,8 @@
 #' 2024. doi:10.1001/jama.2024.0179
 #'
 #' @examples
-#'
+#' DF <- expand.grid(anc = c(NA, 200, 500, 600), alc = c(NA, 500, 1000, 2000))
+#' phoenix_immunologic(anc = anc, alc = alc, data = DF)
 #'
 #' @export
 phoenix_immunologic <- function(anc, alc, data, ...) {
