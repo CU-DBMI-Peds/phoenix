@@ -1,8 +1,22 @@
 #' The Phoenix Sepsis Score
 #'
+#' The diagnostic Phoenix Spesis Criteria based on four organ dysfunction
+#' scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
+#' 2 or more indicates sepsis.
+#'
+#' The details of each of the four component scores are found in there
+#' respective help files.
+#'
 #' @inheritParams phoenix8
 #'
-#' @return a integer vector with values 0, through 13
+#' @return A \code{data.frame} with five columns:
+#' \enumerate{
+#'   \item phoenix_respiratory_score
+#'   \item phoenix_cardiovascular_score
+#'   \item phoenix_coagulation_score
+#'   \item phoenix_neurologic_score
+#'   \item phoenix_spesis_score
+#' }
 #'
 #' As with all other Phoenix oragan system scores, missing values in the data
 #' set will map to a score of zero - this is consistent with the development of
@@ -13,18 +27,18 @@
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
 #'     Sepsis score based on the four organ systems:
 #'     \itemize{
-#'       \code{\link{phoenix_cardiovascular}},
-#'       \code{\link{phoenix_coagulation}},
-#'       \code{\link{phoenix_neurologic}},
-#'       \code{\link{phoenix_respiratory}},
+#'       \item \code{\link{phoenix_cardiovascular}},
+#'       \item \code{\link{phoenix_coagulation}},
+#'       \item \code{\link{phoenix_neurologic}},
+#'       \item \code{\link{phoenix_respiratory}},
 #'     }
 #'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
 #'     Spesis criteria based on the four organ systems noted above and
 #'     \itemize{
-#'       \code{\link{phoenix_endocrine}},
-#'       \code{\link{phoenix_immunologic}},
-#'       \code{\link{phoenix_renal}},
-#'       \code{\link{phoenix_hepatic}},
+#'       \item \code{\link{phoenix_endocrine}},
+#'       \item \code{\link{phoenix_immunologic}},
+#'       \item \code{\link{phoenix_renal}},
+#'       \item \code{\link{phoenix_hepatic}},
 #'     }
 #' }
 #'

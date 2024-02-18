@@ -34,14 +34,11 @@ phoenix8(
 
 \item{sf_ratio}{numeric vector}
 
-\item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not
-intubated; 1 = intubated)}
+\item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
 
-\item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0
-= no support; 1 = support)}
+\item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
 
-\item{vasoactives}{an integer vector, the number of systemic vasoactive medications
-being administered to the patient}
+\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient}
 
 \item{lactate}{numeric vector with the lactate value in mmol/L}
 
@@ -57,13 +54,23 @@ being administered to the patient}
 
 \item{gcs}{integer vector; total Glasgow Comma Score}
 
-\item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 =
-otherwise}
+\item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 = otherwise}
+
+\item{glucose}{numeric vector; blood glucose measured in mg/dL}
+
+\item{anc}{numeric vector; units of 1,000 cells per cubic millimeter}
+
+\item{alc}{numeric vector; units of 1,000 cells per cubic millimeter}
+
+\item{creatinine}{numeric vector; units of mg/dL}
+
+\item{bilirubin}{numeric vector; units of mg/dL}
+
+\item{alt}{numeric vector; units of IU/L}
 
 \item{age}{numeric vector age in months}
 
-\item{data}{a \code{list}, \code{data.frame}, or object that can be coerced
-to a \code{data.frame}, containing the input vectors}
+\item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
 \item{...}{pass through}
 }
@@ -94,7 +101,9 @@ which is based on four organ systems.
 \details{
 The Phoenix Sepsis Criteria is based on the score form
 respiratory, cardiovascular, coagulation, and neurologic.  Phoenix 8 uses
-these four an endocrine, immunologic, renal, and hepatic.
+these four an endocrine, immunologic, renal, and hepatic.  Details on the
+scorign for each of the eight component organ systems are found in the
+respective manual files.
 }
 \examples{
 

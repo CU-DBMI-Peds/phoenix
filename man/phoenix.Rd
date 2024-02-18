@@ -24,8 +24,7 @@ phoenix(
 )
 }
 \arguments{
-\item{vasoactives}{an integer vector, the number of systemic vasoactive medications
-being administered to the patient}
+\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient}
 
 \item{lactate}{numeric vector with the lactate value in mmol/L}
 
@@ -37,11 +36,9 @@ being administered to the patient}
 
 \item{sf_ratio}{numeric vector}
 
-\item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not
-intubated; 1 = intubated)}
+\item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
 
-\item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0
-= no support; 1 = support)}
+\item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
 
 \item{platelets}{numeric vector for platelets counts in units of 1,000/uL}
 
@@ -53,23 +50,34 @@ intubated; 1 = intubated)}
 
 \item{gcs}{integer vector; total Glasgow Comma Score}
 
-\item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 =
-otherwise}
+\item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 = otherwise}
 
-\item{data}{a \code{list}, \code{data.frame}, or object that can be coerced
-to a \code{data.frame}, containing the input vectors}
+\item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
 \item{...}{pass through}
 }
 \value{
-a integer vector with values 0, through 13
+A \code{data.frame} with five columns:
+\enumerate{
+  \item phoenix_respiratory_score
+  \item phoenix_cardiovascular_score
+  \item phoenix_coagulation_score
+  \item phoenix_neurologic_score
+  \item phoenix_spesis_score
+}
 
 As with all other Phoenix oragan system scores, missing values in the data
 set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-The Phoenix Sepsis Score
+The diagnostic Phoenix Spesis Criteria based on four organ dysfunction
+scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
+2 or more indicates sepsis.
+}
+\details{
+The details of each of the four component scores are found in there
+respective help files.
 }
 \examples{
 
@@ -134,18 +142,18 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
     Sepsis score based on the four organ systems:
     \itemize{
-      \code{\link{phoenix_cardiovascular}},
-      \code{\link{phoenix_coagulation}},
-      \code{\link{phoenix_neurologic}},
-      \code{\link{phoenix_respiratory}},
+      \item \code{\link{phoenix_cardiovascular}},
+      \item \code{\link{phoenix_coagulation}},
+      \item \code{\link{phoenix_neurologic}},
+      \item \code{\link{phoenix_respiratory}},
     }
   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
     Spesis criteria based on the four organ systems noted above and
     \itemize{
-      \code{\link{phoenix_endocrine}},
-      \code{\link{phoenix_immunologic}},
-      \code{\link{phoenix_renal}},
-      \code{\link{phoenix_hepatic}},
+      \item \code{\link{phoenix_endocrine}},
+      \item \code{\link{phoenix_immunologic}},
+      \item \code{\link{phoenix_renal}},
+      \item \code{\link{phoenix_hepatic}},
     }
 }
 

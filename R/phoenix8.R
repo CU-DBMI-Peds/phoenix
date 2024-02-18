@@ -6,7 +6,9 @@
 #'
 #' The Phoenix Sepsis Criteria is based on the score form
 #' respiratory, cardiovascular, coagulation, and neurologic.  Phoenix 8 uses
-#' these four an endocrine, immunologic, renal, and hepatic.
+#' these four an endocrine, immunologic, renal, and hepatic.  Details on the
+#' scorign for each of the eight component organ systems are found in the
+#' respective manual files.
 #'
 #' @param pf_ratio numeric vector
 #' @param sf_ratio numeric vector
@@ -22,6 +24,12 @@
 #' @param fibrinogen numeric vector units of mg/dL
 #' @param gcs integer vector; total Glasgow Comma Score
 #' @param fixed_pupils integer vector; 1 = bilaterally fixed pupil, 0 = otherwise
+#' @param glucose numeric vector; blood glucose measured in mg/dL
+#' @param anc numeric vector; units of 1,000 cells per cubic millimeter
+#' @param alc numeric vector; units of 1,000 cells per cubic millimeter
+#' @param creatinine numeric vector; units of mg/dL
+#' @param bilirubin numeric vector; units of mg/dL
+#' @param alt numeric vector; units of IU/L
 #' @param data a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors
 #' @param ... pass through
 #'

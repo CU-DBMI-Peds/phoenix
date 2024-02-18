@@ -7,11 +7,11 @@
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/phoenix)](http://www.r-pkg.org/pkg/phoenix)
 
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
-described in ["Development and Validation of the Phoenix Criteria for
-Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by
-Sanchez-Pinto, Bennett, DeWitt, Russell et.al. (2024) and
-["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by
-Schlapback, Watson, Sorce, et.al. (2024).
+described in:
+
+* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto, Bennett, DeWitt, Russell et.al. (2024) 
+
+* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapback, Watson, Sorce, et.al. (2024).
 
 ## Install
 

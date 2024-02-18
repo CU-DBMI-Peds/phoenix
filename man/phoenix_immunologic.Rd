@@ -7,12 +7,11 @@
 phoenix_immunologic(anc, alc, data, ...)
 }
 \arguments{
-\item{anc}{numeric vector}
+\item{anc}{numeric vector; units of 1,000 cells per cubic millimeter}
 
-\item{alc}{numeric vector units of 1000 cells / mm3}
+\item{alc}{numeric vector; units of 1,000 cells per cubic millimeter}
 
-\item{data}{a \code{list}, \code{data.frame}, or object that can be coerced
-to a \code{data.frame}, containing the input vectors}
+\item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
 \item{...}{pass through}
 }
@@ -40,18 +39,18 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
     Sepsis score based on the four organ systems:
     \itemize{
-      \code{\link{phoenix_cardiovascular}},
-      \code{\link{phoenix_coagulation}},
-      \code{\link{phoenix_neurologic}},
-      \code{\link{phoenix_respiratory}},
+      \item \code{\link{phoenix_cardiovascular}},
+      \item \code{\link{phoenix_coagulation}},
+      \item \code{\link{phoenix_neurologic}},
+      \item \code{\link{phoenix_respiratory}},
     }
   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
     Spesis criteria based on the four organ systems noted above and
     \itemize{
-      \code{\link{phoenix_endocrine}},
-      \code{\link{phoenix_immunologic}},
-      \code{\link{phoenix_renal}},
-      \code{\link{phoenix_hepatic}},
+      \item \code{\link{phoenix_endocrine}},
+      \item \code{\link{phoenix_immunologic}},
+      \item \code{\link{phoenix_renal}},
+      \item \code{\link{phoenix_hepatic}},
     }
 }
 

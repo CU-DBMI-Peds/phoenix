@@ -7,8 +7,7 @@
 phoenix_cardiovascular(vasoactives, lactate, age, map, data, ...)
 }
 \arguments{
-\item{vasoactives}{an integer vector, the number of systemic vasoactive medications
-being administered to the patient}
+\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient}
 
 \item{lactate}{numeric vector with the lactate value in mmol/L}
 
@@ -16,8 +15,7 @@ being administered to the patient}
 
 \item{map}{numeric vector, mean arterial pressure in mmHg}
 
-\item{data}{a \code{list}, \code{data.frame}, or object that can be coerced
-to a \code{data.frame}, containing the input vectors}
+\item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
 \item{...}{pass through}
 }
@@ -43,6 +41,54 @@ approxating the map from blood pressure values via DBP + 1/3 (SBP - DBP),
 where DBP is the diastolic blood pressure and SBP is the systolic blood
 pressure.
 }
+\section{Scoring}{
+
+The Phoenix Cardiovascular score ranges from 0 to 6 points; 0, 1, or 2 points
+for each of systolic vasoactive medications, lactate, and MAP.
+
+\emph{Systemic Vasoactive Medications}
+\tabular{ll}{
+  0 medications \tab 0 points \cr
+  1 medication  \tab 1 point  \cr
+  2 or more medications \tab 2 points
+}
+
+ \emph{Lactate}
+ \tabular{ll}{
+    [0, 5) \tab 0 points \cr
+    [5, 11) \tab 1 point  \cr
+    [11, Inf) \tab 2 points
+ }
+
+ \emph{MAP}
+ \tabular{lll}{
+   Age < 1month \tab \tab \cr
+     \tab [31, Inf) mmHg \tab 0 points \cr
+     \tab [17, 31)  mmHg \tab 1 point  \cr
+     \tab [0, 17)   mmHg \tab 2 points \cr
+   Age in [1, 12) months \tab \tab \cr
+     \tab [39, Inf) mmHg \tab 0 points \cr
+     \tab [25, 39)  mmHg \tab 1 point  \cr
+     \tab [0, 25)   mmHg \tab 2 points \cr
+   Age in [12, 24) months \tab\tab \cr
+     \tab [44, Inf) mmHg \tab 0 points \cr
+     \tab [31, 44)  mmHg \tab 1 point  \cr
+     \tab [0, 31)   mmHg \tab 2 points \cr
+   Age in [24, 60) months \tab\tab \cr
+     \tab [45, Inf) mmHg \tab 0 points \cr
+     \tab [32, 45)  mmHg \tab 1 point  \cr
+     \tab [0, 32)   mmHg \tab 2 points \cr
+   Age in [60, 144) months \tab\tab \cr
+     \tab [49, Inf) mmHg \tab 0 points \cr
+     \tab [36, 49)  mmHg \tab 1 point  \cr
+     \tab [0, 36)   mmHg \tab 2 points \cr
+   Age in [144, Inf) months \tab\tab \cr
+     \tab [52, Inf) mmHg \tab 0 points \cr
+     \tab [38, 52)  mmHg \tab 1 point  \cr
+     \tab [0, 38)   mmHg \tab 2 points \cr
+ }
+}
+
 \examples{
 DF <-
   expand.grid(vasos = c(NA, 0:6),
@@ -67,18 +113,18 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
     Sepsis score based on the four organ systems:
     \itemize{
-      \code{\link{phoenix_cardiovascular}},
-      \code{\link{phoenix_coagulation}},
-      \code{\link{phoenix_neurologic}},
-      \code{\link{phoenix_respiratory}},
+      \item \code{\link{phoenix_cardiovascular}},
+      \item \code{\link{phoenix_coagulation}},
+      \item \code{\link{phoenix_neurologic}},
+      \item \code{\link{phoenix_respiratory}},
     }
   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
     Spesis criteria based on the four organ systems noted above and
     \itemize{
-      \code{\link{phoenix_endocrine}},
-      \code{\link{phoenix_immunologic}},
-      \code{\link{phoenix_renal}},
-      \code{\link{phoenix_hepatic}},
+      \item \code{\link{phoenix_endocrine}},
+      \item \code{\link{phoenix_immunologic}},
+      \item \code{\link{phoenix_renal}},
+      \item \code{\link{phoenix_hepatic}},
     }
 }
 
