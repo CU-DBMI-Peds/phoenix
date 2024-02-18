@@ -94,18 +94,15 @@ which is based on four organ systems.</p>
 
 
 <dt>imv</dt>
-<dd><p>invasive mechanical ventilation; numeric or integer vector, (0 = not
-intubated; 1 = intubated)</p></dd>
+<dd><p>invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)</p></dd>
 
 
 <dt>other_respiratory_support</dt>
-<dd><p>other respiratory support; numeric or integer vector, (0
-= no support; 1 = support)</p></dd>
+<dd><p>other respiratory support; numeric or integer vector, (0 = no support; 1 = support)</p></dd>
 
 
 <dt>vasoactives</dt>
-<dd><p>an integer vector, the number of systemic vasoactive medications
-being administered to the patient</p></dd>
+<dd><p>an integer vector, the number of systemic vasoactive medications being administered to the patient</p></dd>
 
 
 <dt>lactate</dt>
@@ -137,8 +134,31 @@ being administered to the patient</p></dd>
 
 
 <dt>fixed_pupils</dt>
-<dd><p>integer vector; 1 = bilaterally fixed pupil, 0 =
-otherwise</p></dd>
+<dd><p>integer vector; 1 = bilaterally fixed pupil, 0 = otherwise</p></dd>
+
+
+<dt>glucose</dt>
+<dd><p>numeric vector; blood glucose measured in mg/dL</p></dd>
+
+
+<dt>anc</dt>
+<dd><p>numeric vector; units of 1,000 cells per cubic millimeter</p></dd>
+
+
+<dt>alc</dt>
+<dd><p>numeric vector; units of 1,000 cells per cubic millimeter</p></dd>
+
+
+<dt>creatinine</dt>
+<dd><p>numeric vector; units of mg/dL</p></dd>
+
+
+<dt>bilirubin</dt>
+<dd><p>numeric vector; units of mg/dL</p></dd>
+
+
+<dt>alt</dt>
+<dd><p>numeric vector; units of IU/L</p></dd>
 
 
 <dt>age</dt>
@@ -146,8 +166,7 @@ otherwise</p></dd>
 
 
 <dt>data</dt>
-<dd><p>a <code>list</code>, <code>data.frame</code>, or object that can be coerced
-to a <code>data.frame</code>, containing the input vectors</p></dd>
+<dd><p>a <code>list</code>, <code>data.frame</code>, or <code>environment</code> containing the input vectors</p></dd>
 
 
 <dt>...</dt>
@@ -176,7 +195,9 @@ the criteria.</p>
     <h2>Details</h2>
     <p>The Phoenix Sepsis Criteria is based on the score form
 respiratory, cardiovascular, coagulation, and neurologic.  Phoenix 8 uses
-these four an endocrine, immunologic, renal, and hepatic.</p>
+these four an endocrine, immunologic, renal, and hepatic.  Details on the
+scorign for each of the eight component organ systems are found in the
+respective manual files.</p>
     </div>
     <div id="references">
     <h2>References</h2>
