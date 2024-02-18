@@ -21,15 +21,7 @@
 #' \code{other_respiratory_support} other respiratory support such as receiving oxygen,
 #' high-flow, non-invasive positive pressure, or imv.
 #'
-#' @param pf_ratio numeric vector
-#' @param sf_ratio numeric vector
-#' @param imv invasive mechanical ventilation; numeric or integer vector, (0 = not
-#' intubated; 1 = intubated)
-#' @param other_respiratory_support other respiratory support; numeric or integer vector, (0
-#' = no support; 1 = support)
-#' @param data a \code{list}, \code{data.frame}, or object that can be coerced
-#' to a \code{data.frame}, containing the input vectors
-#' @param ... pass through
+#' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0, 1, 2, or 3.
 #'

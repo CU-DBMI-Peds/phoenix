@@ -1,9 +1,6 @@
 #' The Phoenix Sepsis Score
 #'
-#' @inheritParams phoenix_respiratory
-#' @inheritParams phoenix_cardiovascular
-#' @inheritParams phoenix_coagulation
-#' @inheritParams phoenix_neurologic
+#' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0, through 13
 #'

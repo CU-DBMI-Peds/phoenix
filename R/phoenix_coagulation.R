@@ -1,12 +1,6 @@
 #' Phoenix Coagulation Score
 #'
-#' @param platelets numeric vector for platelets counts in units of 1,000/uL
-#' @param inr numeric vector for the internation normlised ratio blood test
-#' @param d_dimer numeric vector for D-Dimer, units of mg/L FEU
-#' @param fibrinogen numeric vector units of mg/dL
-#' @param data a \code{list}, \code{data.frame}, or object that can be coerced
-#' to a \code{data.frame}, containing the input vectors
-#' @param ... pass through
+#' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0, 1, or 2
 #'

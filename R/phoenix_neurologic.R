@@ -31,12 +31,7 @@
 #' abnormal flexion to pain, \item widthdrawal from pain, \item localized pain,
 #' \item obeys commands}
 #'
-#' @param gcs integer vector; total Glasgow Comma Score
-#' @param fixed_pupils integer vector; 1 = bilaterally fixed pupil, 0 =
-#' otherwise
-#' @param data a \code{list}, \code{data.frame}, or object that can be coerced
-#' to a \code{data.frame}, containing the input vectors
-#' @param ... pass through
+#' @inheritParams phoenix8
 #'
 #' @return an integer vector with values 0, 1, or 2.
 #'

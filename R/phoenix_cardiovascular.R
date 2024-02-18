@@ -13,14 +13,7 @@
 #' where DBP is the diastolic blood pressure and SBP is the systolic blood
 #' pressure.
 #'
-#' @param vasoactives an integer vector, the number of systemic vasoactive medications
-#' being administered to the patient
-#' @param lactate numeric vector with the lactate value in mmol/L
-#' @param age numeric vector age in months
-#' @param map numeric vector, mean arterial pressure in mmHg
-#' @param data a \code{list}, \code{data.frame}, or object that can be coerced
-#' to a \code{data.frame}, containing the input vectors
-#' @param ... pass through
+#' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0, 1, 2, 3, 4, 5, or 6.
 #'
