@@ -80,10 +80,312 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dewittpe/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"phoenix"</span><span class="op">)</span></span>
 <span><span class="co">## [1] '0.0.0.9000'</span></span></code></pre></div>
-<p>This is a place holder.</p>
-<p>Don’t forget to cite <span class="citation">Sanchez-Pinto et al.
-(2024)</span> and <span class="citation">Schlapbach et al.
-(2024)</span>.</p>
+<p>The of the diagnostic Phoenix Sepsis Criteria developed in <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link"><span class="citation">Sanchez-Pinto et al. (2024)</span></a> and <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link"><span class="citation">Schlapbach et al. (2024)</span></a> is implimented in
+this package.</p>
+<div class="section level2">
+<h2 id="the-phoenix-sepsis-criteria">The Phoenix Sepsis Criteria<a class="anchor" aria-label="anchor" href="#the-phoenix-sepsis-criteria"></a>
+</h2>
+<p>The diagnostic Phoenix Sepsis Criteria is defined by dysfuntion in
+four organ systems:</p>
+<table class="table">
+<colgroup>
+<col width="18%">
+<col width="20%">
+<col width="18%">
+<col width="20%">
+<col width="20%">
+</colgroup>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">0 Points</th>
+<th align="left">1 Point</th>
+<th align="left">2 Points</th>
+<th align="left">3 Points</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">
+<strong>Respiratory</strong> (0-3 points)</td>
+<td align="left">PaO<sub>2</sub>:FiO<sub>2</sub> ≥ 400 and
+SpO<sub>2</sub>:FiO<sub>2</sub> ≥ 292</td>
+<td align="left">(PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 400 or
+SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 292) and any respiratory
+support</td>
+<td align="left">(PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 200 or
+SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 220) and IMV</td>
+<td align="left">(PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 100 or
+SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 148) and IMV</td>
+</tr>
+<tr class="even">
+<td align="left">
+<strong>Cardiovascular</strong> (0-6 points)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">   <em>Vasoactive Medications</em>
+</td>
+<td align="left">No medications</td>
+<td align="left">1 medictation</td>
+<td align="left">2 or more medictations</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">   <em>Lactate</em>
+</td>
+<td align="left">[0, 5) mmol/L</td>
+<td align="left">[5, 11) mmol/L</td>
+<td align="left">[11, ∞) mmol/L</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">   <em>MAP</em>
+</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">     0 ≤ Age &lt; 1</td>
+<td align="left">[31, ∞) mmHg</td>
+<td align="left">[17, 31) mmHg</td>
+<td align="left">[0, 17) mmHg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">     1 ≤ Age &lt; 12</td>
+<td align="left">[39, ∞) mmHg</td>
+<td align="left">[25, 39) mmHg</td>
+<td align="left">[0, 25) mmHg</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">     12 ≤ Age &lt; 24</td>
+<td align="left">[44, ∞) mmHg</td>
+<td align="left">[31, 44) mmHg</td>
+<td align="left">[0, 31) mmHg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">     24 ≤ Age &lt; 60</td>
+<td align="left">[45, ∞) mmHg</td>
+<td align="left">[32, 45) mmHg</td>
+<td align="left">[0, 32) mmHg</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">     60 ≤ Age &lt; 144</td>
+<td align="left">[49, ∞) mmHg</td>
+<td align="left">[36, 49) mmHg</td>
+<td align="left">[0, 36) mmHg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">     144 ≤ Age</td>
+<td align="left">[52, ∞) mmHg</td>
+<td align="left">[38, 52) mmHg</td>
+<td align="left">[0, 38) mmHg</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">
+<strong>Coagulation</strong> (0-2 points)</td>
+<td align="left"></td>
+<td align="left">1 point each; max 2</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Platelets</td>
+<td align="left">[100, ∞) K/μL</td>
+<td align="left">[0, 100) K/μL</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">   INR</td>
+<td align="left">[0 , 1.3]</td>
+<td align="left">[1.3, ∞)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">   D-Dimer</td>
+<td align="left">[0, 2] mg/L FEU</td>
+<td align="left">(2, ∞) mg/L FEU</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">   Fibrinogen</td>
+<td align="left">[100, ∞) mg/dL</td>
+<td align="left">[0, 100) mg/dL</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">
+<strong>Neurologic</strong> (0-2 points)</td>
+<td align="left">GCS ∈ {11, 12, 13, 14, 15}</td>
+<td align="left">GCS ∈ {3, 4, …, 10}</td>
+<td align="left">Bilarterally fixed pupils</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><small> * IMV: invasive mechanical ventalation * Age: measured
+in months * MAP: mean arterial pressure </small></p>
+<p>A total score of 2 or more points is needed to diagnosis pediatric
+sepsis.</p>
+</div>
+<div class="section level2">
+<h2 id="the-phoenix-8-criteria">The Phoenix 8 Criteria<a class="anchor" aria-label="anchor" href="#the-phoenix-8-criteria"></a>
+</h2>
+<p>This extended criteria uses the four organ systems above along with
+four additional organ dysfunction scores.</p>
+<table class="table">
+<colgroup>
+<col width="32%">
+<col width="36%">
+<col width="32%">
+</colgroup>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">0 Points</th>
+<th align="left">1 Point</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">
+<strong>Endocrine</strong> (0-1 point)</td>
+<td align="left">blood glucose ∈ [50, 150] mg/dL</td>
+<td align="left">blood glucose ∉ [50, 150] mg/dL</td>
+</tr>
+<tr class="even">
+<td align="left">
+<strong>Immunologic</strong> (0-1 point)</td>
+<td align="left">ANC ≥ 500 and ALC ≥ 1000 cells /mm<sup>3</sup>
+</td>
+<td align="left">ANC &lt; 500 and/or ALC &lt; 1000
+cells/mm<sup>3</sup>
+</td>
+</tr>
+<tr class="odd">
+<td align="left">
+<strong>Renal</strong> (0-1 point)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">   0 ≤ Age &lt; 1</td>
+<td align="left">Creatinine &lt; 0.8 mg/dL</td>
+<td align="left">Creatinine ≥ 0.8 mg/dL</td>
+</tr>
+<tr class="odd">
+<td align="left">   1 ≤ Age &lt; 12</td>
+<td align="left">Creatinine &lt; 0.3 mg/dL</td>
+<td align="left">Creatinine ≥ 0.3 mg/dL</td>
+</tr>
+<tr class="even">
+<td align="left">   12 ≤ Age &lt; 24</td>
+<td align="left">Creatinine &lt; 0.4 mg/dL</td>
+<td align="left">Creatinine ≥ 0.4 mg/dL</td>
+</tr>
+<tr class="odd">
+<td align="left">   24 ≤ Age &lt; 60</td>
+<td align="left">Creatinine &lt; 0.6 mg/dL</td>
+<td align="left">Creatinine ≥ 0.6 mg/dL</td>
+</tr>
+<tr class="even">
+<td align="left">   60 ≤ Age &lt; 144</td>
+<td align="left">Creatinine &lt; 0.7 mg/dL</td>
+<td align="left">Creatinine ≥ 0.7 mg/dL</td>
+</tr>
+<tr class="odd">
+<td align="left">   144 ≤ Age</td>
+<td align="left">Creatinine &lt; 1.0 mg/dL</td>
+<td align="left">Creatinine ≥ 1.0 mg/dL</td>
+</tr>
+<tr class="even">
+<td align="left">
+<strong>Hepatic</strong> (0-1 point)</td>
+<td align="left">Total bilirubin &lt; 4 mg/dL and ALT &gt; 102 IU/L</td>
+<td align="left">Total bilirubin %geq; 4 mg/dL and/or ALT &gt; 102
+IU/L</td>
+</tr>
+</tbody>
+</table>
+<p><small> * Age: measured in months </small></p>
+</div>
+<div class="section level2">
+<h2 id="development-of-the-criteria">Development of the Criteria<a class="anchor" aria-label="anchor" href="#development-of-the-criteria"></a>
+</h2>
+<p>Details on the developed of the criteria are discribed in <span class="citation">Sanchez-Pinto et al. (2024)</span> and <span class="citation">Schlapbach et al. (2024)</span> and end users are
+encouraged to review these papers. A couple quick notes about the data
+and use in general. Some specific deatils will be provided in each of
+the sections for each organ system.</p>
+<p><em>Missing data = 0 points</em>: During the development of the
+Phoenix criteria missing data was mapped to zero points. This was done
+as it was reasonable to assume that for some labs and metrics, missing
+data could indicate that there was no concern and the testing was not
+order. Further, the Phoenix criteria was developed to be useful in both
+high, medium, and low resource settings where some labs and values migth
+be uncommon or impossible to get. As such, we encourage end users of
+this package to do the same - missing values are missing and should not
+be imputed.</p>
+<p><em>Worst in first 24 hours</em>: The score was developed on the
+worse measured value during the first 24 hours of an hospital encounter.
+But this was also done on a variable by variable basis. For example, say
+one 54 month old patient had the following cardiovascular scores:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">time from admission</th>
+<th align="center">vasoactive medications</th>
+<th align="center">lacate</th>
+<th align="center">MAP</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">55</td>
+</tr>
+<tr class="even">
+<td align="center">20</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">55</td>
+</tr>
+<tr class="odd">
+<td align="center">120</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">55</td>
+</tr>
+<tr class="even">
+<td align="center">382</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">55</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="package-use">Package Use<a class="anchor" aria-label="anchor" href="#package-use"></a>
+</h2>
+<p>There are functions to apply the Phoenix criteria to a data set for
+each of the organ systems and wrapers for full Phoenix and Phoenix-8
+scores.</p>
+<div class="section level3">
+<h3 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
+</h3>
+</div>
+</div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
