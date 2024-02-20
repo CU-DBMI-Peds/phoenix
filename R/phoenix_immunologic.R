@@ -46,8 +46,18 @@
 #'
 #' @export
 phoenix_immunologic <- function(anc, alc, data = parent.frame(), ...) {
-  anc <- eval(expr = substitute(anc), envir = data)
-  alc <- eval(expr = substitute(alc), envir = data)
+
+  if (missing(anc)) {
+    anc <- NA_real_
+  } else {
+    anc <- eval(expr = substitute(anc), envir = data)
+  }
+
+  if (missing(alc)) {
+    alc <- NA_real_
+  } else {
+    alc <- eval(expr = substitute(alc), envir = data)
+  }
 
   n <- max(c(length(anc), length(alc)))
 

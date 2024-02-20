@@ -53,10 +53,30 @@
 #'
 #' @export
 phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data = parent.frame(), ...) {
-  plt <- eval(expr = substitute(platelets), envir = data)
-  inr <- eval(expr = substitute(inr), envir = data)
-  ddm <- eval(expr = substitute(d_dimer), envir = data)
-  fib <- eval(expr = substitute(fibrinogen), envir = data)
+
+  if (missing(platelets)) {
+    plt <- NA_real_
+  } else {
+    plt <- eval(expr = substitute(platelets), envir = data)
+  }
+
+  if (missing(inr)) {
+    inr <- NA_real_
+  } else {
+    inr <- eval(expr = substitute(inr), envir = data)
+  }
+
+  if (missing(d_dimer)) {
+    ddm <- NA_real_
+  } else {
+    ddm <- eval(expr = substitute(d_dimer), envir = data)
+  }
+
+  if (missing(fibrinogen)) {
+    fib <- NA_real_
+  } else {
+    fib <- eval(expr = substitute(fibrinogen), envir = data)
+  }
 
   n <- max(c(length(plt), length(inr), length(ddm), length(fib)))
 
