@@ -1,6 +1,6 @@
 #' Phoenix Cardiovascular Score
 #'
-#' Generate the cardiovascular organ system dysfunciton score as part of the
+#' Generate the cardiovascular organ system dysfunction score as part of the
 #' diagnostic Phoenix Sepsis Criteria.
 #'
 #' There where six systemic vasoactive medications considered when the Phoenix
@@ -8,8 +8,8 @@
 #' norepinephrine, and vasopressin.
 #'
 #' During development, the values used for \code{map} were taken preferentially
-#' from arterial measuremens, then cuff measures, and provided values before
-#' approxating the map from blood pressure values via DBP + 1/3 (SBP - DBP),
+#' from arterial measurement, then cuff measures, and provided values before
+#' approximating the map from blood pressure values via DBP + 1/3 (SBP - DBP),
 #' where DBP is the diastolic blood pressure and SBP is the systolic blood
 #' pressure.
 #'
@@ -63,7 +63,7 @@
 #'
 #' @return a integer vector with values 0, 1, 2, 3, 4, 5, or 6.
 #'
-#' As with all other Phoenix oragan system scores, missing values in the data
+#' As with all other Phoenix organ system scores, missing values in the data
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
@@ -78,7 +78,7 @@
 #'       \item \code{\link{phoenix_respiratory}},
 #'     }
 #'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-#'     Spesis criteria based on the four organ systems noted above and
+#'     Sepsis criteria based on the four organ systems noted above and
 #'     \itemize{
 #'       \item \code{\link{phoenix_endocrine}},
 #'       \item \code{\link{phoenix_immunologic}},

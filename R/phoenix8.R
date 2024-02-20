@@ -1,13 +1,13 @@
 #' The Phoenix 8 Sepsis Score
 #'
 #' The extended Phoenix criteria using a total eight organ systems.  This is
-#' intended mostly for reasearch as an extension of the Phoenix Spesis Criteria
+#' intended mostly for research as an extension of the Phoenix Sepsis Criteria
 #' which is based on four organ systems.
 #'
 #' The Phoenix Sepsis Criteria is based on the score form
 #' respiratory, cardiovascular, coagulation, and neurologic.  Phoenix 8 uses
 #' these four an endocrine, immunologic, renal, and hepatic.  Details on the
-#' scorign for each of the eight component organ systems are found in the
+#' scoring for each of the eight component organ systems are found in the
 #' respective manual files.
 #'
 #' @param pf_ratio numeric vector
@@ -41,7 +41,7 @@
 #'   \item \code{phoenix_neurologic_score}
 #'   \item \code{phoenix_sepsis_score}
 #'   \item \code{phoenix_sepsis} 0 = not septic; 1 = septic (phoenix_sepsis_score greater or equal 2)
-#'   \item \code{phoenix_septic_shock} 0 = no spetic shock; 1 = spetic shock (sepsis with cardiovascular dysfunction)
+#'   \item \code{phoenix_septic_shock} 0 = no septic shock; 1 = septic shock (sepsis with cardiovascular dysfunction)
 #'   \item \code{phoenix_endocrine_score}
 #'   \item \code{phoenix_immunologic_score}
 #'   \item \code{phoenix_renal_score}
@@ -49,7 +49,7 @@
 #'   \item \code{phoenix8_sepsis_score}
 #' }
 #'
-#' As with all other Phoenix oragan system scores, missing values in the data
+#' As with all other Phoenix organ system scores, missing values in the data
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
@@ -64,7 +64,7 @@
 #'       \item \code{\link{phoenix_respiratory}},
 #'     }
 #'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-#'     Spesis criteria based on the four organ systems noted above and
+#'     Sepsis criteria based on the four organ systems noted above and
 #'     \itemize{
 #'       \item \code{\link{phoenix_endocrine}},
 #'       \item \code{\link{phoenix_immunologic}},

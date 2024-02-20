@@ -26,11 +26,11 @@ packageVersion("phoenix")
 #'
 #' # Development and International Consensus
 #'
-#' Deails on the development of the diagnostic Phoenix Sepsis Criteria are in
+#' Details on the development of the diagnostic Phoenix Sepsis Criteria are in
 #' [@sanchez_2024_development](https://doi.org/10.1001/jama.2024.0196).  This
 #' manuscript covers the data-driven and modified Delphi process leading to an
 #' international consensus for the criteria
-#' ([@schlapback_2024_international](https://doi.org/10.1001/jama.2024.0179)).
+#' ([@schlapbach_2024_international](https://doi.org/10.1001/jama.2024.0179)).
 #'
 #' This R package provides utilities to quickly and easily apply the Phoenix
 #' Sepsis scoring rubric to your data sets.
@@ -46,10 +46,10 @@ packageVersion("phoenix")
 #'
 #' A pediatric patient is to be diagnosed as having sepsis if:
 #'
-#' 1. Suspected/Confirmed infection (recept of systemic antimicrobials and
-#' microbiological tesing with in first 24 hours of hospital presentation), and
+#' 1. Suspected/Confirmed infection (receipt of systemic antimicrobials and
+#' microbiological testing with in first 24 hours of hospital presentation), and
 #'
-#' 2. A total Phoenix Spesis Score &geq; 2.
+#' 2. A total Phoenix Sepsis Score &geq; 2.
 #'
 #' **Septic Shock Definition:**
 #'
@@ -63,7 +63,7 @@ packageVersion("phoenix")
 #' |:-------|:-------- |:------- |:-------- |:-------- |
 #' |**Respiratory** (0-3 points) | PaO<sub>2</sub>:FiO<sub>2</sub> &geq; 400 and SpO<sub>2</sub>:FiO<sub>2</sub> &geq; 292 | (PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 400 or SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 292) and any respiratory support | (PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 200 or SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 220) and IMV | (PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 100 or SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 148) and IMV |
 #' |**Cardiovascular** (0-6 points) |
-#' |&nbsp;&nbsp; _Vasoactive Medications_ | No medications | 1 medictation | 2 or more medictations |
+#' |&nbsp;&nbsp; _Vasoactive Medications_ | No medications | 1 medication | 2 or more medications |
 #' |&nbsp;&nbsp; _Lactate_ | [0, 5) mmol/L | [5, 11) mmol/L | [11, &infin;) mmol/L |
 #' |&nbsp;&nbsp; _MAP_ | | | |
 #' |&nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age <   1 | [31, &infin;) mmHg | [17, 31) mmHg | [0, 17) mmHg |
@@ -77,7 +77,7 @@ packageVersion("phoenix")
 #' |&nbsp;&nbsp; INR        | [0 , 1.3] | [1.3, &infin;) |
 #' |&nbsp;&nbsp; D-Dimer    | [0, 2] mg/L FEU | (2, &infin;) mg/L FEU |
 #' |&nbsp;&nbsp; Fibrinogen | [100, &infin;) mg/dL | [0, 100) mg/dL |
-#' |**Neurologic** (0-2 points) | GCS &#8712; {11, 12, 13, 14, 15} | GCS &#8712; {3, 4, ..., 10} | Bilarterally fixed pupils |
+#' |**Neurologic** (0-2 points) | GCS &#8712; {11, 12, 13, 14, 15} | GCS &#8712; {3, 4, ..., 10} | Bilaterally fixed pupils |
 #' <small>
 #' * IMV: invasive mechanical ventalation</br>
 #' * Age: measured in months</br>
@@ -101,17 +101,17 @@ packageVersion("phoenix")
 #' |&nbsp;&nbsp;  24 &leq; Age <  60 | Creatinine &lt; 0.6 mg/dL | Creatinine &geq; 0.6 mg/dL |
 #' |&nbsp;&nbsp;  60 &leq; Age < 144 | Creatinine &lt; 0.7 mg/dL | Creatinine &geq; 0.7 mg/dL |
 #' |&nbsp;&nbsp; 144 &leq; Age       | Creatinine &lt; 1.0 mg/dL | Creatinine &geq; 1.0 mg/dL |
-#' |**Hepatic** (0-1 point) | Total bilirubin &lt; 4 mg/dL and ALT &gt; 102 IU/L | Total bilirubin %geq; 4 mg/dL and/or ALT &gt; 102 IU/L |
+#' |**Hepatic** (0-1 point) | Total bilirubin &lt; 4 mg/dL and ALT &gt; 102 IU/L | Total bilirubin &geq; 4 mg/dL and/or ALT &gt; 102 IU/L |
 #' <small>
 #' * Age: measured in months</br>
 #' </small>
 #'
 #' # Development of the Criteria
 #'
-#' Details on the developed of the criteria are discribed in
-#' @sanchez_2024_development and @schlapback_2024_international and end users
+#' Details on the developed of the criteria are described in
+#' @sanchez_2024_development and @schlapbach_2024_international and end users
 #' are encouraged to review these papers.  A couple quick notes about the data
-#' and use in general.  Some specific deatils will be provided in each of the
+#' and use in general.  Some specific details will be provided in each of the
 #' sections for each organ system.
 #'
 #' **Missing data = 0 points:** During the development of the Phoenix criteria
@@ -119,7 +119,7 @@ packageVersion("phoenix")
 #' assume that for some labs and metrics, missing data could indicate that there
 #' was no concern and the testing was not order.  Further, the Phoenix criteria
 #' was developed to be useful in both high, medium, and low resource settings
-#' where some labs and values migth be uncommon or impossible to get.  As such,
+#' where some labs and values might be uncommon or impossible to get.  As such,
 #' we encourage end users of this package to do the same - missing values are
 #' missing and should not be imputed.
 #'
@@ -148,9 +148,9 @@ packageVersion("phoenix")
 #' # Package Use
 #'
 #' There are functions to apply the Phoenix criteria to a data set for each of
-#' the organ systems and wrapers for full Phoenix and Phoenix-8 scores.
+#' the organ systems and wrappers for full Phoenix and Phoenix-8 scores.
 #'
-#' Inputs for the organ dysfunction scoring functions are exptected to be
+#' Inputs for the organ dysfunction scoring functions are expected to be
 #' numeric vectors and to have a common length _or_ a length of 1.  For example,
 #' the respiratory score requires four inputs.  The lengths of the inputs could
 #' be
@@ -158,7 +158,7 @@ packageVersion("phoenix")
 #' indicating that the first input is constant for all other values.  An input
 #' of
 {{ backtick(c(2, 10, 10, 10)) }}
-#' will result in an error. If you wish to 'recycle' an input of lenght greate
+#' will result in an error. If you wish to 'recycle' an input of length greater
 #' than 1 and less than the max length of another, then wrap the shorter inputs
 #' in
 {{ backtick(rep()) }}
@@ -194,7 +194,7 @@ packageVersion("phoenix")
 #'
 #' *
 {{ backtick(imv) }}
-#' Invasive mechanical ventalation.  This is an integer valued indicator
+#' Invasive mechanical ventilation.  This is an integer valued indicator
 #' variable: 0 = not intubated; 1 = intubated.
 #'
 #' *
@@ -305,8 +305,8 @@ resp_example
 #' bradycardia would count.
 #'
 #' *
-{{ backtick(lacate) }}
-#' level of lacate in the blood, measured in mmol/L
+{{ backtick(lactate) }}
+#' level of lactate in the blood, measured in mmol/L
 #'
 #' *
 {{ backtick(age) }}

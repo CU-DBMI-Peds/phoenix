@@ -1,7 +1,7 @@
 #' Phoenix Sepsis Neurological Score
 #'
-#' Assement of neurologic disfunction based on Glasgow Coma Scale (GCS) and
-#' pupil reactiveity. This score is part of the diagnostic Phoenix Sepsis
+#' Assessment of neurologic dysfunction based on Glasgow Coma Scale (GCS) and
+#' pupil reactivity. This score is part of the diagnostic Phoenix Sepsis
 #' criteria and Phoenix 8 Sepsis criteria.
 #'
 #' Scoring:
@@ -28,7 +28,7 @@
 #'
 #' Motor response:
 #' \enumerate{ \item no motor response, \item abnormal extension to pain, \item
-#' abnormal flexion to pain, \item widthdrawal from pain, \item localized pain,
+#' abnormal flexion to pain, \item withdrawal from pain, \item localized pain,
 #' \item obeys commands}
 #'
 #' @inheritParams phoenix8
@@ -46,7 +46,7 @@
 #'       \item \code{\link{phoenix_respiratory}},
 #'     }
 #'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-#'     Spesis criteria based on the four organ systems noted above and
+#'     Sepsis criteria based on the four organ systems noted above and
 #'     \itemize{
 #'       \item \code{\link{phoenix_endocrine}},
 #'       \item \code{\link{phoenix_immunologic}},

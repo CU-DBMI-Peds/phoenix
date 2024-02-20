@@ -18,7 +18,7 @@ phoenix_renal(creatinine, age, data = parent.frame(), ...)
 \value{
 a integer vector with values 0, 1, or 2
 
-As with all other Phoenix oragan system scores, missing values in the data
+As with all other Phoenix organ system scores, missing values in the data
 set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
@@ -54,7 +54,7 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
       \item \code{\link{phoenix_respiratory}},
     }
   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-    Spesis criteria based on the four organ systems noted above and
+    Sepsis criteria based on the four organ systems noted above and
     \itemize{
       \item \code{\link{phoenix_endocrine}},
       \item \code{\link{phoenix_immunologic}},

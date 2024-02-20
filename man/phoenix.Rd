@@ -64,16 +64,16 @@ A \code{data.frame} with seven columns:
   \item \code{phoenix_coagulation_score}
   \item \code{phoenix_neurologic_score}
   \item \code{phoenix_sepsis_score}
-  \item \code{phoenix_sepsis}  An integer vector, 0 = not septic, 1 = spetic (score greater or equal to 2)
-  \item \code{phoenix_septic_shock} An integer vector, 0 = not spetic shock, 1 = spetic shock (score greater or equal 2 and cardiovascular dysfunction)
+  \item \code{phoenix_sepsis}  An integer vector, 0 = not septic, 1 = septic (score greater or equal to 2)
+  \item \code{phoenix_septic_shock} An integer vector, 0 = not septic shock, 1 = septic shock (score greater or equal 2 and cardiovascular dysfunction)
 }
 
-As with all other Phoenix oragan system scores, missing values in the data
+As with all other Phoenix organ system scores, missing values in the data
 set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-The diagnostic Phoenix Spesis Criteria based on four organ dysfunction
+The diagnostic Phoenix Sepsis Criteria based on four organ dysfunction
 scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 2 or more indicates sepsis.
 }
@@ -150,7 +150,7 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
       \item \code{\link{phoenix_respiratory}},
     }
   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-    Spesis criteria based on the four organ systems noted above and
+    Sepsis criteria based on the four organ systems noted above and
     \itemize{
       \item \code{\link{phoenix_endocrine}},
       \item \code{\link{phoenix_immunologic}},
