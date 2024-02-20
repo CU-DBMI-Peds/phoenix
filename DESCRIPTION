@@ -25,6 +25,7 @@ Imports:
 LinkingTo:
 Suggests:
   knitr,
+  ggplot2,
   qwraps2 (>= 0.6.0),
   rmarkdown
 VignetteBuilder: knitr

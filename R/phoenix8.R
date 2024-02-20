@@ -33,18 +33,20 @@
 #' @param data a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors
 #' @param ... pass through
 #'
-#' @return a \code{data.frame} with 10 columns.
+#' @return a \code{data.frame} with 12 integer columns.
 #' \enumerate{
-#'   \item phoenix_respiratory_score
-#'   \item phoenix_cardiovascular_score
-#'   \item phoenix_coagulation_score
-#'   \item phoenix_neurologic_score
-#'   \item phoenix_sepsis_score
-#'   \item phoenix_endocrine_score
-#'   \item phoenix_immunologic_score
-#'   \item phoenix_renal_score
-#'   \item phoenix_hepatic_score
-#'   \item phoenix8_sepsis_score
+#'   \item \code{phoenix_respiratory_score}
+#'   \item \code{phoenix_cardiovascular_score}
+#'   \item \code{phoenix_coagulation_score}
+#'   \item \code{phoenix_neurologic_score}
+#'   \item \code{phoenix_sepsis_score}
+#'   \item \code{phoenix_sepsis} 0 = not septic; 1 = septic (phoenix_sepsis_score greater or equal 2)
+#'   \item \code{phoenix_septic_shock} 0 = no spetic shock; 1 = spetic shock (sepsis with cardiovascular dysfunction)
+#'   \item \code{phoenix_endocrine_score}
+#'   \item \code{phoenix_immunologic_score}
+#'   \item \code{phoenix_renal_score}
+#'   \item \code{phoenix_hepatic_score}
+#'   \item \code{phoenix8_sepsis_score}
 #' }
 #'
 #' As with all other Phoenix oragan system scores, missing values in the data

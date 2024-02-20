@@ -198,6 +198,8 @@ expected_phoenix8 <-
              phoenix_coagulation_score = DF$phoenix_coag,
              phoenix_neurologic_score = DF$phoenix_neur,
              phoenix_sepsis_score = DF$phoenix_resp + DF$phoenix_card + DF$phoenix_coag + DF$phoenix_neur,
+             phoenix_sepsis = as.integer(DF$phoenix_resp + DF$phoenix_card + DF$phoenix_coag + DF$phoenix_neur > 1),
+             phoenix_septic_shock = as.integer((DF$phoenix_card > 0) & (DF$phoenix_resp + DF$phoenix_card + DF$phoenix_coag + DF$phoenix_neur > 1)),
              phoenix_endocrine_score = DF$phoenix_endo,
              phoenix_immunologic_score = DF$phoenix_immu,
              phoenix_renal_score = DF$phoenix_renal,
@@ -223,9 +225,15 @@ realized_phoenix <-
            age = age,
            data = DF)
 
+stopifnot(identical(ncol(realized_phoenix), 7L))
+stopifnot(identical(names(realized_phoenix),
+          c("phoenix_respiratory_score", "phoenix_cardiovascular_score",
+            "phoenix_coagulation_score", "phoenix_neurologic_score",
+            "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock")))
+
 stopifnot(
   all.equal(
-            expected_phoenix8[, 1:5]
+            expected_phoenix8[, 1:7]
             ,
             realized_phoenix
   )
@@ -253,6 +261,15 @@ realized_phoenix8 <-
            alt = alt,
            age = age,
            data = DF)
+
+stopifnot(identical(ncol(realized_phoenix8), 12L))
+stopifnot(identical(names(realized_phoenix8),
+          c("phoenix_respiratory_score", "phoenix_cardiovascular_score",
+            "phoenix_coagulation_score", "phoenix_neurologic_score",
+            "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock",
+            "phoenix_endocrine_score", "phoenix_immunologic_score",
+            "phoenix_renal_score", "phoenix_hepatic_score",
+            "phoenix8_sepsis_score")))
 
 stopifnot(
   all.equal(
@@ -295,9 +312,9 @@ stopifnot(identical(p_a, p_c))
 stopifnot(identical(p8_a, p8_b))
 stopifnot(identical(p8_a, p8_c))
 
-stopifnot(identical(p_a, p8_a[, 1:5]))
-stopifnot(identical(p_a, p8_b[, 1:5]))
-stopifnot(identical(p_a, p8_c[, 1:5]))
+stopifnot(identical(p_a, p8_a[, 1:7]))
+stopifnot(identical(p_a, p8_b[, 1:7]))
+stopifnot(identical(p_a, p8_c[, 1:7]))
 
 ################################################################################
 #                                 End of File                                  #

@@ -9,13 +9,15 @@
 #'
 #' @inheritParams phoenix8
 #'
-#' @return A \code{data.frame} with five columns:
+#' @return A \code{data.frame} with seven columns:
 #' \enumerate{
-#'   \item phoenix_respiratory_score
-#'   \item phoenix_cardiovascular_score
-#'   \item phoenix_coagulation_score
-#'   \item phoenix_neurologic_score
-#'   \item phoenix_sepsis_score
+#'   \item \code{phoenix_respiratory_score}
+#'   \item \code{phoenix_cardiovascular_score}
+#'   \item \code{phoenix_coagulation_score}
+#'   \item \code{phoenix_neurologic_score}
+#'   \item \code{phoenix_sepsis_score}
+#'   \item \code{phoenix_sepsis}  An integer vector, 0 = not septic, 1 = spetic (score greater or equal to 2)
+#'   \item \code{phoenix_septic_shock} An integer vector, 0 = not spetic shock, 1 = spetic shock (score greater or equal 2 and cardiovascular dysfunction)
 #' }
 #'
 #' As with all other Phoenix oragan system scores, missing values in the data
@@ -122,9 +124,16 @@ phoenix <- function(pf_ratio, sf_ratio, imv, other_respiratory_support,
   cl[[1]] <- quote(phoenix_neurologic)
   neur <- eval(as.call(cl), envir = data)
 
-  data.frame(phoenix_respiratory_score = resp,
-             phoenix_cardiovascular_score = card,
-             phoenix_coagulation_score = coag,
-             phoenix_neurologic_score = neur,
-             phoenix_sepsis_score = card + resp + coag + neur)
+  rtn <-
+    data.frame(
+      phoenix_respiratory_score    = resp,
+      phoenix_cardiovascular_score = card,
+      phoenix_coagulation_score    = coag,
+      phoenix_neurologic_score     = neur,
+      phoenix_sepsis_score         = card + resp + coag + neur,
+      phoenix_sepsis               = as.integer(card + resp + coag + neur > 1),
+      phoenix_septic_shock         = as.integer((card > 0) & (card + resp + coag + neur > 1))
+    )
+
+  rtn
 }

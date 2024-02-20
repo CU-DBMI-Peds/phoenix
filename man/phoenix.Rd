@@ -57,13 +57,15 @@ phoenix(
 \item{...}{pass through}
 }
 \value{
-A \code{data.frame} with five columns:
+A \code{data.frame} with seven columns:
 \enumerate{
-  \item phoenix_respiratory_score
-  \item phoenix_cardiovascular_score
-  \item phoenix_coagulation_score
-  \item phoenix_neurologic_score
-  \item phoenix_sepsis_score
+  \item \code{phoenix_respiratory_score}
+  \item \code{phoenix_cardiovascular_score}
+  \item \code{phoenix_coagulation_score}
+  \item \code{phoenix_neurologic_score}
+  \item \code{phoenix_sepsis_score}
+  \item \code{phoenix_sepsis}  An integer vector, 0 = not septic, 1 = spetic (score greater or equal to 2)
+  \item \code{phoenix_septic_shock} An integer vector, 0 = not spetic shock, 1 = spetic shock (score greater or equal 2 and cardiovascular dysfunction)
 }
 
 As with all other Phoenix oragan system scores, missing values in the data
