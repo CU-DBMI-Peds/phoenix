@@ -108,6 +108,24 @@
 #' DF$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF)
 #' head(DF)
 #'
+#' # what if lactate is unknown for all records? - set the value either in the
+#' # data object or the arguement value to NA
+#' DF2 <-
+#'   expand.grid(vasos = c(NA, 0:6),
+#'               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
+#'               map = c(NA, 16:52))
+#' DF2$card <- phoenix_cardiovascular(vasos, lactate = NA, age, map, DF2)
+#'
+#' DF3 <-
+#'   expand.grid(vasos = c(NA, 0:6),
+#'               lactate = NA,
+#'               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
+#'               map = c(NA, 16:52))
+#' DF3$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF3)
+#'
+#' identical(DF2$card, DF3$card)
+#'
+#'
 #' @export
 phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data = parent.frame(), ...) {
   vas <- eval(expr = substitute(vasoactives), envir = data)
@@ -115,8 +133,33 @@ phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data = parent
   age <- eval(expr = substitute(age), envir = data)
   map <- eval(expr = substitute(map), envir = data)
 
-  if ( (length(vas) != length(lct)) | (length(vas) != length(age)) | (length(vas) != length(map)) ) {
-    stop("length of all input variables are not equal")
+  n <- max(c(length(vas), length(lct), length(age), length(map)))
+
+  if (n > 1) {
+    if (length(vas) == 1) {
+      vas <- rep(vas, n)
+    } else if (length(vas) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of vasoactives is %s, needs to be either 1 or %s."
+                   , length(vas), n))
+    }
+    if (length(lct) == 1) {
+      lct <- rep(lct, n)
+    } else if (length(lct) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of lactate is %s, needs to be either 1 or %s."
+                   , length(lct), n))
+    }
+    if (length(age) == 1) {
+      age <- rep(age, n)
+    } else if (length(age) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of age is %s, needs to be either 1 or %s."
+                   , length(age), n))
+    }
+    if (length(map) == 1) {
+      map <- rep(map, n)
+    } else if (length(map) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of map is %s, needs to be either 1 or %s."
+                   , length(map), n))
+    }
   }
 
   # set "healthy" value for missing data

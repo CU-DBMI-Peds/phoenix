@@ -49,8 +49,21 @@ phoenix_immunologic <- function(anc, alc, data = parent.frame(), ...) {
   anc <- eval(expr = substitute(anc), envir = data)
   alc <- eval(expr = substitute(alc), envir = data)
 
-  if ( (length(alc) != length(anc)) ) {
-    stop("length of all input variables are not equal")
+  n <- max(c(length(anc), length(alc)))
+
+  if (n > 1) {
+    if (length(anc) == 1) {
+      anc <- rep(anc, n)
+    } else if (length(anc) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of anc is %s, needs to be either 1 or %s."
+                   , length(anc), n))
+    }
+    if (length(alc) == 1) {
+      alc <- rep(alc, n)
+    } else if (length(alc) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of alc is %s, needs to be either 1 or %s."
+                   , length(alc), n))
+    }
   }
 
   # set "healthy" value for missing data

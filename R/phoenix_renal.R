@@ -53,8 +53,21 @@ phoenix_renal <- function(creatinine, age, data = parent.frame(), ...) {
   crt <- eval(expr = substitute(creatinine), envir = data)
   age <- eval(expr = substitute(age), envir = data)
 
-  if ( (length(crt) != length(age)) ) {
-    stop("length of all input variables are not equal")
+  n <- max(c(length(crt), length(age)))
+
+  if (n > 1) {
+    if (length(crt) == 1) {
+      crt <- rep(crt, n)
+    } else if (length(crt) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of crt is %s, needs to be either 1 or %s."
+                   , length(crt), n))
+    }
+    if (length(age) == 1) {
+      age <- rep(age, n)
+    } else if (length(age) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of age is %s, needs to be either 1 or %s."
+                   , length(age), n))
+    }
   }
 
   # set "healthy" value for missing data

@@ -48,8 +48,21 @@ phoenix_hepatic <- function(bilirubin, alt, data = parent.frame(), ...) {
   bil <- eval(expr = substitute(bilirubin), envir = data)
   alt <- eval(expr = substitute(alt), envir = data)
 
-  if ( (length(bil) != length(alt)) ) {
-    stop("length of all input variables are not equal")
+  n <- max(c(length(bil), length(alt)))
+
+  if (n > 1) {
+    if (length(bil) == 1) {
+      bil <- rep(bil, n)
+    } else if (length(bil) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of bilirubin is %s, needs to be either 1 or %s."
+                   , length(bil), n))
+    }
+    if (length(alt) == 1) {
+      alt <- rep(alt, n)
+    } else if (length(alt) != n) {
+      stop(sprintf("All inputs need to have same length or length 1.\nLength of alt is %s, needs to be either 1 or %s."
+                   , length(alt), n))
+    }
   }
 
   # set "healthy" value for missing data

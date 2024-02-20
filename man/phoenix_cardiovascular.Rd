@@ -105,6 +105,24 @@ DF <-
 DF$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF)
 head(DF)
 
+# what if lactate is unknown for all records? - set the value either in the
+# data object or the arguement value to NA
+DF2 <-
+  expand.grid(vasos = c(NA, 0:6),
+              age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
+              map = c(NA, 16:52))
+DF2$card <- phoenix_cardiovascular(vasos, lactate = NA, age, map, DF2)
+
+DF3 <-
+  expand.grid(vasos = c(NA, 0:6),
+              lactate = NA,
+              age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
+              map = c(NA, 16:52))
+DF3$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF3)
+
+identical(DF2$card, DF3$card)
+
+
 }
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
