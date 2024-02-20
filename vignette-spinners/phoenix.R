@@ -1,5 +1,5 @@
 #'---
-#'title: "Phoenix Sepsis Score"
+#'title: "The Phoenix Sepsis Criteria"
 #'output:
 #'  rmarkdown::html_vignette:
 #'    toc: true
@@ -7,7 +7,7 @@
 #'    number_sections: false
 #'bibliography: references.bib
 #'vignette: >
-#'  %\VignetteIndexEntry{Phoenix Sepsis Score}
+#'  %\VignetteIndexEntry{The Phoenix Sepsis Criteria}
 #'  %\VignetteEngine{knitr::rmarkdown}
 #'  %\VignetteEncoding{UTF-8}
 #'---
@@ -24,15 +24,40 @@ library(phoenix)
 packageVersion("phoenix")
 
 #'
-#' The of the diagnostic Phoenix Sepsis Criteria developed in
-#' [@sanchez_2024_development](https://doi.org/10.1001/jama.2024.0196) and
-#' [@schlapback_2024_international](https://doi.org/10.1001/jama.2024.0179) is
-#' implimented in this package.
+#' # Development and International Consensus
 #'
-#' # The Phoenix Sepsis Criteria
+#' Deails on the development of the diagnostic Phoenix Sepsis Criteria are in
+#' [@sanchez_2024_development](https://doi.org/10.1001/jama.2024.0196).  This
+#' manuscript covers the data-driven and modified Delphi process leading to an
+#' international consensus for the criteria
+#' ([@schlapback_2024_international](https://doi.org/10.1001/jama.2024.0179)).
 #'
-#' The diagnostic Phoenix Sepsis Criteria is defined by dysfuntion in four organ
-#' systems:
+#' This R package provides utilities to quickly and easily apply the Phoenix
+#' Sepsis scoring rubric to your data sets.
+#'
+#' # Phoenix Sepsis and Septic Shock
+#'
+#' There are two sets of criteria, the Phoenix and Phoenix 8 criteria.  It was
+#' determined during the development of the criteria that a score based on four
+#' organ systems was sufficient for diagnosis of sepsis and septic shock.  An
+#' extended score based on eight organ systems was reported as well.
+#'
+#' **Sepsis Definition:**
+#'
+#' A pediatric patient is to be diagnosed as having sepsis if:
+#'
+#' 1. Suspected/Confirmed infection (recept of systemic antimicrobials and
+#' microbiological tesing with in first 24 hours of hospital presentation), and
+#'
+#' 2. A total Phoenix Spesis Score &geq; 2.
+#'
+#' **Septic Shock Definition:**
+#'
+#' A patient is to be diagnosed as having septic shock if the patient meets the
+#' criteria for sepsis and has any cardiovascular dysfunction (cardiovascular
+#' score &geq; 1).
+#'
+#' ## Phoenix Scoring
 #'
 #' |        | 0 Points | 1 Point | 2 Points | 3 Points |
 #' |:-------|:-------- |:------- |:-------- |:-------- |
@@ -59,9 +84,8 @@ packageVersion("phoenix")
 #' * MAP: mean arterial pressure</br>
 #' </small>
 #'
-#' A total score of 2 or more points is needed to diagnosis pediatric sepsis.
 #'
-#' # The Phoenix 8 Criteria
+#' ## Phoenix 8 Scoring
 #'
 #' This extended criteria uses the four organ systems above along with four additional organ dysfunction scores.
 #'
@@ -90,7 +114,7 @@ packageVersion("phoenix")
 #' and use in general.  Some specific deatils will be provided in each of the
 #' sections for each organ system.
 #'
-#' *Missing data = 0 points*: During the development of the Phoenix criteria
+#' **Missing data = 0 points:** During the development of the Phoenix criteria
 #' missing data was mapped to zero points. This was done as it was reasonable to
 #' assume that for some labs and metrics, missing data could indicate that there
 #' was no concern and the testing was not order.  Further, the Phoenix criteria
@@ -99,17 +123,27 @@ packageVersion("phoenix")
 #' we encourage end users of this package to do the same - missing values are
 #' missing and should not be imputed.
 #'
-#' *Worst in first 24 hours*: The score was developed on the worse measured
-#' value during the first 24 hours of an hospital encounter.  But this was also
-#' done on a variable by variable basis.  For example, say one 54 month old
-#' patient had the following cardiovascular scores:
+#' <center>**__The Phoenix Criteria is valid on "known data"__**</center>
 #'
-#' | time from admission | vasoactive medications | lacate  | MAP     |
-#' | :--------:          | :-----:                | :-----: | :-----: |
-#' | 0                   |                        |         | 55      |
-#' | 20                  |                        |         | 55      |
-#' | 120                 |                        |         | 55      |
-#' | 382                 |                        |         | 55      |
+#' **Worst in first 24 hours:** The score was developed on the worse measured
+#' value during the first 24 hours of an hospital encounter.
+#' For example, consider the following
+#' patient encounter and organ dysfunction scores:
+#'
+#' | encounter time | resp | card | coag | neuro | total |
+#' | :------------: | :--: | :--: | :--: | :---: | :---: |
+#' | 0              |  1   |  0   |  0   |   1   |  2    |
+#' | 120            |  0   |  1   |  0   |   1   |  2    |
+#' | 720            |  0   |  0   |  0   |   1   |  1    |
+#'
+#' This patient never had a total score exceeding 2 during the first 720 minutes
+#' of the encounter.  However, if we took the max score for the four components
+#' and summed them for the total then the resulting score would be 3.
+#'
+#' The development of the Phoenix Criteria was based on the worse total score
+#' observed during the first 24 hours of an encounter.  The correct signal score
+#' for the patient in the above example is 2, not 3.  Please keep this in mind
+#' when you are preparing your data sets.
 #'
 #' # Package Use
 #'
@@ -189,10 +223,16 @@ ggplot2::ggplot(data = resp_data) +
 #' A patient with a nasal cannula at 5 L/min (approximate FiO<sub>2</sub> of
 #' 0.4) and SpO<sub>2</sub> of 87:
 phoenix_respiratory(
-  pf_ratio = NA,
   sf_ratio = 87 / 0.40,
-  imv = 0,
   other_respiratory_support = 1)
+
+#'
+#' Notice that the
+{{ backtick(pf_ratio) }}
+#' and
+{{ backtick(imv) }}
+#' arguemnts have been omitted.  When an input is missing it is assumed to be
+{{paste0(backtick(NA), ".")}}
 
 #'
 #' When your data is in a
@@ -217,46 +257,237 @@ DF
 #'
 #' ## Cardiovascular
 #'
+#' ### Inputs
+#' *
+{{ backtick(vasoactives) }}
+#' is an integer count of the numer of systemic vasoactives medications the
+#' patient is currently recieving.  During development of the Phoenix criteria
+#' it was found that just the count of the medications was sufficient to be
+#' useful, the dosage was not needed.  There were six medications considered,
+#' dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and
+#' vasopressin.  Again, it is systemic use of the medication that is important.
+#' For example, an injection of epinephrine to hault an allergic reaction would
+#' not count, whereas having an epinephrine drip to treat hypotension or
+#' bradycardia would count.
+#'
+#' *
+{{ backtick(lacate) }}
+#' level of lacate in the blood, measured in mmol/L
+#'
+#' *
+{{ backtick(age) }}
+#' in months
+#'
+#' *
+{{ backtick(map) }}
+#' mean arterial pressure (mmHg).  During development of the Phoenix criteria,
+#' map, and blood pressure values in general, obtained from arterial measures
+#' were used preferentially over values obtained from cuffs.  Reported values
+#' were used preferentially over calculated values.  If you need to calculate
+#' the map use DBP + (1/3) * (SBP - DBP) where DBP is diastolic blood pressure
+#' (mmHg) and SBP is systemic blood pressure (mmHg).
+#'
+#' ### Scores
+#'
+#+ echo = FALSE, results = "hide", fig.width = 7, fig.height = 7
+DF <- expand.grid(vasoactives = 0:2,
+                  lactate = seq(0, 15, by = 1),
+                  age = seq(0, 18 * 12, by = 1),
+                  MAP = seq(00, 60, by = ))
+DF$phoenix_cardiovascular_score <-
+  factor(
+    phoenix_cardiovascular(vasoactives, lactate, age, MAP, data = DF)
+  )
+DF$lactate_bin <- cut(DF$lactate, breaks = c(0, 5, 11, Inf), right = F)
+levels(DF$lactate_bin) <- paste("Lactate", levels(DF$lactate_bin))
+
+ggplot2::ggplot(DF) +
+  ggplot2::theme_classic() +
+  ggplot2::aes(x = age, y = MAP, fill = phoenix_cardiovascular_score) +
+  ggplot2::geom_tile() +
+  ggplot2::facet_grid(lactate_bin ~ paste("Vasoactive Medications:", vasoactives)) +
+  ggplot2::scale_fill_brewer(name = "Phoenix Cardiovascular Score", palette = "Spectral", direction = -1) +
+  ggplot2::ylab("Mean Arterial Pressue (mmHg)") +
+  ggplot2::xlab("Age (months)") +
+  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 1)) +
+  ggplot2::theme(legend.position = "bottom")
+
+
+#'
+#' ### Use
 #' _this section is to be written_
 #'
 #' ## Coagulation
 #'
+#' ### Inputs
+#'
+#' *
+{{ backtick(platelets) }}
+#' in units of 1,000/&mu;L
+#'
+#' *
+{{ backtick(inr) }}
+#' international normalized ratio; a metric for time require for blood to clot.
+#'
+#' *
+{{ backtick(d_dimer) }}
+#' in units of mg/L FEU
+#'
+#' *
+{{ backtick(fibrinogen) }}
+#' in units of mg/dL
+#'
+#' ### Scores
+#'
+#' While there are four components to this score, the maximum number of points
+#' assigned is 2.
+#'
+#+ echo = FALSE, results = "hide", fig.height = 7, fig.width = 7
+DF <- expand.grid(platelets = c(10, 150),
+                  inr = c(1.0, 1.5),
+                  d_dimer = c(1.2, 4.0),
+                  fib = c(10, 150))
+DF$plt_bin <-
+  factor(DF$platelets, levels = c(150, 10), labels = c("Platelets >= 100", "Platelets < 100"))
+
+DF$inr_bin <-
+  factor(DF$inr, levels = c(1.0, 1.5), labels = c("INR <= 1.3", "INR > 1.3"))
+
+DF$ddm_bin <-
+  factor(DF$d_dimer, levels = c(1.2, 4.0), labels = c("D-dimer <= 2", "D-dimer > 2"))
+
+DF$fib_bin <- factor(DF$fib, levels = c(150, 10),
+                     labels = c("Fibrinogen >= 100", "Fibrinogen < 100"))
+
+DF$phoenix_coagulation_score <-
+  factor(
+    phoenix_coagulation(platelets, inr, d_dimer, fib, data = DF)
+  )
+
+ggplot2::ggplot(DF) +
+  ggplot2::theme_classic() +
+  ggplot2::aes(x = plt_bin, y = fib_bin, fill = phoenix_coagulation_score) +
+  ggplot2::geom_tile() +
+  ggplot2::facet_grid(inr_bin ~ ddm_bin) +
+  ggplot2::scale_fill_brewer(name = "Phoenix Coagulation Score", palette = "Spectral", direction = -1) +
+  ggplot2::ylab("")+
+  ggplot2::xlab("")+
+  ggplot2::theme(legend.position = "bottom")
+
+#'
+#' ### Use
 #' _this section is to be written_
 #'
 #' ## Neurologic
 #'
+#' ### Inputs
+#'
+#' *
+{{ backtick(gcs) }}
+#' an integer vector for the (total) Glasgow Comma Score.  The total score is
+#' the sum of the eye, verbal, and motor scores.
+#'
+#' *
+{{ backtick(fixed_pupils) }}
+#' an integer vector of zeros and ones.  1 = bilaterally fixed pupils, 0
+#' otherwise.
+#'
+# /* No need for this subsubsection
+#' ### Scores
 #' _this section is to be written_
+# */
+#'
+#' ### Use
+#' _this section is to be written_
+#'
 #'
 #' ## Endocrine
 #'
+#' The endocrine critia is only applicable to the extended Phoenix-8 scoring.
+#'
+#' ### Inputs
 #' _this section is to be written_
+#'
+#' ### Use
+#' _this section is to be written_
+#'
 #'
 #' ## Immunologic
 #'
+#' The immunologic score is only applicable to the extended Phoenix-8 scoring.
+#'
+#' ### Inputs
 #' _this section is to be written_
+#'
+#' ### Use
+#' _this section is to be written_
+#'
 #'
 #' ## Renal
 #'
+#' The renal score is only applicable to the extended Phoenix-8 scoring.
+#'
+#' ### Inputs
 #' _this section is to be written_
+#'
+#' ### Use
+#' _this section is to be written_
+#'
 #'
 #' ## Hepatic
 #'
+#' The hepatic score is only applicable to the extended Phoenix-8 scoring.
+#'
+#' ### Inputs
 #' _this section is to be written_
+#'
+#' ### Use
+#' _this section is to be written_
+#'
 #'
 #' ## Phoenix
 #'
+#' The
+{{ backtick(phoenix) }}
+#' fucntion is a wraper around
+{{ paste0(backtick(phoenix_respiratory), ", ", backtick(phoenix_cardiovascular), ", ", backtick(phoenix_coagulation), ", and ", backtick(phoenix_neurologic), ".") }}
+#' Where the individual component scoring fucntions return integer vectors,
+{{ backtick(phoenix) }}
+#' returns a
+{{ backtick(data.frame) }}
+#' with a column for each of the component organ dysfunction scores, a total
+#' score, and two indicator columns, one for sepsis (total score &geq; 2) and
+#' another for septic shock (total score &geq; 2 and cardiovascular dysfunction
+#' &geq; 1).
+#'
+#' The range of Phoenix Spesis scores is from 0 to 13.
+#'
+#' ### Inputs
+#' All of the inputs are the same as for the component organ dysfunction scores.
+#'
+#' ### Use
 #' _this section is to be written_
 #'
 #' ## Phonix 8
 #'
 #' _this section is to be written_
 #'
+#' ### Inputs
+#' _this section is to be written_
+#'
+#' ### Scores
+#' _this section is to be written_
+#'
+#' ### Use
+#' _this section is to be written_
+#'
+#'
 #' # Clinical Vignettes
 #'
 #' These are taken from the supplemental material of
 #' [@sanchez_2024_development](https://doi.org/10.1001/jama.2024.0196)
 #'
-#' ## Clinical Vignettes 1
+#' ## Clinical Vignette 1
 #'
 #' A previously healthy 3-year-old girl presents to an emergency department in
 #' Lima, Peru, with a temperature of 39&deg;C, tachycardia, and irritability. Blood
@@ -342,8 +573,12 @@ phoenix(
 #' # References
 #'<div id="refs"></div>
 #'
+# /*
+#'
 #' # Session Info
 #+ label = "sessioninfo"
 sessionInfo()
-
+# */
+#'
+#'
 # /* ---------------------------- END OF FILE ------------------------------- */

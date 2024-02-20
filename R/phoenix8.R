@@ -18,8 +18,8 @@
 #' @param lactate numeric vector with the lactate value in mmol/L
 #' @param age numeric vector age in months
 #' @param map numeric vector, mean arterial pressure in mmHg
-#' @param platelets numeric vector for platelets counts in units of 1,000/uL
-#' @param inr numeric vector for the internation normlised ratio blood test
+#' @param platelets numeric vector for platelets counts in units of 1,000/uL (thousand per microliter)
+#' @param inr numeric vector for the international normalised ratio blood test
 #' @param d_dimer numeric vector for D-Dimer, units of mg/L FEU
 #' @param fibrinogen numeric vector units of mg/dL
 #' @param gcs integer vector; total Glasgow Comma Score

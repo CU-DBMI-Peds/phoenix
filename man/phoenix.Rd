@@ -38,9 +38,9 @@ phoenix(
 
 \item{map}{numeric vector, mean arterial pressure in mmHg}
 
-\item{platelets}{numeric vector for platelets counts in units of 1,000/uL}
+\item{platelets}{numeric vector for platelets counts in units of 1,000/uL (thousand per microliter)}
 
-\item{inr}{numeric vector for the internation normlised ratio blood test}
+\item{inr}{numeric vector for the international normalised ratio blood test}
 
 \item{d_dimer}{numeric vector for D-Dimer, units of mg/L FEU}
 
