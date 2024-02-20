@@ -44,7 +44,7 @@
 #' DF <- expand.grid(bil = c(NA, 3.2, 4.0, 4.3), alt = c(NA, 99, 102, 106))
 #' phoenix_hepatic(bilirubin = bil, alt = alt, data = DF)
 #' @export
-phoenix_hepatic <- function(bilirubin, alt, data, ...) {
+phoenix_hepatic <- function(bilirubin, alt, data = parent.frame(), ...) {
   bil <- eval(expr = substitute(bilirubin), envir = data)
   alt <- eval(expr = substitute(alt), envir = data)
 

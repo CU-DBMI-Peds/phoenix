@@ -45,7 +45,7 @@
 #' phoenix_immunologic(anc = anc, alc = alc, data = DF)
 #'
 #' @export
-phoenix_immunologic <- function(anc, alc, data, ...) {
+phoenix_immunologic <- function(anc, alc, data = parent.frame(), ...) {
   anc <- eval(expr = substitute(anc), envir = data)
   alc <- eval(expr = substitute(alc), envir = data)
 

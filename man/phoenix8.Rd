@@ -25,7 +25,7 @@ phoenix8(
   bilirubin,
   alt,
   age,
-  data,
+  data = parent.frame(),
   ...
 )
 }

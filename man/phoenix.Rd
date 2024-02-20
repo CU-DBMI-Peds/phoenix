@@ -19,7 +19,7 @@ phoenix(
   fibrinogen,
   gcs,
   fixed_pupils,
-  data,
+  data = parent.frame(),
   ...
 )
 }

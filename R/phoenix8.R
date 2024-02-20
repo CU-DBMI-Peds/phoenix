@@ -142,7 +142,7 @@ phoenix8 <- function(
                     creatinine,  #age
                     bilirubin, alt,
                     age,
-                    data, ...) {
+                    data = parent.frame(), ...) {
 
   cl <- as.list(match.call())
 

@@ -107,7 +107,7 @@ phoenix <- function(vasoactives, lactate, age, map,
                     pf_ratio, sf_ratio, imv, other_respiratory_support,
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
-                    data, ...) {
+                    data = parent.frame(), ...) {
 
   cl <- as.list(match.call())
 

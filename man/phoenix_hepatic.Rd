@@ -4,7 +4,7 @@
 \alias{phoenix_hepatic}
 \title{Phoenix Hepatic Score}
 \usage{
-phoenix_hepatic(bilirubin, alt, data, ...)
+phoenix_hepatic(bilirubin, alt, data = parent.frame(), ...)
 }
 \arguments{
 \item{bilirubin}{numeric vector; units of mg/dL}

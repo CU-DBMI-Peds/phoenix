@@ -52,7 +52,7 @@
 #' DF
 #'
 #' @export
-phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data, ...) {
+phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data = parent.frame(), ...) {
   plt <- eval(expr = substitute(platelets), envir = data)
   inr <- eval(expr = substitute(inr), envir = data)
   ddm <- eval(expr = substitute(d_dimer), envir = data)

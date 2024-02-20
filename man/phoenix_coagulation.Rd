@@ -4,7 +4,14 @@
 \alias{phoenix_coagulation}
 \title{Phoenix Coagulation Score}
 \usage{
-phoenix_coagulation(platelets, inr, d_dimer, fibrinogen, data, ...)
+phoenix_coagulation(
+  platelets,
+  inr,
+  d_dimer,
+  fibrinogen,
+  data = parent.frame(),
+  ...
+)
 }
 \arguments{
 \item{platelets}{numeric vector for platelets counts in units of 1,000/uL}

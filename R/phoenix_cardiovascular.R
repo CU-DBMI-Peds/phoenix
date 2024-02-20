@@ -109,7 +109,7 @@
 #' head(DF)
 #'
 #' @export
-phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data, ...) {
+phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data = parent.frame(), ...) {
   vas <- eval(expr = substitute(vasoactives), envir = data)
   lct <- eval(expr = substitute(lactate), envir = data)
   age <- eval(expr = substitute(age), envir = data)

@@ -4,7 +4,14 @@
 \alias{phoenix_cardiovascular}
 \title{Phoenix Cardiovascular Score}
 \usage{
-phoenix_cardiovascular(vasoactives, lactate, age, map, data, ...)
+phoenix_cardiovascular(
+  vasoactives,
+  lactate,
+  age,
+  map,
+  data = parent.frame(),
+  ...
+)
 }
 \arguments{
 \item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient}
