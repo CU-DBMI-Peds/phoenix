@@ -3,6 +3,7 @@
 #'output:
 #'  rmarkdown::html_vignette:
 #'    toc: true
+#'    toc_depth: 2
 #'    number_sections: false
 #'bibliography: references.bib
 #'vignette: >
@@ -112,11 +113,143 @@ packageVersion("phoenix")
 #'
 #' # Package Use
 #'
-#' There are functions to apply the Phoenix criteria to a data set for each of the organ systems and wrapers for full Phoenix and Phoenix-8 scores.
+#' There are functions to apply the Phoenix criteria to a data set for each of
+#' the organ systems and wrapers for full Phoenix and Phoenix-8 scores.
+#'
+#' Inputs for the organ dysfunction scoring functions are exptected to be
+#' numeric vectors and to have a common length _or_ a length of 1.  For example,
+#' the respiratory score requires four inputs.  The lengths of the inputs could
+#' be
+{{ backtick(c(1, 10, 10, 10)) }}
+#' indicating that the first input is constant for all other values.  An input
+#' of
+{{ backtick(c(2, 10, 10, 10)) }}
+#' will result in an error. If you wish to 'recycle' an input of lenght greate
+#' than 1 and less than the max length of another, then wrap the shorter inputs
+#' in
+{{ backtick(rep()) }}
+#' for clarity.
 #'
 #' ## Respiratory
 #'
+#' ### Inputs:
+#' *
+{{ backtick(pf_ratio) }}
+#' is the ratio of PaO<sub>2</sub> (partial pressure or oxygen in arterial
+#' blood, units of mmHg) to FiO<sub>2</sub> (fraction of inspiratory oxygen,
+#' values expected to be between 0.21 for room air, to 1.00).  Gathering the
+#' PaO<sub>2</sub> is an invasive procedure.
 #'
+#' *
+{{ backtick(sf_ratio) }}
+#' The SpO<sub>2</sub> (pulse
+#' oximetry) to FiO<sub>2</sub> ratio is a non-invasive surrogate for the PF
+#' ratio.  Important note: during the development of the Phoenix criteria SF
+#' ratios were only valid to consider if the SpO<sub>2</sub> is &leq; 97.
+#'
+#' *
+{{ backtick(imv) }}
+#' Invasive mechanical ventalation.  This is an integer valued indicator
+#' variable: 0 = not intubated; 1 = intubated.
+#'
+#' *
+{{ backtick(other_respiratory_support) }}
+#' Any oxygen support, e.g., high-flow, non-invasive positive pressure, or IMV.
+#'
+#' ### Scores
+#'
+#+ echo = FALSE, results = "hide", fig.width = 7, fig.height = 4
+resp_data <-
+  expand.grid(pfr = seq(0, 450, by = 10), sfr = seq(0, 450, by = 10), imv = c(0, 1), o2 = c(0, 1))
+resp_data$o2 <- pmax(resp_data$imv, resp_data$o2)
+resp_data <- unique(resp_data)
+resp_data$phoenix_respiratory_score <- factor(phoenix_respiratory(pfr, sfr, imv, o2, data = resp_data))
+
+resp_data$oxygen_support <-
+  interaction(resp_data$imv, resp_data$o2) |>
+  factor(levels = c("0.0", "0.1", "1.1"), c("No Oxygen Support", "Non-invasive Oxygen Support", "Invasive Oxygen Support"))
+
+ggplot2::ggplot(data = resp_data) +
+  ggplot2::theme_classic() +
+  ggplot2::aes(x = sfr, y = pfr, fill = phoenix_respiratory_score) +
+  ggplot2::geom_tile() +
+  ggplot2::facet_wrap( ~ oxygen_support, nrow = 1) +
+  ggplot2::scale_fill_brewer(name = "Phoenix Respiratory Score", palette = "Spectral", direction = -1) +
+  ggplot2::ylab(expression(PaO[2] : FiO[2])) +
+  ggplot2::xlab(expression(SpO[2] : FiO[2])) +
+  ggplot2::theme(legend.position = "bottom")
+
+#'
+#' ### Use
+#'
+#' The function
+{{ backtick(phoenix_respiratory) }}
+#' will retur
+#'
+#' A patient with a nasal cannula at 5 L/min (approximate FiO<sub>2</sub> of
+#' 0.4) and SpO<sub>2</sub> of 87:
+phoenix_respiratory(
+  pf_ratio = NA,
+  sf_ratio = 87 / 0.40,
+  imv = 0,
+  other_respiratory_support = 1)
+
+#'
+#' When your data is in a
+{{ backtick(data.frame) }}
+#' then:
+#+
+DF <- read.table(sep = "|", header = TRUE, text =
+"
+pfr | sfr | imv | o2
+    | 438 |     |
+    | 175 |     | 1
+    | 175 |     | 1
+186 |     |  1  | 0
+300 | 277 |  0  | 1
+    |     |     |
+")
+
+DF$resp_score <- phoenix_respiratory(pfr, sfr, imv, o2, DF)
+
+DF
+
+#'
+#' ## Cardiovascular
+#'
+#' _this section is to be written_
+#'
+#' ## Coagulation
+#'
+#' _this section is to be written_
+#'
+#' ## Neurologic
+#'
+#' _this section is to be written_
+#'
+#' ## Endocrine
+#'
+#' _this section is to be written_
+#'
+#' ## Immunologic
+#'
+#' _this section is to be written_
+#'
+#' ## Renal
+#'
+#' _this section is to be written_
+#'
+#' ## Hepatic
+#'
+#' _this section is to be written_
+#'
+#' ## Phoenix
+#'
+#' _this section is to be written_
+#'
+#' ## Phonix 8
+#'
+#' _this section is to be written_
 #'
 #' # References
 #'<div id="refs"></div>
