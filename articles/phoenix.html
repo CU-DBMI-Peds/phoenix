@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phoenix Sepsis Score • phoenix</title>
+<title>The Phoenix Sepsis Criteria • phoenix</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Phoenix Sepsis Score">
+<script src="../pkgdown.js"></script><meta property="og:title" content="The Phoenix Sepsis Criteria">
 <meta property="og:description" content="phoenix">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -66,7 +66,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Phoenix Sepsis Score</h1>
+      <h1 data-toc-skip>The Phoenix Sepsis Criteria</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/dewittpe/phoenix/blob/HEAD/vignettes/phoenix.Rmd" class="external-link"><code>vignettes/phoenix.Rmd</code></a></small>
@@ -80,13 +80,39 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dewittpe/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"phoenix"</span><span class="op">)</span></span>
 <span><span class="co">## [1] '0.0.0.9000'</span></span></code></pre></div>
-<p>The of the diagnostic Phoenix Sepsis Criteria developed in <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link"><span class="citation">Sanchez-Pinto et al. (2024)</span></a> and <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link"><span class="citation">Schlapbach et al. (2024)</span></a> is implimented in
-this package.</p>
 <div class="section level2">
-<h2 id="the-phoenix-sepsis-criteria">The Phoenix Sepsis Criteria<a class="anchor" aria-label="anchor" href="#the-phoenix-sepsis-criteria"></a>
+<h2 id="development-and-international-consensus">Development and International Consensus<a class="anchor" aria-label="anchor" href="#development-and-international-consensus"></a>
 </h2>
-<p>The diagnostic Phoenix Sepsis Criteria is defined by dysfuntion in
-four organ systems:</p>
+<p>Details on the development of the diagnostic Phoenix Sepsis Criteria
+are in <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link"><span class="citation">Sanchez-Pinto et al. (2024)</span></a>. This manuscript
+covers the data-driven and modified Delphi process leading to an
+international consensus for the criteria (<a href="https://doi.org/10.1001/jama.2024.0179" class="external-link"><span class="citation">Schlapbach et al. (2024)</span></a>).</p>
+<p>This R package provides utilities to quickly and easily apply the
+Phoenix Sepsis scoring rubric to your data sets.</p>
+</div>
+<div class="section level2">
+<h2 id="phoenix-sepsis-and-septic-shock">Phoenix Sepsis and Septic Shock<a class="anchor" aria-label="anchor" href="#phoenix-sepsis-and-septic-shock"></a>
+</h2>
+<p>There are two sets of criteria, the Phoenix and Phoenix 8 criteria.
+It was determined during the development of the criteria that a score
+based on four organ systems was sufficient for diagnosis of sepsis and
+septic shock. An extended score based on eight organ systems was
+reported as well.</p>
+<p><strong>Sepsis Definition:</strong></p>
+<p>A pediatric patient is to be diagnosed as having sepsis if:</p>
+<ol style="list-style-type: decimal">
+<li><p>Suspected/Confirmed infection (receipt of systemic antimicrobials
+and microbiological testing with in first 24 hours of hospital
+presentation), and</p></li>
+<li><p>A total Phoenix Sepsis Score ≥ 2.</p></li>
+</ol>
+<p><strong>Septic Shock Definition:</strong></p>
+<p>A patient is to be diagnosed as having septic shock if the patient
+meets the criteria for sepsis and has any cardiovascular dysfunction
+(cardiovascular score ≥ 1).</p>
+<div class="section level3">
+<h3 id="phoenix-scoring">Phoenix Scoring<a class="anchor" aria-label="anchor" href="#phoenix-scoring"></a>
+</h3>
 <table class="table">
 <colgroup>
 <col width="18%">
@@ -128,8 +154,8 @@ SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 148) and IMV</td>
 <td align="left">   <em>Vasoactive Medications</em>
 </td>
 <td align="left">No medications</td>
-<td align="left">1 medictation</td>
-<td align="left">2 or more medictations</td>
+<td align="left">1 medication</td>
+<td align="left">2 or more medications</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
@@ -231,19 +257,17 @@ SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 148) and IMV</td>
 <strong>Neurologic</strong> (0-2 points)</td>
 <td align="left">GCS ∈ {11, 12, 13, 14, 15}</td>
 <td align="left">GCS ∈ {3, 4, …, 10}</td>
-<td align="left">Bilarterally fixed pupils</td>
+<td align="left">Bilaterally fixed pupils</td>
 <td align="left"></td>
 </tr>
 </tbody>
 </table>
 <p><small> * IMV: invasive mechanical ventalation * Age: measured
 in months * MAP: mean arterial pressure </small></p>
-<p>A total score of 2 or more points is needed to diagnosis pediatric
-sepsis.</p>
 </div>
-<div class="section level2">
-<h2 id="the-phoenix-8-criteria">The Phoenix 8 Criteria<a class="anchor" aria-label="anchor" href="#the-phoenix-8-criteria"></a>
-</h2>
+<div class="section level3">
+<h3 id="phoenix-8-scoring">Phoenix 8 Scoring<a class="anchor" aria-label="anchor" href="#phoenix-8-scoring"></a>
+</h3>
 <p>This extended criteria uses the four organ systems above along with
 four additional organ dysfunction scores.</p>
 <table class="table">
@@ -313,83 +337,101 @@ cells/mm<sup>3</sup>
 <td align="left">
 <strong>Hepatic</strong> (0-1 point)</td>
 <td align="left">Total bilirubin &lt; 4 mg/dL and ALT &gt; 102 IU/L</td>
-<td align="left">Total bilirubin %geq; 4 mg/dL and/or ALT &gt; 102
-IU/L</td>
+<td align="left">Total bilirubin ≥ 4 mg/dL and/or ALT &gt; 102 IU/L</td>
 </tr>
 </tbody>
 </table>
 <p><small> * Age: measured in months </small></p>
 </div>
+</div>
 <div class="section level2">
 <h2 id="development-of-the-criteria">Development of the Criteria<a class="anchor" aria-label="anchor" href="#development-of-the-criteria"></a>
 </h2>
-<p>Details on the developed of the criteria are discribed in <span class="citation">Sanchez-Pinto et al. (2024)</span> and <span class="citation">Schlapbach et al. (2024)</span> and end users are
+<p>Details on the developed of the criteria are described in <span class="citation">Sanchez-Pinto et al. (2024)</span> and <span class="citation">Schlapbach et al. (2024)</span> and end users are
 encouraged to review these papers. A couple quick notes about the data
-and use in general. Some specific deatils will be provided in each of
+and use in general. Some specific details will be provided in each of
 the sections for each organ system.</p>
-<p><em>Missing data = 0 points</em>: During the development of the
-Phoenix criteria missing data was mapped to zero points. This was done
-as it was reasonable to assume that for some labs and metrics, missing
-data could indicate that there was no concern and the testing was not
-order. Further, the Phoenix criteria was developed to be useful in both
-high, medium, and low resource settings where some labs and values migth
-be uncommon or impossible to get. As such, we encourage end users of
-this package to do the same - missing values are missing and should not
-be imputed.</p>
-<p><em>Worst in first 24 hours</em>: The score was developed on the
-worse measured value during the first 24 hours of an hospital encounter.
-But this was also done on a variable by variable basis. For example, say
-one 54 month old patient had the following cardiovascular scores:</p>
+<p><strong>Missing data = 0 points:</strong> During the development of
+the Phoenix criteria missing data was mapped to zero points. This was
+done as it was reasonable to assume that for some labs and metrics,
+missing data could indicate that there was no concern and the testing
+was not order. Further, the Phoenix criteria was developed to be useful
+in both high, medium, and low resource settings where some labs and
+values might be uncommon or impossible to get. As such, we encourage end
+users of this package to do the same - missing values are missing and
+should not be imputed.</p>
+<center>
+<strong><strong>The Phoenix Criteria is valid on “known
+data”</strong></strong>
+</center>
+<p><strong>Worst in first 24 hours:</strong> The score was developed on
+the worse measured value during the first 24 hours of an hospital
+encounter. For example, consider the following patient encounter and
+organ dysfunction scores:</p>
 <table class="table">
 <thead><tr class="header">
-<th align="center">time from admission</th>
-<th align="center">vasoactive medications</th>
-<th align="center">lacate</th>
-<th align="center">MAP</th>
+<th align="center">encounter time</th>
+<th align="center">resp</th>
+<th align="center">card</th>
+<th align="center">coag</th>
+<th align="center">neuro</th>
+<th align="center">total</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="center">0</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">55</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">2</td>
 </tr>
 <tr class="even">
-<td align="center">20</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">55</td>
+<td align="center">120</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">2</td>
 </tr>
 <tr class="odd">
-<td align="center">120</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">55</td>
-</tr>
-<tr class="even">
-<td align="center">382</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">55</td>
+<td align="center">720</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
 </tr>
 </tbody>
 </table>
+<p>This patient never had a total score exceeding 2 during the first 720
+minutes of the encounter. However, if we took the max score for the four
+components and summed them for the total then the resulting score would
+be 3.</p>
+<p>The development of the Phoenix Criteria was based on the worse total
+score observed during the first 24 hours of an encounter. The correct
+signal score for the patient in the above example is 2, not 3. Please
+keep this in mind when you are preparing your data sets.</p>
 </div>
 <div class="section level2">
 <h2 id="package-use">Package Use<a class="anchor" aria-label="anchor" href="#package-use"></a>
 </h2>
 <p>There are functions to apply the Phoenix criteria to a data set for
-each of the organ systems and wrapers for full Phoenix and Phoenix-8
+each of the organ systems and wrappers for full Phoenix and Phoenix-8
 scores.</p>
-<p>Inputs for the organ dysfunction scoring functions are exptected to
-be numeric vectors and to have a common length <em>or</em> a length of
-1. For example, the respiratory score requires four inputs. The lengths
-of the inputs could be <code>c(1, 10, 10, 10)</code> indicating that the
+<p>Inputs for the organ dysfunction scoring functions are expected to be
+numeric vectors and to have a common length <em>or</em> a length of 1.
+For example, the respiratory score requires four inputs. The lengths of
+the inputs could be <code>c(1, 10, 10, 10)</code> indicating that the
 first input is constant for all other values. An input of
 <code>c(2, 10, 10, 10)</code> will result in an error. If you wish to
-‘recycle’ an input of lenght greate than 1 and less than the max length
+‘recycle’ an input of length greater than 1 and less than the max length
 of another, then wrap the shorter inputs in <code><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep()</a></code> for
 clarity.</p>
+<p>In the following subsections example use of the functions require the
+use of the provided example synthetic dataset <code>sepsis</code>. This
+data set has 20 rows and 26 variables. See `<code>?</code>(sepsis)` for
+more details.</p>
 <div class="section level3">
 <h3 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
 </h3>
@@ -406,7 +448,7 @@ procedure.</p></li>
 FiO<sub>2</sub> ratio is a non-invasive surrogate for the PF ratio.
 Important note: during the development of the Phoenix criteria SF ratios
 were only valid to consider if the SpO<sub>2</sub> is ≤ 97.</p></li>
-<li><p><code>imv</code> Invasive mechanical ventalation. This is an
+<li><p><code>imv</code> Invasive mechanical ventilation. This is an
 integer valued indicator variable: 0 = not intubated; 1 =
 intubated.</p></li>
 <li><p><code>other_respiratory_support</code> Any oxygen support, e.g.,
@@ -419,18 +461,20 @@ high-flow, non-invasive positive pressure, or IMV.</p></li>
 <p><img src="phoenix_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
 </div>
 <div class="section level4">
-<h4 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
+<h4 id="example-use">Example Use<a class="anchor" aria-label="anchor" href="#example-use"></a>
 </h4>
-<p>The function <code>phoenix_respiratory</code> will retur</p>
+<p>The function <code>phoenix_respiratory</code> will return an integer
+vector.</p>
 <p>A patient with a nasal cannula at 5 L/min (approximate
 FiO<sub>2</sub> of 0.4) and SpO<sub>2</sub> of 87:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/phoenix_respiratory.html">phoenix_respiratory</a></span><span class="op">(</span></span>
-<span>  pf_ratio <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  sf_ratio <span class="op">=</span> <span class="fl">87</span> <span class="op">/</span> <span class="fl">0.40</span>,</span>
-<span>  imv <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  other_respiratory_support <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">## [1] 1</span></span></code></pre></div>
+<p>Notice that the <code>pf_ratio</code> and <code>imv</code> arguments
+have been omitted. When an input is missing it is assumed to be
+<code>NA</code>.</p>
 <p>When your data is in a <code>data.frame</code> then:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span>sep <span class="op">=</span> <span class="st">"|"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, text <span class="op">=</span></span>
@@ -454,52 +498,1929 @@ FiO<sub>2</sub> of 0.4) and SpO<sub>2</sub> of 87:</p>
 <span><span class="co">## 4 186  NA   1  0          2</span></span>
 <span><span class="co">## 5 300 277   0  1          1</span></span>
 <span><span class="co">## 6  NA  NA  NA NA          0</span></span></code></pre></div>
+<p>Another example using the provided example data set
+<code>sepsis</code>. Here we have to construct a few variables as we
+only have information on FiO<sub>2</sub>, PaO<sub>2</sub>,
+SpO<sub>2</sub>, and invasive mechanical ventilation.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">resp_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fio2"</span>, <span class="st">"pao2"</span>, <span class="st">"spo2"</span>, <span class="st">"vent"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<p>Implied in this data is other respiratory support when
+FiO<sub>2</sub> is greater than 0.21, the approximate fraction of oxygen
+in the atmosphere.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">resp_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix_respiratory.html">phoenix_respiratory</a></span><span class="op">(</span></span>
+<span>  pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span>
+<span>  sf_ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spo2</span> <span class="op">&lt;=</span> <span class="fl">97</span>, <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>, <span class="cn">NA_real_</span><span class="op">)</span>,</span>
+<span>  imv <span class="op">=</span> <span class="va">vent</span>,</span>
+<span>  other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">sepsis</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">resp_example</span></span>
+<span><span class="co">##    fio2 pao2 spo2 vent score</span></span>
+<span><span class="co">## 1  0.75   NA   99    1     0</span></span>
+<span><span class="co">## 2  0.75 75.3   95    1     3</span></span>
+<span><span class="co">## 3  1.00 49.5   NA    1     3</span></span>
+<span><span class="co">## 4    NA   NA   NA    0     0</span></span>
+<span><span class="co">## 5    NA 38.7   95    0     0</span></span>
+<span><span class="co">## 6  0.60 69.9   88    1     3</span></span>
+<span><span class="co">## 7  0.50   NA   31    1     3</span></span>
+<span><span class="co">## 8  0.30   NA   97    1     0</span></span>
+<span><span class="co">## 9  0.65 51.0   82    1     3</span></span>
+<span><span class="co">## 10 0.80   NA   76    1     3</span></span>
+<span><span class="co">## 11 0.65 54.0   NA    1     3</span></span>
+<span><span class="co">## 12 0.35   NA   91    0     1</span></span>
+<span><span class="co">## 13 0.30   NA   97    1     0</span></span>
+<span><span class="co">## 14 0.50   NA   89    1     2</span></span>
+<span><span class="co">## 15 1.00 42.5   45    1     3</span></span>
+<span><span class="co">## 16   NA   NA   NA    0     0</span></span>
+<span><span class="co">## 17 0.45 61.3   97    1     2</span></span>
+<span><span class="co">## 18 1.00 64.1   92    1     3</span></span>
+<span><span class="co">## 19 0.50   NA   97    1     2</span></span>
+<span><span class="co">## 20   NA   NA   NA    0     0</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="cardiovascular">Cardiovascular<a class="anchor" aria-label="anchor" href="#cardiovascular"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<div class="section level4">
+<h4 id="inputs-1">Inputs<a class="anchor" aria-label="anchor" href="#inputs-1"></a>
+</h4>
+<ul>
+<li><p><code>vasoactives</code> is an integer count of the number of
+systemic vasoactive medications the patient is currently receiving.
+During development of the Phoenix criteria it was found that just the
+count of the medications was sufficient to be useful, the dosage was not
+needed. There were six medications considered, dobutamine, dopamine,
+epinephrine, milrinone, norepinephrine, and vasopressin. Again, it is
+systemic use of the medication that is important. For example, an
+injection of epinephrine to halt an allergic reaction would not count,
+whereas having an epinephrine drip to treat hypotension or bradycardia
+would count.</p></li>
+<li><p><code>lactate</code> level of lactate in the blood, measured in
+mmol/L</p></li>
+<li><p><code>age</code> in months</p></li>
+<li><p><code>map</code> mean arterial pressure (mmHg). During
+development of the Phoenix criteria, map, and blood pressure values in
+general, obtained from arterial measures were used preferentially over
+values obtained from cuffs. Reported values were used preferentially
+over calculated values. If you need to calculate the map use DBP + (1/3)
+* (SBP - DBP) where DBP is diastolic blood pressure (mmHg) and SBP is
+systemic blood pressure (mmHg).</p></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="scores-1">Scores<a class="anchor" aria-label="anchor" href="#scores-1"></a>
+</h4>
+<p><img src="phoenix_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+</div>
+<div class="section level4">
+<h4 id="example-use-1">Example Use<a class="anchor" aria-label="anchor" href="#example-use-1"></a>
+</h4>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">card_example</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dobutamine"</span>, <span class="st">"dopamine"</span>, <span class="st">"epinephrine"</span>, <span class="st">"milrinone"</span>, <span class="st">"norepinephrine"</span>, <span class="st">"vasopressin"</span>, <span class="st">"lactate"</span>, <span class="st">"dbp"</span>, <span class="st">"sbp"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">card_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix_cardiovascular.html">phoenix_cardiovascular</a></span><span class="op">(</span></span>
+<span>    vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
+<span>    lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
+<span>    age <span class="op">=</span> <span class="va">age</span>,</span>
+<span>    map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">card_example</span></span>
+<span><span class="co">##    dobutamine dopamine epinephrine milrinone norepinephrine vasopressin lactate</span></span>
+<span><span class="co">## 1           1        1           1         1              0           0      NA</span></span>
+<span><span class="co">## 2           0        1           0         0              1           0    3.32</span></span>
+<span><span class="co">## 3           0        1           0         0              0           0    1.00</span></span>
+<span><span class="co">## 4           0        0           0         0              0           0      NA</span></span>
+<span><span class="co">## 5           0        0           0         0              0           0      NA</span></span>
+<span><span class="co">## 6           0        1           0         0              0           0    1.15</span></span>
+<span><span class="co">## 7           0        0           1         1              0           1      NA</span></span>
+<span><span class="co">## 8           0        0           0         0              0           0      NA</span></span>
+<span><span class="co">## 9           0        0           1         1              1           1    8.10</span></span>
+<span><span class="co">## 10          0        0           0         0              0           0      NA</span></span>
+<span><span class="co">## 11          0        1           1         0              0           0      NA</span></span>
+<span><span class="co">## 12          0        0           0         0              0           0      NA</span></span>
+<span><span class="co">## 13          0        0           0         0              0           0      NA</span></span>
+<span><span class="co">## 14          0        0           1         1              0           0      NA</span></span>
+<span><span class="co">## 15          0        1           1         1              0           1      NA</span></span>
+<span><span class="co">## 16          1        1           1         1              1           0    0.90</span></span>
+<span><span class="co">## 17          0        1           1         1              0           1    0.60</span></span>
+<span><span class="co">## 18          0        1           1         1              0           1      NA</span></span>
+<span><span class="co">## 19          0        0           1         1              0           0      NA</span></span>
+<span><span class="co">## 20          0        0           1         0              0           0    2.20</span></span>
+<span><span class="co">##    dbp sbp    age score</span></span>
+<span><span class="co">## 1   40  53   0.06     2</span></span>
+<span><span class="co">## 2   60  90 201.70     2</span></span>
+<span><span class="co">## 3   87 233  20.80     1</span></span>
+<span><span class="co">## 4   57 104 192.50     0</span></span>
+<span><span class="co">## 5   57 101 214.40     0</span></span>
+<span><span class="co">## 6   79 119 101.20     1</span></span>
+<span><span class="co">## 7   11  14 150.70     4</span></span>
+<span><span class="co">## 8   66 112 159.70     0</span></span>
+<span><span class="co">## 9   51 117 176.10     3</span></span>
+<span><span class="co">## 10  58  84   6.60     0</span></span>
+<span><span class="co">## 11  39  51  36.70     3</span></span>
+<span><span class="co">## 12  63 132  37.40     0</span></span>
+<span><span class="co">## 13  55  93   0.12     0</span></span>
+<span><span class="co">## 14  54 106  62.30     2</span></span>
+<span><span class="co">## 15  25  37  10.60     3</span></span>
+<span><span class="co">## 16  55  82   0.89     2</span></span>
+<span><span class="co">## 17  43  79  10.70     2</span></span>
+<span><span class="co">## 18  53  75  10.60     2</span></span>
+<span><span class="co">## 19  44  70   0.17     2</span></span>
+<span><span class="co">## 20  77  99  71.90     1</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="coagulation">Coagulation<a class="anchor" aria-label="anchor" href="#coagulation"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<div class="section level4">
+<h4 id="inputs-2">Inputs<a class="anchor" aria-label="anchor" href="#inputs-2"></a>
+</h4>
+<ul>
+<li><p><code>platelets</code> in units of 1,000/μL</p></li>
+<li><p><code>inr</code> international normalized ratio; a metric for
+time require for blood to clot.</p></li>
+<li><p><code>d_dimer</code> in units of mg/L FEU</p></li>
+<li><p><code>fibrinogen</code> in units of mg/dL</p></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="scores-2">Scores<a class="anchor" aria-label="anchor" href="#scores-2"></a>
+</h4>
+<p>While there are four components to this score, the maximum number of
+points assigned is 2.</p>
+<p><img src="phoenix_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+</div>
+<div class="section level4">
+<h4 id="example-use-2">Example Use<a class="anchor" aria-label="anchor" href="#example-use-2"></a>
+</h4>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">coag_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"platelets"</span>, <span class="st">"inr"</span>, <span class="st">"d_dimer"</span>, <span class="st">"fibrinogen"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">coag_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix_coagulation.html">phoenix_coagulation</a></span><span class="op">(</span><span class="va">platelets</span>, <span class="va">inr</span>, <span class="va">d_dimer</span>, <span class="va">fibrinogen</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
+<span><span class="va">coag_example</span></span>
+<span><span class="co">##    platelets   inr d_dimer fibrinogen score</span></span>
+<span><span class="co">## 1        199 1.460      NA        180     1</span></span>
+<span><span class="co">## 2        243 1.180    2.45        311     1</span></span>
+<span><span class="co">## 3         49 1.600      NA        309     2</span></span>
+<span><span class="co">## 4         NA 1.300    2.82        220     1</span></span>
+<span><span class="co">## 5        393    NA      NA         NA     0</span></span>
+<span><span class="co">## 6         86 1.230    4.72        270     2</span></span>
+<span><span class="co">## 7         65 3.100      NA         94     2</span></span>
+<span><span class="co">## 8        215 0.970    5.15        489     1</span></span>
+<span><span class="co">## 9        101 1.080    7.71        456     1</span></span>
+<span><span class="co">## 10       292    NA      NA         NA     0</span></span>
+<span><span class="co">## 11        NA 3.000      NA         NA     1</span></span>
+<span><span class="co">## 12        NA    NA      NA         NA     0</span></span>
+<span><span class="co">## 13        NA    NA      NA         NA     0</span></span>
+<span><span class="co">## 14        24 1.146      NA         NA     1</span></span>
+<span><span class="co">## 15        82 1.424      NA         76     2</span></span>
+<span><span class="co">## 16       355 1.230    4.77        174     1</span></span>
+<span><span class="co">## 17       166 1.000    4.10        236     1</span></span>
+<span><span class="co">## 18        80 1.641      NA         76     2</span></span>
+<span><span class="co">## 19       190    NA      NA         NA     0</span></span>
+<span><span class="co">## 20        78 1.160    0.75        201     1</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="neurologic">Neurologic<a class="anchor" aria-label="anchor" href="#neurologic"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<div class="section level4">
+<h4 id="inputs-3">Inputs<a class="anchor" aria-label="anchor" href="#inputs-3"></a>
+</h4>
+<ul>
+<li><p><code>gcs</code> an integer vector for the (total) Glasgow Comma
+Score. The total score is the sum of the eye, verbal, and motor
+scores.</p></li>
+<li><p><code>fixed_pupils</code> an integer vector of zeros and ones. 1
+= bilaterally fixed pupils, 0 otherwise.</p></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="example-use-3">Example Use<a class="anchor" aria-label="anchor" href="#example-use-3"></a>
+</h4>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">neuro_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gcs_total"</span>, <span class="st">"pupil"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">neuro_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix_neurologic.html">phoenix_neurologic</a></span><span class="op">(</span>gcs <span class="op">=</span> <span class="va">gcs_total</span>, fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
+<span><span class="va">neuro_example</span></span>
+<span><span class="co">##    gcs_total         pupil score</span></span>
+<span><span class="co">## 1         NA                   0</span></span>
+<span><span class="co">## 2          5 both-reactive     1</span></span>
+<span><span class="co">## 3         15 both-reactive     0</span></span>
+<span><span class="co">## 4         14                   0</span></span>
+<span><span class="co">## 5         NA                   0</span></span>
+<span><span class="co">## 6          3 both-reactive     1</span></span>
+<span><span class="co">## 7         NA                   0</span></span>
+<span><span class="co">## 8         15 both-reactive     0</span></span>
+<span><span class="co">## 9          3 both-reactive     1</span></span>
+<span><span class="co">## 10         3 both-reactive     1</span></span>
+<span><span class="co">## 11         3    both-fixed     2</span></span>
+<span><span class="co">## 12        NA                   0</span></span>
+<span><span class="co">## 13        NA                   0</span></span>
+<span><span class="co">## 14        NA                   0</span></span>
+<span><span class="co">## 15        NA                   0</span></span>
+<span><span class="co">## 16        NA                   0</span></span>
+<span><span class="co">## 17        11 both-reactive     0</span></span>
+<span><span class="co">## 18        NA                   0</span></span>
+<span><span class="co">## 19        NA                   0</span></span>
+<span><span class="co">## 20        NA                   0</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="endocrine">Endocrine<a class="anchor" aria-label="anchor" href="#endocrine"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<p>The endocrine criteria is only applicable to the extended Phoenix-8
+scoring.</p>
+<div class="section level4">
+<h4 id="inputs-4">Inputs<a class="anchor" aria-label="anchor" href="#inputs-4"></a>
+</h4>
+<ul>
+<li>
+<code>glucose</code> in mg/dL</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="example-use-4">Example Use<a class="anchor" aria-label="anchor" href="#example-use-4"></a>
+</h4>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">endo_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"glucose"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">endo_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_endocrine.html">phoenix_endocrine</a></span><span class="op">(</span><span class="va">glucose</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
+<span><span class="va">endo_example</span></span>
+<span><span class="co">##    glucose score</span></span>
+<span><span class="co">## 1       NA     0</span></span>
+<span><span class="co">## 2    110.0     0</span></span>
+<span><span class="co">## 3     93.0     0</span></span>
+<span><span class="co">## 4    110.0     0</span></span>
+<span><span class="co">## 5       NA     0</span></span>
+<span><span class="co">## 6    147.0     0</span></span>
+<span><span class="co">## 7       NA     0</span></span>
+<span><span class="co">## 8    100.0     0</span></span>
+<span><span class="co">## 9    264.0     1</span></span>
+<span><span class="co">## 10    93.0     0</span></span>
+<span><span class="co">## 11   341.0     1</span></span>
+<span><span class="co">## 12      NA     0</span></span>
+<span><span class="co">## 13      NA     0</span></span>
+<span><span class="co">## 14      NA     0</span></span>
+<span><span class="co">## 15      NA     0</span></span>
+<span><span class="co">## 16    82.4     0</span></span>
+<span><span class="co">## 17   130.0     0</span></span>
+<span><span class="co">## 18      NA     0</span></span>
+<span><span class="co">## 19   103.0     0</span></span>
+<span><span class="co">## 20   159.8     1</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="immunologic">Immunologic<a class="anchor" aria-label="anchor" href="#immunologic"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<p>The immunologic score is only applicable to the extended Phoenix-8
+scoring.</p>
+<div class="section level4">
+<h4 id="inputs-5">Inputs<a class="anchor" aria-label="anchor" href="#inputs-5"></a>
+</h4>
+<ul>
+<li>
+<code>anc</code> in units of 1,000 cells per cubic millimeter</li>
+<li>
+<code>alc</code> in units of 1,000 cells per cubic millimeter</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="example-use-5">Example Use<a class="anchor" aria-label="anchor" href="#example-use-5"></a>
+</h4>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">immu_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"anc"</span>, <span class="st">"alc"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">immu_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_immunologic.html">phoenix_immunologic</a></span><span class="op">(</span><span class="va">anc</span>, <span class="va">alc</span>, <span class="va">sepsis</span><span class="op">)</span></span>
+<span><span class="va">immu_example</span></span>
+<span><span class="co">##       anc   alc score</span></span>
+<span><span class="co">## 1      NA    NA     0</span></span>
+<span><span class="co">## 2  14.220 2.220     1</span></span>
+<span><span class="co">## 3   2.210 0.190     1</span></span>
+<span><span class="co">## 4   3.184 0.645     1</span></span>
+<span><span class="co">## 5      NA    NA     0</span></span>
+<span><span class="co">## 6  20.200 0.240     1</span></span>
+<span><span class="co">## 7      NA    NA     0</span></span>
+<span><span class="co">## 8   3.760 1.550     1</span></span>
+<span><span class="co">## 9   8.770 3.600     1</span></span>
+<span><span class="co">## 10  9.084 4.617     1</span></span>
+<span><span class="co">## 11     NA    NA     0</span></span>
+<span><span class="co">## 12     NA    NA     0</span></span>
+<span><span class="co">## 13     NA    NA     0</span></span>
+<span><span class="co">## 14     NA    NA     0</span></span>
+<span><span class="co">## 15     NA    NA     0</span></span>
+<span><span class="co">## 16  4.720 4.300     1</span></span>
+<span><span class="co">## 17  9.380 1.310     1</span></span>
+<span><span class="co">## 18     NA    NA     0</span></span>
+<span><span class="co">## 19 12.570 2.810     1</span></span>
+<span><span class="co">## 20  3.410 2.850     1</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="renal">Renal<a class="anchor" aria-label="anchor" href="#renal"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<p>The renal score is only applicable to the extended Phoenix-8
+scoring.</p>
+<div class="section level4">
+<h4 id="inputs-6">Inputs<a class="anchor" aria-label="anchor" href="#inputs-6"></a>
+</h4>
+<ul>
+<li><p><code>creatinine</code> in units of mg/dL</p></li>
+<li><p><code>age</code> in months</p></li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="example-use-6">Example Use<a class="anchor" aria-label="anchor" href="#example-use-6"></a>
+</h4>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">renal_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"creatinine"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">renal_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_renal.html">phoenix_renal</a></span><span class="op">(</span><span class="va">creatinine</span>, <span class="va">age</span>, <span class="va">sepsis</span><span class="op">)</span></span>
+<span><span class="va">renal_example</span></span>
+<span><span class="co">##    creatinine    age score</span></span>
+<span><span class="co">## 1       1.030   0.06     1</span></span>
+<span><span class="co">## 2       0.510 201.70     0</span></span>
+<span><span class="co">## 3       0.330  20.80     0</span></span>
+<span><span class="co">## 4       0.310 192.50     0</span></span>
+<span><span class="co">## 5       0.520 214.40     0</span></span>
+<span><span class="co">## 6       0.770 101.20     1</span></span>
+<span><span class="co">## 7       1.470 150.70     1</span></span>
+<span><span class="co">## 8       0.580 159.70     0</span></span>
+<span><span class="co">## 9       1.230 176.10     1</span></span>
+<span><span class="co">## 10      0.180   6.60     0</span></span>
+<span><span class="co">## 11      0.870  36.70     1</span></span>
+<span><span class="co">## 12         NA  37.40     0</span></span>
+<span><span class="co">## 13         NA   0.12     0</span></span>
+<span><span class="co">## 14      0.120  62.30     0</span></span>
+<span><span class="co">## 15      1.300  10.60     1</span></span>
+<span><span class="co">## 16      0.418   0.89     0</span></span>
+<span><span class="co">## 17      0.290  10.70     0</span></span>
+<span><span class="co">## 18      1.100  10.60     1</span></span>
+<span><span class="co">## 19      1.200   0.17     1</span></span>
+<span><span class="co">## 20      0.418  71.90     0</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="hepatic">Hepatic<a class="anchor" aria-label="anchor" href="#hepatic"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<p>The hepatic score is only applicable to the extended Phoenix-8
+scoring.</p>
+<div class="section level4">
+<h4 id="inputs-7">Inputs<a class="anchor" aria-label="anchor" href="#inputs-7"></a>
+</h4>
+<p><code>bilirubin</code> total bilirubin in units of mg/dL</p>
+<p><code>alt</code> in units of IU/L</p>
+</div>
+<div class="section level4">
+<h4 id="example-use-7">Example Use<a class="anchor" aria-label="anchor" href="#example-use-7"></a>
+</h4>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hep_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bilirubin"</span>, <span class="st">"alt"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">hep_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_hepatic.html">phoenix_hepatic</a></span><span class="op">(</span><span class="va">bilirubin</span>, <span class="va">alt</span>, <span class="va">sepsis</span><span class="op">)</span></span>
+<span><span class="va">hep_example</span></span>
+<span><span class="co">##    bilirubin  alt score</span></span>
+<span><span class="co">## 1         NA   36     0</span></span>
+<span><span class="co">## 2      0.200   32     0</span></span>
+<span><span class="co">## 3      0.800  182     1</span></span>
+<span><span class="co">## 4      8.500   21     1</span></span>
+<span><span class="co">## 5         NA   NA     0</span></span>
+<span><span class="co">## 6      1.200   15     0</span></span>
+<span><span class="co">## 7      1.700 3664     1</span></span>
+<span><span class="co">## 8      0.500   50     0</span></span>
+<span><span class="co">## 9     21.100  151     1</span></span>
+<span><span class="co">## 10        NA   NA     0</span></span>
+<span><span class="co">## 11     0.180   NA     0</span></span>
+<span><span class="co">## 12        NA   NA     0</span></span>
+<span><span class="co">## 13        NA   NA     0</span></span>
+<span><span class="co">## 14     3.300   60     0</span></span>
+<span><span class="co">## 15     1.300 1792     1</span></span>
+<span><span class="co">## 16     1.579   15     0</span></span>
+<span><span class="co">## 17     0.600   41     0</span></span>
+<span><span class="co">## 18     1.300 1790     1</span></span>
+<span><span class="co">## 19        NA   NA     0</span></span>
+<span><span class="co">## 20     0.363   22     0</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="phoenix">Phoenix<a class="anchor" aria-label="anchor" href="#phoenix"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<p>The <code>phoenix</code> function is a wrapper around
+<code>phoenix_respiratory</code>, <code>phoenix_cardiovascular</code>,
+<code>phoenix_coagulation</code>, and <code>phoenix_neurologic</code>.
+Where the individual component scoring functions return integer vectors,
+<code>phoenix</code> returns a <code>data.frame</code> with a column for
+each of the component organ dysfunction scores, a total score, and two
+indicator columns, one for sepsis (total score ≥ 2) and another for
+septic shock (total score ≥ 2 and cardiovascular dysfunction ≥ 1).</p>
+<p>The range of Phoenix Sepsis scores is from 0 to 13.</p>
+<div class="section level4">
+<h4 id="inputs-8">Inputs<a class="anchor" aria-label="anchor" href="#inputs-8"></a>
+</h4>
+<p>All of the inputs are the same as for the component organ dysfunction
+scores.</p>
+</div>
+<div class="section level4">
+<h4 id="example-use-8">Example Use<a class="anchor" aria-label="anchor" href="#example-use-8"></a>
+</h4>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phoenix_scores</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix.html">phoenix</a></span><span class="op">(</span></span>
+<span>    <span class="co"># respiratory</span></span>
+<span>      pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span>
+<span>      sf_ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spo2</span> <span class="op">&lt;=</span> <span class="fl">97</span>, <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>, <span class="cn">NA_real_</span><span class="op">)</span>,</span>
+<span>      imv <span class="op">=</span> <span class="va">vent</span>,</span>
+<span>      other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span>
+<span>    <span class="co"># cardiovascular</span></span>
+<span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
+<span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
+<span>      age <span class="op">=</span> <span class="va">age</span>,</span>
+<span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>    <span class="co"># coagulation</span></span>
+<span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span>
+<span>      inr <span class="op">=</span> <span class="va">inr</span>,</span>
+<span>      d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,</span>
+<span>      fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,</span>
+<span>    <span class="co"># neurologic</span></span>
+<span>      gcs <span class="op">=</span> <span class="va">gcs_total</span>,</span>
+<span>      fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">phoenix_scores</span><span class="op">)</span></span>
+<span><span class="co">## 'data.frame':    20 obs. of  7 variables:</span></span>
+<span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : num  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : num  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span></code></pre></div>
+<p>The results as a easy to read table:</p>
+<table class="table">
+<thead><tr>
+<th style="text-align:center;">
+phoenix respiratory score
+</th>
+<th style="text-align:center;">
+phoenix cardiovascular score
+</th>
+<th style="text-align:center;">
+phoenix coagulation score
+</th>
+<th style="text-align:center;">
+phoenix neurologic score
+</th>
+<th style="text-align:center;">
+phoenix sepsis score
+</th>
+<th style="text-align:center;">
+phoenix sepsis
+</th>
+<th style="text-align:center;">
+phoenix septic shock
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section level3">
-<h3 id="phonix-8">Phonix 8<a class="anchor" aria-label="anchor" href="#phonix-8"></a>
+<h3 id="phoenix-8">Phoenix 8<a class="anchor" aria-label="anchor" href="#phoenix-8"></a>
 </h3>
-<p><em>this section is to be written</em></p>
+<p><code>phoenix8</code> returns a <code>data.frame</code> with all the
+columns that <code>phoenix</code> returns, with the addition of columns
+for the endocrine, immunologic, renal, hepatic, and Phoenix-8 total
+score.</p>
+<div class="section level4">
+<h4 id="inputs-9">Inputs<a class="anchor" aria-label="anchor" href="#inputs-9"></a>
+</h4>
+<p>All the same inputs as the individual organ dysfunction scoring
+functions. The one minor caveat is that <code>age</code> is used in the
+cardiovascular and the renal scores and need only be provided once when
+calling <code>phoenix8</code>.</p>
+</div>
+<div class="section level4">
+<h4 id="example-use-9">Example Use<a class="anchor" aria-label="anchor" href="#example-use-9"></a>
+</h4>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phoenix8_scores</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix8.html">phoenix8</a></span><span class="op">(</span></span>
+<span>    <span class="co"># respiratory</span></span>
+<span>      pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span>
+<span>      sf_ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spo2</span> <span class="op">&lt;=</span> <span class="fl">97</span>, <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>, <span class="cn">NA_real_</span><span class="op">)</span>,</span>
+<span>      imv <span class="op">=</span> <span class="va">vent</span>,</span>
+<span>      other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span>
+<span>    <span class="co"># cardiovascular</span></span>
+<span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
+<span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
+<span>      age <span class="op">=</span> <span class="va">age</span>, <span class="co"># Also used in the renal assessment.</span></span>
+<span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>    <span class="co"># coagulation</span></span>
+<span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span>
+<span>      inr <span class="op">=</span> <span class="va">inr</span>,</span>
+<span>      d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,</span>
+<span>      fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,</span>
+<span>    <span class="co"># neurologic</span></span>
+<span>      gcs <span class="op">=</span> <span class="va">gcs_total</span>,</span>
+<span>      fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span>
+<span>    <span class="co"># endocrine</span></span>
+<span>      glucose <span class="op">=</span> <span class="va">glucose</span>,</span>
+<span>    <span class="co"># immunologic</span></span>
+<span>      anc <span class="op">=</span> <span class="va">anc</span>,</span>
+<span>      alc <span class="op">=</span> <span class="va">alc</span>,</span>
+<span>    <span class="co"># renal</span></span>
+<span>      creatinine <span class="op">=</span> <span class="va">creatinine</span>,</span>
+<span>      <span class="co"># no need to specify age again</span></span>
+<span>    <span class="co"># hepatic</span></span>
+<span>      bilirubin <span class="op">=</span> <span class="va">bilirubin</span>,</span>
+<span>      alt <span class="op">=</span> <span class="va">alt</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">phoenix8_scores</span><span class="op">)</span></span>
+<span><span class="co">## 'data.frame':    20 obs. of  12 variables:</span></span>
+<span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : num  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : num  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_endocrine_score     : int  0 0 0 0 0 0 0 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_immunologic_score   : int  0 1 1 1 0 1 0 1 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_renal_score         : int  1 0 0 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_hepatic_score       : int  0 0 1 1 0 0 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix8_sepsis_score       : num  4 8 8 3 0 9 11 2 12 5 ...</span></span></code></pre></div>
+<p>The results as a easy to read table:</p>
+<table class="table">
+<thead><tr>
+<th style="text-align:center;">
+phoenix respiratory score
+</th>
+<th style="text-align:center;">
+phoenix cardiovascular score
+</th>
+<th style="text-align:center;">
+phoenix coagulation score
+</th>
+<th style="text-align:center;">
+phoenix neurologic score
+</th>
+<th style="text-align:center;">
+phoenix sepsis score
+</th>
+<th style="text-align:center;">
+phoenix sepsis
+</th>
+<th style="text-align:center;">
+phoenix septic shock
+</th>
+<th style="text-align:center;">
+phoenix endocrine score
+</th>
+<th style="text-align:center;">
+phoenix immunologic score
+</th>
+<th style="text-align:center;">
+phoenix renal score
+</th>
+<th style="text-align:center;">
+phoenix hepatic score
+</th>
+<th style="text-align:center;">
+phoenix8 sepsis score
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="clinical-vignettes">Clinical Vignettes<a class="anchor" aria-label="anchor" href="#clinical-vignettes"></a>
+</h2>
+<p>These are taken from the supplemental material of <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link"><span class="citation">Sanchez-Pinto et al. (2024)</span></a></p>
+<div class="section level3">
+<h3 id="clinical-vignette-1">Clinical Vignette 1<a class="anchor" aria-label="anchor" href="#clinical-vignette-1"></a>
+</h3>
+<p>A previously healthy 3-year-old girl presents to an emergency
+department in Lima, Peru, with a temperature of 39°C, tachycardia, and
+irritability. Blood pressure with an oscillometric device is 67/32 mmHg
+(mean arterial pressure of 43 mmHg). She is given fluid resuscitation
+per local best practice guidelines, is started on broad spectrum
+antibiotics, and blood and urine cultures are sent. After an hour, she
+becomes hypotensive again and she is started on a norepinephrine drip. A
+complete blood count reveals leukocytosis, mild anemia, and a platelet
+count of 95 K/μL.</p>
+<p><em>Phoenix Sepsis Score:</em></p>
+<ul>
+<li>0 respiratory points (no hypoxemia or respiratory support)</li>
+<li>2 cardiovascular points (1 for low mean arterial pressure for age, 1
+for use of a vasoactive medication)</li>
+<li>1 coagulation points (for low platelet count)</li>
+<li>0 neurologic points (irritability would result in a Glasgow Coma
+Scale of approximately 14)</li>
+<li>total = 3 points.</li>
+</ul>
+<p><em>Phoenix Sepsis Criteria:</em> The patient has suspected
+infection, ≥ 2 points of the Phoenix Sepsis Score, and ≥1 cardiovascular
+points, so she meets criteria for septic shock.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/phoenix.html">phoenix</a></span><span class="op">(</span></span>
+<span>  vasoactives <span class="op">=</span> <span class="fl">1</span>,  <span class="co"># norepinephrine drip</span></span>
+<span>  map <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="op">(</span><span class="fl">67</span> <span class="op">-</span> <span class="fl">32</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span>, <span class="co"># 43.667 mmHg</span></span>
+<span>  platelets <span class="op">=</span> <span class="fl">95</span>,</span>
+<span>  gcs <span class="op">=</span> <span class="fl">14</span>, <span class="co"># irritability</span></span>
+<span>  age <span class="op">=</span> <span class="fl">3</span> <span class="op">*</span> <span class="fl">12</span> <span class="co"># expected input for age is in months</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">##   phoenix_respiratory_score phoenix_cardiovascular_score</span></span>
+<span><span class="co">## 1                         0                            2</span></span>
+<span><span class="co">##   phoenix_coagulation_score phoenix_neurologic_score phoenix_sepsis_score</span></span>
+<span><span class="co">## 1                         1                        0                    3</span></span>
+<span><span class="co">##   phoenix_sepsis phoenix_septic_shock</span></span>
+<span><span class="co">## 1              1                    1</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="clinical-vignette-2">Clinical Vignette 2<a class="anchor" aria-label="anchor" href="#clinical-vignette-2"></a>
+</h3>
+<p>A 6-year-old boy with a history of prematurity presents with
+respiratory distress to his pediatrician’s office in Tucson, Arizona. He
+is noted to have a temperature of 38.7°C, tachypnea, crackles in the
+left lower quadrant on chest auscultation, and an oxygen saturation of
+89% on room air. He is started on supplemental oxygen and is transported
+to the local emergency department via ambulance. In the emergency
+department, a chest X-ray shows a consolidation in the left lower lobe
+and hazy bilateral lung opacities, so he is started on antibiotics for a
+suspected bacterial pneumonia. His respiratory status worsens, and he is
+started on non-invasive positive pressure ventilation. While awaiting to
+be admitted, his level of consciousness deteriorates rapidly: with
+nailbed pressure he only opens his eyes briefly, moans in pain, and
+withdraws his hand (Glasgow Coma Scale: 2 for eye response + 2 for
+verbal response + 4 for motor response = 8). He is intubated using rapid
+sequence induction and placed on a conventional ventilator. During this
+time, his lowest mean arterial pressure using a non-invasive
+oscillometric device is 52 mmHg and he receives a fluid bolus. He is
+then transferred to the pediatric intensive care unit where he requires
+a high positive end expiratory pressure and an FiO<sub>2</sub> of 0.45
+to achieve an oxygen saturation of 92% (S/F ratio: 204). Complete blood
+count and lactate level reveal a platelet count of 120 K/μL and a serum
+lactate of 2.9 mmol/L. Given his platelet count below the normal
+reference range, a coagulation panel is sent, which reveals an INR of
+1.7, a D-Dimer of 4.4 mg/L, and a fibrinogen of 120 mg/dL.</p>
+<p><em>Phoenix Sepsis Score:</em></p>
+<ul>
+<li>2 respiratory points (for an S/F ratio &lt;292 on invasive
+mechanical ventilator)</li>
+<li>0 cardiovascular points (mean arterial pressure &gt;48 mmHg and
+Lactate level &lt;5 mmol/L)</li>
+<li>2 coagulation points (for high INR and D-Dimer)</li>
+<li>1 neurologic point (Glasgow Coma Scale ≤10)</li>
+<li>total = 5 points.</li>
+</ul>
+<p><em>Phoenix Sepsis Criteria:</em> The patient has a suspected
+infection, ≥2 points of the Phoenix Sepsis Score, and 0 cardiovascular
+points, so he meets criteria for sepsis.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/phoenix.html">phoenix</a></span><span class="op">(</span></span>
+<span>  gcs <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">4</span>, <span class="co"># eye + verbal + motor</span></span>
+<span>  map <span class="op">=</span> <span class="fl">52</span>,</span>
+<span>  imv <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  sf_ratio <span class="op">=</span> <span class="fl">92</span> <span class="op">/</span> <span class="fl">0.45</span>,</span>
+<span>  platelets <span class="op">=</span> <span class="fl">120</span>,</span>
+<span>  lactate <span class="op">=</span> <span class="fl">2.9</span>,</span>
+<span>  inr <span class="op">=</span> <span class="fl">1.7</span>,</span>
+<span>  d_dimer <span class="op">=</span> <span class="fl">4.4</span>,</span>
+<span>  fibrinogen <span class="op">=</span> <span class="fl">120</span><span class="op">)</span></span>
+<span><span class="co">##   phoenix_respiratory_score phoenix_cardiovascular_score</span></span>
+<span><span class="co">## 1                         2                            0</span></span>
+<span><span class="co">##   phoenix_coagulation_score phoenix_neurologic_score phoenix_sepsis_score</span></span>
+<span><span class="co">## 1                         2                        1                    5</span></span>
+<span><span class="co">##   phoenix_sepsis phoenix_septic_shock</span></span>
+<span><span class="co">## 1              1                    0</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -513,7 +2434,7 @@ Russell, Margaret N. Rebull, Blake Martin, Samuel Akech, et al. 2024.
 Criteria for Pediatric Sepsis and Septic Shock</span>.”</span>
 <em>JAMA</em>, January. <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link">https://doi.org/10.1001/jama.2024.0196</a>.
 </div>
-<div id="ref-schlapback_2024_international" class="csl-entry">
+<div id="ref-schlapbach_2024_international" class="csl-entry">
 Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, Andrew C.
 Argent, Kusum Menon, Mark W. Hall, Samuel Akech, et al. 2024.
 <span>“<span class="nocase">International Consensus Criteria for
@@ -521,49 +2442,6 @@ Pediatric Sepsis and Septic Shock</span>.”</span> <em>JAMA</em>,
 January. <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link">https://doi.org/10.1001/jama.2024.0179</a>.
 </div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
-</h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## R version 4.3.2 (2023-10-31)</span></span>
-<span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 22.04.3 LTS</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## locale:</span></span>
-<span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
-<span><span class="co">##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
-<span><span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
-<span><span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## time zone: UTC</span></span>
-<span><span class="co">## tzcode source: system (glibc)</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## attached base packages:</span></span>
-<span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] phoenix_0.0.0.9000 qwraps2_0.6.0     </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] gtable_0.3.4       jsonlite_1.8.8     highr_0.10         compiler_4.3.2    </span></span>
-<span><span class="co">##  [5] Rcpp_1.0.12        stringr_1.5.1      jquerylib_0.1.4    systemfonts_1.0.5 </span></span>
-<span><span class="co">##  [9] scales_1.3.0       textshaping_0.3.7  yaml_2.3.8         fastmap_1.1.1     </span></span>
-<span><span class="co">## [13] ggplot2_3.4.4      R6_2.5.1           labeling_0.4.3     knitr_1.45        </span></span>
-<span><span class="co">## [17] tibble_3.2.1       desc_1.4.3         munsell_0.5.0      RColorBrewer_1.1-3</span></span>
-<span><span class="co">## [21] bslib_0.6.1        pillar_1.9.0       rlang_1.1.3        utf8_1.2.4        </span></span>
-<span><span class="co">## [25] cachem_1.0.8       stringi_1.8.3      xfun_0.42          fs_1.6.3          </span></span>
-<span><span class="co">## [29] sass_0.4.8         memoise_2.0.1      cli_3.6.2          withr_3.0.0       </span></span>
-<span><span class="co">## [33] pkgdown_2.0.7      magrittr_2.0.3     digest_0.6.34      grid_4.3.2        </span></span>
-<span><span class="co">## [37] lifecycle_1.0.4    vctrs_0.6.5        evaluate_0.23      glue_1.7.0        </span></span>
-<span><span class="co">## [41] farver_2.1.1       ragg_1.2.7         fansi_1.0.6        colorspace_2.1-0  </span></span>
-<span><span class="co">## [45] rmarkdown_2.25     purrr_1.0.2        pkgconfig_2.0.3    tools_4.3.2       </span></span>
-<span><span class="co">## [49] htmltools_0.5.7</span></span></code></pre></div>
 </div>
   </div>
 
