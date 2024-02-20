@@ -103,22 +103,24 @@
 #' head(PSS)
 #'
 #' @export
-phoenix <- function(vasoactives, lactate, age, map,
-                    pf_ratio, sf_ratio, imv, other_respiratory_support,
+phoenix <- function(pf_ratio, sf_ratio, imv, other_respiratory_support,
+                    vasoactives, lactate, map, # age at the end to be consistent with phoenix8
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
+                    age,
                     data = parent.frame(), ...) {
 
   cl <- as.list(match.call())
+  cl[["data"]] <- NULL
 
-  cl[[1]] <- quote(phoenix_cardiovascular)
-  card <- eval(as.call(cl))
   cl[[1]] <- quote(phoenix_respiratory)
-  resp <- eval(as.call(cl))
+  resp <- eval(as.call(cl), envir = data)
+  cl[[1]] <- quote(phoenix_cardiovascular)
+  card <- eval(as.call(cl), envir = data)
   cl[[1]] <- quote(phoenix_coagulation)
-  coag <- eval(as.call(cl))
+  coag <- eval(as.call(cl), envir = data)
   cl[[1]] <- quote(phoenix_neurologic)
-  neur <- eval(as.call(cl))
+  neur <- eval(as.call(cl), envir = data)
 
   data.frame(phoenix_respiratory_score = resp,
              phoenix_cardiovascular_score = card,

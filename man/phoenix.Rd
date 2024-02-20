@@ -5,33 +5,25 @@
 \title{The Phoenix Sepsis Score}
 \usage{
 phoenix(
-  vasoactives,
-  lactate,
-  age,
-  map,
   pf_ratio,
   sf_ratio,
   imv,
   other_respiratory_support,
+  vasoactives,
+  lactate,
+  map,
   platelets,
   inr,
   d_dimer,
   fibrinogen,
   gcs,
   fixed_pupils,
+  age,
   data = parent.frame(),
   ...
 )
 }
 \arguments{
-\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient}
-
-\item{lactate}{numeric vector with the lactate value in mmol/L}
-
-\item{age}{numeric vector age in months}
-
-\item{map}{numeric vector, mean arterial pressure in mmHg}
-
 \item{pf_ratio}{numeric vector}
 
 \item{sf_ratio}{numeric vector}
@@ -39,6 +31,12 @@ phoenix(
 \item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
 
 \item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
+
+\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient}
+
+\item{lactate}{numeric vector with the lactate value in mmol/L}
+
+\item{map}{numeric vector, mean arterial pressure in mmHg}
 
 \item{platelets}{numeric vector for platelets counts in units of 1,000/uL}
 
@@ -51,6 +49,8 @@ phoenix(
 \item{gcs}{integer vector; total Glasgow Comma Score}
 
 \item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 = otherwise}
+
+\item{age}{numeric vector age in months}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 

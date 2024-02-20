@@ -262,6 +262,43 @@ stopifnot(
   )
 )
 
+# verify that the result are the same when called differently
+resp_a <- phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, data = DF)
+resp_b <- with(DF, phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2))
+x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
+resp_c <- phoenix_respiratory(x1, x2, x3, x4)
+stopifnot(identical(resp_a, resp_b))
+stopifnot(identical(resp_a, resp_c))
+
+# phoenix
+p_a <- phoenix(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
+p8_a <- phoenix8(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
+
+p_b <- with(DF, phoenix(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
+p8_b <- with(DF, phoenix8(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
+
+x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
+x5 <- DF$vasos; x6 <- DF$lactate; x7 <- DF$map
+x8 <- DF$plts; x9 <- DF$inr; x10 <- DF$ddmr; x11 <- DF$fib;
+x12 <- DF$gcs; x13 <- DF$pupils;
+x14 <- DF$glc; x15 <- DF$anc; x16 <- DF$alc; x17 <- DF$creatinine;
+x18 <- DF$bil; x19 <- DF$alt; x20 <- DF$age
+
+p_c <- phoenix(x1, x2, x3, x4,
+               x5, x6, x7,
+               x8, x9, x10, x11,
+               x12, x13, x20)
+p8_c <- phoenix8(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20)
+
+stopifnot(identical(p_a, p_b))
+stopifnot(identical(p_a, p_c))
+stopifnot(identical(p8_a, p8_b))
+stopifnot(identical(p8_a, p8_c))
+
+stopifnot(identical(p_a, p8_a[, 1:5]))
+stopifnot(identical(p_a, p8_b[, 1:5]))
+stopifnot(identical(p_a, p8_c[, 1:5]))
+
 ################################################################################
 #                                 End of File                                  #
 ################################################################################

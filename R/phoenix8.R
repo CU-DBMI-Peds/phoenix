@@ -112,14 +112,14 @@
 #'
 #' PSS <-
 #'   phoenix(
-#'     vasoactives = vasos,
-#'     lactate = lactate,
-#'     age = age,
-#'     map = map,
 #'     pf_ratio = pfr,
 #'     sf_ratio = sfr,
 #'     imv = vent,
 #'     other_respiratory_support = o2,
+#'     vasoactives = vasos,
+#'     lactate = lactate,
+#'     age = age,
+#'     map = map,
 #'     platelets = plts,
 #'     inr = inr,
 #'     d_dimer = ddmr,
@@ -145,21 +145,22 @@ phoenix8 <- function(
                     data = parent.frame(), ...) {
 
   cl <- as.list(match.call())
+  cl$data <- NULL
 
   cl[[1]] <- quote(phoenix)
-  rtn <- eval(as.call(cl))
+  rtn <- eval(as.call(cl), envir = data)
 
   cl[[1]] <- quote(phoenix_endocrine)
-  rtn$phoenix_endocrine_score <- eval(as.call(cl))
+  rtn$phoenix_endocrine_score <- eval(as.call(cl), envir = data)
 
   cl[[1]] <- quote(phoenix_immunologic)
-  rtn$phoenix_immunologic_score <- eval(as.call(cl))
+  rtn$phoenix_immunologic_score <- eval(as.call(cl), envir = data)
 
   cl[[1]] <- quote(phoenix_renal)
-  rtn$phoenix_renal_score <- eval(as.call(cl))
+  rtn$phoenix_renal_score <- eval(as.call(cl), envir = data)
 
   cl[[1]] <- quote(phoenix_hepatic)
-  rtn$phoenix_hepatic_score <- eval(as.call(cl))
+  rtn$phoenix_hepatic_score <- eval(as.call(cl), envir = data)
 
   rtn$phoenix8_sepsis_score <-
     rtn[["phoenix_sepsis_score"]] +

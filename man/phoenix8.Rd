@@ -134,14 +134,14 @@ DF <-
 
 PSS <-
   phoenix(
-    vasoactives = vasos,
-    lactate = lactate,
-    age = age,
-    map = map,
     pf_ratio = pfr,
     sf_ratio = sfr,
     imv = vent,
     other_respiratory_support = o2,
+    vasoactives = vasos,
+    lactate = lactate,
+    age = age,
+    map = map,
     platelets = plts,
     inr = inr,
     d_dimer = ddmr,
