@@ -58,20 +58,20 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">phoenix</span><span class="op">(</span></span>
-<span>  <span class="va">vasoactives</span>,</span>
-<span>  <span class="va">lactate</span>,</span>
-<span>  <span class="va">age</span>,</span>
-<span>  <span class="va">map</span>,</span>
 <span>  <span class="va">pf_ratio</span>,</span>
 <span>  <span class="va">sf_ratio</span>,</span>
 <span>  <span class="va">imv</span>,</span>
 <span>  <span class="va">other_respiratory_support</span>,</span>
+<span>  <span class="va">vasoactives</span>,</span>
+<span>  <span class="va">lactate</span>,</span>
+<span>  <span class="va">map</span>,</span>
 <span>  <span class="va">platelets</span>,</span>
 <span>  <span class="va">inr</span>,</span>
 <span>  <span class="va">d_dimer</span>,</span>
 <span>  <span class="va">fibrinogen</span>,</span>
 <span>  <span class="va">gcs</span>,</span>
 <span>  <span class="va">fixed_pupils</span>,</span>
+<span>  <span class="va">age</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -79,23 +79,7 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>vasoactives</dt>
-<dd><p>an integer vector, the number of systemic vasoactive medications being administered to the patient</p></dd>
-
-
-<dt>lactate</dt>
-<dd><p>numeric vector with the lactate value in mmol/L</p></dd>
-
-
-<dt>age</dt>
-<dd><p>numeric vector age in months</p></dd>
-
-
-<dt>map</dt>
-<dd><p>numeric vector, mean arterial pressure in mmHg</p></dd>
-
-
-<dt>pf_ratio</dt>
+    <dl><dt>pf_ratio</dt>
 <dd><p>numeric vector</p></dd>
 
 
@@ -109,6 +93,18 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 
 <dt>other_respiratory_support</dt>
 <dd><p>other respiratory support; numeric or integer vector, (0 = no support; 1 = support)</p></dd>
+
+
+<dt>vasoactives</dt>
+<dd><p>an integer vector, the number of systemic vasoactive medications being administered to the patient</p></dd>
+
+
+<dt>lactate</dt>
+<dd><p>numeric vector with the lactate value in mmol/L</p></dd>
+
+
+<dt>map</dt>
+<dd><p>numeric vector, mean arterial pressure in mmHg</p></dd>
 
 
 <dt>platelets</dt>
@@ -133,6 +129,10 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 
 <dt>fixed_pupils</dt>
 <dd><p>integer vector; 1 = bilaterally fixed pupil, 0 = otherwise</p></dd>
+
+
+<dt>age</dt>
+<dd><p>numeric vector age in months</p></dd>
 
 
 <dt>data</dt>
@@ -234,10 +234,22 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
 <span class="r-in"><span>    fixed_pupils <span class="op">=</span> <span class="va">pupils</span>,</span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">DF</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(as.call(cl)):</span> object 'DF' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">PSS</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'PSS' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   phoenix_respiratory_score phoenix_cardiovascular_score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                         0                            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         0                            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         0                            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                         0                            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                         0                            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                         0                            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   phoenix_coagulation_score phoenix_neurologic_score phoenix_sepsis_score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                         2                        1                    5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         1                        1                    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         1                        1                    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                         2                        1                    5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                         1                        1                    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                         1                        1                    4</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
