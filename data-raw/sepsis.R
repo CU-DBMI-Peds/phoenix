@@ -1,8 +1,8 @@
 sepsis <-
-  read.table(sep = ",", header = TRUE, text =
+  read.table(sep = ",", header = TRUE, strip.white = TRUE, text =
 '
 age   , fio2 , pao2 , spo2 , vent , gcs_total , pupil         , platelets , inr   , d_dimer , fibrinogen , dbp , sbp , lactate , dobutamine , dopamine , epinephrine , milrinone , norepinephrine , vasopressin , glucose , anc   , alc   , creatinine , bilirubin , alt
-0.06  , 0.75 ,      , 97   , 1    ,           , ""            , 199       , 1.460 ,         , 180        , 40  , 53  ,         , 1          , 1        , 1           , 1         , 0              , 0           ,         ,       ,       , 1.03       ,           , 36
+0.06  , 0.75 ,      , 99   , 1    ,           , ""            , 199       , 1.460 ,         , 180        , 40  , 53  ,         , 1          , 1        , 1           , 1         , 0              , 0           ,         ,       ,       , 1.03       ,           , 36
 201.7 , 0.75 , 75.3 , 95   , 1    , 5         , both-reactive , 243       , 1.18  , 2.45    , 311        , 60  , 90  , 3.32    , 0          , 1        , 0           , 0         , 1              , 0           , 110     , 14.22 , 2.22  , 0.51       , 0.2       , 32
 20.8  , 1    , 49.5 ,      , 1    , 15        , both-reactive , 49        , 1.6   ,         , 309        , 87  , 233 , 1       , 0          , 1        , 0           , 0         , 0              , 0           , 93      , 2.21  , 0.19  , 0.33       , 0.8       , 182
 192.5 ,      ,      ,      , 0    , 14        , ""            ,           , 1.3   , 2.82    , 220        , 57  , 104 ,         , 0          , 0        , 0           , 0         , 0              , 0           , 110     , 3.184 , 0.645 , 0.31       , 8.5       , 21

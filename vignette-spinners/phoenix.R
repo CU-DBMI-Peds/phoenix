@@ -164,6 +164,17 @@ packageVersion("phoenix")
 {{ backtick(rep()) }}
 #' for clarity.
 #'
+#' In the following subsections example use of the functions require the use of
+#' the provided example synthetic dataset
+{{ paste0(backtick(sepsis), ".") }}
+#' This data set has
+{{ nrow(sepsis) }}
+#' rows and
+{{ ncol(sepsis) }}
+#' variables. See
+{{ backtick(?sepsis) }}
+#' for more details.
+#'
 #' ## Respiratory
 #'
 #' ### Inputs:
@@ -214,11 +225,11 @@ ggplot2::ggplot(data = resp_data) +
   ggplot2::theme(legend.position = "bottom")
 
 #'
-#' ### Use
+#' ### Example Use
 #'
 #' The function
 {{ backtick(phoenix_respiratory) }}
-#' will retur
+#' will return an integer vector.
 #'
 #' A patient with a nasal cannula at 5 L/min (approximate FiO<sub>2</sub> of
 #' 0.4) and SpO<sub>2</sub> of 87:
@@ -231,7 +242,7 @@ phoenix_respiratory(
 {{ backtick(pf_ratio) }}
 #' and
 {{ backtick(imv) }}
-#' arguemnts have been omitted.  When an input is missing it is assumed to be
+#' arguments have been omitted.  When an input is missing it is assumed to be
 {{paste0(backtick(NA), ".")}}
 
 #'
@@ -255,18 +266,41 @@ DF$resp_score <- phoenix_respiratory(pfr, sfr, imv, o2, DF)
 DF
 
 #'
+#' Another example using the provided example data set
+{{ paste0(backtick(sepsis), ".") }}
+#' Here we have to construct a few variables as we only have information on
+#' FiO<sub>2</sub>, PaO<sub>2</sub>, SpO<sub>2</sub>, and invasive mechanical
+#' ventilation.
+#'
+resp_example <- sepsis[c("fio2", "pao2", "spo2", "vent")]
+
+#'
+#' Implied in this data is other respiratory support when FiO<sub>2</sub> is
+#' greater than 0.21, the approximate fraction of oxygen in the atmosphere.
+resp_example$score <-
+  phoenix_respiratory(
+  pf_ratio = pao2 / fio2,
+  sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+  imv = vent,
+  other_respiratory_support = as.integer(fio2 > 0.21),
+  data = sepsis
+  )
+resp_example
+
+
+#'
 #' ## Cardiovascular
 #'
 #' ### Inputs
 #' *
 {{ backtick(vasoactives) }}
-#' is an integer count of the numer of systemic vasoactives medications the
-#' patient is currently recieving.  During development of the Phoenix criteria
+#' is an integer count of the number of systemic vasoactive medications the
+#' patient is currently receiving.  During development of the Phoenix criteria
 #' it was found that just the count of the medications was sufficient to be
 #' useful, the dosage was not needed.  There were six medications considered,
 #' dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and
 #' vasopressin.  Again, it is systemic use of the medication that is important.
-#' For example, an injection of epinephrine to hault an allergic reaction would
+#' For example, an injection of epinephrine to halt an allergic reaction would
 #' not count, whereas having an epinephrine drip to treat hypotension or
 #' bradycardia would count.
 #'
@@ -314,8 +348,21 @@ ggplot2::ggplot(DF) +
 
 
 #'
-#' ### Use
-#' _this section is to be written_
+#' ### Example Use
+#'
+card_example <-
+  sepsis[c("dobutamine", "dopamine", "epinephrine", "milrinone", "norepinephrine", "vasopressin", "lactate", "dbp", "sbp", "age")]
+
+card_example$score <-
+  phoenix_cardiovascular(
+    vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+    lactate = lactate,
+    age = age,
+    map = dbp + (sbp - dbp)/3,
+    data = sepsis)
+
+card_example
+
 #'
 #' ## Coagulation
 #'
@@ -375,8 +422,13 @@ ggplot2::ggplot(DF) +
   ggplot2::theme(legend.position = "bottom")
 
 #'
-#' ### Use
-#' _this section is to be written_
+#' ### Example Use
+#'
+coag_example <- sepsis[c("platelets", "inr", "d_dimer", "fibrinogen")]
+coag_example$score <-
+  phoenix_coagulation(platelets, inr, d_dimer, fibrinogen, data = sepsis)
+coag_example
+
 #'
 #' ## Neurologic
 #'
@@ -392,35 +444,50 @@ ggplot2::ggplot(DF) +
 #' an integer vector of zeros and ones.  1 = bilaterally fixed pupils, 0
 #' otherwise.
 #'
-# /* No need for this subsubsection
-#' ### Scores
-#' _this section is to be written_
-# */
+#' ### Example Use
 #'
-#' ### Use
-#' _this section is to be written_
+neuro_example <- sepsis[c("gcs_total", "pupil")]
+neuro_example$score <-
+  phoenix_neurologic(gcs = gcs_total, fixed_pupils = as.integer(pupil == "both-fixed"), data = sepsis)
+neuro_example
+
 #'
 #'
 #' ## Endocrine
 #'
-#' The endocrine critia is only applicable to the extended Phoenix-8 scoring.
+#' The endocrine criteria is only applicable to the extended Phoenix-8 scoring.
 #'
 #' ### Inputs
-#' _this section is to be written_
+#' *
+{{ backtick(glucose) }}
+#' in mg/dL
 #'
-#' ### Use
-#' _this section is to be written_
+#' ### Example Use
 #'
+endo_example <- sepsis[c("glucose")]
+endo_example$score <- phoenix_endocrine(glucose, data = sepsis)
+endo_example
+
 #'
 #' ## Immunologic
 #'
 #' The immunologic score is only applicable to the extended Phoenix-8 scoring.
 #'
 #' ### Inputs
-#' _this section is to be written_
 #'
-#' ### Use
-#' _this section is to be written_
+#' *
+{{ backtick(anc) }}
+#' in units of 1,000 cells per cubic millimeter
+#' *
+{{ backtick(alc) }}
+#' in units of 1,000 cells per cubic millimeter
+#'
+#' ### Example Use
+#'
+immu_example <- sepsis[c("anc", "alc")]
+immu_example$score <- phoenix_immunologic(anc, alc, sepsis)
+immu_example
+
 #'
 #'
 #' ## Renal
@@ -428,30 +495,48 @@ ggplot2::ggplot(DF) +
 #' The renal score is only applicable to the extended Phoenix-8 scoring.
 #'
 #' ### Inputs
-#' _this section is to be written_
 #'
-#' ### Use
-#' _this section is to be written_
+#' *
+{{ backtick(creatinine) }}
+#' in units of mg/dL
 #'
+#' *
+{{ backtick(age) }}
+#' in months
+#'
+#' ### Example Use
+#'
+renal_example <- sepsis[c("creatinine", "age")]
+renal_example$score <- phoenix_renal(creatinine, age, sepsis)
+renal_example
+
 #'
 #' ## Hepatic
 #'
 #' The hepatic score is only applicable to the extended Phoenix-8 scoring.
 #'
 #' ### Inputs
-#' _this section is to be written_
+{{ backtick(bilirubin) }}
+#' total bilirubin in units of mg/dL
 #'
-#' ### Use
-#' _this section is to be written_
+{{ backtick(alt) }}
+#' in units of IU/L
+#'
+#' ### Example Use
+#'
+hep_example <- sepsis[c("bilirubin", "alt")]
+hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
+hep_example
+
 #'
 #'
 #' ## Phoenix
 #'
 #' The
 {{ backtick(phoenix) }}
-#' fucntion is a wraper around
+#' function is a wrapper around
 {{ paste0(backtick(phoenix_respiratory), ", ", backtick(phoenix_cardiovascular), ", ", backtick(phoenix_coagulation), ", and ", backtick(phoenix_neurologic), ".") }}
-#' Where the individual component scoring fucntions return integer vectors,
+#' Where the individual component scoring functions return integer vectors,
 {{ backtick(phoenix) }}
 #' returns a
 {{ backtick(data.frame) }}
@@ -460,26 +545,107 @@ ggplot2::ggplot(DF) +
 #' another for septic shock (total score &geq; 2 and cardiovascular dysfunction
 #' &geq; 1).
 #'
-#' The range of Phoenix Spesis scores is from 0 to 13.
+#' The range of Phoenix Sepsis scores is from 0 to 13.
 #'
 #' ### Inputs
 #' All of the inputs are the same as for the component organ dysfunction scores.
 #'
-#' ### Use
-#' _this section is to be written_
+#' ### Example Use
 #'
-#' ## Phonix 8
+phoenix_scores <-
+  phoenix(
+    # respiratory
+      pf_ratio = pao2 / fio2,
+      sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+      imv = vent,
+      other_respiratory_support = as.integer(fio2 > 0.21),
+    # cardiovascular
+      vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+      lactate = lactate,
+      age = age,
+      map = dbp + (sbp - dbp)/3,
+    # coagulation
+      platelets = platelets,
+      inr = inr,
+      d_dimer = d_dimer,
+      fibrinogen = fibrinogen,
+    # neurologic
+      gcs = gcs_total,
+      fixed_pupils = as.integer(pupil == "both-fixed"),
+    data = sepsis
+  )
+
+str(phoenix_scores)
+
 #'
-#' _this section is to be written_
+#' The results as a easy to read table:
+#+ echo = FALSE, results = "asis"
+names(phoenix_scores) <- gsub("_", "\n", names(phoenix_scores))
+knitr::kable(phoenix_scores, format = "html", align = "c")
+
+#'
+#' ## Phoenix 8
+#'
+{{backtick(phoenix8)}}
+#' returns a
+{{backtick(data.frame)}}
+#' with all the columns that
+{{backtick(phoenix)}}
+#' returns, with the addition of columns for the endocrine, immunologic, renal,
+#' hepatic, and Phoenix-8 total score.
 #'
 #' ### Inputs
-#' _this section is to be written_
+#' All the same inputs as the individual organ dysfunction scoring functions.
+#' The one minor caveat is that
+{{backtick(age)}}
+#' is used in the cardiovascular and the renal scores and need only be provided
+#' once when calling
+{{paste0(backtick(phoenix8), ".")}}
 #'
-#' ### Scores
-#' _this section is to be written_
+#' ### Example Use
 #'
-#' ### Use
-#' _this section is to be written_
+phoenix8_scores <-
+  phoenix8(
+    # respiratory
+      pf_ratio = pao2 / fio2,
+      sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+      imv = vent,
+      other_respiratory_support = as.integer(fio2 > 0.21),
+    # cardiovascular
+      vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+      lactate = lactate,
+      age = age, # Also used in the renal assessment.
+      map = dbp + (sbp - dbp)/3,
+    # coagulation
+      platelets = platelets,
+      inr = inr,
+      d_dimer = d_dimer,
+      fibrinogen = fibrinogen,
+    # neurologic
+      gcs = gcs_total,
+      fixed_pupils = as.integer(pupil == "both-fixed"),
+    # endocrine
+      glucose = glucose,
+    # immunologic
+      anc = anc,
+      alc = alc,
+    # renal
+      creatinine = creatinine,
+      # no need to specify age again
+    # hepatic
+      bilirubin = bilirubin,
+      alt = alt,
+    data = sepsis
+  )
+
+str(phoenix8_scores)
+
+#'
+#' The results as a easy to read table:
+#+ echo = FALSE, results = "asis"
+names(phoenix8_scores) <- gsub("_", "\n", names(phoenix8_scores))
+knitr::kable(phoenix8_scores, format = "html", align = "c")
+
 #'
 #'
 #' # Clinical Vignettes
