@@ -51,6 +51,9 @@
 #' DF$coag <- phoenix_coagulation(plts, inr, ddmr, fib, DF)
 #' DF
 #'
+#' # using the example data set
+#' phoenix_coagulation(platelets = platelets, inr = inr, d_dimer = d_dimer, fibrinogen = fibrinogen, data = sepsis)
+#'
 #' @export
 phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data = parent.frame(), ...) {
 

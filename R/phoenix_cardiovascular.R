@@ -125,6 +125,15 @@
 #'
 #' identical(DF2$card, DF3$card)
 #'
+#' # using the example data set
+#' phoenix_cardiovascular(
+#'    vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+#'    lactate = lactate,
+#'    age = age,
+#'    map = dbp + (sbp - dbp)/3,
+#'    data = sepsis
+#' )
+#'
 #'
 #' @export
 phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data = parent.frame(), ...) {

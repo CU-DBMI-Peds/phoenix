@@ -122,6 +122,15 @@ DF3$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF3)
 
 identical(DF2$card, DF3$card)
 
+# using the example data set
+phoenix_cardiovascular(
+   vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+   lactate = lactate,
+   age = age,
+   map = dbp + (sbp - dbp)/3,
+   data = sepsis
+)
+
 
 }
 \references{

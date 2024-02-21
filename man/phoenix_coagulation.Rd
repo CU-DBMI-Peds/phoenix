@@ -47,6 +47,9 @@ DF <-
 DF$coag <- phoenix_coagulation(plts, inr, ddmr, fib, DF)
 DF
 
+# using the example data set
+phoenix_coagulation(platelets = platelets, inr = inr, d_dimer = d_dimer, fibrinogen = fibrinogen, data = sepsis)
+
 }
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of

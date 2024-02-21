@@ -75,6 +75,13 @@
 #' DF$current <- phoenix_neurologic(gcs, pupils, DF)
 #' stopifnot(identical(DF$target, DF$current))
 #' DF
+#'
+#' # using the example sepsis data set
+#' phoenix_neurologic(
+#'   gcs = gcs_total,
+#'   fixed_pupils = as.integer(pupil == "both-fixed"),
+#'   data = sepsis
+#' )
 #' @export
 phoenix_neurologic <- function(gcs, fixed_pupils, data = parent.frame(), ...) {
 

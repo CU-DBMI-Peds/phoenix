@@ -70,6 +70,13 @@
 #'   o2  = c(NA, 0, 1))
 #' phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, data = DF)
 #'
+#' phoenix_respiratory(
+#'   pf_ratio = pao2 / fio2,
+#'   sf_ratio = spo2 / fio2,
+#'   imv      = vent,
+#'   other_respiratory_support = as.integer(fio2 > 0.21),
+#'   data = sepsis)
+#'
 #' @export
 phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_respiratory_support, data = parent.frame(), ...) {
 

@@ -59,6 +59,13 @@ DF$target[DF$pupils == 1] <- 2L
 DF$current <- phoenix_neurologic(gcs, pupils, DF)
 stopifnot(identical(DF$target, DF$current))
 DF
+
+# using the example sepsis data set
+phoenix_neurologic(
+  gcs = gcs_total,
+  fixed_pupils = as.integer(pupil == "both-fixed"),
+  data = sepsis
+)
 }
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
