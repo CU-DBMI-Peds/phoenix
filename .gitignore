@@ -3,3 +3,4 @@
 *.Rcheck
 *.so
 *.o
+*__pycache__*
