@@ -53,6 +53,15 @@ install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 ## python
 
 The subdirectory `python` provided a module and example use.  It is our goal to
-make this python code more robust and distribute it via pypy soon.
+make this python code more robust and distribute it via PyPI soon.
 
+You can read the article [The Phoenix Septic Criteria in python](https://www.peteredewitt.com/python.html)
+for deatils and examples of using the python code as is.
+
+## SQL
+
+Read [The Phoenix Sepsis Criteria in SQL](https://peteredewitt.com/phoenix/sql.html)
+article for details and examples of implimenting the scoring rubrics in SQL.
+These examples are done in SQLite but will be easily translated into other SQL
+dialects.
 
