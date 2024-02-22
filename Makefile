@@ -8,7 +8,7 @@ TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
 RAWDATAR  = $(wildcard $(PKG_ROOT)/data-raw/*.R)
 VIGNETTES = $(addsuffix .Rmd, $(PKG_ROOT)/vignettes/$(notdir $(basename $(wildcard $(PKG_ROOT)/vignette-spinners/*.R))))
 
-.PHONY: all check install clean
+.PHONY: all check site install clean
 
 #all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 
@@ -48,6 +48,9 @@ covr-report-tests.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
 		-e 'report(x, file = "$@")'
 
 covr : covr-report-all.html covr-report-tests.html covr-report-examples.html covr-report-vignettes.html
+
+site: $(PKG_NAME)_$(PKG_VERSION).tar.gz
+	R --vanilla --quiet -e "pkgdown::build_site()"
 
 ################################################################################
 clean:

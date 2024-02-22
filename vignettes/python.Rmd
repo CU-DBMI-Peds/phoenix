@@ -1,0 +1,243 @@
+---
+title: "The Phoenix Sepsis Criteria in python"
+output:
+ rmarkdown::html_vignette:
+   toc: true
+   toc_depth: 2
+   number_sections: false
+bibliography: references.bib
+vignette: >
+ %\VignetteIndexEntry{The Phoenix Sepsis Criteria in python}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+
+```{r, eval = FALSE, include = FALSE}
+################################################################################
+#                                IMPORTANT NOTE                                #
+#                                                                              #
+#   This vignette _is not_ part of the R pacakge, it is part of the website!   #
+################################################################################
+```
+```{r, label = setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+```{css, echo = FALSE}
+.rchunk {
+  border: 5px solid #FFFFFF;
+}
+.pychunk {
+  border: 5px solid #4B8BBE;
+}
+```
+
+For those who are primarily working in python and want or need to impliment the
+Phoenix Sepsis criteria there are a couple options.
+
+1. Use [rpy2](https://rpy2.github.io/index.html) to use the phoenix R package
+   within python
+
+2. Use the this rudimentary [python module](https://github.com/dewittpe/phoenix/tree/main/python)
+   Within that directory you will find the module, example data set, and
+   example script.  Most of that is reproduced in this article.
+
+For the following examples you'll need the following python modules
+```{python, include = FALSE}
+import sys
+sys.path.append('../python')
+```
+
+```{python class.source="pychunk"}
+import numpy as np
+import pandas as pd
+import phoenix
+```
+
+Start by reading in the example data set.  This is the same data as provided in
+the R pacakge.
+```{python, include = FALSE}
+# use this block to get read the data, use an unevaluated chunk to make it look
+# good in the article
+sepsis = pd.read_csv("../python/sepsis.csv")
+```
+
+```{python class.source = "pychunk", eval = FALSE}
+sepsis = pd.read_csv("sepsis.csv")
+```
+
+We will compare the python output to the R results too.
+```{r class.source = "rchunk"}
+library(phoenix)
+```
+(In case you didn't notice, python code chunks are outlined in blue to
+distinguish them from R code chunks.)
+
+## Respiratory
+
+For the respiratory score, as with the other organ system dysfunction scores,
+the return in R is an integer vector.  In python you should expect a similar
+return of a numpy integer array.
+
+In R, we got the respiratory score via:
+```{r class.source = "rchunk"}
+phoenix_respiratory(
+  pf_ratio = pao2 / fio2,
+  sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+  imv = vent,
+  other_respiratory_support = as.integer(fio2 > 0.21),
+  data = sepsis
+  )
+```
+In python you have a similar syntax
+```{python class.source = "pychunk"}
+phoenix.phoenix_respiratory(
+    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
+    imv      = sepsis["vent"],
+    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy()
+)
+```
+
+## Cardiovascular
+
+```{r class.source = 'rchunk'}
+phoenix_cardiovascular(
+  vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+  lactate = lactate,
+  age = age,
+  map = dbp + (sbp - dbp)/3,
+  data = sepsis
+)
+```
+
+```{python class.source = "pychunk"}
+phoenix.phoenix_cardiovascular(
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    lactate = sepsis["lactate"],
+    age = sepsis["age"],
+    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
+)
+```
+
+## Coagulation
+
+```{r class.source = 'rchunk'}
+phoenix_coagulation(platelets, inr, d_dimer, fibrinogen, data = sepsis)
+```
+
+```{python class.source = "pychunk"}
+phoenix.phoenix_coagulation(
+    platelets = sepsis['platelets'],
+    inr = sepsis['inr'],
+    d_dimer = sepsis['d_dimer'],
+    fibrinogen = sepsis['fibrinogen']
+)
+```
+
+## Neurologic
+
+```{r class.source = 'rchunk'}
+phoenix_neurologic(
+  gcs = gcs_total,
+  fixed_pupils = as.integer(pupil == "both-fixed"),
+  data = sepsis
+)
+```
+
+```{python class.source = "pychunk"}
+phoenix.phoenix_neurologic(
+    gcs = sepsis["gcs_total"],
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int)
+)
+```
+
+## Endocrine
+
+```{r class.source = 'rchunk'}
+```
+
+```{python class.source = "pychunk"}
+```
+
+## Immunologic
+
+```{r class.source = 'rchunk'}
+```
+
+```{python class.source = "pychunk"}
+```
+
+## Renal
+
+```{r class.source = 'rchunk'}
+```
+
+```{python class.source = "pychunk"}
+```
+
+## Hepatic
+
+```{r class.source = 'rchunk'}
+```
+
+```{python class.source = "pychunk"}
+```
+
+## Phoenix
+
+In R, the call to `phoenix` will return a `data.frame`.  In python the return is
+a pandas DataFrame.
+
+```{r class.source = 'rchunk'}
+phoenix(
+    # respiratory
+      pf_ratio = pao2 / fio2,
+      sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+      imv = vent,
+      other_respiratory_support = as.integer(fio2 > 0.21),
+    # cardiovascular
+      vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+      lactate = lactate,
+      age = age,
+      map = dbp + (sbp - dbp)/3,
+    # coagulation
+      platelets = platelets,
+      inr = inr,
+      d_dimer = d_dimer,
+      fibrinogen = fibrinogen,
+    # neurologic
+      gcs = gcs_total,
+      fixed_pupils = as.integer(pupil == "both-fixed"),
+    data = sepsis
+  )
+```
+
+```{python class.source = "pychunk"}
+phoenix.phoenix(
+    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
+    sf_ratio = sepsis["spo2"] / sepsis["fio2"],
+    imv      = sepsis["vent"],
+    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    lactate = sepsis["lactate"],
+    age = sepsis["age"],
+    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    platelets = sepsis['platelets'],
+    inr = sepsis['inr'],
+    d_dimer = sepsis['d_dimer'],
+    fibrinogen = sepsis['fibrinogen'],
+    gcs = sepsis["gcs_total"],
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
+    )
+
+```
+
+## Phoenix8
+
+```{r class.source = 'rchunk'}
+```
+
+```{python class.source = "pychunk"}
+```
+
+

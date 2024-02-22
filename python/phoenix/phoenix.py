@@ -16,7 +16,7 @@ def phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support):
           ors.astype(int) * (((pfr < 400) | (sfr < 292)).astype(int))
           )
 
-    return(rtn)
+    return(np.array(rtn))
 
 def phoenix_cardiovascular(vasoactives, lactate, age, map):
     vas = np.nan_to_num(vasoactives, nan = 0)
@@ -42,7 +42,7 @@ def phoenix_cardiovascular(vasoactives, lactate, age, map):
       ((age >= 144)              ).astype(int) * ((map < 38).astype(int) + (map < 52).astype(int))
     )
 
-    return(vas_score + lct_score + map_score)
+    return(np.array(vas_score + lct_score + map_score))
 
 def phoenix_coagulation(platelets, inr, d_dimer, fibrinogen):
     plt = np.nan_to_num(platelets, nan = 1000)
@@ -54,7 +54,7 @@ def phoenix_coagulation(platelets, inr, d_dimer, fibrinogen):
           (ddm > 2).astype(int) +\
           (fib < 100).astype(int)
     rtn[(rtn > 2)] = 2
-    return(rtn)
+    return(np.array(rtn))
 
 def phoenix_neurologic(gcs, fixed_pupils):
     fpl = np.nan_to_num(fixed_pupils, 0)
@@ -62,16 +62,16 @@ def phoenix_neurologic(gcs, fixed_pupils):
     rtn = (fpl * 2) + (gcs <= 10).astype(int)
     rtn[(rtn > 2)] = 2
 
-    return(rtn)
+    return(np.array(rtn))
 
 def phoenix_endocrine(glucose):
     glc = np.nan_to_num(glucose, nan = 100)
-    return( ((glc < 50) | (glc > 150)).astype(int))
+    return( np.array(((glc < 50) | (glc > 150)).astype(int)))
 
 def phoenix_immunologic(anc, alc):
     anc = np.nan_to_num(anc, nan = 555)
     alc = np.nan_to_num(alc, nan = 1111)
-    return(((anc < 500) | (alc < 1000)).astype(int))
+    return(np.array(((anc < 500) | (alc < 1000)).astype(int)))
 
 def phoenix_renal(creatinine, age):
     # set both creatinine and age to 0 if either is missing
@@ -88,12 +88,12 @@ def phoenix_renal(creatinine, age):
             ((age >=  60) & (age < 144)).astype(int) * (crt >= 0.7).astype(int) +
             ((age >= 144)              ).astype(int) * (crt >= 1.0).astype(int)
           )
-    return(rtn)
+    return(np.array(rtn))
 
 def phoenix_hepatic(bilirubin, alt):
     bil = np.nan_to_num(bilirubin, nan = 0)
     alt = np.nan_to_num(alt, nan = 0)
-    return( ((bil >= 4) | (alt > 102)).astype(int))
+    return( np.array(((bil >= 4) | (alt > 102)).astype(int)))
 
 def phoenix(pf_ratio, sf_ratio, imv, other_respiratory_support, vasoactives, lactate, map, platelets, inr, d_dimer, fibrinogen, gcs, fixed_pupils, age):
     resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)

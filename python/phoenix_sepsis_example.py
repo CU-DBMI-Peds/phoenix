@@ -9,7 +9,7 @@ sepsis
 print("Respiratory")
 resp = phoenix.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
-    sf_ratio = sepsis["spo2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
     imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy()
 )

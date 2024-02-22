@@ -7,3 +7,4 @@
 ^\.document\.Rout$
 ^\.github$
 ^python$
+^vignettes/python\.Rmd$
