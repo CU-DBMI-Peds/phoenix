@@ -19,9 +19,7 @@ vignette: >
 #   This vignette _is not_ part of the R pacakge, it is part of the website!   #
 ################################################################################
 ```
-```{r, label = setup, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
-```
+
 ```{css, echo = FALSE}
 .rchunk {
   border: 5px solid #FFFFFF;
@@ -30,6 +28,20 @@ knitr::opts_chunk$set(collapse = TRUE)
   border: 5px solid #4B8BBE;
 }
 ```
+
+```{r, label = setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(reticulate)
+
+if (!virtualenv_exists(envname = "phoenix")) {
+  virtualenv_create(envname = "phoenix")
+  virtualenv_install(envname = "phoenix",
+                     packages = c("numpy", "pyarrow", "pandas"))
+}
+
+use_virtualenv(virtualenv = "phoenix")
+```
+
 
 For those who are primarily working in python and want or need to impliment the
 Phoenix Sepsis criteria there are a couple options.
