@@ -77,6 +77,7 @@ indicates the patient is on some form of respiratory support.
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "resp"}
 WITH respiratory AS (
   SELECT
+    pid,
     COALESCE(pao2 / fio2, 500) AS pfr,
     COALESCE(spo2 / fio2, 500) AS sfr,
     COALESCE(vent, 0)          AS imv,
@@ -84,6 +85,7 @@ WITH respiratory AS (
   FROM sepsis
 )
 SELECT
+  pid,
   imv * (IIF(pfr < 100 OR sfr < 14, 1, 0) + IIF(pfr < 200 OR sfr < 220, 1, 0) ) +
     other_respiratory_support * IIF(pfr < 400 OR sfr < 292, 1, 0) AS phoenix_respiratory_score
   FROM respiratory;
@@ -105,6 +107,7 @@ assessed.
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "card"}
 WITH vars AS (
   SELECT
+    pid,
     COALESCE(dobutamine, 0) +
       COALESCE(dopamine, 0) +
       COALESCE(epinephrine, 0) +
@@ -118,6 +121,7 @@ WITH vars AS (
 ),
 points AS (
   SELECT
+    pid,
     CASE WHEN vasos > 1 THEN 2
          WHEN vasos > 0 THEN 1
          ELSE 0 END AS vaso_points,
@@ -140,6 +144,7 @@ points AS (
   FROM vars
 )
 SELECT
+  pid,
   vaso_points + lactate_points + map_points AS phoenix_cardiovascular_score
 FROM points;
 ```
@@ -153,20 +158,156 @@ dbWriteTable(conn = con, name = "cardiovascular", value = card)
 
 # Coagulation
 
+```{sql class.source = 'sqlchunk', connection = con, output.var = "coag"}
+WITH points AS (
+  SELECT
+    pid,
+    CASE WHEN platelets < 100 THEN 1 ELSE 0 END AS plts,
+    CASE WHEN inr > 1.3 THEN 1 ELSE 0 END AS inr,
+    CASE WHEN d_dimer > 2 THEN 1 ELSE 0 END AS ddm,
+    CASE WHEN fibrinogen < 100 THEN 1 ELSE 0 END AS fib
+  FROM sepsis
+)
+SELECT
+  pid,
+  CASE WHEN plts + inr + ddm + fib >= 2 THEN 2
+       ELSE plts + inr + ddm + fib END AS phoenix_coagulation_score
+  FROM points
+```
+
+The above was stored as an R `data.frame` named `coag` and will be added to the
+SQLite database for inspection later.
+
+```{r}
+dbWriteTable(conn = con, name = "coagulation", value = coag)
+```
+
 # Neurologic
 
+```{sql class.source = 'sqlchunk', connection = con, output.var = "neuro"}
+WITH points AS (
+  SELECT
+    pid,
+    CASE WHEN gcs_total <= 10 THEN 1 ELSE 0 END AS gcs,
+    CASE WHEN pupil = "both-fixed" THEN 1 ELSE 0 END AS fixed_pupils
+  FROM sepsis
+)
+SELECT
+  pid,
+  CASE WHEN fixed_pupils = 1 THEN 2
+       WHEN gcs = 1 THEN 1
+       ELSE 0 END as phoenix_neurologic_score
+  FROM points
+```
+
+The above was stored as an R `data.frame` named `neuro` and will be added to the
+SQLite database for inspection later.
+
+```{r}
+dbWriteTable(conn = con, name = "neurologic", value = neuro)
+```
+
 # Endocrine
+```{sql class.source = 'sqlchunk', connection = con, output.var = "endo"}
+SELECT 
+  pid,
+  CASE WHEN glucose <  50 THEN 1
+       WHEN glucose > 150 THEN 1
+       ELSE 0 END AS phoenix_endocrine_score
+  FROM sepsis
+```
+
+The above was stored as an R `data.frame` named `endo` and will be added to the
+SQLite database for inspection later.
+
+```{r}
+dbWriteTable(conn = con, name = "endocrine", value = endo)
+```
 
 # Immunologic
+```{sql class.source = 'sqlchunk', connection = con, output.var = "immu"}
+SELECT 
+  pid,
+  CASE WHEN anc <  500 THEN 1
+       WHEN alc < 1000 THEN 1
+       ELSE 0 END AS phoenix_immunologic_score
+FROM sepsis
+```
+
+The above was stored as an R `data.frame` named `immu` and will be added to the
+SQLite database for inspection later.
+```{r}
+dbWriteTable(conn = con, name = "immunologic", value = immu)
+```
 
 # Renal
+```{sql class.source = 'sqlchunk', connection = con, output.var = "renal"}
+SELECT
+  pid,
+  CASE WHEN (               age <   1) AND (creatinine < 0.8) THEN 1
+       WHEN (age >=   1 AND age <  12) AND (creatinine < 0.3) THEN 1
+       WHEN (age >=  12 AND age <  24) AND (creatinine < 0.4) THEN 1
+       WHEN (age >=  24 AND age <  60) AND (creatinine < 0.6) THEN 1
+       WHEN (age >=  60 AND age < 144) AND (creatinine < 0.7) THEN 1
+       WHEN (age >= 144              ) AND (creatinine < 1.0) THEN 1
+       ELSE 0 END AS phoenix_renal_score
+FROM sepsis
+```
+
+The above was stored as an R `data.frame` named `renal` and will be added to the
+SQLite database for inspection later.
+```{r}
+dbWriteTable(conn = con, name = "renal", value = renal)
+```
 
 # Hepatic
+```{sql class.source = 'sqlchunk', connection = con, output.var = "hep"}
+SELECT
+  pid,
+  CASE WHEN bilirubin >= 4 THEN 1
+       WHEN alt < 102 THEN 1
+       ELSE 0 END AS phoenix_hepatic_score
+FROM sepsis
+```
+The above was stored as an R `data.frame` named `hep` and will be added to the
+SQLite database for inspection later.
+```{r}
+dbWriteTable(conn = con, name = "hepatic", value = hep)
+```
 
 # Phoenix
 
-```{sql eval = FALSE, class.source = 'sqlchunk', connection = con}
+In R and python we provided wrappers for the total score.  Here, we will join
+together the results and get the totals.  The results of the following query are
+saved in an R `data.frame` called `phoenix_sepsis`.
+
+```{sql class.source = 'sqlchunk', connection = con, output.var = "phoenix_sepsis"}
+SELECT
+  respiratory.pid AS pid,
+  phoenix_respiratory_score,
+  phoenix_cardiovascular_score
+  phoenix_coagulation_score,
+  phoenix_neurologic_score,
+  phoenix_respiratory_score + phoenix_cardiovascular_score +
+    phoenix_coagulation_score + phoenix_neurologic_score AS phoenix_sepsis_score,
+  IIF(phoenix_respiratory_score + phoenix_cardiovascular_score +
+    phoenix_coagulation_score + phoenix_neurologic_score >=2, 1, 0) AS phoenix_sepsis,
+  IIF(phoenix_respiratory_score + phoenix_cardiovascular_score +
+    phoenix_coagulation_score + phoenix_neurologic_score >=2 AND phoenix_cardiovascular_score > 0, 1, 0) AS phoenix_septic_shock
+FROM respiratory
+LEFT JOIN cardiovascular
+ON respiratory.pid = cardiovascular.pid
+LEFT JOIN coagulation
+ON respiratory.pid = coagulation.pid
+LEFT JOIN neurologic
+ON respiratory.pid = neurologic.pid
 ```
+
+```{r}
+phoenix_sepsis
+```
+
+
 
 # Phoenix 8
 
