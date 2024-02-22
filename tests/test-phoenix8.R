@@ -61,14 +61,14 @@ coagulation <-
 
 coagulation$expected_score <- 0L
 coagulation$expected_score[which(coagulation$plts < 100)] <-
-  coagulation$expected_score[which(coagulation$plts < 100)] + 1
+  coagulation$expected_score[which(coagulation$plts < 100)] + 1L
 coagulation$expected_score[which(coagulation$inr > 1.3)] <-
-  coagulation$expected_score[which(coagulation$inr > 1.3)] + 1
+  coagulation$expected_score[which(coagulation$inr > 1.3)] + 1L
 coagulation$expected_score[which(coagulation$ddmr > 2)] <-
-  coagulation$expected_score[which(coagulation$ddmr > 2)] + 1
+  coagulation$expected_score[which(coagulation$ddmr > 2)] + 1L
 coagulation$expected_score[which(coagulation$fib < 100)] <-
-  coagulation$expected_score[which(coagulation$fib < 100)] + 1
-coagulation$expected_score <- pmin(coagulation$expected_score, 2)
+  coagulation$expected_score[which(coagulation$fib < 100)] + 1L
+coagulation$expected_score <- pmin(coagulation$expected_score, 2L)
 
 stopifnot(!any(is.na(coagulation$expected_score)))
 stopifnot(all(coagulation$expected_score %in% 0:2))
