@@ -28,6 +28,7 @@ Suggests:
   knitr,
   ggplot2,
   qwraps2 (>= 0.6.0),
+  reticulate,
   rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 7.3.1
