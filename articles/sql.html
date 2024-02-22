@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phoenix</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9001</span>
       </span>
     </div>
 
@@ -119,9 +119,10 @@ table <code>sepsis</code></p>
 <p>We can easily query the table:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> sepsis</span></code></pre></div>
 <div class="knitsql-table">
-<table class="table">
+<table style="width:100%;" class="table">
 <caption>Displaying records 1 - 10</caption>
 <colgroup>
+<col width="1%">
 <col width="3%">
 <col width="2%">
 <col width="2%">
@@ -132,11 +133,11 @@ table <code>sepsis</code></p>
 <col width="4%">
 <col width="2%">
 <col width="3%">
-<col width="5%">
+<col width="4%">
 <col width="1%">
 <col width="1%">
 <col width="3%">
-<col width="5%">
+<col width="4%">
 <col width="4%">
 <col width="5%">
 <col width="4%">
@@ -145,11 +146,12 @@ table <code>sepsis</code></p>
 <col width="3%">
 <col width="3%">
 <col width="2%">
-<col width="5%">
+<col width="4%">
 <col width="4%">
 <col width="2%">
 </colgroup>
 <thead><tr class="header">
+<th align="left">pid</th>
 <th align="right">age</th>
 <th align="right">fio2</th>
 <th align="right">pao2</th>
@@ -179,6 +181,7 @@ table <code>sepsis</code></p>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left">1</td>
 <td align="right">0.06</td>
 <td align="right">0.75</td>
 <td align="right">NA</td>
@@ -207,6 +210,7 @@ table <code>sepsis</code></p>
 <td align="right">36</td>
 </tr>
 <tr class="even">
+<td align="left">2</td>
 <td align="right">201.70</td>
 <td align="right">0.75</td>
 <td align="right">75.3</td>
@@ -235,6 +239,7 @@ table <code>sepsis</code></p>
 <td align="right">32</td>
 </tr>
 <tr class="odd">
+<td align="left">3</td>
 <td align="right">20.80</td>
 <td align="right">1.00</td>
 <td align="right">49.5</td>
@@ -263,6 +268,7 @@ table <code>sepsis</code></p>
 <td align="right">182</td>
 </tr>
 <tr class="even">
+<td align="left">4</td>
 <td align="right">192.50</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -291,6 +297,7 @@ table <code>sepsis</code></p>
 <td align="right">21</td>
 </tr>
 <tr class="odd">
+<td align="left">5</td>
 <td align="right">214.40</td>
 <td align="right">NA</td>
 <td align="right">38.7</td>
@@ -319,6 +326,7 @@ table <code>sepsis</code></p>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
+<td align="left">6</td>
 <td align="right">101.20</td>
 <td align="right">0.60</td>
 <td align="right">69.9</td>
@@ -347,6 +355,7 @@ table <code>sepsis</code></p>
 <td align="right">15</td>
 </tr>
 <tr class="odd">
+<td align="left">7</td>
 <td align="right">150.70</td>
 <td align="right">0.50</td>
 <td align="right">NA</td>
@@ -375,6 +384,7 @@ table <code>sepsis</code></p>
 <td align="right">3664</td>
 </tr>
 <tr class="even">
+<td align="left">8</td>
 <td align="right">159.70</td>
 <td align="right">0.30</td>
 <td align="right">NA</td>
@@ -403,6 +413,7 @@ table <code>sepsis</code></p>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
+<td align="left">9</td>
 <td align="right">176.10</td>
 <td align="right">0.65</td>
 <td align="right">51.0</td>
@@ -431,6 +442,7 @@ table <code>sepsis</code></p>
 <td align="right">151</td>
 </tr>
 <tr class="even">
+<td align="left">10</td>
 <td align="right">6.60</td>
 <td align="right">0.80</td>
 <td align="right">NA</td>
@@ -472,16 +484,17 @@ inspiratory oxygen is greater than 0.21, that indicates the patient is
 on some form of respiratory support.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> respiratory <span class="kw">AS</span> (</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(pao2 <span class="op">/</span> fio2, <span class="dv">500</span>) <span class="kw">AS</span> pfr,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(spo2 <span class="op">/</span> fio2, <span class="dv">500</span>) <span class="kw">AS</span> sfr,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(vent, <span class="dv">0</span>)          <span class="kw">AS</span> imv,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    IIF(fio2 <span class="op">&gt;</span> <span class="fl">0.21</span> <span class="kw">OR</span> vent <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> other_respiratory_support</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> sepsis</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  imv <span class="op">*</span> (IIF(pfr <span class="op">&lt;</span> <span class="dv">100</span> <span class="kw">OR</span> sfr <span class="op">&lt;</span> <span class="dv">14</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="op">+</span> IIF(pfr <span class="op">&lt;</span> <span class="dv">200</span> <span class="kw">OR</span> sfr <span class="op">&lt;</span> <span class="dv">220</span>, <span class="dv">1</span>, <span class="dv">0</span>) ) <span class="op">+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    other_respiratory_support <span class="op">*</span> IIF(pfr <span class="op">&lt;</span> <span class="dv">400</span> <span class="kw">OR</span> sfr <span class="op">&lt;</span> <span class="dv">292</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> phoenix_respiratory_score</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> respiratory;</span></code></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    pid,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(pao2 <span class="op">/</span> fio2, <span class="dv">500</span>) <span class="kw">AS</span> pfr,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(IIF(spo2 <span class="op">&lt;=</span> <span class="dv">97</span>, spo2 <span class="op">/</span> fio2, <span class="dv">500</span>), <span class="dv">500</span>) <span class="kw">AS</span> sfr,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(vent, <span class="dv">0</span>)          <span class="kw">AS</span> imv,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    IIF(fio2 <span class="op">&gt;</span> <span class="fl">0.21</span> <span class="kw">OR</span> vent <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> other_respiratory_support</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> sepsis</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  imv <span class="op">*</span> (IIF(pfr <span class="op">&lt;</span> <span class="dv">100</span> <span class="kw">OR</span> sfr <span class="op">&lt;</span> <span class="dv">148</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="op">+</span> IIF(pfr <span class="op">&lt;</span> <span class="dv">200</span> <span class="kw">OR</span> sfr <span class="op">&lt;</span> <span class="dv">220</span>, <span class="dv">1</span>, <span class="dv">0</span>) ) <span class="op">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    other_respiratory_support <span class="op">*</span> IIF(pfr <span class="op">&lt;</span> <span class="dv">400</span> <span class="kw">OR</span> sfr <span class="op">&lt;</span> <span class="dv">292</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> phoenix_respiratory_score</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> respiratory;</span></code></pre></div>
 <p>The above query was saved to an R <code>data.frame</code> called
 <code>resp</code> and will be added to the virtual database for
 inspection later.</p>
@@ -496,43 +509,44 @@ mean arterial pressure will require both values to be know for possible
 points to be assessed.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> vars <span class="kw">AS</span> (</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(dobutamine, <span class="dv">0</span>) <span class="op">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(dopamine, <span class="dv">0</span>) <span class="op">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(epinephrine, <span class="dv">0</span>) <span class="op">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(milrinone, <span class="dv">0</span>) <span class="op">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(norepinephrine, <span class="dv">0</span>) <span class="op">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(vasopressin, <span class="dv">0</span>) <span class="kw">AS</span> vasos,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    lactate,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    dbp <span class="op">+</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>) <span class="op">*</span> (sbp <span class="op">-</span> dbp) <span class="kw">AS</span> map,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    age</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> sepsis</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>points <span class="kw">AS</span> (</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> vasos <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> vasos <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>         <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> vaso_points,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> lactate <span class="op">&gt;=</span> <span class="dv">11</span> <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> lactate <span class="op">&gt;=</span>  <span class="dv">5</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>         <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> lactate_points,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (               age <span class="op">&lt;</span>   <span class="dv">1</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">17</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>   <span class="dv">1</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">12</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">25</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">12</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">24</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">31</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">24</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">60</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">32</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">60</span> <span class="kw">AND</span> age <span class="op">&lt;</span> <span class="dv">144</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">36</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span> <span class="dv">144</span>              ) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">38</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (               age <span class="op">&lt;</span>   <span class="dv">1</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">31</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>   <span class="dv">1</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">12</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">39</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">12</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">24</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">44</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">24</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">60</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">45</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">60</span> <span class="kw">AND</span> age <span class="op">&lt;</span> <span class="dv">144</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">49</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span> <span class="dv">144</span>              ) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">52</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>         <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> map_points</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> vars</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  vaso_points <span class="op">+</span> lactate_points <span class="op">+</span> map_points <span class="kw">AS</span> phoenix_cardiovascular_score</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> points;</span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    pid,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(dobutamine, <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(dopamine, <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(epinephrine, <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(milrinone, <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(norepinephrine, <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">COALESCE</span>(vasopressin, <span class="dv">0</span>) <span class="kw">AS</span> vasos,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    lactate,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    dbp <span class="op">+</span> (sbp <span class="op">-</span> dbp) <span class="op">/</span> <span class="dv">3</span> <span class="kw">AS</span> map,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    age</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> sepsis</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>points <span class="kw">AS</span> (</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="op">*</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> vasos <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> vasos <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>         <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> vaso_points,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> lactate <span class="op">&gt;=</span> <span class="dv">11</span> <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> lactate <span class="op">&gt;=</span>  <span class="dv">5</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>         <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> lactate_points,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (               age <span class="op">&lt;</span>   <span class="dv">1</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">17</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>   <span class="dv">1</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">12</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">25</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">12</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">24</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">31</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">24</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">60</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">32</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">60</span> <span class="kw">AND</span> age <span class="op">&lt;</span> <span class="dv">144</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">36</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span> <span class="dv">144</span>              ) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">38</span>) <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (               age <span class="op">&lt;</span>   <span class="dv">1</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">31</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>   <span class="dv">1</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">12</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">39</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">12</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">24</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">44</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">24</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">60</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">45</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">60</span> <span class="kw">AND</span> age <span class="op">&lt;</span> <span class="dv">144</span>) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">49</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>         <span class="cf">WHEN</span> (age <span class="op">&gt;=</span> <span class="dv">144</span>              ) <span class="kw">AND</span> (map <span class="op">&lt;</span> <span class="dv">52</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>         <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> map_points</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> vars</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>,</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  vaso_points <span class="op">+</span> lactate_points <span class="op">+</span> map_points <span class="kw">AS</span> phoenix_cardiovascular_score</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> points;</span></code></pre></div>
 <p>The results of the above query were saved behind the scene to an R
 <code>data.frame</code> called <code>card</code> which will be added to
 the SQLite database for inspection later.</p>
@@ -542,36 +556,463 @@ the SQLite database for inspection later.</p>
 <div class="section level2">
 <h2 id="coagulation">Coagulation<a class="anchor" aria-label="anchor" href="#coagulation"></a>
 </h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> points <span class="kw">AS</span> (</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    pid,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> platelets <span class="op">&lt;</span> <span class="dv">100</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> plts,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> inr <span class="op">&gt;</span> <span class="fl">1.3</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> inr,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> d_dimer <span class="op">&gt;</span> <span class="dv">2</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> ddm,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> fibrinogen <span class="op">&lt;</span> <span class="dv">100</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> fib</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> sepsis</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">CASE</span> <span class="cf">WHEN</span> plts <span class="op">+</span> inr <span class="op">+</span> ddm <span class="op">+</span> fib <span class="op">&gt;=</span> <span class="dv">2</span> <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>       <span class="cf">ELSE</span> plts <span class="op">+</span> inr <span class="op">+</span> ddm <span class="op">+</span> fib <span class="cf">END</span> <span class="kw">AS</span> phoenix_coagulation_score</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> points</span></code></pre></div>
+<p>The above was stored as an R <code>data.frame</code> named
+<code>coag</code> and will be added to the SQLite database for
+inspection later.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con</span>, name <span class="op">=</span> <span class="st">"coagulation"</span>, value <span class="op">=</span> <span class="va">coag</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="neurologic">Neurologic<a class="anchor" aria-label="anchor" href="#neurologic"></a>
 </h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> points <span class="kw">AS</span> (</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    pid,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> gcs_total <span class="op">&lt;=</span> <span class="dv">10</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> gcs,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> pupil <span class="op">=</span> <span class="ot">"both-fixed"</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> fixed_pupils</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> sepsis</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">CASE</span> <span class="cf">WHEN</span> fixed_pupils <span class="op">=</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="dv">2</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> gcs <span class="op">=</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>       <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">as</span> phoenix_neurologic_score</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> points</span></code></pre></div>
+<p>The above was stored as an R <code>data.frame</code> named
+<code>neuro</code> and will be added to the SQLite database for
+inspection later.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con</span>, name <span class="op">=</span> <span class="st">"neurologic"</span>, value <span class="op">=</span> <span class="va">neuro</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="endocrine">Endocrine<a class="anchor" aria-label="anchor" href="#endocrine"></a>
 </h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  pid,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">CASE</span> <span class="cf">WHEN</span> glucose <span class="op">&lt;</span>  <span class="dv">50</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> glucose <span class="op">&gt;</span> <span class="dv">150</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>       <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> phoenix_endocrine_score</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> sepsis</span></code></pre></div>
+<p>The above was stored as an R <code>data.frame</code> named
+<code>endo</code> and will be added to the SQLite database for
+inspection later.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con</span>, name <span class="op">=</span> <span class="st">"endocrine"</span>, value <span class="op">=</span> <span class="va">endo</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="immunologic">Immunologic<a class="anchor" aria-label="anchor" href="#immunologic"></a>
 </h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  pid,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">CASE</span> <span class="cf">WHEN</span> anc <span class="op">&lt;</span>  <span class="dv">500</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> alc <span class="op">&lt;</span> <span class="dv">1000</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>       <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> phoenix_immunologic_score</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sepsis</span></code></pre></div>
+<p>The above was stored as an R <code>data.frame</code> named
+<code>immu</code> and will be added to the SQLite database for
+inspection later.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con</span>, name <span class="op">=</span> <span class="st">"immunologic"</span>, value <span class="op">=</span> <span class="va">immu</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="renal">Renal<a class="anchor" aria-label="anchor" href="#renal"></a>
 </h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  pid,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">CASE</span> <span class="cf">WHEN</span> (               age <span class="op">&lt;</span>   <span class="dv">1</span>) <span class="kw">AND</span> (creatinine <span class="op">&gt;=</span> <span class="fl">0.8</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>   <span class="dv">1</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">12</span>) <span class="kw">AND</span> (creatinine <span class="op">&gt;=</span> <span class="fl">0.3</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">12</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">24</span>) <span class="kw">AND</span> (creatinine <span class="op">&gt;=</span> <span class="fl">0.4</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">24</span> <span class="kw">AND</span> age <span class="op">&lt;</span>  <span class="dv">60</span>) <span class="kw">AND</span> (creatinine <span class="op">&gt;=</span> <span class="fl">0.6</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> (age <span class="op">&gt;=</span>  <span class="dv">60</span> <span class="kw">AND</span> age <span class="op">&lt;</span> <span class="dv">144</span>) <span class="kw">AND</span> (creatinine <span class="op">&gt;=</span> <span class="fl">0.7</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> (age <span class="op">&gt;=</span> <span class="dv">144</span>              ) <span class="kw">AND</span> (creatinine <span class="op">&gt;=</span> <span class="fl">1.0</span>) <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>       <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> phoenix_renal_score</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sepsis</span></code></pre></div>
+<p>The above was stored as an R <code>data.frame</code> named
+<code>renal</code> and will be added to the SQLite database for
+inspection later.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con</span>, name <span class="op">=</span> <span class="st">"renal"</span>, value <span class="op">=</span> <span class="va">renal</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="hepatic">Hepatic<a class="anchor" aria-label="anchor" href="#hepatic"></a>
 </h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  pid,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">CASE</span> <span class="cf">WHEN</span> bilirubin <span class="op">&gt;=</span> <span class="dv">4</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>       <span class="cf">WHEN</span> alt <span class="op">&gt;</span> <span class="dv">102</span> <span class="cf">THEN</span> <span class="dv">1</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>       <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> phoenix_hepatic_score</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sepsis</span></code></pre></div>
+<p>The above was stored as an R <code>data.frame</code> named
+<code>hep</code> and will be added to the SQLite database for inspection
+later.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con</span>, name <span class="op">=</span> <span class="st">"hepatic"</span>, value <span class="op">=</span> <span class="va">hep</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="phoenix">Phoenix<a class="anchor" aria-label="anchor" href="#phoenix"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"></code></pre></div>
+<p>In R and python we provided wrappers for the total score. Here, we
+will join together the results and get the totals. The results of the
+following query are saved in an R <code>data.frame</code> called
+<code>phoenix_scores</code>.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  respiratory.pid <span class="kw">AS</span> pid,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  phoenix_respiratory_score,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  phoenix_cardiovascular_score,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  phoenix_coagulation_score,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  phoenix_neurologic_score,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  phoenix_respiratory_score <span class="op">+</span> phoenix_cardiovascular_score <span class="op">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    phoenix_coagulation_score <span class="op">+</span> phoenix_neurologic_score <span class="kw">AS</span> phoenix_sepsis_score,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  IIF(phoenix_respiratory_score <span class="op">+</span> phoenix_cardiovascular_score <span class="op">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    phoenix_coagulation_score <span class="op">+</span> phoenix_neurologic_score <span class="op">&gt;=</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> phoenix_sepsis,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  IIF(phoenix_respiratory_score <span class="op">+</span> phoenix_cardiovascular_score <span class="op">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    phoenix_coagulation_score <span class="op">+</span> phoenix_neurologic_score <span class="op">&gt;=</span><span class="dv">2</span> <span class="kw">AND</span> phoenix_cardiovascular_score <span class="op">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> phoenix_septic_shock</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> respiratory</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> cardiovascular</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> cardiovascular.pid</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> coagulation</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> coagulation.pid</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> neurologic</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> neurologic.pid</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phoenix_scores</span></span>
+<span><span class="co">##    pid phoenix_respiratory_score phoenix_cardiovascular_score</span></span>
+<span><span class="co">## 1    1                         0                            2</span></span>
+<span><span class="co">## 2    2                         3                            2</span></span>
+<span><span class="co">## 3    3                         3                            1</span></span>
+<span><span class="co">## 4    4                         0                            0</span></span>
+<span><span class="co">## 5    5                         0                            0</span></span>
+<span><span class="co">## 6    6                         3                            1</span></span>
+<span><span class="co">## 7    7                         3                            4</span></span>
+<span><span class="co">## 8    8                         0                            0</span></span>
+<span><span class="co">## 9    9                         3                            3</span></span>
+<span><span class="co">## 10  10                         3                            0</span></span>
+<span><span class="co">## 11  11                         3                            3</span></span>
+<span><span class="co">## 12  12                         1                            0</span></span>
+<span><span class="co">## 13  13                         0                            0</span></span>
+<span><span class="co">## 14  14                         2                            2</span></span>
+<span><span class="co">## 15  15                         3                            3</span></span>
+<span><span class="co">## 16  16                         0                            2</span></span>
+<span><span class="co">## 17  17                         2                            2</span></span>
+<span><span class="co">## 18  18                         3                            2</span></span>
+<span><span class="co">## 19  19                         2                            2</span></span>
+<span><span class="co">## 20  20                         0                            1</span></span>
+<span><span class="co">##    phoenix_coagulation_score phoenix_neurologic_score phoenix_sepsis_score</span></span>
+<span><span class="co">## 1                          1                        0                    3</span></span>
+<span><span class="co">## 2                          1                        1                    7</span></span>
+<span><span class="co">## 3                          2                        0                    6</span></span>
+<span><span class="co">## 4                          1                        0                    1</span></span>
+<span><span class="co">## 5                          0                        0                    0</span></span>
+<span><span class="co">## 6                          2                        1                    7</span></span>
+<span><span class="co">## 7                          2                        0                    9</span></span>
+<span><span class="co">## 8                          1                        0                    1</span></span>
+<span><span class="co">## 9                          1                        1                    8</span></span>
+<span><span class="co">## 10                         0                        1                    4</span></span>
+<span><span class="co">## 11                         1                        2                    9</span></span>
+<span><span class="co">## 12                         0                        0                    1</span></span>
+<span><span class="co">## 13                         0                        0                    0</span></span>
+<span><span class="co">## 14                         1                        0                    5</span></span>
+<span><span class="co">## 15                         2                        0                    8</span></span>
+<span><span class="co">## 16                         1                        0                    3</span></span>
+<span><span class="co">## 17                         1                        0                    5</span></span>
+<span><span class="co">## 18                         2                        0                    7</span></span>
+<span><span class="co">## 19                         0                        0                    4</span></span>
+<span><span class="co">## 20                         1                        0                    2</span></span>
+<span><span class="co">##    phoenix_sepsis phoenix_septic_shock</span></span>
+<span><span class="co">## 1               1                    1</span></span>
+<span><span class="co">## 2               1                    1</span></span>
+<span><span class="co">## 3               1                    1</span></span>
+<span><span class="co">## 4               0                    0</span></span>
+<span><span class="co">## 5               0                    0</span></span>
+<span><span class="co">## 6               1                    1</span></span>
+<span><span class="co">## 7               1                    1</span></span>
+<span><span class="co">## 8               0                    0</span></span>
+<span><span class="co">## 9               1                    1</span></span>
+<span><span class="co">## 10              1                    0</span></span>
+<span><span class="co">## 11              1                    1</span></span>
+<span><span class="co">## 12              0                    0</span></span>
+<span><span class="co">## 13              0                    0</span></span>
+<span><span class="co">## 14              1                    1</span></span>
+<span><span class="co">## 15              1                    1</span></span>
+<span><span class="co">## 16              1                    1</span></span>
+<span><span class="co">## 17              1                    1</span></span>
+<span><span class="co">## 18              1                    1</span></span>
+<span><span class="co">## 19              1                    1</span></span>
+<span><span class="co">## 20              1                    1</span></span></code></pre></div>
+<p>This output is the same as the output generated in R via:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phoenix_scores_from_r</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix.html">phoenix</a></span><span class="op">(</span></span>
+<span>    <span class="co"># respiratory</span></span>
+<span>      pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span>
+<span>      sf_ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spo2</span> <span class="op">&lt;=</span> <span class="fl">97</span>, <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>, <span class="cn">NA_real_</span><span class="op">)</span>,</span>
+<span>      imv <span class="op">=</span> <span class="va">vent</span>,</span>
+<span>      other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span>
+<span>    <span class="co"># cardiovascular</span></span>
+<span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
+<span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
+<span>      age <span class="op">=</span> <span class="va">age</span>,</span>
+<span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>    <span class="co"># coagulation</span></span>
+<span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span>
+<span>      inr <span class="op">=</span> <span class="va">inr</span>,</span>
+<span>      d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,</span>
+<span>      fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,</span>
+<span>    <span class="co"># neurologic</span></span>
+<span>      gcs <span class="op">=</span> <span class="va">gcs_total</span>,</span>
+<span>      fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">phoenix_scores</span><span class="op">)</span></span>
+<span><span class="co">## 'data.frame':    20 obs. of  8 variables:</span></span>
+<span><span class="co">##  $ pid                         : int  1 2 3 4 5 6 7 8 9 10 ...</span></span>
+<span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">phoenix_scores_from_r</span><span class="op">)</span></span>
+<span><span class="co">## 'data.frame':    20 obs. of  7 variables:</span></span>
+<span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">phoenix_scores</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="va">phoenix_scores_from_r</span><span class="op">)</span></span>
+<span><span class="co">## [1] TRUE</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="phoenix-8">Phoenix 8<a class="anchor" aria-label="anchor" href="#phoenix-8"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>For Phoenix 8 you need only to four more organ dysfunction scores.
+The result of the following query is saved as and R
+<code>data.frame</code> called <code>phoenix8_scores</code></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  respiratory.pid <span class="kw">AS</span> pid,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  phoenix_respiratory_score,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  phoenix_cardiovascular_score,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  phoenix_coagulation_score,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  phoenix_neurologic_score,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  phoenix_respiratory_score <span class="op">+</span> phoenix_cardiovascular_score <span class="op">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    phoenix_coagulation_score <span class="op">+</span> phoenix_neurologic_score <span class="kw">AS</span> phoenix_sepsis_score,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  IIF(phoenix_respiratory_score <span class="op">+</span> phoenix_cardiovascular_score <span class="op">+</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    phoenix_coagulation_score <span class="op">+</span> phoenix_neurologic_score <span class="op">&gt;=</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> phoenix_sepsis,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  IIF(phoenix_respiratory_score <span class="op">+</span> phoenix_cardiovascular_score <span class="op">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    phoenix_coagulation_score <span class="op">+</span> phoenix_neurologic_score <span class="op">&gt;=</span><span class="dv">2</span> <span class="kw">AND</span> phoenix_cardiovascular_score <span class="op">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">AS</span> phoenix_septic_shock,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  phoenix_endocrine_score,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  phoenix_immunologic_score,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  phoenix_renal_score,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  phoenix_hepatic_score,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  phoenix_respiratory_score <span class="op">+</span> phoenix_cardiovascular_score <span class="op">+</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    phoenix_coagulation_score <span class="op">+</span> phoenix_neurologic_score  <span class="op">+</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    phoenix_endocrine_score <span class="op">+</span> phoenix_immunologic_score <span class="op">+</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    phoenix_renal_score <span class="op">+</span> phoenix_hepatic_score <span class="kw">AS</span> phoenix8_sepsis_score</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> respiratory</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> cardiovascular</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> cardiovascular.pid</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> coagulation</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> coagulation.pid</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> neurologic</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> neurologic.pid</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> endocrine</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> endocrine.pid</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> immunologic</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> immunologic.pid</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> renal</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> renal.pid</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> hepatic</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> respiratory.pid <span class="op">=</span> hepatic.pid</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phoenix8_scores</span></span>
+<span><span class="co">##    pid phoenix_respiratory_score phoenix_cardiovascular_score</span></span>
+<span><span class="co">## 1    1                         0                            2</span></span>
+<span><span class="co">## 2    2                         3                            2</span></span>
+<span><span class="co">## 3    3                         3                            1</span></span>
+<span><span class="co">## 4    4                         0                            0</span></span>
+<span><span class="co">## 5    5                         0                            0</span></span>
+<span><span class="co">## 6    6                         3                            1</span></span>
+<span><span class="co">## 7    7                         3                            4</span></span>
+<span><span class="co">## 8    8                         0                            0</span></span>
+<span><span class="co">## 9    9                         3                            3</span></span>
+<span><span class="co">## 10  10                         3                            0</span></span>
+<span><span class="co">## 11  11                         3                            3</span></span>
+<span><span class="co">## 12  12                         1                            0</span></span>
+<span><span class="co">## 13  13                         0                            0</span></span>
+<span><span class="co">## 14  14                         2                            2</span></span>
+<span><span class="co">## 15  15                         3                            3</span></span>
+<span><span class="co">## 16  16                         0                            2</span></span>
+<span><span class="co">## 17  17                         2                            2</span></span>
+<span><span class="co">## 18  18                         3                            2</span></span>
+<span><span class="co">## 19  19                         2                            2</span></span>
+<span><span class="co">## 20  20                         0                            1</span></span>
+<span><span class="co">##    phoenix_coagulation_score phoenix_neurologic_score phoenix_sepsis_score</span></span>
+<span><span class="co">## 1                          1                        0                    3</span></span>
+<span><span class="co">## 2                          1                        1                    7</span></span>
+<span><span class="co">## 3                          2                        0                    6</span></span>
+<span><span class="co">## 4                          1                        0                    1</span></span>
+<span><span class="co">## 5                          0                        0                    0</span></span>
+<span><span class="co">## 6                          2                        1                    7</span></span>
+<span><span class="co">## 7                          2                        0                    9</span></span>
+<span><span class="co">## 8                          1                        0                    1</span></span>
+<span><span class="co">## 9                          1                        1                    8</span></span>
+<span><span class="co">## 10                         0                        1                    4</span></span>
+<span><span class="co">## 11                         1                        2                    9</span></span>
+<span><span class="co">## 12                         0                        0                    1</span></span>
+<span><span class="co">## 13                         0                        0                    0</span></span>
+<span><span class="co">## 14                         1                        0                    5</span></span>
+<span><span class="co">## 15                         2                        0                    8</span></span>
+<span><span class="co">## 16                         1                        0                    3</span></span>
+<span><span class="co">## 17                         1                        0                    5</span></span>
+<span><span class="co">## 18                         2                        0                    7</span></span>
+<span><span class="co">## 19                         0                        0                    4</span></span>
+<span><span class="co">## 20                         1                        0                    2</span></span>
+<span><span class="co">##    phoenix_sepsis phoenix_septic_shock phoenix_endocrine_score</span></span>
+<span><span class="co">## 1               1                    1                       0</span></span>
+<span><span class="co">## 2               1                    1                       0</span></span>
+<span><span class="co">## 3               1                    1                       0</span></span>
+<span><span class="co">## 4               0                    0                       0</span></span>
+<span><span class="co">## 5               0                    0                       0</span></span>
+<span><span class="co">## 6               1                    1                       0</span></span>
+<span><span class="co">## 7               1                    1                       0</span></span>
+<span><span class="co">## 8               0                    0                       0</span></span>
+<span><span class="co">## 9               1                    1                       1</span></span>
+<span><span class="co">## 10              1                    0                       0</span></span>
+<span><span class="co">## 11              1                    1                       1</span></span>
+<span><span class="co">## 12              0                    0                       0</span></span>
+<span><span class="co">## 13              0                    0                       0</span></span>
+<span><span class="co">## 14              1                    1                       0</span></span>
+<span><span class="co">## 15              1                    1                       0</span></span>
+<span><span class="co">## 16              1                    1                       0</span></span>
+<span><span class="co">## 17              1                    1                       0</span></span>
+<span><span class="co">## 18              1                    1                       0</span></span>
+<span><span class="co">## 19              1                    1                       0</span></span>
+<span><span class="co">## 20              1                    1                       1</span></span>
+<span><span class="co">##    phoenix_immunologic_score phoenix_renal_score phoenix_hepatic_score</span></span>
+<span><span class="co">## 1                          0                   1                     0</span></span>
+<span><span class="co">## 2                          1                   0                     0</span></span>
+<span><span class="co">## 3                          1                   0                     1</span></span>
+<span><span class="co">## 4                          1                   0                     1</span></span>
+<span><span class="co">## 5                          0                   0                     0</span></span>
+<span><span class="co">## 6                          1                   1                     0</span></span>
+<span><span class="co">## 7                          0                   1                     1</span></span>
+<span><span class="co">## 8                          1                   0                     0</span></span>
+<span><span class="co">## 9                          1                   1                     1</span></span>
+<span><span class="co">## 10                         1                   0                     0</span></span>
+<span><span class="co">## 11                         0                   1                     0</span></span>
+<span><span class="co">## 12                         0                   0                     0</span></span>
+<span><span class="co">## 13                         0                   0                     0</span></span>
+<span><span class="co">## 14                         0                   0                     0</span></span>
+<span><span class="co">## 15                         0                   1                     1</span></span>
+<span><span class="co">## 16                         1                   0                     0</span></span>
+<span><span class="co">## 17                         1                   0                     0</span></span>
+<span><span class="co">## 18                         0                   1                     1</span></span>
+<span><span class="co">## 19                         1                   1                     0</span></span>
+<span><span class="co">## 20                         1                   0                     0</span></span>
+<span><span class="co">##    phoenix8_sepsis_score</span></span>
+<span><span class="co">## 1                      4</span></span>
+<span><span class="co">## 2                      8</span></span>
+<span><span class="co">## 3                      8</span></span>
+<span><span class="co">## 4                      3</span></span>
+<span><span class="co">## 5                      0</span></span>
+<span><span class="co">## 6                      9</span></span>
+<span><span class="co">## 7                     11</span></span>
+<span><span class="co">## 8                      2</span></span>
+<span><span class="co">## 9                     12</span></span>
+<span><span class="co">## 10                     5</span></span>
+<span><span class="co">## 11                    11</span></span>
+<span><span class="co">## 12                     1</span></span>
+<span><span class="co">## 13                     0</span></span>
+<span><span class="co">## 14                     5</span></span>
+<span><span class="co">## 15                    10</span></span>
+<span><span class="co">## 16                     4</span></span>
+<span><span class="co">## 17                     6</span></span>
+<span><span class="co">## 18                     9</span></span>
+<span><span class="co">## 19                     6</span></span>
+<span><span class="co">## 20                     4</span></span>
+<span><span class="va">phoenix8_scores_r</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/phoenix8.html">phoenix8</a></span><span class="op">(</span></span>
+<span>    <span class="co"># respiratory</span></span>
+<span>      pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span>
+<span>      sf_ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spo2</span> <span class="op">&lt;=</span> <span class="fl">97</span>, <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>, <span class="cn">NA_real_</span><span class="op">)</span>,</span>
+<span>      imv <span class="op">=</span> <span class="va">vent</span>,</span>
+<span>      other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span>
+<span>    <span class="co"># cardiovascular</span></span>
+<span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
+<span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
+<span>      age <span class="op">=</span> <span class="va">age</span>, <span class="co"># Also used in the renal assessment.</span></span>
+<span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>    <span class="co"># coagulation</span></span>
+<span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span>
+<span>      inr <span class="op">=</span> <span class="va">inr</span>,</span>
+<span>      d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,</span>
+<span>      fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,</span>
+<span>    <span class="co"># neurologic</span></span>
+<span>      gcs <span class="op">=</span> <span class="va">gcs_total</span>,</span>
+<span>      fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span>
+<span>    <span class="co"># endocrine</span></span>
+<span>      glucose <span class="op">=</span> <span class="va">glucose</span>,</span>
+<span>    <span class="co"># immunologic</span></span>
+<span>      anc <span class="op">=</span> <span class="va">anc</span>,</span>
+<span>      alc <span class="op">=</span> <span class="va">alc</span>,</span>
+<span>    <span class="co"># renal</span></span>
+<span>      creatinine <span class="op">=</span> <span class="va">creatinine</span>,</span>
+<span>      <span class="co"># no need to specify age again</span></span>
+<span>    <span class="co"># hepatic</span></span>
+<span>      bilirubin <span class="op">=</span> <span class="va">bilirubin</span>,</span>
+<span>      alt <span class="op">=</span> <span class="va">alt</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">phoenix8_scores</span><span class="op">)</span></span>
+<span><span class="co">## 'data.frame':    20 obs. of  13 variables:</span></span>
+<span><span class="co">##  $ pid                         : int  1 2 3 4 5 6 7 8 9 10 ...</span></span>
+<span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_endocrine_score     : int  0 0 0 0 0 0 0 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_immunologic_score   : int  0 1 1 1 0 1 0 1 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_renal_score         : int  1 0 0 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_hepatic_score       : int  0 0 1 1 0 0 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix8_sepsis_score       : int  4 8 8 3 0 9 11 2 12 5 ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">phoenix8_scores_r</span><span class="op">)</span></span>
+<span><span class="co">## 'data.frame':    20 obs. of  12 variables:</span></span>
+<span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_endocrine_score     : int  0 0 0 0 0 0 0 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_immunologic_score   : int  0 1 1 1 0 1 0 1 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_renal_score         : int  1 0 0 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_hepatic_score       : int  0 0 1 1 0 0 1 0 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix8_sepsis_score       : int  4 8 8 3 0 9 11 2 12 5 ...</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">phoenix8_scores</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="va">phoenix8_scores_r</span><span class="op">)</span></span>
+<span><span class="co">## [1] TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>

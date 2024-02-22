@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phoenix</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9001</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dewittpe/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"phoenix"</span><span class="op">)</span></span>
-<span><span class="co">## [1] '0.0.0.9000'</span></span></code></pre></div>
+<span><span class="co">## [1] '0.0.0.9001'</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="development-and-international-consensus">Development and International Consensus<a class="anchor" aria-label="anchor" href="#development-and-international-consensus"></a>
 </h2>
@@ -445,7 +445,7 @@ of another, then wrap the shorter inputs in <code><a href="https://rdrr.io/r/bas
 clarity.</p>
 <p>In the following subsections example use of the functions require the
 use of the provided example synthetic dataset <code>sepsis</code>. This
-data set has 20 rows and 26 variables. See `<code>?</code>(sepsis)` for
+data set has 20 rows and 27 variables. See `<code>?</code>(sepsis)` for
 more details.</p>
 <div class="section level3">
 <h3 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
@@ -967,9 +967,9 @@ scores.</p>
 <span><span class="co">## 'data.frame':    20 obs. of  7 variables:</span></span>
 <span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
 <span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
-<span><span class="co">##  $ phoenix_coagulation_score   : num  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
 <span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
-<span><span class="co">##  $ phoenix_sepsis_score        : num  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
 <span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
 <span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span></code></pre></div>
 <p>The results as a easy to read table:</p>
@@ -1519,16 +1519,16 @@ calling <code>phoenix8</code>.</p>
 <span><span class="co">## 'data.frame':    20 obs. of  12 variables:</span></span>
 <span><span class="co">##  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
 <span><span class="co">##  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
-<span><span class="co">##  $ phoenix_coagulation_score   : num  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">##  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
 <span><span class="co">##  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
-<span><span class="co">##  $ phoenix_sepsis_score        : num  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">##  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
 <span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
 <span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
 <span><span class="co">##  $ phoenix_endocrine_score     : int  0 0 0 0 0 0 0 0 1 0 ...</span></span>
 <span><span class="co">##  $ phoenix_immunologic_score   : int  0 1 1 1 0 1 0 1 1 1 ...</span></span>
 <span><span class="co">##  $ phoenix_renal_score         : int  1 0 0 0 0 1 1 0 1 0 ...</span></span>
 <span><span class="co">##  $ phoenix_hepatic_score       : int  0 0 1 1 0 0 1 0 1 0 ...</span></span>
-<span><span class="co">##  $ phoenix8_sepsis_score       : num  4 8 8 3 0 9 11 2 12 5 ...</span></span></code></pre></div>
+<span><span class="co">##  $ phoenix8_sepsis_score       : int  4 8 8 3 0 9 11 2 12 5 ...</span></span></code></pre></div>
 <p>The results as a easy to read table:</p>
 <table class="table">
 <thead><tr>
