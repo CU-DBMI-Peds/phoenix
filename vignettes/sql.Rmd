@@ -1,0 +1,178 @@
+---
+title: "The Phoenix Sepsis Criteria in sql"
+output:
+ rmarkdown::html_vignette:
+   toc: true
+   toc_depth: 2
+   number_sections: false
+bibliography: references.bib
+vignette: >
+ %\VignetteIndexEntry{The Phoenix Sepsis Criteria in sql}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+
+```{r, eval = FALSE, include = FALSE}
+################################################################################
+#                                IMPORTANT NOTE                                #
+#                                                                              #
+#   This vignette _is not_ part of the R package, it is part of the website!   #
+################################################################################
+```
+
+```{css, echo = FALSE}
+.rchunk {
+  border: 5px solid #FFFFFF;
+}
+.sqlchunk {
+  border: 5px solid #4B8BBE;
+}
+```
+
+```{r, label = setup, include = FALSE}
+for (pkg in c("odbc", "DBI", "RSQLite")) {
+  if (!(pkg %in% rownames(installed.packages()))) {
+    install.packages(pkg, repo = "https://cran.rstudio.com")
+  }
+}
+
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+The following examples are provided to show how to apply the Phoenix Sepsis
+criteria within an SQLite data base.  We will use the same example data set
+`sepsis` from the R package for the following examples.  The examples
+are made possible by using the following R packages
+```{r}
+library(odbc)
+library(DBI)
+library(RSQLite)
+library(phoenix)
+```
+
+To help distinguish between R and sql code chunks, chunks outlined in blue are
+SQL and chunks with no outline are R chunks.
+
+We start in R by setting up a local example SQL database with one table `sepsis`
+
+```{r}
+con <- dbConnect(drv = RSQLite::SQLite(), dbname = ":memory:")
+dbWriteTable(conn = con, name = "sepsis", value = sepsis)
+```
+
+We can easily query the table:
+
+```{sql class.source = 'sqlchunk', connection = con}
+SELECT * FROM sepsis
+```
+
+# Respiratory
+
+We need either create or code for the PF ratio, SF Ratio, invasive mechanical
+ventilation, and other respiratory support.  In the construction of the PF ratio
+(pfr) and SF ratio (sfr) we replace missing values with value that will map to a
+score of zero.  If the percent of inspiratory oxygen is greater than 0.21, that
+indicates the patient is on some form of respiratory support.
+
+```{sql class.source = 'sqlchunk', connection = con, output.var = "resp"}
+WITH respiratory AS (
+  SELECT
+    COALESCE(pao2 / fio2, 500) AS pfr,
+    COALESCE(spo2 / fio2, 500) AS sfr,
+    COALESCE(vent, 0)          AS imv,
+    IIF(fio2 > 0.21 OR vent = 1, 1, 0) AS other_respiratory_support
+  FROM sepsis
+)
+SELECT
+  imv * (IIF(pfr < 100 OR sfr < 14, 1, 0) + IIF(pfr < 200 OR sfr < 220, 1, 0) ) +
+    other_respiratory_support * IIF(pfr < 400 OR sfr < 292, 1, 0) AS phoenix_respiratory_score
+  FROM respiratory;
+```
+
+The above query was saved to an R `data.frame` called `resp` and will be added
+to the virtual database for inspection later.
+
+```{r}
+dbWriteTable(conn = con, name = "respiratory", value = resp)
+```
+
+# Cardiovascular
+
+Missing values correspond to zero points.  The combination of age and mean
+arterial pressure will require both values to be know for possible points to be
+assessed.
+
+```{sql class.source = 'sqlchunk', connection = con, output.var = "card"}
+WITH vars AS (
+  SELECT
+    COALESCE(dobutamine, 0) +
+      COALESCE(dopamine, 0) +
+      COALESCE(epinephrine, 0) +
+      COALESCE(milrinone, 0) +
+      COALESCE(norepinephrine, 0) +
+      COALESCE(vasopressin, 0) AS vasos,
+    lactate,
+    dbp + (1/3) * (sbp - dbp) AS map,
+    age
+  FROM sepsis
+),
+points AS (
+  SELECT
+    CASE WHEN vasos > 1 THEN 2
+         WHEN vasos > 0 THEN 1
+         ELSE 0 END AS vaso_points,
+    CASE WHEN lactate >= 11 THEN 2
+         WHEN lactate >=  5 THEN 1
+         ELSE 0 END AS lactate_points,
+    CASE WHEN (               age <   1) AND (map < 17) THEN 2
+         WHEN (age >=   1 AND age <  12) AND (map < 25) THEN 2
+         WHEN (age >=  12 AND age <  24) AND (map < 31) THEN 2
+         WHEN (age >=  24 AND age <  60) AND (map < 32) THEN 2
+         WHEN (age >=  60 AND age < 144) AND (map < 36) THEN 2
+         WHEN (age >= 144              ) AND (map < 38) THEN 2
+         WHEN (               age <   1) AND (map < 31) THEN 1
+         WHEN (age >=   1 AND age <  12) AND (map < 39) THEN 1
+         WHEN (age >=  12 AND age <  24) AND (map < 44) THEN 1
+         WHEN (age >=  24 AND age <  60) AND (map < 45) THEN 1
+         WHEN (age >=  60 AND age < 144) AND (map < 49) THEN 1
+         WHEN (age >= 144              ) AND (map < 52) THEN 1
+         ELSE 0 END AS map_points
+  FROM vars
+)
+SELECT
+  vaso_points + lactate_points + map_points AS phoenix_cardiovascular_score
+FROM points;
+```
+
+The results of the above query were saved behind the scene to an R `data.frame`
+called `card` which will be added to the SQLite database for inspection later.
+
+```{r}
+dbWriteTable(conn = con, name = "cardiovascular", value = card)
+```
+
+# Coagulation
+
+# Neurologic
+
+# Endocrine
+
+# Immunologic
+
+# Renal
+
+# Hepatic
+
+# Phoenix
+
+```{sql eval = FALSE, class.source = 'sqlchunk', connection = con}
+```
+
+# Phoenix 8
+
+
+```{r}
+dbDisconnect(con)
+```
+
+

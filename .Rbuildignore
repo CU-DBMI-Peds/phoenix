@@ -8,3 +8,4 @@
 ^\.github$
 ^python$
 ^vignettes/python\.Rmd$
+^vignettes/sql\.Rmd$
