@@ -79,14 +79,13 @@ WITH respiratory AS (
   SELECT
     pid,
     COALESCE(pao2 / fio2, 500) AS pfr,
-    COALESCE(spo2 / fio2, 500) AS sfr,
+    COALESCE(IIF(spo2 <= 97, spo2 / fio2, 500), 500) AS sfr,
     COALESCE(vent, 0)          AS imv,
     IIF(fio2 > 0.21 OR vent = 1, 1, 0) AS other_respiratory_support
   FROM sepsis
 )
-SELECT
-  pid,
-  imv * (IIF(pfr < 100 OR sfr < 14, 1, 0) + IIF(pfr < 200 OR sfr < 220, 1, 0) ) +
+SELECT *,
+  imv * (IIF(pfr < 100 OR sfr < 148, 1, 0) + IIF(pfr < 200 OR sfr < 220, 1, 0) ) +
     other_respiratory_support * IIF(pfr < 400 OR sfr < 292, 1, 0) AS phoenix_respiratory_score
   FROM respiratory;
 ```
@@ -97,6 +96,23 @@ to the virtual database for inspection later.
 ```{r}
 dbWriteTable(conn = con, name = "respiratory", value = resp)
 ```
+
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+resp
+resp_r <-
+  phoenix_respiratory(
+      pf_ratio = pao2 / fio2,
+      sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+      imv = vent,
+      other_respiratory_support = as.integer(fio2 > 0.21),
+    data = sepsis
+  )
+DF <- cbind(resp, resp_r)
+DF[DF$phoenix_respiratory_score != DF$resp_r, ]
+stopifnot(identical(DF$phoenix_respiratory_score, resp_r))
+```
+
 
 # Cardiovascular
 
@@ -115,13 +131,12 @@ WITH vars AS (
       COALESCE(norepinephrine, 0) +
       COALESCE(vasopressin, 0) AS vasos,
     lactate,
-    dbp + (1/3) * (sbp - dbp) AS map,
+    dbp + (sbp - dbp) / 3 AS map,
     age
   FROM sepsis
 ),
 points AS (
-  SELECT
-    pid,
+  SELECT *,
     CASE WHEN vasos > 1 THEN 2
          WHEN vasos > 0 THEN 1
          ELSE 0 END AS vaso_points,
@@ -143,8 +158,7 @@ points AS (
          ELSE 0 END AS map_points
   FROM vars
 )
-SELECT
-  pid,
+SELECT *,
   vaso_points + lactate_points + map_points AS phoenix_cardiovascular_score
 FROM points;
 ```
@@ -154,6 +168,22 @@ called `card` which will be added to the SQLite database for inspection later.
 
 ```{r}
 dbWriteTable(conn = con, name = "cardiovascular", value = card)
+```
+
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+card
+card_r <-
+  phoenix_cardiovascular(
+      vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+      lactate = lactate,
+      age = age,
+      map = dbp + (sbp - dbp)/3,
+    data = sepsis
+  )
+DF <- cbind(card, card_r)
+DF[DF$phoenix_cardiovascular_score != DF$card_r, ]
+stopifnot(identical(DF$phoenix_cardiovascular_score, card_r))
 ```
 
 # Coagulation
@@ -168,8 +198,7 @@ WITH points AS (
     CASE WHEN fibrinogen < 100 THEN 1 ELSE 0 END AS fib
   FROM sepsis
 )
-SELECT
-  pid,
+SELECT *,
   CASE WHEN plts + inr + ddm + fib >= 2 THEN 2
        ELSE plts + inr + ddm + fib END AS phoenix_coagulation_score
   FROM points
@@ -182,6 +211,22 @@ SQLite database for inspection later.
 dbWriteTable(conn = con, name = "coagulation", value = coag)
 ```
 
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+coag
+coag_r <-
+  phoenix_coagulation(
+      platelets = platelets,
+      inr = inr,
+      d_dimer = d_dimer,
+      fibrinogen = fibrinogen,
+    data = sepsis
+  )
+DF <- cbind(coag, coag_r)
+DF[DF$phoenix_coagulation_score != DF$coag_r, ]
+stopifnot(identical(DF$phoenix_coagulation_score, coag_r))
+```
+
 # Neurologic
 
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "neuro"}
@@ -192,8 +237,7 @@ WITH points AS (
     CASE WHEN pupil = "both-fixed" THEN 1 ELSE 0 END AS fixed_pupils
   FROM sepsis
 )
-SELECT
-  pid,
+SELECT *,
   CASE WHEN fixed_pupils = 1 THEN 2
        WHEN gcs = 1 THEN 1
        ELSE 0 END as phoenix_neurologic_score
@@ -205,6 +249,20 @@ SQLite database for inspection later.
 
 ```{r}
 dbWriteTable(conn = con, name = "neurologic", value = neuro)
+```
+
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+neuro
+neuro_r <-
+  phoenix_neurologic(
+      gcs = gcs_total,
+      fixed_pupils = as.integer(pupil == "both-fixed"),
+    data = sepsis
+  )
+DF <- cbind(neuro, neuro_r)
+DF[DF$phoenix_neurologic_score != DF$neuro_r, ]
+stopifnot(identical(DF$phoenix_neurologic_score, neuro_r))
 ```
 
 # Endocrine
@@ -224,6 +282,19 @@ SQLite database for inspection later.
 dbWriteTable(conn = con, name = "endocrine", value = endo)
 ```
 
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+endo
+endo_r <-
+  phoenix_endocrine(
+      glucose = glucose,
+    data = sepsis
+  )
+DF <- cbind(endo, endo_r)
+DF[DF$phoenix_endocrine_score != DF$endo_r, ]
+stopifnot(identical(DF$phoenix_endocrine_score, endo_r))
+```
+
 # Immunologic
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "immu"}
 SELECT
@@ -240,16 +311,30 @@ SQLite database for inspection later.
 dbWriteTable(conn = con, name = "immunologic", value = immu)
 ```
 
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+immu
+immu_r <-
+  phoenix_immunologic(
+      anc = anc,
+      alc = alc,
+    data = sepsis
+  )
+DF <- cbind(immu, immu_r)
+DF[DF$phoenix_immunologic_score != DF$immu_r, ]
+stopifnot(identical(DF$phoenix_immunologic_score, immu_r))
+```
+
 # Renal
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "renal"}
 SELECT
   pid,
-  CASE WHEN (               age <   1) AND (creatinine < 0.8) THEN 1
-       WHEN (age >=   1 AND age <  12) AND (creatinine < 0.3) THEN 1
-       WHEN (age >=  12 AND age <  24) AND (creatinine < 0.4) THEN 1
-       WHEN (age >=  24 AND age <  60) AND (creatinine < 0.6) THEN 1
-       WHEN (age >=  60 AND age < 144) AND (creatinine < 0.7) THEN 1
-       WHEN (age >= 144              ) AND (creatinine < 1.0) THEN 1
+  CASE WHEN (               age <   1) AND (creatinine >= 0.8) THEN 1
+       WHEN (age >=   1 AND age <  12) AND (creatinine >= 0.3) THEN 1
+       WHEN (age >=  12 AND age <  24) AND (creatinine >= 0.4) THEN 1
+       WHEN (age >=  24 AND age <  60) AND (creatinine >= 0.6) THEN 1
+       WHEN (age >=  60 AND age < 144) AND (creatinine >= 0.7) THEN 1
+       WHEN (age >= 144              ) AND (creatinine >= 1.0) THEN 1
        ELSE 0 END AS phoenix_renal_score
 FROM sepsis
 ```
@@ -260,12 +345,26 @@ SQLite database for inspection later.
 dbWriteTable(conn = con, name = "renal", value = renal)
 ```
 
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+renal
+renal_r <-
+  phoenix_renal(
+      creatinine = creatinine,
+      age = age,
+    data = sepsis
+  )
+DF <- cbind(renal, renal_r)
+DF[DF$phoenix_renal_score != DF$renal_r, ]
+stopifnot(identical(DF$phoenix_renal_score, renal_r))
+```
+
 # Hepatic
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "hep"}
 SELECT
   pid,
   CASE WHEN bilirubin >= 4 THEN 1
-       WHEN alt < 102 THEN 1
+       WHEN alt > 102 THEN 1
        ELSE 0 END AS phoenix_hepatic_score
 FROM sepsis
 ```
@@ -273,6 +372,20 @@ The above was stored as an R `data.frame` named `hep` and will be added to the
 SQLite database for inspection later.
 ```{r}
 dbWriteTable(conn = con, name = "hepatic", value = hep)
+```
+
+```{r include = FALSE}
+# TESTING IF SQL IS THE SAME AS R
+hep
+hep_r <-
+  phoenix_hepatic(
+      bilirubin = bilirubin,
+      alt = alt,
+    data = sepsis
+  )
+DF <- cbind(hep, hep_r)
+DF[DF$phoenix_hepatic_score != DF$hep_r, ]
+stopifnot(identical(DF$phoenix_hepatic_score, hep_r))
 ```
 
 # Phoenix
@@ -337,10 +450,100 @@ str(phoenix_scores_from_r)
 identical(phoenix_scores[, -1], phoenix_scores_from_r)
 ```
 
-
+```{r include = FALSE}
+stopifnot(identical(phoenix_scores$phoenix_respiratory_score, phoenix_scores_from_r$phoenix_respiratory_score))
+stopifnot(identical(phoenix_scores$phoenix_cardiovascular_score, phoenix_scores_from_r$phoenix_cardiovascular_score))
+stopifnot(identical(phoenix_scores$phoenix_coagulation_score, phoenix_scores_from_r$phoenix_coagulation_score))
+stopifnot(identical(phoenix_scores$phoenix_neurologic_score, phoenix_scores_from_r$phoenix_neurologic_score))
+stopifnot(identical(phoenix_scores$phoenix_sepsis_score, phoenix_scores_from_r$phoenix_sepsis_score))
+stopifnot(identical(phoenix_scores$phoenix_sepsis, phoenix_scores_from_r$phoenix_sepsis))
+stopifnot(identical(phoenix_scores$phoenix_septic_shock, phoenix_scores_from_r$phoenix_septic_shock))
+```
 
 # Phoenix 8
 
+For Phoenix 8 you need only to four more organ dysfunction scores.  The result
+of the following query is saved as and R `data.frame` called `phoenix8_scores`
+
+```{sql class.source = 'sqlchunk', connection = con, output.var = "phoenix8_scores"}
+SELECT
+  respiratory.pid AS pid,
+  phoenix_respiratory_score,
+  phoenix_cardiovascular_score,
+  phoenix_coagulation_score,
+  phoenix_neurologic_score,
+  phoenix_respiratory_score + phoenix_cardiovascular_score +
+    phoenix_coagulation_score + phoenix_neurologic_score AS phoenix_sepsis_score,
+  IIF(phoenix_respiratory_score + phoenix_cardiovascular_score +
+    phoenix_coagulation_score + phoenix_neurologic_score >=2, 1, 0) AS phoenix_sepsis,
+  IIF(phoenix_respiratory_score + phoenix_cardiovascular_score +
+    phoenix_coagulation_score + phoenix_neurologic_score >=2 AND phoenix_cardiovascular_score > 0, 1, 0) AS phoenix_septic_shock,
+  phoenix_endocrine_score,
+  phoenix_immunologic_score,
+  phoenix_renal_score,
+  phoenix_hepatic_score,
+  phoenix_respiratory_score + phoenix_cardiovascular_score +
+    phoenix_coagulation_score + phoenix_neurologic_score  +
+    phoenix_endocrine_score + phoenix_immunologic_score +
+    phoenix_renal_score + phoenix_hepatic_score AS phoenix8_sepsis_score
+FROM respiratory
+LEFT JOIN cardiovascular
+ON respiratory.pid = cardiovascular.pid
+LEFT JOIN coagulation
+ON respiratory.pid = coagulation.pid
+LEFT JOIN neurologic
+ON respiratory.pid = neurologic.pid
+LEFT JOIN endocrine
+ON respiratory.pid = endocrine.pid
+LEFT JOIN immunologic
+ON respiratory.pid = immunologic.pid
+LEFT JOIN renal
+ON respiratory.pid = renal.pid
+LEFT JOIN hepatic
+ON respiratory.pid = hepatic.pid
+```
+
+```{r}
+phoenix8_scores
+phoenix8_scores_r <-
+  phoenix8(
+    # respiratory
+      pf_ratio = pao2 / fio2,
+      sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+      imv = vent,
+      other_respiratory_support = as.integer(fio2 > 0.21),
+    # cardiovascular
+      vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+      lactate = lactate,
+      age = age, # Also used in the renal assessment.
+      map = dbp + (sbp - dbp)/3,
+    # coagulation
+      platelets = platelets,
+      inr = inr,
+      d_dimer = d_dimer,
+      fibrinogen = fibrinogen,
+    # neurologic
+      gcs = gcs_total,
+      fixed_pupils = as.integer(pupil == "both-fixed"),
+    # endocrine
+      glucose = glucose,
+    # immunologic
+      anc = anc,
+      alc = alc,
+    # renal
+      creatinine = creatinine,
+      # no need to specify age again
+    # hepatic
+      bilirubin = bilirubin,
+      alt = alt,
+    data = sepsis
+  )
+
+str(phoenix8_scores)
+str(phoenix8_scores_r)
+
+identical(phoenix8_scores[, -1], phoenix8_scores_r)
+```
 
 ```{r}
 dbDisconnect(con)
