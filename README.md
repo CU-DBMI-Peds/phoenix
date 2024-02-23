@@ -26,6 +26,7 @@ The Phoenix Criteria has been implemented as an
 
 * R package
 * python module
+* SQL queries
 
 The repository has been built with R as the primary and default language.
 
@@ -49,6 +50,9 @@ Install the development version of `phoenix` directly from github via the
 
 *NOTE:* If you are working on a Windows machine you will need to download and
 install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
+
+### Use
+
 
 ## python
 
