@@ -79,9 +79,26 @@ packageVersion("phoenix")
 #' |&nbsp;&nbsp; Fibrinogen | [100, &infin;) mg/dL | [0, 100) mg/dL |
 #' |**Neurologic** (0-2 points) | GCS &#8712; {11, 12, 13, 14, 15} | GCS &#8712; {3, 4, ..., 10} | Bilaterally fixed pupils |
 #' <small>
-#' * IMV: invasive mechanical ventalation</br>
-#' * Age: measured in months</br>
-#' * MAP: mean arterial pressure</br>
+#'   <ul>
+#'     <li>Abbreviations:</li>
+#'       <ul>
+#'         <li> FEU: fibrinogen equivalent units </li>
+#'         <li> FiO<sub>2</sub>: fraction of inspired oxygen </li>
+#'         <li> GCS: Glasgow Coma Score </li>
+#'         <li> IMV: invasive mechanical ventalation</li>
+#'         <li> INR: International normalized ratio </li>
+#'         <li> MAP: mean arterial pressure</li>
+#'         <li> SpO<sub>2</sub>: pulse oximetry oxygen saturation</li>
+#'     </ul>
+#'     <li> Age: measured in months and is not adjusted for prematurity. </li>
+#'     <li> SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when SpO<sub>2</sub> &leq 97. </li>
+#'     <li> Vasoactive medications: any systmic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin. </li>
+#'     <li> lactate can be arterial or venous.  Reference range 0.5 - 2.2 mmol/L </li>
+#'     <li> MAP - Use measured arterial pressue preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3 </li>
+#'     <li> Coagulation variable reference ranges: platelets, 150-450 10<sup>3</sup>/&mu;L; D-dimer, &lt; 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL.  International normalized ratio reference range is based on local reference prothrombintime. </li>
+#'     <li> Neurologi dysfunciton scoring was pragmatically validated in both sedated and onsedated patients and those with and without IMV. </li>
+#'     <li> GCS measures level of consciousness based on verbal, eye, and motor respose.  Values are integers from 3 to 15 with higher scores indicating better neurologic function. </li>
+#'   </ul>
 #' </small>
 #'
 #'
@@ -102,9 +119,6 @@ packageVersion("phoenix")
 #' |&nbsp;&nbsp;  60 &leq; Age < 144 | Creatinine &lt; 0.7 mg/dL | Creatinine &geq; 0.7 mg/dL |
 #' |&nbsp;&nbsp; 144 &leq; Age       | Creatinine &lt; 1.0 mg/dL | Creatinine &geq; 1.0 mg/dL |
 #' |**Hepatic** (0-1 point) | Total bilirubin &lt; 4 mg/dL and ALT &gt; 102 IU/L | Total bilirubin &geq; 4 mg/dL and/or ALT &gt; 102 IU/L |
-#' <small>
-#' * Age: measured in months</br>
-#' </small>
 #'
 #' # Development of the Criteria
 #'
@@ -144,6 +158,11 @@ packageVersion("phoenix")
 #' observed during the first 24 hours of an encounter.  The correct signal score
 #' for the patient in the above example is 2, not 3.  Please keep this in mind
 #' when you are preparing your data sets.
+#'
+#' **Age Restrictions:**
+#' Age measurements are not adjusted for prematurity.  The Phoenix criteria was
+#' developed on non-birth hospitalizations, children when gestational age &lt;
+#' 37 weeks; or those age &geq; 18 years.
 #'
 #' # Package Use
 #'
@@ -272,11 +291,12 @@ DF
 #' FiO<sub>2</sub>, PaO<sub>2</sub>, SpO<sub>2</sub>, and invasive mechanical
 #' ventilation.
 #'
-resp_example <- sepsis[c("fio2", "pao2", "spo2", "vent")]
+resp_example <- sepsis[c("pid", "fio2", "pao2", "spo2", "vent")]
 
 #'
 #' Implied in this data is other respiratory support when FiO<sub>2</sub> is
 #' greater than 0.21, the approximate fraction of oxygen in the atmosphere.
+#+ results = "hide"
 resp_example$score <-
   phoenix_respiratory(
   pf_ratio = pao2 / fio2,
@@ -286,7 +306,9 @@ resp_example$score <-
   data = sepsis
   )
 resp_example
-
+#'
+#+ echo = FALSE, results = "asis"
+knitr::kable(resp_example)
 
 #'
 #' ## Cardiovascular
@@ -350,8 +372,9 @@ ggplot2::ggplot(DF) +
 #'
 #' ### Example Use
 #'
+#+ results = "hide"
 card_example <-
-  sepsis[c("dobutamine", "dopamine", "epinephrine", "milrinone", "norepinephrine", "vasopressin", "lactate", "dbp", "sbp", "age")]
+  sepsis[c("pid", "dobutamine", "dopamine", "epinephrine", "milrinone", "norepinephrine", "vasopressin", "lactate", "dbp", "sbp", "age")]
 
 card_example$score <-
   phoenix_cardiovascular(
@@ -362,6 +385,9 @@ card_example$score <-
     data = sepsis)
 
 card_example
+#'
+#+ results = "asis", echo = FALSE
+knitr::kable(card_example)
 
 #'
 #' ## Coagulation
@@ -424,10 +450,14 @@ ggplot2::ggplot(DF) +
 #'
 #' ### Example Use
 #'
-coag_example <- sepsis[c("platelets", "inr", "d_dimer", "fibrinogen")]
+#+ results = "hide"
+coag_example <- sepsis[c("pid", "platelets", "inr", "d_dimer", "fibrinogen")]
 coag_example$score <-
   phoenix_coagulation(platelets, inr, d_dimer, fibrinogen, data = sepsis)
 coag_example
+#'
+#+ echo = FALSE, results = 'asis'
+knitr::kable(coag_example)
 
 #'
 #' ## Neurologic
@@ -446,10 +476,14 @@ coag_example
 #'
 #' ### Example Use
 #'
-neuro_example <- sepsis[c("gcs_total", "pupil")]
+#+ results = 'hide'
+neuro_example <- sepsis[c("pid", "gcs_total", "pupil")]
 neuro_example$score <-
   phoenix_neurologic(gcs = gcs_total, fixed_pupils = as.integer(pupil == "both-fixed"), data = sepsis)
 neuro_example
+#'
+#+ echo = FALSE, results = "asis"
+knitr::kable(neuro_example)
 
 #'
 #'
@@ -464,9 +498,13 @@ neuro_example
 #'
 #' ### Example Use
 #'
-endo_example <- sepsis[c("glucose")]
+#+ results = 'hide'
+endo_example <- sepsis[c("pid", "glucose")]
 endo_example$score <- phoenix_endocrine(glucose, data = sepsis)
 endo_example
+#'
+#+ echo = FALSE, results = "asis"
+knitr::kable(endo_example)
 
 #'
 #' ## Immunologic
@@ -484,9 +522,13 @@ endo_example
 #'
 #' ### Example Use
 #'
-immu_example <- sepsis[c("anc", "alc")]
+#+ results = "hide"
+immu_example <- sepsis[c("pid", "anc", "alc")]
 immu_example$score <- phoenix_immunologic(anc, alc, sepsis)
 immu_example
+#'
+#+ echo = FALSE, results = "asis"
+knitr::kable(immu_example)
 
 #'
 #'
@@ -506,9 +548,13 @@ immu_example
 #'
 #' ### Example Use
 #'
+#+ results = "hide"
 renal_example <- sepsis[c("creatinine", "age")]
 renal_example$score <- phoenix_renal(creatinine, age, sepsis)
 renal_example
+#'
+#+ echo = FALSE, results = "asis"
+knitr::kable(renal_example)
 
 #'
 #' ## Hepatic
@@ -524,9 +570,13 @@ renal_example
 #'
 #' ### Example Use
 #'
-hep_example <- sepsis[c("bilirubin", "alt")]
+#+ results = "hide"
+hep_example <- sepsis[c("pid", "bilirubin", "alt")]
 hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
 hep_example
+#'
+#+ echo = FALSE, results = "asis"
+knitr::kable(hep_example)
 
 #'
 #'
