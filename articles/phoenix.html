@@ -277,8 +277,69 @@ SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 148) and IMV</td>
 </tr>
 </tbody>
 </table>
-<p><small> * IMV: invasive mechanical ventalation * Age: measured
-in months * MAP: mean arterial pressure </small></p>
+<small>
+<ul>
+<li>
+Abbreviations:
+</li>
+<ul>
+<li>
+FEU: fibrinogen equivalent units
+</li>
+<li>
+FiO<sub>2</sub>: fraction of inspired oxygen
+</li>
+<li>
+GCS: Glasgow Coma Score
+</li>
+<li>
+IMV: invasive mechanical ventalation
+</li>
+<li>
+INR: International normalized ratio
+</li>
+<li>
+MAP: mean arterial pressure
+</li>
+<li>
+SpO<sub>2</sub>: pulse oximetry oxygen saturation
+</li>
+</ul>
+<li>
+Age: measured in months and is not adjusted for prematurity.
+</li>
+<li>
+SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when
+SpO<sub>2</sub> &amp;leq 97.
+</li>
+<li>
+Vasoactive medications: any systmic dose of dobutamine, dopamine,
+epinephrine, milrinone, norepinephrine, and/or vasopressin.
+</li>
+<li>
+lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
+</li>
+<li>
+MAP - Use measured arterial pressue preferentially (invasive arterial if
+available, or non-invasive oscillometric), alternatively use the
+calculation diastolic + (systolic - diastolic) / 3
+</li>
+<li>
+Coagulation variable reference ranges: platelets, 150-450
+10<sup>3</sup>/μL; D-dimer, &lt; 0.5 mg/L FEU; fibrinogen, 180-410
+mg/dL. International normalized ratio reference range is based on local
+reference prothrombintime.
+</li>
+<li>
+Neurologi dysfunciton scoring was pragmatically validated in both
+sedated and onsedated patients and those with and without IMV.
+</li>
+<li>
+GCS measures level of consciousness based on verbal, eye, and motor
+respose. Values are integers from 3 to 15 with higher scores indicating
+better neurologic function.
+</li>
+</ul></small><p></p>
 </div>
 <div class="section level3">
 <h3 id="phoenix-8-scoring">Phoenix 8 Scoring<a class="anchor" aria-label="anchor" href="#phoenix-8-scoring"></a>
@@ -356,7 +417,6 @@ cells/mm<sup>3</sup>
 </tr>
 </tbody>
 </table>
-<p><small> * Age: measured in months </small></p>
 </div>
 </div>
 <div class="section level2">
@@ -427,6 +487,10 @@ be 3.</p>
 score observed during the first 24 hours of an encounter. The correct
 signal score for the patient in the above example is 2, not 3. Please
 keep this in mind when you are preparing your data sets.</p>
+<p><strong>Age Restrictions:</strong> Age measurements are not adjusted
+for prematurity. The Phoenix criteria was developed on non-birth
+hospitalizations, children when gestational age &lt; 37 weeks; or those
+age ≥ 18 years.</p>
 </div>
 <div class="section level2">
 <h2 id="package-use">Package Use<a class="anchor" aria-label="anchor" href="#package-use"></a>
@@ -518,7 +582,7 @@ have been omitted. When an input is missing it is assumed to be
 only have information on FiO<sub>2</sub>, PaO<sub>2</sub>,
 SpO<sub>2</sub>, and invasive mechanical ventilation.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">resp_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fio2"</span>, <span class="st">"pao2"</span>, <span class="st">"spo2"</span>, <span class="st">"vent"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">resp_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"fio2"</span>, <span class="st">"pao2"</span>, <span class="st">"spo2"</span>, <span class="st">"vent"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <p>Implied in this data is other respiratory support when
 FiO<sub>2</sub> is greater than 0.21, the approximate fraction of oxygen
 in the atmosphere.</p>
@@ -531,28 +595,179 @@ in the atmosphere.</p>
 <span>  other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">sepsis</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">resp_example</span></span>
-<span><span class="co">##    fio2 pao2 spo2 vent score</span></span>
-<span><span class="co">## 1  0.75   NA   99    1     0</span></span>
-<span><span class="co">## 2  0.75 75.3   95    1     3</span></span>
-<span><span class="co">## 3  1.00 49.5   NA    1     3</span></span>
-<span><span class="co">## 4    NA   NA   NA    0     0</span></span>
-<span><span class="co">## 5    NA 38.7   95    0     0</span></span>
-<span><span class="co">## 6  0.60 69.9   88    1     3</span></span>
-<span><span class="co">## 7  0.50   NA   31    1     3</span></span>
-<span><span class="co">## 8  0.30   NA   97    1     0</span></span>
-<span><span class="co">## 9  0.65 51.0   82    1     3</span></span>
-<span><span class="co">## 10 0.80   NA   76    1     3</span></span>
-<span><span class="co">## 11 0.65 54.0   NA    1     3</span></span>
-<span><span class="co">## 12 0.35   NA   91    0     1</span></span>
-<span><span class="co">## 13 0.30   NA   97    1     0</span></span>
-<span><span class="co">## 14 0.50   NA   89    1     2</span></span>
-<span><span class="co">## 15 1.00 42.5   45    1     3</span></span>
-<span><span class="co">## 16   NA   NA   NA    0     0</span></span>
-<span><span class="co">## 17 0.45 61.3   97    1     2</span></span>
-<span><span class="co">## 18 1.00 64.1   92    1     3</span></span>
-<span><span class="co">## 19 0.50   NA   97    1     2</span></span>
-<span><span class="co">## 20   NA   NA   NA    0     0</span></span></code></pre></div>
+<span><span class="va">resp_example</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">pid</th>
+<th align="right">fio2</th>
+<th align="right">pao2</th>
+<th align="right">spo2</th>
+<th align="right">vent</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.75</td>
+<td align="right">NA</td>
+<td align="right">99</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.75</td>
+<td align="right">75.3</td>
+<td align="right">95</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">1.00</td>
+<td align="right">49.5</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">38.7</td>
+<td align="right">95</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">0.60</td>
+<td align="right">69.9</td>
+<td align="right">88</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">0.50</td>
+<td align="right">NA</td>
+<td align="right">31</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">0.30</td>
+<td align="right">NA</td>
+<td align="right">97</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">0.65</td>
+<td align="right">51.0</td>
+<td align="right">82</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">0.80</td>
+<td align="right">NA</td>
+<td align="right">76</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">0.65</td>
+<td align="right">54.0</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">0.35</td>
+<td align="right">NA</td>
+<td align="right">91</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">0.30</td>
+<td align="right">NA</td>
+<td align="right">97</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">0.50</td>
+<td align="right">NA</td>
+<td align="right">89</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">1.00</td>
+<td align="right">42.5</td>
+<td align="right">45</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">0.45</td>
+<td align="right">61.3</td>
+<td align="right">97</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">1.00</td>
+<td align="right">64.1</td>
+<td align="right">92</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">0.50</td>
+<td align="right">NA</td>
+<td align="right">97</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -587,14 +802,14 @@ systemic blood pressure (mmHg).</p></li>
 <div class="section level4">
 <h4 id="scores-1">Scores<a class="anchor" aria-label="anchor" href="#scores-1"></a>
 </h4>
-<p><img src="phoenix_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><img src="phoenix_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="example-use-1">Example Use<a class="anchor" aria-label="anchor" href="#example-use-1"></a>
 </h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">card_example</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dobutamine"</span>, <span class="st">"dopamine"</span>, <span class="st">"epinephrine"</span>, <span class="st">"milrinone"</span>, <span class="st">"norepinephrine"</span>, <span class="st">"vasopressin"</span>, <span class="st">"lactate"</span>, <span class="st">"dbp"</span>, <span class="st">"sbp"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"dobutamine"</span>, <span class="st">"dopamine"</span>, <span class="st">"epinephrine"</span>, <span class="st">"milrinone"</span>, <span class="st">"norepinephrine"</span>, <span class="st">"vasopressin"</span>, <span class="st">"lactate"</span>, <span class="st">"dbp"</span>, <span class="st">"sbp"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">card_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/phoenix_cardiovascular.html">phoenix_cardiovascular</a></span><span class="op">(</span></span>
@@ -604,49 +819,319 @@ systemic blood pressure (mmHg).</p></li>
 <span>    map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">card_example</span></span>
-<span><span class="co">##    dobutamine dopamine epinephrine milrinone norepinephrine vasopressin lactate</span></span>
-<span><span class="co">## 1           1        1           1         1              0           0      NA</span></span>
-<span><span class="co">## 2           0        1           0         0              1           0    3.32</span></span>
-<span><span class="co">## 3           0        1           0         0              0           0    1.00</span></span>
-<span><span class="co">## 4           0        0           0         0              0           0      NA</span></span>
-<span><span class="co">## 5           0        0           0         0              0           0      NA</span></span>
-<span><span class="co">## 6           0        1           0         0              0           0    1.15</span></span>
-<span><span class="co">## 7           0        0           1         1              0           1      NA</span></span>
-<span><span class="co">## 8           0        0           0         0              0           0      NA</span></span>
-<span><span class="co">## 9           0        0           1         1              1           1    8.10</span></span>
-<span><span class="co">## 10          0        0           0         0              0           0      NA</span></span>
-<span><span class="co">## 11          0        1           1         0              0           0      NA</span></span>
-<span><span class="co">## 12          0        0           0         0              0           0      NA</span></span>
-<span><span class="co">## 13          0        0           0         0              0           0      NA</span></span>
-<span><span class="co">## 14          0        0           1         1              0           0      NA</span></span>
-<span><span class="co">## 15          0        1           1         1              0           1      NA</span></span>
-<span><span class="co">## 16          1        1           1         1              1           0    0.90</span></span>
-<span><span class="co">## 17          0        1           1         1              0           1    0.60</span></span>
-<span><span class="co">## 18          0        1           1         1              0           1      NA</span></span>
-<span><span class="co">## 19          0        0           1         1              0           0      NA</span></span>
-<span><span class="co">## 20          0        0           1         0              0           0    2.20</span></span>
-<span><span class="co">##    dbp sbp    age score</span></span>
-<span><span class="co">## 1   40  53   0.06     2</span></span>
-<span><span class="co">## 2   60  90 201.70     2</span></span>
-<span><span class="co">## 3   87 233  20.80     1</span></span>
-<span><span class="co">## 4   57 104 192.50     0</span></span>
-<span><span class="co">## 5   57 101 214.40     0</span></span>
-<span><span class="co">## 6   79 119 101.20     1</span></span>
-<span><span class="co">## 7   11  14 150.70     4</span></span>
-<span><span class="co">## 8   66 112 159.70     0</span></span>
-<span><span class="co">## 9   51 117 176.10     3</span></span>
-<span><span class="co">## 10  58  84   6.60     0</span></span>
-<span><span class="co">## 11  39  51  36.70     3</span></span>
-<span><span class="co">## 12  63 132  37.40     0</span></span>
-<span><span class="co">## 13  55  93   0.12     0</span></span>
-<span><span class="co">## 14  54 106  62.30     2</span></span>
-<span><span class="co">## 15  25  37  10.60     3</span></span>
-<span><span class="co">## 16  55  82   0.89     2</span></span>
-<span><span class="co">## 17  43  79  10.70     2</span></span>
-<span><span class="co">## 18  53  75  10.60     2</span></span>
-<span><span class="co">## 19  44  70   0.17     2</span></span>
-<span><span class="co">## 20  77  99  71.90     1</span></span></code></pre></div>
+<span><span class="va">card_example</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="3%">
+<col width="10%">
+<col width="8%">
+<col width="11%">
+<col width="9%">
+<col width="14%">
+<col width="11%">
+<col width="7%">
+<col width="3%">
+<col width="3%">
+<col width="6%">
+<col width="5%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">pid</th>
+<th align="right">dobutamine</th>
+<th align="right">dopamine</th>
+<th align="right">epinephrine</th>
+<th align="right">milrinone</th>
+<th align="right">norepinephrine</th>
+<th align="right">vasopressin</th>
+<th align="right">lactate</th>
+<th align="right">dbp</th>
+<th align="right">sbp</th>
+<th align="right">age</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">40</td>
+<td align="right">53</td>
+<td align="right">0.06</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">3.32</td>
+<td align="right">60</td>
+<td align="right">90</td>
+<td align="right">201.70</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">87</td>
+<td align="right">233</td>
+<td align="right">20.80</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">57</td>
+<td align="right">104</td>
+<td align="right">192.50</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">57</td>
+<td align="right">101</td>
+<td align="right">214.40</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1.15</td>
+<td align="right">79</td>
+<td align="right">119</td>
+<td align="right">101.20</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">11</td>
+<td align="right">14</td>
+<td align="right">150.70</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">66</td>
+<td align="right">112</td>
+<td align="right">159.70</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">8.10</td>
+<td align="right">51</td>
+<td align="right">117</td>
+<td align="right">176.10</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">58</td>
+<td align="right">84</td>
+<td align="right">6.60</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">39</td>
+<td align="right">51</td>
+<td align="right">36.70</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">63</td>
+<td align="right">132</td>
+<td align="right">37.40</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">55</td>
+<td align="right">93</td>
+<td align="right">0.12</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">54</td>
+<td align="right">106</td>
+<td align="right">62.30</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">25</td>
+<td align="right">37</td>
+<td align="right">10.60</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0.90</td>
+<td align="right">55</td>
+<td align="right">82</td>
+<td align="right">0.89</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.60</td>
+<td align="right">43</td>
+<td align="right">79</td>
+<td align="right">10.70</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">53</td>
+<td align="right">75</td>
+<td align="right">10.60</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+<td align="right">44</td>
+<td align="right">70</td>
+<td align="right">0.17</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2.20</td>
+<td align="right">77</td>
+<td align="right">99</td>
+<td align="right">71.90</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -668,37 +1153,188 @@ time require for blood to clot.</p></li>
 </h4>
 <p>While there are four components to this score, the maximum number of
 points assigned is 2.</p>
-<p><img src="phoenix_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+<p><img src="phoenix_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="example-use-2">Example Use<a class="anchor" aria-label="anchor" href="#example-use-2"></a>
 </h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">coag_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"platelets"</span>, <span class="st">"inr"</span>, <span class="st">"d_dimer"</span>, <span class="st">"fibrinogen"</span><span class="op">)</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">coag_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"platelets"</span>, <span class="st">"inr"</span>, <span class="st">"d_dimer"</span>, <span class="st">"fibrinogen"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">coag_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/phoenix_coagulation.html">phoenix_coagulation</a></span><span class="op">(</span><span class="va">platelets</span>, <span class="va">inr</span>, <span class="va">d_dimer</span>, <span class="va">fibrinogen</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
-<span><span class="va">coag_example</span></span>
-<span><span class="co">##    platelets   inr d_dimer fibrinogen score</span></span>
-<span><span class="co">## 1        199 1.460      NA        180     1</span></span>
-<span><span class="co">## 2        243 1.180    2.45        311     1</span></span>
-<span><span class="co">## 3         49 1.600      NA        309     2</span></span>
-<span><span class="co">## 4         NA 1.300    2.82        220     1</span></span>
-<span><span class="co">## 5        393    NA      NA         NA     0</span></span>
-<span><span class="co">## 6         86 1.230    4.72        270     2</span></span>
-<span><span class="co">## 7         65 3.100      NA         94     2</span></span>
-<span><span class="co">## 8        215 0.970    5.15        489     1</span></span>
-<span><span class="co">## 9        101 1.080    7.71        456     1</span></span>
-<span><span class="co">## 10       292    NA      NA         NA     0</span></span>
-<span><span class="co">## 11        NA 3.000      NA         NA     1</span></span>
-<span><span class="co">## 12        NA    NA      NA         NA     0</span></span>
-<span><span class="co">## 13        NA    NA      NA         NA     0</span></span>
-<span><span class="co">## 14        24 1.146      NA         NA     1</span></span>
-<span><span class="co">## 15        82 1.424      NA         76     2</span></span>
-<span><span class="co">## 16       355 1.230    4.77        174     1</span></span>
-<span><span class="co">## 17       166 1.000    4.10        236     1</span></span>
-<span><span class="co">## 18        80 1.641      NA         76     2</span></span>
-<span><span class="co">## 19       190    NA      NA         NA     0</span></span>
-<span><span class="co">## 20        78 1.160    0.75        201     1</span></span></code></pre></div>
+<span><span class="va">coag_example</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">pid</th>
+<th align="right">platelets</th>
+<th align="right">inr</th>
+<th align="right">d_dimer</th>
+<th align="right">fibrinogen</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">199</td>
+<td align="right">1.460</td>
+<td align="right">NA</td>
+<td align="right">180</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">243</td>
+<td align="right">1.180</td>
+<td align="right">2.45</td>
+<td align="right">311</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">49</td>
+<td align="right">1.600</td>
+<td align="right">NA</td>
+<td align="right">309</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">1.300</td>
+<td align="right">2.82</td>
+<td align="right">220</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">393</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">86</td>
+<td align="right">1.230</td>
+<td align="right">4.72</td>
+<td align="right">270</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">65</td>
+<td align="right">3.100</td>
+<td align="right">NA</td>
+<td align="right">94</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">215</td>
+<td align="right">0.970</td>
+<td align="right">5.15</td>
+<td align="right">489</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">101</td>
+<td align="right">1.080</td>
+<td align="right">7.71</td>
+<td align="right">456</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">292</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">NA</td>
+<td align="right">3.000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">24</td>
+<td align="right">1.146</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">82</td>
+<td align="right">1.424</td>
+<td align="right">NA</td>
+<td align="right">76</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">355</td>
+<td align="right">1.230</td>
+<td align="right">4.77</td>
+<td align="right">174</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">166</td>
+<td align="right">1.000</td>
+<td align="right">4.10</td>
+<td align="right">236</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">80</td>
+<td align="right">1.641</td>
+<td align="right">NA</td>
+<td align="right">76</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">190</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">78</td>
+<td align="right">1.160</td>
+<td align="right">0.75</td>
+<td align="right">201</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -719,31 +1355,140 @@ scores.</p></li>
 <h4 id="example-use-3">Example Use<a class="anchor" aria-label="anchor" href="#example-use-3"></a>
 </h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">neuro_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gcs_total"</span>, <span class="st">"pupil"</span><span class="op">)</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">neuro_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"gcs_total"</span>, <span class="st">"pupil"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">neuro_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/phoenix_neurologic.html">phoenix_neurologic</a></span><span class="op">(</span>gcs <span class="op">=</span> <span class="va">gcs_total</span>, fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
-<span><span class="va">neuro_example</span></span>
-<span><span class="co">##    gcs_total         pupil score</span></span>
-<span><span class="co">## 1         NA                   0</span></span>
-<span><span class="co">## 2          5 both-reactive     1</span></span>
-<span><span class="co">## 3         15 both-reactive     0</span></span>
-<span><span class="co">## 4         14                   0</span></span>
-<span><span class="co">## 5         NA                   0</span></span>
-<span><span class="co">## 6          3 both-reactive     1</span></span>
-<span><span class="co">## 7         NA                   0</span></span>
-<span><span class="co">## 8         15 both-reactive     0</span></span>
-<span><span class="co">## 9          3 both-reactive     1</span></span>
-<span><span class="co">## 10         3 both-reactive     1</span></span>
-<span><span class="co">## 11         3    both-fixed     2</span></span>
-<span><span class="co">## 12        NA                   0</span></span>
-<span><span class="co">## 13        NA                   0</span></span>
-<span><span class="co">## 14        NA                   0</span></span>
-<span><span class="co">## 15        NA                   0</span></span>
-<span><span class="co">## 16        NA                   0</span></span>
-<span><span class="co">## 17        11 both-reactive     0</span></span>
-<span><span class="co">## 18        NA                   0</span></span>
-<span><span class="co">## 19        NA                   0</span></span>
-<span><span class="co">## 20        NA                   0</span></span></code></pre></div>
+<span><span class="va">neuro_example</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">pid</th>
+<th align="right">gcs_total</th>
+<th align="left">pupil</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="left">both-reactive</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">15</td>
+<td align="left">both-reactive</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">14</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="left">both-reactive</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">15</td>
+<td align="left">both-reactive</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="left">both-reactive</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="left">both-reactive</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">3</td>
+<td align="left">both-fixed</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">11</td>
+<td align="left">both-reactive</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">NA</td>
+<td align="left"></td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -763,30 +1508,118 @@ scoring.</p>
 <h4 id="example-use-4">Example Use<a class="anchor" aria-label="anchor" href="#example-use-4"></a>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">endo_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"glucose"</span><span class="op">)</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">endo_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"glucose"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">endo_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_endocrine.html">phoenix_endocrine</a></span><span class="op">(</span><span class="va">glucose</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
-<span><span class="va">endo_example</span></span>
-<span><span class="co">##    glucose score</span></span>
-<span><span class="co">## 1       NA     0</span></span>
-<span><span class="co">## 2    110.0     0</span></span>
-<span><span class="co">## 3     93.0     0</span></span>
-<span><span class="co">## 4    110.0     0</span></span>
-<span><span class="co">## 5       NA     0</span></span>
-<span><span class="co">## 6    147.0     0</span></span>
-<span><span class="co">## 7       NA     0</span></span>
-<span><span class="co">## 8    100.0     0</span></span>
-<span><span class="co">## 9    264.0     1</span></span>
-<span><span class="co">## 10    93.0     0</span></span>
-<span><span class="co">## 11   341.0     1</span></span>
-<span><span class="co">## 12      NA     0</span></span>
-<span><span class="co">## 13      NA     0</span></span>
-<span><span class="co">## 14      NA     0</span></span>
-<span><span class="co">## 15      NA     0</span></span>
-<span><span class="co">## 16    82.4     0</span></span>
-<span><span class="co">## 17   130.0     0</span></span>
-<span><span class="co">## 18      NA     0</span></span>
-<span><span class="co">## 19   103.0     0</span></span>
-<span><span class="co">## 20   159.8     1</span></span></code></pre></div>
+<span><span class="va">endo_example</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">pid</th>
+<th align="right">glucose</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">110.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">93.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">110.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">147.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">100.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">264.0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">93.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">341.0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">82.4</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">130.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">103.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">159.8</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -808,30 +1641,139 @@ scoring.</p>
 <h4 id="example-use-5">Example Use<a class="anchor" aria-label="anchor" href="#example-use-5"></a>
 </h4>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">immu_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"anc"</span>, <span class="st">"alc"</span><span class="op">)</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">immu_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"anc"</span>, <span class="st">"alc"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">immu_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_immunologic.html">phoenix_immunologic</a></span><span class="op">(</span><span class="va">anc</span>, <span class="va">alc</span>, <span class="va">sepsis</span><span class="op">)</span></span>
-<span><span class="va">immu_example</span></span>
-<span><span class="co">##       anc   alc score</span></span>
-<span><span class="co">## 1      NA    NA     0</span></span>
-<span><span class="co">## 2  14.220 2.220     1</span></span>
-<span><span class="co">## 3   2.210 0.190     1</span></span>
-<span><span class="co">## 4   3.184 0.645     1</span></span>
-<span><span class="co">## 5      NA    NA     0</span></span>
-<span><span class="co">## 6  20.200 0.240     1</span></span>
-<span><span class="co">## 7      NA    NA     0</span></span>
-<span><span class="co">## 8   3.760 1.550     1</span></span>
-<span><span class="co">## 9   8.770 3.600     1</span></span>
-<span><span class="co">## 10  9.084 4.617     1</span></span>
-<span><span class="co">## 11     NA    NA     0</span></span>
-<span><span class="co">## 12     NA    NA     0</span></span>
-<span><span class="co">## 13     NA    NA     0</span></span>
-<span><span class="co">## 14     NA    NA     0</span></span>
-<span><span class="co">## 15     NA    NA     0</span></span>
-<span><span class="co">## 16  4.720 4.300     1</span></span>
-<span><span class="co">## 17  9.380 1.310     1</span></span>
-<span><span class="co">## 18     NA    NA     0</span></span>
-<span><span class="co">## 19 12.570 2.810     1</span></span>
-<span><span class="co">## 20  3.410 2.850     1</span></span></code></pre></div>
+<span><span class="va">immu_example</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">pid</th>
+<th align="right">anc</th>
+<th align="right">alc</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">14.220</td>
+<td align="right">2.220</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">2.210</td>
+<td align="right">0.190</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">3.184</td>
+<td align="right">0.645</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">20.200</td>
+<td align="right">0.240</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">3.760</td>
+<td align="right">1.550</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">8.770</td>
+<td align="right">3.600</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">9.084</td>
+<td align="right">4.617</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">4.720</td>
+<td align="right">4.300</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">9.380</td>
+<td align="right">1.310</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">12.570</td>
+<td align="right">2.810</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">3.410</td>
+<td align="right">2.850</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -853,28 +1795,116 @@ scoring.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">renal_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"creatinine"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">renal_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_renal.html">phoenix_renal</a></span><span class="op">(</span><span class="va">creatinine</span>, <span class="va">age</span>, <span class="va">sepsis</span><span class="op">)</span></span>
-<span><span class="va">renal_example</span></span>
-<span><span class="co">##    creatinine    age score</span></span>
-<span><span class="co">## 1       1.030   0.06     1</span></span>
-<span><span class="co">## 2       0.510 201.70     0</span></span>
-<span><span class="co">## 3       0.330  20.80     0</span></span>
-<span><span class="co">## 4       0.310 192.50     0</span></span>
-<span><span class="co">## 5       0.520 214.40     0</span></span>
-<span><span class="co">## 6       0.770 101.20     1</span></span>
-<span><span class="co">## 7       1.470 150.70     1</span></span>
-<span><span class="co">## 8       0.580 159.70     0</span></span>
-<span><span class="co">## 9       1.230 176.10     1</span></span>
-<span><span class="co">## 10      0.180   6.60     0</span></span>
-<span><span class="co">## 11      0.870  36.70     1</span></span>
-<span><span class="co">## 12         NA  37.40     0</span></span>
-<span><span class="co">## 13         NA   0.12     0</span></span>
-<span><span class="co">## 14      0.120  62.30     0</span></span>
-<span><span class="co">## 15      1.300  10.60     1</span></span>
-<span><span class="co">## 16      0.418   0.89     0</span></span>
-<span><span class="co">## 17      0.290  10.70     0</span></span>
-<span><span class="co">## 18      1.100  10.60     1</span></span>
-<span><span class="co">## 19      1.200   0.17     1</span></span>
-<span><span class="co">## 20      0.418  71.90     0</span></span></code></pre></div>
+<span><span class="va">renal_example</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">creatinine</th>
+<th align="right">age</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1.030</td>
+<td align="right">0.06</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">0.510</td>
+<td align="right">201.70</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0.330</td>
+<td align="right">20.80</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">0.310</td>
+<td align="right">192.50</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0.520</td>
+<td align="right">214.40</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">0.770</td>
+<td align="right">101.20</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">1.470</td>
+<td align="right">150.70</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">0.580</td>
+<td align="right">159.70</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">1.230</td>
+<td align="right">176.10</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">0.180</td>
+<td align="right">6.60</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0.870</td>
+<td align="right">36.70</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">NA</td>
+<td align="right">37.40</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">NA</td>
+<td align="right">0.12</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">0.120</td>
+<td align="right">62.30</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">1.300</td>
+<td align="right">10.60</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">0.418</td>
+<td align="right">0.89</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">0.290</td>
+<td align="right">10.70</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">1.100</td>
+<td align="right">10.60</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">1.200</td>
+<td align="right">0.17</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">0.418</td>
+<td align="right">71.90</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -892,30 +1922,139 @@ scoring.</p>
 <h4 id="example-use-7">Example Use<a class="anchor" aria-label="anchor" href="#example-use-7"></a>
 </h4>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hep_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bilirubin"</span>, <span class="st">"alt"</span><span class="op">)</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">hep_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"bilirubin"</span>, <span class="st">"alt"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">hep_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_hepatic.html">phoenix_hepatic</a></span><span class="op">(</span><span class="va">bilirubin</span>, <span class="va">alt</span>, <span class="va">sepsis</span><span class="op">)</span></span>
-<span><span class="va">hep_example</span></span>
-<span><span class="co">##    bilirubin  alt score</span></span>
-<span><span class="co">## 1         NA   36     0</span></span>
-<span><span class="co">## 2      0.200   32     0</span></span>
-<span><span class="co">## 3      0.800  182     1</span></span>
-<span><span class="co">## 4      8.500   21     1</span></span>
-<span><span class="co">## 5         NA   NA     0</span></span>
-<span><span class="co">## 6      1.200   15     0</span></span>
-<span><span class="co">## 7      1.700 3664     1</span></span>
-<span><span class="co">## 8      0.500   50     0</span></span>
-<span><span class="co">## 9     21.100  151     1</span></span>
-<span><span class="co">## 10        NA   NA     0</span></span>
-<span><span class="co">## 11     0.180   NA     0</span></span>
-<span><span class="co">## 12        NA   NA     0</span></span>
-<span><span class="co">## 13        NA   NA     0</span></span>
-<span><span class="co">## 14     3.300   60     0</span></span>
-<span><span class="co">## 15     1.300 1792     1</span></span>
-<span><span class="co">## 16     1.579   15     0</span></span>
-<span><span class="co">## 17     0.600   41     0</span></span>
-<span><span class="co">## 18     1.300 1790     1</span></span>
-<span><span class="co">## 19        NA   NA     0</span></span>
-<span><span class="co">## 20     0.363   22     0</span></span></code></pre></div>
+<span><span class="va">hep_example</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">pid</th>
+<th align="right">bilirubin</th>
+<th align="right">alt</th>
+<th align="right">score</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">36</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.200</td>
+<td align="right">32</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0.800</td>
+<td align="right">182</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">8.500</td>
+<td align="right">21</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1.200</td>
+<td align="right">15</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">1.700</td>
+<td align="right">3664</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">0.500</td>
+<td align="right">50</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">21.100</td>
+<td align="right">151</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">0.180</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">3.300</td>
+<td align="right">60</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">1.300</td>
+<td align="right">1792</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">1.579</td>
+<td align="right">15</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">0.600</td>
+<td align="right">41</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">1.300</td>
+<td align="right">1790</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">0.363</td>
+<td align="right">22</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
