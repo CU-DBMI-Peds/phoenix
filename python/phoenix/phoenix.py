@@ -57,9 +57,9 @@ def phoenix_coagulation(platelets, inr, d_dimer, fibrinogen):
     return(np.array(rtn))
 
 def phoenix_neurologic(gcs, fixed_pupils):
-    fpl = np.nan_to_num(fixed_pupils, 0)
-    gcs = np.nan_to_num(gcs, 15)
-    rtn = (fpl * 2) + (gcs <= 10).astype(int)
+    gcs = np.nan_to_num(gcs, nan = 15)
+    fpl = np.nan_to_num(fixed_pupils, nan = 0)
+    rtn = (fpl * 2).astype(int) + (gcs <= 10).astype(int)
     rtn[(rtn > 2)] = 2
 
     return(np.array(rtn))
@@ -105,6 +105,23 @@ def phoenix(pf_ratio, sf_ratio, imv, other_respiratory_support, vasoactives, lac
     septic_shock = ((total > 1) & (card > 0)).astype(int)
     rtn = pd.DataFrame(data = np.column_stack((resp, card, coag, neur, total, sepsis, septic_shock)))
     rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock"]
+    return(rtn)
+
+def phoenix8(pf_ratio, sf_ratio, imv, other_respiratory_support, vasoactives, lactate, map, platelets, inr, d_dimer, fibrinogen, gcs, fixed_pupils, glucose, anc, alc, creatinine, bilirubin, alt, age):
+    resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)
+    card = phoenix_cardiovascular(vasoactives, lactate, age, map)
+    coag = phoenix_coagulation(platelets, inr, d_dimer, fibrinogen)
+    neur = phoenix_neurologic(gcs, fixed_pupils)
+    total = resp + card + coag + neur
+    sepsis = (total > 1).astype(int)
+    septic_shock = ((total > 1) & (card > 0)).astype(int)
+    endo = phoenix_endocrine(glucose)
+    immu = phoenix_immunologic(anc, alc)
+    renal = phoenix_renal(creatinine, age)
+    hepatic = phoenix_hepatic(bilirubin, alt)
+    total8 = total + endo + immu + renal + hepatic
+    rtn = pd.DataFrame(data = np.column_stack((resp, card, coag, neur, total, sepsis, septic_shock, endo, immu, renal, hepatic, total8)))
+    rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock", "phoenix_endocrine_score", "phoenix_immunologic_score", "phoenix_renal_score", "phoenix_hepatic_score", "phoenix8_score"] 
     return(rtn)
 
 

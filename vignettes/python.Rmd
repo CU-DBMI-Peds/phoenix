@@ -62,7 +62,7 @@ sys.path.append('../python')
 ```{python class.source="pychunk"}
 import numpy as np
 import pandas as pd
-import phoenix
+import phoenix as phx
 ```
 
 Start by reading in the example data set.  This is the same data as provided in
@@ -84,6 +84,8 @@ library(phoenix)
 (In case you didn't notice, python code chunks are outlined in blue to
 distinguish them from R code chunks.)
 
+# Organ Dysfunction Scores
+
 ## Respiratory
 
 For the respiratory score, as with the other organ system dysfunction scores,
@@ -92,7 +94,7 @@ return of a numpy integer array.
 
 In R, we got the respiratory score via:
 ```{r class.source = "rchunk"}
-phoenix_respiratory(
+r_resp = phoenix_respiratory(
   pf_ratio = pao2 / fio2,
   sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
   imv = vent,
@@ -101,8 +103,8 @@ phoenix_respiratory(
   )
 ```
 In python you have a similar syntax
-```{python class.source = "pychunk"}
-phoenix.phoenix_respiratory(
+```{python class.source = "pychunk", output.var = "python_respiratory"}
+py_resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
     imv      = sepsis["vent"],
@@ -110,10 +112,18 @@ phoenix.phoenix_respiratory(
 )
 ```
 
+```{r, include = FALSE}
+stopifnot(identical(r_resp, as.integer(py$py_resp)))
+```
+```{r}
+identical(r_resp, as.integer(py$py_resp))
+```
+
+
 ## Cardiovascular
 
 ```{r class.source = 'rchunk'}
-phoenix_cardiovascular(
+r_card <- phoenix_cardiovascular(
   vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
   lactate = lactate,
   age = age,
@@ -123,7 +133,7 @@ phoenix_cardiovascular(
 ```
 
 ```{python class.source = "pychunk"}
-phoenix.phoenix_cardiovascular(
+py_card = phx.phoenix_cardiovascular(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
@@ -131,14 +141,22 @@ phoenix.phoenix_cardiovascular(
 )
 ```
 
+```{r, include = FALSE}
+stopifnot(identical(r_card, as.integer(py$py_card)))
+```
+```{r}
+identical(r_card, as.integer(py$py_card))
+```
+
 ## Coagulation
 
 ```{r class.source = 'rchunk'}
-phoenix_coagulation(platelets, inr, d_dimer, fibrinogen, data = sepsis)
+r_coag <-
+  phoenix_coagulation(platelets, inr, d_dimer, fibrinogen, data = sepsis)
 ```
 
 ```{python class.source = "pychunk"}
-phoenix.phoenix_coagulation(
+py_coag = phx.phoenix_coagulation(
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
@@ -146,62 +164,117 @@ phoenix.phoenix_coagulation(
 )
 ```
 
+```{r, include = FALSE}
+stopifnot(identical(r_coag, as.integer(py$py_coag)))
+```
+```{r}
+identical(r_coag, as.integer(py$py_coag))
+```
+
 ## Neurologic
 
 ```{r class.source = 'rchunk'}
-phoenix_neurologic(
-  gcs = gcs_total,
-  fixed_pupils = as.integer(pupil == "both-fixed"),
-  data = sepsis
-)
+r_neur <-
+  phoenix_neurologic(
+    gcs = gcs_total,
+    fixed_pupils = as.integer(pupil == "both-fixed"),
+    data = sepsis
+  )
 ```
 
 ```{python class.source = "pychunk"}
-phoenix.phoenix_neurologic(
+py_neur = phx.phoenix_neurologic(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int)
 )
 ```
 
+```{r, include = FALSE}
+r_neur
+py$py_neur
+stopifnot(identical(r_neur, as.integer(py$py_neur)))
+```
+```{r}
+identical(r_neur, as.integer(py$py_neur))
+```
+
 ## Endocrine
 
 ```{r class.source = 'rchunk'}
+r_endo <- phoenix_endocrine(glucose, data = sepsis)
 ```
 
 ```{python class.source = "pychunk"}
+py_endo = phx.phoenix_endocrine(sepsis["glucose"])
+```
+
+```{r, include = FALSE}
+stopifnot(identical(r_endo, as.integer(py$py_endo)))
+```
+```{r}
+identical(r_endo, as.integer(py$py_endo))
 ```
 
 ## Immunologic
 
 ```{r class.source = 'rchunk'}
+r_immu <- phoenix_immunologic(anc, alc, sepsis)
 ```
 
 ```{python class.source = "pychunk"}
+py_immu = phx.phoenix_immunologic(sepsis["anc"], sepsis["alc"])
+```
+
+```{r, include = FALSE}
+stopifnot(identical(r_immu, as.integer(py$py_immu)))
+```
+```{r}
+identical(r_immu, as.integer(py$py_immu))
 ```
 
 ## Renal
 
 ```{r class.source = 'rchunk'}
+r_renal <- phoenix_renal(creatinine = creatinine, age = age, data = sepsis)
 ```
 
 ```{python class.source = "pychunk"}
+py_renal = phx.phoenix_renal(sepsis["creatinine"], sepsis["age"])
+```
+
+```{r, include = FALSE}
+stopifnot(identical(r_renal, as.integer(py$py_renal)))
+```
+```{r}
+identical(r_renal, as.integer(py$py_renal))
 ```
 
 ## Hepatic
 
 ```{r class.source = 'rchunk'}
+r_hepatic <- phoenix_hepatic(bilirubin = bilirubin, alt = alt, data = sepsis)
 ```
 
 ```{python class.source = "pychunk"}
+py_hepatic = phx.phoenix_hepatic(sepsis["bilirubin"], sepsis["alt"])
 ```
 
-## Phoenix
+```{r, include = FALSE}
+stopifnot(identical(r_hepatic, as.integer(py$py_hepatic)))
+```
+```{r}
+identical(r_hepatic, as.integer(py$py_hepatic))
+```
+
+
+# Phoenix
 
 In R, the call to `phoenix` will return a `data.frame`.  In python the return is
 a pandas DataFrame.
 
 ```{r class.source = 'rchunk'}
-phoenix(
+r_phoenix_scores <-
+  phoenix(
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
@@ -225,9 +298,9 @@ phoenix(
 ```
 
 ```{python class.source = "pychunk"}
-phoenix.phoenix(
+py_phoenix_scores = phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
-    sf_ratio = sepsis["spo2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
     imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
@@ -241,15 +314,92 @@ phoenix.phoenix(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
     )
-
 ```
 
-## Phoenix8
+```{r, include = FALSE}
+r_phoenix_scores
+py$py_phoenix_scores
+stopifnot(
+all.equal(r_phoenix_scores, as.data.frame(py$py_phoenix_scores),
+          check.attributes = FALSE)
+)
+```
+```{r}
+all.equal(r_phoenix_scores, as.data.frame(py$py_phoenix_scores),
+          check.attributes = FALSE)
+```
+
+# Phoenix8
 
 ```{r class.source = 'rchunk'}
+r_phoenix8_scores <-
+  phoenix8(
+    # respiratory
+      pf_ratio = pao2 / fio2,
+      sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+      imv = vent,
+      other_respiratory_support = as.integer(fio2 > 0.21),
+    # cardiovascular
+      vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+      lactate = lactate,
+      age = age, # Also used in the renal assessment.
+      map = dbp + (sbp - dbp)/3,
+    # coagulation
+      platelets = platelets,
+      inr = inr,
+      d_dimer = d_dimer,
+      fibrinogen = fibrinogen,
+    # neurologic
+      gcs = gcs_total,
+      fixed_pupils = as.integer(pupil == "both-fixed"),
+    # endocrine
+      glucose = glucose,
+    # immunologic
+      anc = anc,
+      alc = alc,
+    # renal
+      creatinine = creatinine,
+      # no need to specify age again
+    # hepatic
+      bilirubin = bilirubin,
+      alt = alt,
+    data = sepsis
+  )
 ```
 
 ```{python class.source = "pychunk"}
+py_phoenix8_scores = phx.phoenix8(
+    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
+    imv      = sepsis["vent"],
+    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    lactate = sepsis["lactate"],
+    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    platelets = sepsis['platelets'],
+    inr = sepsis['inr'],
+    d_dimer = sepsis['d_dimer'],
+    fibrinogen = sepsis['fibrinogen'],
+    gcs = sepsis["gcs_total"],
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
+    glucose = sepsis["glucose"],
+    anc = sepsis["anc"],
+    alc = sepsis["alc"],
+    creatinine = sepsis["creatinine"],
+    bilirubin = sepsis["bilirubin"],
+    alt = sepsis["alt"],
+    age = sepsis["age"]
+    )
 ```
 
+```{r, include = FALSE}
+stopifnot(
+  all.equal(r_phoenix8_scores, as.data.frame(py$py_phoenix8_scores),
+            check.attributes = FALSE)
+)
+```
+```{r}
+all.equal(r_phoenix8_scores, as.data.frame(py$py_phoenix8_scores),
+          check.attributes = FALSE)
+```
 
