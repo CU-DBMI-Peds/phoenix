@@ -102,6 +102,7 @@
 <ul>
 <li>R package</li>
 <li>python module</li>
+<li>SQL queries</li>
 </ul>
 <p>The repository has been built with R as the primary and default language.</p>
 <div class="section level2">
@@ -128,12 +129,105 @@
 <p><em>NOTE:</em> If you are working on a Windows machine you will need to download and install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link"><code>Rtools</code></a>.</p>
 </div>
 </div>
+<div class="section level3">
+<h3 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
+</h3>
+<p>The package comes with an example data set call <code>sepsis.</code> To get the Phoenix score and determine sepsis (score ≥ 2) and septic shock (score ≥ 2 and cardiovascular dysfunction, just call the <code>phoenix</code> function:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dewittpe/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">phoenix_scores</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="reference/phoenix.html">phoenix</a></span><span class="op">(</span></span>
+<span>    <span class="co"># respiratory</span></span>
+<span>      pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span>
+<span>      sf_ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spo2</span> <span class="op">&lt;=</span> <span class="fl">97</span>, <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>, <span class="cn">NA_real_</span><span class="op">)</span>,</span>
+<span>      imv <span class="op">=</span> <span class="va">vent</span>,</span>
+<span>      other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span>
+<span>    <span class="co"># cardiovascular</span></span>
+<span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span></span>
+<span>                    <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
+<span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
+<span>      age <span class="op">=</span> <span class="va">age</span>,</span>
+<span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>    <span class="co"># coagulation</span></span>
+<span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span>
+<span>      inr <span class="op">=</span> <span class="va">inr</span>,</span>
+<span>      d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,</span>
+<span>      fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,</span>
+<span>    <span class="co"># neurologic</span></span>
+<span>      gcs <span class="op">=</span> <span class="va">gcs_total</span>,</span>
+<span>      fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">phoenix_scores</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    20 obs. of  7 variables:</span></span>
+<span><span class="co">#&gt;  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">#&gt;  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">#&gt;  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">#&gt;  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">#&gt;  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
+<span><span class="co"># 'data.frame': 20 obs. of  7 variables:</span></span>
+<span><span class="co">#  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...</span></span>
+<span><span class="co">#  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...</span></span>
+<span><span class="co">#  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...</span></span>
+<span><span class="co">#  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...</span></span>
+<span><span class="co">#  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...</span></span>
+<span><span class="co">#  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
+<span><span class="co">#  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="python">python<a class="anchor" aria-label="anchor" href="#python"></a>
 </h2>
 <p>The subdirectory <code>python</code> provided a module and example use. It is our goal to make this python code more robust and distribute it via PyPI soon.</p>
 <p>You can read the article <a href="https://www.peteredewitt.com/python.html" class="external-link">The Phoenix Septic Criteria in python</a> for deatils and examples of using the python code as is.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> python.phoenix <span class="im">as</span> phx</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sepsis <span class="op">=</span> pd.read_csv(<span class="st">"./python/sepsis.csv"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>phx.phoenix(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    sf_ratio <span class="op">=</span> sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>],</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>),</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     phoenix_respiratory_score  ...  phoenix_septic_shock</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0                           3  ...                     1</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                           3  ...                     1</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                           3  ...                     1</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                           0  ...                     0</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                           0  ...                     0</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                           3  ...                     1</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6                           3  ...                     1</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7                           0  ...                     0</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8                           3  ...                     1</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9                           3  ...                     0</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10                          3  ...                     1</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11                          1  ...                     0</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12                          0  ...                     0</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13                          2  ...                     1</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14                          3  ...                     1</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15                          0  ...                     1</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16                          2  ...                     1</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17                          3  ...                     1</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18                          2  ...                     1</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19                          0  ...                     1</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [20 rows x 7 columns]</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="sql">SQL<a class="anchor" aria-label="anchor" href="#sql"></a>
