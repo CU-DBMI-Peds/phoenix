@@ -17,10 +17,14 @@ VIGNETTES = $(addsuffix .Rmd, $(PKG_ROOT)/vignettes/$(notdir $(basename $(wildca
 $(PKG_NAME)_$(PKG_VERSION).tar.gz: .document.Rout $(TESTS) .Rbuildignore
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
 
-.document.Rout: $(RFILES) $(SRC) $(RAWDATAR) $(VIGNETTES) $(PKG_ROOT)/DESCRIPTION
+.document.Rout: $(RFILES) $(SRC) $(RAWDATAR) $(VIGNETTES) $(PKG_ROOT)/DESCRIPTION README.md
 	if [ -e "$(PKG_ROOT)/data-raw/Makefile" ]; then $(MAKE) -C $(PKG_ROOT)/data-raw/; else echo "Nothing to do"; fi
 	Rscript --vanilla --quiet -e "devtools::document('$(PKG_ROOT)')"
 	@touch $@
+
+README.md : README.Rmd
+	Rscript --vanilla -e "devtools::load_all('$(PKG_ROOT)')"\
+		-e "knitr::knit('$(PKG_ROOT)/README.Rmd', output = 'README.md')"
 
 check: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 	R CMD check $(PKG_NAME)_$(PKG_VERSION).tar.gz

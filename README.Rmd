@@ -4,7 +4,13 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+```
 
 # phoenix: Phoenix Sepsis and Phoenix-8 Sepsis Criteria <img src="man/figures/phoenix_hex.png" width="150px" align="right"/>
 
@@ -65,8 +71,7 @@ The package comes with an example data set call `sepsis.`  To get the Phoenix
 score and determine sepsis (score &geq; 2) and septic shock (score &geq; 2 and
 cardiovascular dysfunction, just call the `phoenix` function:
 
-
-```r
+```{r}
 library(phoenix)
 
 phoenix_scores <-
@@ -94,14 +99,6 @@ phoenix_scores <-
   )
 
 str(phoenix_scores)
-#> 'data.frame':	20 obs. of  7 variables:
-#>  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...
-#>  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...
-#>  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...
-#>  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...
-#>  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...
-#>  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...
-#>  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...
 # 'data.frame':	20 obs. of  7 variables:
 #  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...
 #  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...
@@ -120,10 +117,17 @@ make this python code more robust and distribute it via PyPI soon.
 You can read the article [The Phoenix Septic Criteria in python](https://www.peteredewitt.com/python.html)
 for deatils and examples of using the python code as is.
 
+```{r, include = FALSE}
+library(reticulate)
+if (!virtualenv_exists(envname = "phoenix")) {
+  virtualenv_create(envname = "phoenix")
+  virtualenv_install(envname = "phoenix",
+                     packages = c("numpy", "pyarrow", "pandas"))
+}
+use_virtualenv(virtualenv = "phoenix")
+```
 
-
-
-```python
+```{python}
 import numpy as np
 import pandas as pd
 import python.phoenix as phx
@@ -145,29 +149,6 @@ phx.phoenix(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
     )
-#>     phoenix_respiratory_score  ...  phoenix_septic_shock
-#> 0                           3  ...                     1
-#> 1                           3  ...                     1
-#> 2                           3  ...                     1
-#> 3                           0  ...                     0
-#> 4                           0  ...                     0
-#> 5                           3  ...                     1
-#> 6                           3  ...                     1
-#> 7                           0  ...                     0
-#> 8                           3  ...                     1
-#> 9                           3  ...                     0
-#> 10                          3  ...                     1
-#> 11                          1  ...                     0
-#> 12                          0  ...                     0
-#> 13                          2  ...                     1
-#> 14                          3  ...                     1
-#> 15                          0  ...                     1
-#> 16                          2  ...                     1
-#> 17                          3  ...                     1
-#> 18                          2  ...                     1
-#> 19                          0  ...                     1
-#> 
-#> [20 rows x 7 columns]
 ```
 
 
