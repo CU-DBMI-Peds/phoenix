@@ -43,7 +43,7 @@ diagnostic Phoenix Sepsis Criteria."><!-- mathjax --><script src="https://cdnjs.
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/dewittpe/phoenix/" class="external-link">
+  <a href="https://github.com/CU-DBMI-Peds/phoenix/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -58,7 +58,7 @@ diagnostic Phoenix Sepsis Criteria."><!-- mathjax --><script src="https://cdnjs.
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Phoenix Cardiovascular Score</h1>
-    <small class="dont-index">Source: <a href="https://github.com/dewittpe/phoenix/blob/HEAD/R/phoenix_cardiovascular.R" class="external-link"><code>R/phoenix_cardiovascular.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/CU-DBMI-Peds/phoenix/blob/HEAD/R/phoenix_cardiovascular.R" class="external-link"><code>R/phoenix_cardiovascular.R</code></a></small>
     <div class="hidden name"><code>phoenix_cardiovascular.Rd</code></div>
     </div>
 
@@ -162,7 +162,19 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">DF</span> <span class="op">&lt;-</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># using the example sepsis data set</span></span></span>
+<span class="r-in"><span><span class="fu">phoenix_cardiovascular</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span></span>
+<span class="r-in"><span>   lactate <span class="op">=</span> <span class="va">lactate</span>,</span></span>
+<span class="r-in"><span>   age <span class="op">=</span> <span class="va">age</span>,</span></span>
+<span class="r-in"><span>   map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span></span>
+<span class="r-in"><span>   data <span class="op">=</span> <span class="va">sepsis</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 2 2 1 0 0 1 4 0 3 0 3 0 0 2 3 2 2 2 2 1</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># example data set to get all the possible scores</span></span></span>
+<span class="r-in"><span><span class="va">DF</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>vasos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              lactate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">3.2</span>, <span class="fl">5</span>, <span class="fl">7.8</span>, <span class="fl">11</span>, <span class="fl">14</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.4</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">12</span>, <span class="fl">18</span>, <span class="fl">24</span>, <span class="fl">45</span>, <span class="fl">60</span>, <span class="fl">61</span>, <span class="fl">144</span>, <span class="fl">145</span><span class="op">)</span>,</span></span>
@@ -195,15 +207,6 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">DF2</span><span class="op">$</span><span class="va">card</span>, <span class="va">DF3</span><span class="op">$</span><span class="va">card</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># using the example data set</span></span></span>
-<span class="r-in"><span><span class="fu">phoenix_cardiovascular</span><span class="op">(</span></span></span>
-<span class="r-in"><span>   vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span></span>
-<span class="r-in"><span>   lactate <span class="op">=</span> <span class="va">lactate</span>,</span></span>
-<span class="r-in"><span>   age <span class="op">=</span> <span class="va">age</span>,</span></span>
-<span class="r-in"><span>   map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span></span>
-<span class="r-in"><span>   data <span class="op">=</span> <span class="va">sepsis</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 2 2 1 0 0 1 4 0 3 0 3 0 0 2 3 2 2 2 2 1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
