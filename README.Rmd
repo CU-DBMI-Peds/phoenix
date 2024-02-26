@@ -1,7 +1,3 @@
----
-output: github_document
----
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, echo = FALSE}
@@ -15,9 +11,9 @@ knitr::opts_chunk$set(
 # phoenix: Phoenix Sepsis and Phoenix-8 Sepsis Criteria <img src="man/figures/phoenix_hex.png" width="150px" align="right"/>
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/dewittpe/phoenix/workflows/R-CMD-check/badge.svg)](https://github.com/dewittpe/phoenix/actions)
-[![Coverage Status](https://img.shields.io/codecov/c/github/dewittpe/phoenix/master.svg)](https://app.codecov.io/github/dewittpe/phoenix?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
+[![R-CMD-check](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://app.codecov.io/gh/CU-DBMI-Peds/phoenix/graph/badge.svg?token=PKLXJ9SQOD)](https://app.codecov.io/gh/CU-DBMI-Peds/phoenix)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/phoenix)](http://www.r-pkg.org/pkg/phoenix)
 
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
@@ -33,8 +29,7 @@ after installing the R package via
 vignette("phoenix")
 ```
 or you can read it online
-[here](https://www.peteredewitt.com/phoenix/articles/phoenix.html)
-
+[here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 
 The Phoenix Criteria has been implemented as an
 
@@ -53,14 +48,14 @@ This package is not yet on CRAN - it will be soon!
 
 #### Developmental
 Install the development version of `phoenix` directly from github via the
-[`remotes`](https://github.com/hadley/remotes/) package:
+[`remotes`](https://github.com/r-lib/remotes/) package:
 
     if (!("remotes" %in% rownames(installed.packages()))) {
       warning("installing remotes from https://cran.rstudio.com")
       install.packages("remotes", repo = "https://cran.rstudio.com")
     }
 
-    remotes::install_github("dewittpe/phoenix")
+    remotes::install_github("cu-dbmi-peds/phoenix")
 
 *NOTE:* If you are working on a Windows machine you will need to download and
 install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
@@ -114,7 +109,7 @@ str(phoenix_scores)
 The subdirectory `python` provided a module and example use.  It is our goal to
 make this python code more robust and distribute it via PyPI soon.
 
-You can read the article [The Phoenix Septic Criteria in python](https://www.peteredewitt.com/python.html)
+You can read the article [The Phoenix Septic Criteria in python](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
 for deatils and examples of using the python code as is.
 
 ```{r, include = FALSE}
@@ -154,7 +149,7 @@ phx.phoenix(
 
 ## SQL
 
-Read [The Phoenix Sepsis Criteria in SQL](https://peteredewitt.com/phoenix/sql.html)
+Read [The Phoenix Sepsis Criteria in SQL](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
 article for details and examples of implimenting the scoring rubrics in SQL.
 These examples are done in SQLite but will be easily translated into other SQL
 dialects.

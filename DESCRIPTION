@@ -16,10 +16,10 @@ Description: Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
     "International Consensus Criteria for Pediatric Sepsis and Septic Shock" by
     Schlapbach, Watson, Sorce, et.al. (2024) <doi:10.1001/jama.2024.0179>.
 Depends: R (>= 3.5.0)
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
-URL: https://github.com/dewittpe/phoenix/
-BugReports: https://github.com/dewittpe/phoenix/issues
+URL: https://github.com/CU-DBMI-Peds/phoenix/
+BugReports: https://github.com/CU-DBMI-Peds/phoenix/issues
 Language: en-us
 LazyData: true
 Imports:

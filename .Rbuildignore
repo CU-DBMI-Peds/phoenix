@@ -9,3 +9,5 @@
 ^python$
 ^vignettes/python\.Rmd$
 ^vignettes/sql\.Rmd$
+^README\.Rmd$
+^_pkgdown\.yml$

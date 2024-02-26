@@ -24,8 +24,8 @@ for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/dewittpe/phoenix/}
-  \item Report bugs at \url{https://github.com/dewittpe/phoenix/issues}
+  \item \url{https://github.com/CU-DBMI-Peds/phoenix/}
+  \item Report bugs at \url{https://github.com/CU-DBMI-Peds/phoenix/issues}
 }
 
 }

@@ -42,6 +42,17 @@
 #'
 #' @examples
 #'
+#' # using the example data set
+#' phoenix_coagulation(
+#'   platelets = platelets,
+#'   inr = inr,
+#'   d_dimer = d_dimer,
+#'   fibrinogen = fibrinogen,
+#'   data = sepsis
+#' )
+#'
+#' # build a data.frame with values for all possible combationations of values
+#' # leading to all possible coagulation scores.
 #' DF <-
 #'   expand.grid(plts = c(NA, 20, 100, 150),
 #'               inr  = c(NA, 0.2, 1.3, 1.8),
@@ -50,9 +61,6 @@
 #'
 #' DF$coag <- phoenix_coagulation(plts, inr, ddmr, fib, DF)
 #' DF
-#'
-#' # using the example data set
-#' phoenix_coagulation(platelets = platelets, inr = inr, d_dimer = d_dimer, fibrinogen = fibrinogen, data = sepsis)
 #'
 #' @export
 phoenix_coagulation <- function(platelets, inr, d_dimer, fibrinogen, data = parent.frame(), ...) {

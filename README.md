@@ -1,7 +1,3 @@
----
-output: github_document
----
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
@@ -9,9 +5,9 @@ output: github_document
 # phoenix: Phoenix Sepsis and Phoenix-8 Sepsis Criteria <img src="man/figures/phoenix_hex.png" width="150px" align="right"/>
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/dewittpe/phoenix/workflows/R-CMD-check/badge.svg)](https://github.com/dewittpe/phoenix/actions)
-[![Coverage Status](https://img.shields.io/codecov/c/github/dewittpe/phoenix/master.svg)](https://app.codecov.io/github/dewittpe/phoenix?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
+[![R-CMD-check](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://app.codecov.io/gh/CU-DBMI-Peds/phoenix/graph/badge.svg?token=PKLXJ9SQOD)](https://app.codecov.io/gh/CU-DBMI-Peds/phoenix)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/phoenix)](http://www.r-pkg.org/pkg/phoenix)
 
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
@@ -27,8 +23,7 @@ after installing the R package via
 vignette("phoenix")
 ```
 or you can read it online
-[here](https://www.peteredewitt.com/phoenix/articles/phoenix.html)
-
+[here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 
 The Phoenix Criteria has been implemented as an
 
@@ -47,14 +42,14 @@ This package is not yet on CRAN - it will be soon!
 
 #### Developmental
 Install the development version of `phoenix` directly from github via the
-[`remotes`](https://github.com/hadley/remotes/) package:
+[`remotes`](https://github.com/r-lib/remotes/) package:
 
     if (!("remotes" %in% rownames(installed.packages()))) {
       warning("installing remotes from https://cran.rstudio.com")
       install.packages("remotes", repo = "https://cran.rstudio.com")
     }
 
-    remotes::install_github("dewittpe/phoenix")
+    remotes::install_github("cu-dbmi-peds/phoenix")
 
 *NOTE:* If you are working on a Windows machine you will need to download and
 install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
@@ -117,7 +112,7 @@ str(phoenix_scores)
 The subdirectory `python` provided a module and example use.  It is our goal to
 make this python code more robust and distribute it via PyPI soon.
 
-You can read the article [The Phoenix Septic Criteria in python](https://www.peteredewitt.com/python.html)
+You can read the article [The Phoenix Septic Criteria in python](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
 for deatils and examples of using the python code as is.
 
 
@@ -145,35 +140,33 @@ phx.phoenix(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
     )
-#>     phoenix_respiratory_score  ...  phoenix_septic_shock
-#> 0                           3  ...                     1
-#> 1                           3  ...                     1
-#> 2                           3  ...                     1
-#> 3                           0  ...                     0
-#> 4                           0  ...                     0
-#> 5                           3  ...                     1
-#> 6                           3  ...                     1
-#> 7                           0  ...                     0
-#> 8                           3  ...                     1
-#> 9                           3  ...                     0
-#> 10                          3  ...                     1
-#> 11                          1  ...                     0
-#> 12                          0  ...                     0
-#> 13                          2  ...                     1
-#> 14                          3  ...                     1
-#> 15                          0  ...                     1
-#> 16                          2  ...                     1
-#> 17                          3  ...                     1
-#> 18                          2  ...                     1
-#> 19                          0  ...                     1
-#> 
-#> [20 rows x 7 columns]
+#>     phoenix_respiratory_score  phoenix_cardiovascular_score  phoenix_coagulation_score  phoenix_neurologic_score  phoenix_sepsis_score  phoenix_sepsis  phoenix_septic_shock
+#> 0                           3                             2                          1                         0                     6               1                     1
+#> 1                           3                             2                          1                         1                     7               1                     1
+#> 2                           3                             1                          2                         0                     6               1                     1
+#> 3                           0                             0                          1                         0                     1               0                     0
+#> 4                           0                             0                          0                         0                     0               0                     0
+#> 5                           3                             1                          2                         1                     7               1                     1
+#> 6                           3                             4                          2                         0                     9               1                     1
+#> 7                           0                             0                          1                         0                     1               0                     0
+#> 8                           3                             3                          1                         1                     8               1                     1
+#> 9                           3                             0                          0                         1                     4               1                     0
+#> 10                          3                             3                          1                         2                     9               1                     1
+#> 11                          1                             0                          0                         0                     1               0                     0
+#> 12                          0                             0                          0                         0                     0               0                     0
+#> 13                          2                             2                          1                         0                     5               1                     1
+#> 14                          3                             3                          2                         0                     8               1                     1
+#> 15                          0                             2                          1                         0                     3               1                     1
+#> 16                          2                             2                          1                         0                     5               1                     1
+#> 17                          3                             2                          2                         0                     7               1                     1
+#> 18                          2                             2                          0                         0                     4               1                     1
+#> 19                          0                             1                          1                         0                     2               1                     1
 ```
 
 
 ## SQL
 
-Read [The Phoenix Sepsis Criteria in SQL](https://peteredewitt.com/phoenix/sql.html)
+Read [The Phoenix Sepsis Criteria in SQL](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
 article for details and examples of implimenting the scoring rubrics in SQL.
 These examples are done in SQLite but will be easily translated into other SQL
 dialects.
