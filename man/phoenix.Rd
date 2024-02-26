@@ -83,51 +83,31 @@ respective help files.
 }
 \examples{
 
-DF <-
-  expand.grid(
-    # coagulation varaiables
-    plts = c(20, 100, 150),
-    inr  = c(0.2, 1.3, 1.8),
-    ddmr = c(1.7, 2.0, 2.8),
-    fib  = c(88, 100, 120),
-
-    # cardiovascular variabls
-    vasos = c(0:3),
-    lactate = c(3.2, 7.8, 14),
-    age = c(0.4, 3, 18, 45, 61, 164),
-    map = c(16, 33, 55),
-
-    # neurologic variables
-    gcs = c(8, 12),
-    pupils = c(0, 1),
-
-    # respiratory variables
-    pfr = c(500, 350, 187, 56),
-    sfr = c(300, 254, 177, 76),
-    vent = c(0, 1),
-    o2  = c(0, 1)
-    )
-
-PSS <-
+# Using the example sepsis data set, read more details in the vignette
+phoenix_scores <-
   phoenix(
-    vasoactives = vasos,
-    lactate = lactate,
-    age = age,
-    map = map,
-    pf_ratio = pfr,
-    sf_ratio = sfr,
-    imv = vent,
-    other_respiratory_support = o2,
-    platelets = plts,
-    inr = inr,
-    d_dimer = ddmr,
-    fibrinogen = fib,
-    gcs = gcs,
-    fixed_pupils = pupils,
-    data = DF
+    # respiratory
+      pf_ratio = pao2 / fio2,
+      sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+      imv = vent,
+      other_respiratory_support = as.integer(fio2 > 0.21),
+    # cardiovascular
+      vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+      lactate = lactate,
+      age = age,
+      map = dbp + (sbp - dbp)/3,
+    # coagulation
+      platelets = platelets,
+      inr = inr,
+      d_dimer = d_dimer,
+      fibrinogen = fibrinogen,
+    # neurologic
+      gcs = gcs_total,
+      fixed_pupils = as.integer(pupil == "both-fixed"),
+    data = sepsis
   )
 
-head(PSS)
+str(phoenix_scores)
 
 }
 \references{

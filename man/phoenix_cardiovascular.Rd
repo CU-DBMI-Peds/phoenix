@@ -97,6 +97,17 @@ for each of systolic vasoactive medications, lactate, and MAP.
 }
 
 \examples{
+
+# using the example sepsis data set
+phoenix_cardiovascular(
+   vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+   lactate = lactate,
+   age = age,
+   map = dbp + (sbp - dbp)/3,
+   data = sepsis
+)
+
+# example data set to get all the possible scores
 DF <-
   expand.grid(vasos = c(NA, 0:6),
               lactate = c(NA, 3.2, 5, 7.8, 11, 14),
@@ -122,14 +133,6 @@ DF3$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF3)
 
 identical(DF2$card, DF3$card)
 
-# using the example data set
-phoenix_cardiovascular(
-   vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
-   lactate = lactate,
-   age = age,
-   map = dbp + (sbp - dbp)/3,
-   data = sepsis
-)
 
 
 }

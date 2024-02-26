@@ -68,6 +68,14 @@
 #' 2024. doi:10.1001/jama.2024.0179
 #'
 #' @examples
+#' # using the example sepsis data set
+#' phoenix_neurologic(
+#'   gcs = gcs_total,
+#'   fixed_pupils = as.integer(pupil == "both-fixed"),
+#'   data = sepsis
+#' )
+#'
+#' # build an example data set with all possible neurologic scores
 #' DF <- expand.grid(gcs = c(3:15, NA), pupils = c(0, 1, NA))
 #' DF$target <- 0L
 #' DF$target[DF$gcs <= 10] <- 1L
@@ -76,12 +84,6 @@
 #' stopifnot(identical(DF$target, DF$current))
 #' DF
 #'
-#' # using the example sepsis data set
-#' phoenix_neurologic(
-#'   gcs = gcs_total,
-#'   fixed_pupils = as.integer(pupil == "both-fixed"),
-#'   data = sepsis
-#' )
 #' @export
 phoenix_neurologic <- function(gcs, fixed_pupils, data = parent.frame(), ...) {
 

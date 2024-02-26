@@ -52,6 +52,14 @@ abnormal flexion to pain, \item withdrawal from pain, \item localized pain,
 \item obeys commands}
 }
 \examples{
+# using the example sepsis data set
+phoenix_neurologic(
+  gcs = gcs_total,
+  fixed_pupils = as.integer(pupil == "both-fixed"),
+  data = sepsis
+)
+
+# build an example data set with all possible neurologic scores
 DF <- expand.grid(gcs = c(3:15, NA), pupils = c(0, 1, NA))
 DF$target <- 0L
 DF$target[DF$gcs <= 10] <- 1L
@@ -60,12 +68,6 @@ DF$current <- phoenix_neurologic(gcs, pupils, DF)
 stopifnot(identical(DF$target, DF$current))
 DF
 
-# using the example sepsis data set
-phoenix_neurologic(
-  gcs = gcs_total,
-  fixed_pupils = as.integer(pupil == "both-fixed"),
-  data = sepsis
-)
 }
 \references{
 Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of

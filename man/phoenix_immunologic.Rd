@@ -26,6 +26,18 @@ the criteria.
 Phoenix Immunologic Score
 }
 \examples{
+
+# using the example sepsis data set
+immu_example <- sepsis[c("pid", "anc", "alc")]
+immu_example$score <- phoenix_immunologic(anc, alc, sepsis)
+immu_example
+
+# using the example sepsis data set
+hep_example <- sepsis[c("pid", "bilirubin", "alt")]
+hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
+hep_example
+
+# example data set with all possilbe hepatic scores
 DF <- expand.grid(anc = c(NA, 200, 500, 600), alc = c(NA, 500, 1000, 2000))
 phoenix_immunologic(anc = anc, alc = alc, data = DF)
 

@@ -27,6 +27,12 @@ Phoenix Renal Score
 }
 \examples{
 
+# using the example sepsis data set
+renal_example <- sepsis[c("creatinine", "age")]
+renal_example$score <- phoenix_renal(creatinine, age, sepsis)
+renal_example
+
+# build an example data set with all possible neurologic scores
 DF <- expand.grid(age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
                   creatinine = c(NA, seq(0.0, 1.1, by = 0.1)))
 DF$card <- phoenix_renal(age = age, creatinine = creatinine, data = DF)

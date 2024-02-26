@@ -41,6 +41,13 @@
 #' 2024. doi:10.1001/jama.2024.0179
 #'
 #' @examples
+#'
+#' # using the example sepsis data set
+#' endo_example <- sepsis[c("pid", "glucose")]
+#' endo_example$score <- phoenix_endocrine(glucose, data = sepsis)
+#' endo_example
+#'
+#' # example data set to get all the possible endocrine scores
 #' DF <- data.frame(glc = c(NA, 12, 50, 55, 100, 150, 178))
 #' phoenix_endocrine(glucose = glc, data = DF)
 #'
