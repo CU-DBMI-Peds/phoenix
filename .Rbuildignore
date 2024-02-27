@@ -11,3 +11,4 @@
 ^vignettes/sql\.Rmd$
 ^README\.Rmd$
 ^_pkgdown\.yml$
+^.*\.vim$

@@ -4,3 +4,4 @@
 *.so
 *.o
 *__pycache__*
+*.vim
