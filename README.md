@@ -113,7 +113,7 @@ The subdirectory `python` provided a module and example use.  It is our goal to
 make this python code more robust and distribute it via PyPI soon.
 
 You can read the article [The Phoenix Septic Criteria in python](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
-for deatils and examples of using the python code as is.
+for details and examples of using the python code as is.
 
 
 
@@ -167,7 +167,7 @@ phx.phoenix(
 ## SQL
 
 Read [The Phoenix Sepsis Criteria in SQL](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
-article for details and examples of implimenting the scoring rubrics in SQL.
+article for details and examples of implementing the scoring rubrics in SQL.
 These examples are done in SQLite but will be easily translated into other SQL
 dialects.
 

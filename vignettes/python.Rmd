@@ -16,7 +16,7 @@ vignette: >
 ################################################################################
 #                                IMPORTANT NOTE                                #
 #                                                                              #
-#   This vignette _is not_ part of the R pacakge, it is part of the website!   #
+#   This vignette _is not_ part of the R package, it is part of the website!   #
 ################################################################################
 ```
 
@@ -43,7 +43,7 @@ use_virtualenv(virtualenv = "phoenix")
 ```
 
 
-For those who are primarily working in python and want or need to impliment the
+For those who are primarily working in python and want or need to implement the
 Phoenix Sepsis criteria there are a couple options.
 
 1. Use [rpy2](https://rpy2.github.io/index.html) to use the phoenix R package
@@ -66,7 +66,7 @@ import phoenix as phx
 ```
 
 Start by reading in the example data set.  This is the same data as provided in
-the R pacakge.
+the R package.
 ```{python, include = FALSE}
 # use this block to get read the data, use an unevaluated chunk to make it look
 # good in the article
