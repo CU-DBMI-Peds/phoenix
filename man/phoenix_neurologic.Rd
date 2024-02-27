@@ -4,7 +4,12 @@
 \alias{phoenix_neurologic}
 \title{Phoenix Sepsis Neurological Score}
 \usage{
-phoenix_neurologic(gcs, fixed_pupils, data = parent.frame(), ...)
+phoenix_neurologic(
+  gcs = NA_integer_,
+  fixed_pupils = NA_real_,
+  data = parent.frame(),
+  ...
+)
 }
 \arguments{
 \item{gcs}{integer vector; total Glasgow Comma Score}

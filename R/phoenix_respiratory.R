@@ -90,31 +90,12 @@
 #'
 #'
 #' @export
-phoenix_respiratory <- function(pf_ratio, sf_ratio, imv, other_respiratory_support, data = parent.frame(), ...) {
+phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = NA_integer_, other_respiratory_support = NA_integer_, data = parent.frame(), ...) {
 
-  if (missing(pf_ratio)) {
-    pfr <- NA_real_
-  } else {
-    pfr <- eval(expr = substitute(pf_ratio), envir = data)
-  }
-
-  if (missing(sf_ratio)) {
-    sfr <- NA_real_
-  } else {
-    sfr <- eval(expr = substitute(sf_ratio), envir = data)
-  }
-
-  if (missing(imv)) {
-    imv <- NA_integer_
-  } else {
-    imv <- eval(expr = substitute(imv),      envir = data)
-  }
-
-  if (missing(other_respiratory_support)) {
-    ors <- NA_integer_
-  } else {
-    ors <- eval(expr = substitute(other_respiratory_support), envir = data)
-  }
+  pfr <- eval(expr = substitute(pf_ratio), envir = data)
+  sfr <- eval(expr = substitute(sf_ratio), envir = data)
+  imv <- eval(expr = substitute(imv),      envir = data)
+  ors <- eval(expr = substitute(other_respiratory_support), envir = data)
 
   n <- max(c(length(pfr), length(sfr), length(imv), length(ors)))
 

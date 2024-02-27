@@ -5,10 +5,10 @@
 \title{Phoenix Cardiovascular Score}
 \usage{
 phoenix_cardiovascular(
-  vasoactives,
-  lactate,
-  age,
-  map,
+  vasoactives = NA_integer_,
+  lactate = NA_real_,
+  age = NA_real_,
+  map = NA_real_,
   data = parent.frame(),
   ...
 )

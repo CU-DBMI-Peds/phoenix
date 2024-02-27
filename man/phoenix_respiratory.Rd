@@ -5,10 +5,10 @@
 \title{Phoenix Respiratory Score}
 \usage{
 phoenix_respiratory(
-  pf_ratio,
-  sf_ratio,
-  imv,
-  other_respiratory_support,
+  pf_ratio = NA_real_,
+  sf_ratio = NA_real_,
+  imv = NA_integer_,
+  other_respiratory_support = NA_integer_,
   data = parent.frame(),
   ...
 )

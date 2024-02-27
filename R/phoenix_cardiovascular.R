@@ -139,31 +139,12 @@
 #'
 #'
 #' @export
-phoenix_cardiovascular <- function(vasoactives, lactate, age, map, data = parent.frame(), ...) {
+phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_, age = NA_real_, map = NA_real_, data = parent.frame(), ...) {
 
-  if (missing(vasoactives)) {
-    vas <- NA_integer_
-  } else {
-    vas <- eval(expr = substitute(vasoactives), envir = data)
-  }
-
-  if (missing(lactate)) {
-    lct <- NA_real_
-  } else {
-    lct <- eval(expr = substitute(lactate), envir = data)
-  }
-
-  if (missing(age)) {
-    age <- NA_real_
-  } else {
-    age <- eval(expr = substitute(age), envir = data)
-  }
-
-  if (missing(map)) {
-    map <- NA_real_
-  } else {
-    map <- eval(expr = substitute(map), envir = data)
-  }
+  vas <- eval(expr = substitute(vasoactives), envir = data)
+  lct <- eval(expr = substitute(lactate), envir = data)
+  age <- eval(expr = substitute(age), envir = data)
+  map <- eval(expr = substitute(map), envir = data)
 
   n <- max(c(length(vas), length(lct), length(age), length(map)))
 

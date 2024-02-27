@@ -85,19 +85,10 @@
 #' DF
 #'
 #' @export
-phoenix_neurologic <- function(gcs, fixed_pupils, data = parent.frame(), ...) {
+phoenix_neurologic <- function(gcs = NA_integer_, fixed_pupils = NA_real_, data = parent.frame(), ...) {
 
-  if (missing(gcs)) {
-    gcs <- NA_integer_
-  } else {
-    gcs <- eval(expr = substitute(gcs), envir = data)
-  }
-
-  if (missing(fixed_pupils)) {
-    fpl <- NA_integer_
-  } else {
-    fpl <- eval(expr = substitute(fixed_pupils), envir = data)
-  }
+  gcs <- eval(expr = substitute(gcs), envir = data)
+  fpl <- eval(expr = substitute(fixed_pupils), envir = data)
 
   n <- max(c(length(gcs), length(fpl)))
 

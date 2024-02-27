@@ -51,19 +51,10 @@
 #' DF <- expand.grid(bil = c(NA, 3.2, 4.0, 4.3), alt = c(NA, 99, 102, 106))
 #' phoenix_hepatic(bilirubin = bil, alt = alt, data = DF)
 #' @export
-phoenix_hepatic <- function(bilirubin, alt, data = parent.frame(), ...) {
+phoenix_hepatic <- function(bilirubin = NA_real_, alt = NA_real_, data = parent.frame(), ...) {
 
-  if (missing(bilirubin)) {
-    bil <- NA_real_
-  } else {
-    bil <- eval(expr = substitute(bilirubin), envir = data)
-  }
-
-  if (missing(alt)) {
-    alt <- NA_real_
-  } else {
-    alt <- eval(expr = substitute(alt), envir = data)
-  }
+  bil <- eval(expr = substitute(bilirubin), envir = data)
+  alt <- eval(expr = substitute(alt), envir = data)
 
   n <- max(c(length(bil), length(alt)))
 

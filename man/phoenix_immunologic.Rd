@@ -4,7 +4,7 @@
 \alias{phoenix_immunologic}
 \title{Phoenix Immunologic Score}
 \usage{
-phoenix_immunologic(anc, alc, data = parent.frame(), ...)
+phoenix_immunologic(anc = NA_real_, alc = NA_real_, data = parent.frame(), ...)
 }
 \arguments{
 \item{anc}{numeric vector; units of 1,000 cells per cubic millimeter}

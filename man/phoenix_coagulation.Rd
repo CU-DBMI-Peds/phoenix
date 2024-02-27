@@ -5,10 +5,10 @@
 \title{Phoenix Coagulation Score}
 \usage{
 phoenix_coagulation(
-  platelets,
-  inr,
-  d_dimer,
-  fibrinogen,
+  platelets = NA_real_,
+  inr = NA_real_,
+  d_dimer = NA_real_,
+  fibrinogen = NA_real_,
   data = parent.frame(),
   ...
 )

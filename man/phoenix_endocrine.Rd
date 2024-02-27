@@ -4,7 +4,7 @@
 \alias{phoenix_endocrine}
 \title{Phoenix Endocrine Score}
 \usage{
-phoenix_endocrine(glucose, data = parent.frame(), ...)
+phoenix_endocrine(glucose = NA_real_, data = parent.frame(), ...)
 }
 \arguments{
 \item{glucose}{numeric vector; blood glucose measured in mg/dL}
