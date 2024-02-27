@@ -56,21 +56,15 @@ phoenix_hepatic <- function(bilirubin = NA_real_, alt = NA_real_, data = parent.
   bil <- eval(expr = substitute(bilirubin), envir = data)
   alt <- eval(expr = substitute(alt), envir = data)
 
-  n <- max(c(length(bil), length(alt)))
+  lngths <- c(length(bil), length(alt))
+  n <- max(lngths)
 
-  if (n > 1) {
-    if (length(bil) == 1) {
-      bil <- rep(bil, n)
-    } else if (length(bil) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of bilirubin is %s, needs to be either 1 or %s."
-                   , length(bil), n))
-    }
-    if (length(alt) == 1) {
-      alt <- rep(alt, n)
-    } else if (length(alt) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of alt is %s, needs to be either 1 or %s."
-                   , length(alt), n))
-    }
+  if (!all(lngths %in% c(1L, n))) {
+    fmt <- paste("All inputs need to either have the same length or have length 1.",
+                 "Length of bilirubin is %s;",
+                 "Length of alt is %s.")
+    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
+    stop(msg)
   }
 
   # set "healthy" value for missing data

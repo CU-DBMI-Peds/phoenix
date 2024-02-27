@@ -70,33 +70,17 @@ phoenix_coagulation <- function(platelets = NA_real_, inr = NA_real_, d_dimer = 
   ddm <- eval(expr = substitute(d_dimer), envir = data)
   fib <- eval(expr = substitute(fibrinogen), envir = data)
 
-  n <- max(c(length(plt), length(inr), length(ddm), length(fib)))
+  lngths <- c(length(plt), length(inr), length(ddm), length(fib))
+  n <- max(lngths)
 
-  if (n > 1) {
-    if (length(plt) == 1) {
-      plt <- rep(plt, n)
-    } else if (length(plt) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of platelets is %s, needs to be either 1 or %s."
-                   , length(plt), n))
-    }
-    if (length(inr) == 1) {
-      inr <- rep(inr, n)
-    } else if (length(inr) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of inr is %s, needs to be either 1 or %s."
-                   , length(inr), n))
-    }
-    if (length(ddm) == 1) {
-      ddm <- rep(ddm, n)
-    } else if (length(ddm) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of d_dimer is %s, needs to be either 1 or %s."
-                   , length(ddm), n))
-    }
-    if (length(fib) == 1) {
-      fib <- rep(fib, n)
-    } else if (length(fib) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of fibrinogen is %s, needs to be either 1 or %s."
-                   , length(fib), n))
-    }
+  if (!all(lngths %in% c(1L, n))) {
+    fmt <- paste("All inputs need to either have the same length or have length 1.",
+                 "Length of platelets is %s;",
+                 "Length of inr is %s;",
+                 "Length of d_dimer is %s;",
+                 "Length of fibrinogen is %s.")
+    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
+    stop(msg)
   }
 
   # set "healthy" value for missing data

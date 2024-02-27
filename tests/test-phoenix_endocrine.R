@@ -11,7 +11,6 @@ stopifnot(is.integer(eg))
 stopifnot(identical(phoenix_endocrine(), 0L))
 stopifnot(identical(phoenix_endocrine(data = sepsis), 0L))
 
-
 ################################################################################
 #                                 End of File                                  #
 ################################################################################

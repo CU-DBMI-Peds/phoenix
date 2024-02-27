@@ -146,33 +146,17 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
   age <- eval(expr = substitute(age), envir = data)
   map <- eval(expr = substitute(map), envir = data)
 
-  n <- max(c(length(vas), length(lct), length(age), length(map)))
+  lngths <- c(length(vas), length(lct), length(age), length(map))
+  n <- max(lngths)
 
-  if (n > 1) {
-    if (length(vas) == 1) {
-      vas <- rep(vas, n)
-    } else if (length(vas) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of vasoactives is %s, needs to be either 1 or %s."
-                   , length(vas), n))
-    }
-    if (length(lct) == 1) {
-      lct <- rep(lct, n)
-    } else if (length(lct) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of lactate is %s, needs to be either 1 or %s."
-                   , length(lct), n))
-    }
-    if (length(age) == 1) {
-      age <- rep(age, n)
-    } else if (length(age) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of age is %s, needs to be either 1 or %s."
-                   , length(age), n))
-    }
-    if (length(map) == 1) {
-      map <- rep(map, n)
-    } else if (length(map) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of map is %s, needs to be either 1 or %s."
-                   , length(map), n))
-    }
+  if (!all(lngths %in% c(1L, n))) {
+    fmt <- paste("All inputs need to either have the same length or have length 1.",
+                 "Length of vasoactives is %s;",
+                 "Length of lactate is %s;",
+                 "Length of age is %s;",
+                 "Length of map is %s.")
+    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
+    stop(msg)
   }
 
   # set "healthy" value for missing data

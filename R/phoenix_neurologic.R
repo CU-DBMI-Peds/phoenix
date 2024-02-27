@@ -90,21 +90,15 @@ phoenix_neurologic <- function(gcs = NA_integer_, fixed_pupils = NA_real_, data 
   gcs <- eval(expr = substitute(gcs), envir = data)
   fpl <- eval(expr = substitute(fixed_pupils), envir = data)
 
-  n <- max(c(length(gcs), length(fpl)))
+  lngths <- c(length(gcs), length(fpl))
+  n <- max(lngths)
 
-  if (n > 1) {
-    if (length(gcs) == 1) {
-      gcs <- rep(gcs, n)
-    } else if (length(gcs) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of gcs is %s, needs to be either 1 or %s."
-                   , length(gcs), n))
-    }
-    if (length(fpl) == 1) {
-      fpl <- rep(fpl, n)
-    } else if (length(fpl) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of fixed_pupils is %s, needs to be either 1 or %s."
-                   , length(fpl), n))
-    }
+  if (!all(lngths %in% c(1L, n))) {
+    fmt <- paste("All inputs need to either have the same length or have length 1.",
+                 "Length of gcs is %s;",
+                 "Length of fixed_pupils is %s.")
+    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
+    stop(msg)
   }
 
   fpl <- as.integer(fpl)

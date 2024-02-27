@@ -12,5 +12,22 @@ stopifnot(identical(phoenix_hepatic(), 0L))
 stopifnot(identical(phoenix_hepatic(data = sepsis), 0L))
 
 ################################################################################
+# verify error if lengths differ
+x <- tryCatch(phoenix_hepatic(bilirubin = numeric(0)), error = function(e) e)
+stopifnot(inherits(x, "simpleError"))
+stopifnot(identical(
+  x$message,
+ "All inputs need to either have the same length or have length 1. Length of bilirubin is 0; Length of alt is 1."
+))
+
+x <- tryCatch(phoenix_hepatic(bilirubin = c(NA, NA), alt = c(NA, NA, NA)), error = function(e) e)
+stopifnot(inherits(x, "simpleError"))
+stopifnot(identical(
+  x$message,
+ "All inputs need to either have the same length or have length 1. Length of bilirubin is 2; Length of alt is 3."
+))
+
+
+################################################################################
 #                                 End of File                                  #
 ################################################################################

@@ -97,33 +97,17 @@ phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = 
   imv <- eval(expr = substitute(imv),      envir = data)
   ors <- eval(expr = substitute(other_respiratory_support), envir = data)
 
-  n <- max(c(length(pfr), length(sfr), length(imv), length(ors)))
+  lngths <- c(length(pfr), length(sfr), length(imv), length(ors))
+  n <- max(lngths)
 
-  if (n > 1) {
-    if (length(pfr) == 1) {
-      pfr <- rep(pfr, n)
-    } else if (length(pfr) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of pf_ratio is %s, needs to be either 1 or %s."
-                   , length(pfr), n))
-    }
-    if (length(sfr) == 1) {
-      sfr <- rep(sfr, n)
-    } else if (length(sfr) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of sf_ratio is %s, needs to be either 1 or %s."
-                   , length(sfr), n))
-    }
-    if (length(imv) == 1) {
-      imv <- rep(imv, n)
-    } else if (length(imv) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of imv is %s, needs to be either 1 or %s."
-                   , length(imv), n))
-    }
-    if (length(ors) == 1) {
-      ors <- rep(ors, n)
-    } else if (length(ors) != n) {
-      stop(sprintf("All inputs need to have same length or length 1.\nLength of other_respiratory_support is %s, needs to be either 1 or %s."
-                   , length(ors), n))
-    }
+  if (!all(lngths %in% c(1L, n))) {
+    fmt <- paste("All inputs need to either have the same length or have length 1.",
+                 "Length of pf_ratio is %s;",
+                 "Length of sf_ratio is %s;",
+                 "Length of imv is %s;",
+                 "Length of other_respiratory_support is %s.")
+    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
+    stop(msg)
   }
 
   # set "healthy" value for missing data
