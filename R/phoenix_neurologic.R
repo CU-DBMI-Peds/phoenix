@@ -4,16 +4,10 @@
 #' pupil reactivity. This score is part of the diagnostic Phoenix Sepsis
 #' criteria and Phoenix 8 Sepsis criteria.
 #'
-#' Scoring:
-#' \tabular{ll}{
-#' Bilaterally fixed pupil \tab 2 points \cr
-#' Glasgow Coma Score (total) less or equal 10 \tab 1 point \cr
-#' Reactive pupils and GCS > 10 \tab 0 point
-#' }
-#' Missing value will be mapped to a value of 0 as was done when developing the
+#' Missing values will map to a value of 0 as was done when developing the
 #' Phoenix criteria.  Note that this is done on a input by input basis.  That
-#' is, if pupil reactivity is missing but GCS (total) = 9, then the score is one
-#' point.
+#' is, if pupil reactivity is missing but GCS (total) is 9, then the neurologic
+#' dysfunction score is 1.
 #'
 #' GCS total is the sum of a score based on eyes, motor control, and verbal
 #' responsiveness.
@@ -31,9 +25,18 @@
 #' abnormal flexion to pain, \item withdrawal from pain, \item localized pain,
 #' \item obeys commands}
 #'
+#' @section Phoenix Neurological Scoring:
+#' \tabular{ll}{
+#' Bilaterally fixed pupil \tab 2 points \cr
+#' Glasgow Coma Score (total) less or equal 10 \tab 1 point \cr
+#' Reactive pupils and GCS > 10 \tab 0 point
+#' }
+#'
 #' @inheritParams phoenix8
 #'
 #' @return an integer vector with values 0, 1, or 2.
+#' As with all Phoenix organ dysfunction scores, missing input values map to
+#' scores of zero.
 #'
 #' @seealso
 #' \itemize{
