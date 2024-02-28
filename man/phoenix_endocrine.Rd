@@ -21,8 +21,15 @@ set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-Phoenix Endocrine Score
+Assess the Phoenix endocrine organ dysfunction score.  This score is not part
+of the Phoenix score, only part of the Phoenix-8 score.
 }
+\section{Phoenix Endocrine Scoring}{
+
+The endocrine dysfunction score is based on blood glucose with one point
+for levels < 50 mg/dL or > 150 mg/dL.
+}
+
 \examples{
 
 # using the example sepsis data set

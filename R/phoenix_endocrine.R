@@ -1,5 +1,12 @@
 #' Phoenix Endocrine Score
 #'
+#' Assess the Phoenix endocrine organ dysfunction score.  This score is not part
+#' of the Phoenix score, only part of the Phoenix-8 score.
+#'
+#' @section Phoenix Endocrine Scoring:
+#' The endocrine dysfunction score is based on blood glucose with one point
+#' for levels < 50 mg/dL or > 150 mg/dL.
+#'
 #' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0 or 1
