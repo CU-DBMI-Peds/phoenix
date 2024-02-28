@@ -28,7 +28,7 @@ set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-Apply the Phoenix Hepatic scoreing based on total bilirubin and ALT.
+Apply the Phoenix Hepatic scoring based on total bilirubin and ALT.
 }
 \section{Phoenix Hepatic Scoring}{
 

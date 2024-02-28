@@ -1,6 +1,6 @@
 #' Phoenix Hepatic Score
 #'
-#' Apply the Phoenix Hepatic scoreing based on total bilirubin and ALT.
+#' Apply the Phoenix Hepatic scoring based on total bilirubin and ALT.
 #'
 #' @section Phoenix Hepatic Scoring:
 #' 1 point for total bilirubin greater or equal to 4 mg/dL and/or ALT strictly
