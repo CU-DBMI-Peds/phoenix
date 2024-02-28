@@ -34,8 +34,15 @@ set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-Phoenix Coagulation Score
+Applies the Phoenix coagulation organ dysfunction scoring to a set of inputs.
 }
+\section{Phoenix Coagulation Scoring}{
+
+1 point each for platelets < 100 K/micro liter, INR > 1.3, D-dimer > 2 mg/L
+FEU, and fibrinogen < 100 mg/dL, with a max total
+score of 2.
+}
+
 \examples{
 
 # using the example data set

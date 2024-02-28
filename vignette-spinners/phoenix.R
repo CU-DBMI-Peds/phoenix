@@ -74,7 +74,7 @@ packageVersion("phoenix")
 #' |&nbsp;&nbsp;&nbsp;&nbsp; 144 &leq; Age       | [52, &infin;) mmHg | [38, 52) mmHg | [0, 38) mmHg |
 #' |**Coagulation** (0-2 points) | | 1 point each; max 2 |
 #' |&nbsp;&nbsp; Platelets  | [100, &infin;) K/&mu;L | [0, 100) K/&mu;L |
-#' |&nbsp;&nbsp; INR        | [0 , 1.3] | [1.3, &infin;) |
+#' |&nbsp;&nbsp; INR        | [0 , 1.3] | (1.3, &infin;) |
 #' |&nbsp;&nbsp; D-Dimer    | [0, 2] mg/L FEU | (2, &infin;) mg/L FEU |
 #' |&nbsp;&nbsp; Fibrinogen | [100, &infin;) mg/dL | [0, 100) mg/dL |
 #' |**Neurologic** (0-2 points) | GCS &#8712; {11, 12, 13, 14, 15} | GCS &#8712; {3, 4, ..., 10} | Bilaterally fixed pupils |
