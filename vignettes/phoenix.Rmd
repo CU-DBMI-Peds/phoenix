@@ -94,7 +94,7 @@ score &geq; 1).
         <li> SpO<sub>2</sub>: pulse oximetry oxygen saturation</li>
     </ul>
     <li> Age: measured in months and is not adjusted for prematurity. </li>
-    <li> SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when SpO<sub>2</sub> &leq 97. </li>
+    <li> SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when SpO<sub>2</sub> &leq; 97. </li>
     <li> Vasoactive medications: any systmic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin. </li>
     <li> lactate can be arterial or venous.  Reference range 0.5 - 2.2 mmol/L </li>
     <li> MAP - Use measured arterial pressue preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3 </li>
