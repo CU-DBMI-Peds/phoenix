@@ -48,7 +48,7 @@ approximating the map from blood pressure values via DBP + 1/3 (SBP - DBP),
 where DBP is the diastolic blood pressure and SBP is the systolic blood
 pressure.
 }
-\section{Pheonix Cardiovascular Scoring}{
+\section{Phoenix Cardiovascular Scoring}{
 
 The Phoenix Cardiovascular score ranges from 0 to 6 points; 0, 1, or 2 points
 for each of systolic vasoactive medications, lactate, and MAP.
