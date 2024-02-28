@@ -100,14 +100,16 @@ criteria and Phoenix 8 Sepsis criteria.</p>
     <h2>Value</h2>
     
 
-<p>an integer vector with values 0, 1, or 2.</p>
+<p>an integer vector with values 0, 1, or 2.
+As with all Phoenix organ dysfunction scores, missing input values map to
+scores of zero.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>Scoring:</p><table class="table table"><tr><td>Bilaterally fixed pupil</td><td>2 points</td></tr><tr><td>Glasgow Coma Score (total) less or equal 10</td><td>1 point</td></tr><tr><td>Reactive pupils and GCS &gt; 10</td><td>0 point</td></tr></table><p>Missing value will be mapped to a value of 0 as was done when developing the
+    <p>Missing values will map to a value of 0 as was done when developing the
 Phoenix criteria.  Note that this is done on a input by input basis.  That
-is, if pupil reactivity is missing but GCS (total) = 9, then the score is one
-point.</p>
+is, if pupil reactivity is missing but GCS (total) is 9, then the neurologic
+dysfunction score is 1.</p>
 <p>GCS total is the sum of a score based on eyes, motor control, and verbal
 responsiveness.</p>
 <p>Eye response:</p><ol><li><p>no eye opening,</p></li>
@@ -127,6 +129,11 @@ opening to sound,</p></li>
 <li><p>localized pain,</p></li>
 <li><p>obeys commands</p></li>
 </ol></div>
+    <div id="phoenix-neurological-scoring">
+    <h2>Phoenix Neurological Scoring</h2>
+    
+
+<table class="table table"><tr><td>Bilaterally fixed pupil</td><td>2 points</td></tr><tr><td>Glasgow Coma Score (total) less or equal 10</td><td>1 point</td></tr><tr><td>Reactive pupils and GCS &gt; 10</td><td>0 point</td></tr></table></div>
     <div id="references">
     <h2>References</h2>
     <p>Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
