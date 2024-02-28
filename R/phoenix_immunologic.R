@@ -1,5 +1,11 @@
 #' Phoenix Immunologic Score
 #'
+#' Apply the Phoenix immunologic scoring based on ANC and ALC.  This is only
+#' part of Phoenix-8 and not Phoenix.
+#'
+#' @section Phoenix Immunologic Scoring:
+#' 1 point if ANC < 500 or ALC < 1000 cells per cubic millimeter.
+#'
 #' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0 or 1
