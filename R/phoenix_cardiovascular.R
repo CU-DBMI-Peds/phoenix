@@ -13,7 +13,7 @@
 #' where DBP is the diastolic blood pressure and SBP is the systolic blood
 #' pressure.
 #'
-#' @section Scoring:
+#' @section Pheonix Cardiovascular Scoring:
 #' The Phoenix Cardiovascular score ranges from 0 to 6 points; 0, 1, or 2 points
 #' for each of systolic vasoactive medications, lactate, and MAP.
 #'
