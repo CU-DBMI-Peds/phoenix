@@ -1,5 +1,11 @@
 #' Phoenix Hepatic Score
 #'
+#' Apply the Phoenix Hepatic scoreing based on total bilirubin and ALT.
+#'
+#' @section Phoenix Hepatic Scoring:
+#' 1 point for total bilirubin greater or equal to 4 mg/dL and/or ALT strictly
+#' greater than 102 IU/L.
+#'
 #' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0 or 1
