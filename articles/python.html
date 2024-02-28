@@ -111,12 +111,12 @@ article.</p></li>
 </ol>
 <p>For the following examples you’ll need the following python
 modules</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> phoenix <span class="im">as</span> phx</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> phoenix <span class="im">as</span> phx</span></code></pre></div>
 <p>Start by reading in the example data set. This is the same data as
 provided in the R package.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sepsis <span class="op">=</span> pd.read_csv(<span class="st">"sepsis.csv"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>sepsis <span class="op">=</span> pd.read_csv(<span class="st">"sepsis.csv"</span>)</span></code></pre></div>
 <p>We will compare the python output to the R results too.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CU-DBMI-Peds/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span></code></pre></div>
@@ -141,12 +141,12 @@ expect a similar return of a numpy integer array.</p>
 <span>  data <span class="op">=</span> <span class="va">sepsis</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>In python you have a similar syntax</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>py_resp <span class="op">=</span> phx.phoenix_respiratory(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>py_resp <span class="op">=</span> phx.phoenix_respiratory(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy()</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_resp</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_resp</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -162,12 +162,12 @@ expect a similar return of a numpy integer array.</p>
 <span>  map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">sepsis</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>py_card <span class="op">=</span> phx.phoenix_cardiovascular(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>py_card <span class="op">=</span> phx.phoenix_cardiovascular(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_card</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_card</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -178,12 +178,12 @@ expect a similar return of a numpy integer array.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r_coag</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/phoenix_coagulation.html">phoenix_coagulation</a></span><span class="op">(</span><span class="va">platelets</span>, <span class="va">inr</span>, <span class="va">d_dimer</span>, <span class="va">fibrinogen</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>py_coag <span class="op">=</span> phx.phoenix_coagulation(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>py_coag <span class="op">=</span> phx.phoenix_coagulation(</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>)</span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_coag</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_coag</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -198,10 +198,10 @@ expect a similar return of a numpy integer array.</p>
 <span>    fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>py_neur <span class="op">=</span> phx.phoenix_neurologic(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>py_neur <span class="op">=</span> phx.phoenix_neurologic(</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>)</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_neur</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_neur</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -211,7 +211,7 @@ expect a similar return of a numpy integer array.</p>
 </h3>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r_endo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_endocrine.html">phoenix_endocrine</a></span><span class="op">(</span><span class="va">glucose</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>py_endo <span class="op">=</span> phx.phoenix_endocrine(sepsis[<span class="st">"glucose"</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>py_endo <span class="op">=</span> phx.phoenix_endocrine(sepsis[<span class="st">"glucose"</span>])</span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_endo</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_endo</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -221,7 +221,7 @@ expect a similar return of a numpy integer array.</p>
 </h3>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r_immu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_immunologic.html">phoenix_immunologic</a></span><span class="op">(</span><span class="va">anc</span>, <span class="va">alc</span>, <span class="va">sepsis</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>py_immu <span class="op">=</span> phx.phoenix_immunologic(sepsis[<span class="st">"anc"</span>], sepsis[<span class="st">"alc"</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>py_immu <span class="op">=</span> phx.phoenix_immunologic(sepsis[<span class="st">"anc"</span>], sepsis[<span class="st">"alc"</span>])</span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_immu</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_immu</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -231,7 +231,7 @@ expect a similar return of a numpy integer array.</p>
 </h3>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r_renal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_renal.html">phoenix_renal</a></span><span class="op">(</span>creatinine <span class="op">=</span> <span class="va">creatinine</span>, age <span class="op">=</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>py_renal <span class="op">=</span> phx.phoenix_renal(sepsis[<span class="st">"creatinine"</span>], sepsis[<span class="st">"age"</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>py_renal <span class="op">=</span> phx.phoenix_renal(sepsis[<span class="st">"creatinine"</span>], sepsis[<span class="st">"age"</span>])</span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_renal</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_renal</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -241,7 +241,7 @@ expect a similar return of a numpy integer array.</p>
 </h3>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r_hepatic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/phoenix_hepatic.html">phoenix_hepatic</a></span><span class="op">(</span>bilirubin <span class="op">=</span> <span class="va">bilirubin</span>, alt <span class="op">=</span> <span class="va">alt</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>py_hepatic <span class="op">=</span> phx.phoenix_hepatic(sepsis[<span class="st">"bilirubin"</span>], sepsis[<span class="st">"alt"</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>py_hepatic <span class="op">=</span> phx.phoenix_hepatic(sepsis[<span class="st">"bilirubin"</span>], sepsis[<span class="st">"alt"</span>])</span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">r_hepatic</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_hepatic</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] TRUE</span></span></code></pre></div>
@@ -275,22 +275,22 @@ expect a similar return of a numpy integer array.</p>
 <span>      fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>py_phoenix_scores <span class="op">=</span> phx.phoenix(</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>],</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>),</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>py_phoenix_scores <span class="op">=</span> phx.phoenix(</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
+<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
+<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
+<span id="cb29-9"><a href="#cb29-9" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
+<span id="cb29-10"><a href="#cb29-10" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
+<span id="cb29-11"><a href="#cb29-11" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
+<span id="cb29-12"><a href="#cb29-12" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
+<span id="cb29-13"><a href="#cb29-13" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>],</span>
+<span id="cb29-14"><a href="#cb29-14" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
+<span id="cb29-15"><a href="#cb29-15" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>),</span>
+<span id="cb29-16"><a href="#cb29-16" tabindex="-1"></a>    )</span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">r_phoenix_scores</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_phoenix_scores</span><span class="op">)</span>,</span>
 <span>          check.attributes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -333,28 +333,28 @@ expect a similar return of a numpy integer array.</p>
 <span>      alt <span class="op">=</span> <span class="va">alt</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">sepsis</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>py_phoenix8_scores <span class="op">=</span> phx.phoenix8(</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>],</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>),</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    glucose <span class="op">=</span> sepsis[<span class="st">"glucose"</span>],</span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    anc <span class="op">=</span> sepsis[<span class="st">"anc"</span>],</span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    alc <span class="op">=</span> sepsis[<span class="st">"alc"</span>],</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    creatinine <span class="op">=</span> sepsis[<span class="st">"creatinine"</span>],</span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    bilirubin <span class="op">=</span> sepsis[<span class="st">"bilirubin"</span>],</span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    alt <span class="op">=</span> sepsis[<span class="st">"alt"</span>],</span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>]</span>
-<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python pychunk"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>py_phoenix8_scores <span class="op">=</span> phx.phoenix8(</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
+<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
+<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
+<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
+<span id="cb32-10"><a href="#cb32-10" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
+<span id="cb32-11"><a href="#cb32-11" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
+<span id="cb32-12"><a href="#cb32-12" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>],</span>
+<span id="cb32-13"><a href="#cb32-13" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
+<span id="cb32-14"><a href="#cb32-14" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>),</span>
+<span id="cb32-15"><a href="#cb32-15" tabindex="-1"></a>    glucose <span class="op">=</span> sepsis[<span class="st">"glucose"</span>],</span>
+<span id="cb32-16"><a href="#cb32-16" tabindex="-1"></a>    anc <span class="op">=</span> sepsis[<span class="st">"anc"</span>],</span>
+<span id="cb32-17"><a href="#cb32-17" tabindex="-1"></a>    alc <span class="op">=</span> sepsis[<span class="st">"alc"</span>],</span>
+<span id="cb32-18"><a href="#cb32-18" tabindex="-1"></a>    creatinine <span class="op">=</span> sepsis[<span class="st">"creatinine"</span>],</span>
+<span id="cb32-19"><a href="#cb32-19" tabindex="-1"></a>    bilirubin <span class="op">=</span> sepsis[<span class="st">"bilirubin"</span>],</span>
+<span id="cb32-20"><a href="#cb32-20" tabindex="-1"></a>    alt <span class="op">=</span> sepsis[<span class="st">"alt"</span>],</span>
+<span id="cb32-21"><a href="#cb32-21" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>]</span>
+<span id="cb32-22"><a href="#cb32-22" tabindex="-1"></a>    )</span></code></pre></div>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">r_phoenix8_scores</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">py</span><span class="op">$</span><span class="va">py_phoenix8_scores</span><span class="op">)</span>,</span>
 <span>          check.attributes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
