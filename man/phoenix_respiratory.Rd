@@ -56,6 +56,17 @@ intubated and 1 = intubated.
 \code{other_respiratory_support} other respiratory support such as receiving oxygen,
 high-flow, non-invasive positive pressure, or imv.
 }
+\section{Phoenix Respiratory Scoring}{
+
+\tabular{llll}{
+0 points \tab 1 point \tab 2 points \tab 3 points \cr
+pf_ratio >= 400 and sf_ratio >= 292 \tab
+(pf_ratio < 400 or sf_ratio < 292) and any respiratory support \tab
+(pf_ratio < 200 or sf_ratio < 220) and imv \tab
+(pf_ratio < 100 or sf_ratio < 148) and imv \cr
+}
+}
+
 \examples{
 
 # Using the provided example data set:

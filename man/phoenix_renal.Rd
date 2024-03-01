@@ -28,8 +28,34 @@ set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-Phoenix Renal Score
+Apply the Phoenix renal organ dysfunction score based on age adjusted
+creatinine levels.
 }
+\section{Phoenix Renal Scoring}{
+
+
+ \tabular{lll}{
+   Age < 1 month \tab \tab \cr
+     \tab creatinine [0, 0.8) mg/dL \tab 0 points \cr
+     \tab creatinine [0.8, Inf) mg/dL \tab 1 point  \cr
+   Age in [1, 12) months \tab \tab \cr
+     \tab creatinine in [0, 0.3) mg/dL \tab 0 points \cr
+     \tab creatinine in [0.3, Inf)  mg/dL \tab 1 point  \cr
+   Age in [12, 24) months \tab\tab \cr
+     \tab creatinine in [0, 0.4) mg/dL \tab 0 points \cr
+     \tab creatinine in [0.4, Inf)  mg/dL \tab 1 point  \cr
+   Age in [24, 60) months \tab\tab \cr
+     \tab creatinine in [0, 0.6) mg/dL \tab 0 points \cr
+     \tab creatinine in [0.6, Inf)  mg/dL \tab 1 point  \cr
+   Age in [60, 144) months \tab\tab \cr
+     \tab creatinine in [0, 0.7) mg/dL \tab 0 points \cr
+     \tab creatinine in [0.7, Inf)  mg/dL \tab 1 point  \cr
+   Age in [144, Inf) months \tab\tab \cr
+     \tab creatinine in [0, 1.0) mg/dL \tab 0 points \cr
+     \tab creatinine in [1.0, Inf)  mg/dL \tab 1 point  \cr
+ }
+}
+
 \examples{
 
 # using the example sepsis data set

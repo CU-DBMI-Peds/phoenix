@@ -173,14 +173,16 @@ stopifnot(identical(hepatic$expected_score, hepatic$phoenix_hep))
 
 N <- 1e5
 DF <-
-  list(respiratory, cardiovascular, coagulation, neurologic, endocrine, immunolgic, hepatic) |>
-  lapply(function(DF) {
-           idx <- sample(1:nrow(DF), size = N, replace = TRUE)
-           rtn <- DF[idx, ]
+  list(respiratory, cardiovascular, coagulation, neurologic, endocrine, immunolgic, hepatic)
+DF <-
+  lapply(DF,
+         function(x) {
+           idx <- sample(1:nrow(x), size = N, replace = TRUE)
+           rtn <- x[idx, ]
            rtn <- rtn[, -which(names(rtn) == "expected_score")]
            rtn
-              }) |>
-  do.call(cbind, args = _)
+         })
+DF <- do.call(cbind, args = DF)
 
 DF$creatinine <- NA
 DF$phoenix_renal <- NA

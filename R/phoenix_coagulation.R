@@ -1,5 +1,12 @@
 #' Phoenix Coagulation Score
 #'
+#' Applies the Phoenix coagulation organ dysfunction scoring to a set of inputs.
+#'
+#' @section Phoenix Coagulation Scoring:
+#' 1 point each for platelets < 100 K/micro liter, INR > 1.3, D-dimer > 2 mg/L
+#' FEU, and fibrinogen < 100 mg/dL, with a max total
+#' score of 2.
+#'
 #' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0, 1, or 2

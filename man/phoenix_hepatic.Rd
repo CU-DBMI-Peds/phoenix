@@ -28,8 +28,14 @@ set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-Phoenix Hepatic Score
+Apply the Phoenix Hepatic scoring based on total bilirubin and ALT.
 }
+\section{Phoenix Hepatic Scoring}{
+
+1 point for total bilirubin greater or equal to 4 mg/dL and/or ALT strictly
+greater than 102 IU/L.
+}
+
 \examples{
 
 # using the example sepsis data set

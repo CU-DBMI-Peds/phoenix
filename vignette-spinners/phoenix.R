@@ -74,7 +74,7 @@ packageVersion("phoenix")
 #' |&nbsp;&nbsp;&nbsp;&nbsp; 144 &leq; Age       | [52, &infin;) mmHg | [38, 52) mmHg | [0, 38) mmHg |
 #' |**Coagulation** (0-2 points) | | 1 point each; max 2 |
 #' |&nbsp;&nbsp; Platelets  | [100, &infin;) K/&mu;L | [0, 100) K/&mu;L |
-#' |&nbsp;&nbsp; INR        | [0 , 1.3] | [1.3, &infin;) |
+#' |&nbsp;&nbsp; INR        | [0 , 1.3] | (1.3, &infin;) |
 #' |&nbsp;&nbsp; D-Dimer    | [0, 2] mg/L FEU | (2, &infin;) mg/L FEU |
 #' |&nbsp;&nbsp; Fibrinogen | [100, &infin;) mg/dL | [0, 100) mg/dL |
 #' |**Neurologic** (0-2 points) | GCS &#8712; {11, 12, 13, 14, 15} | GCS &#8712; {3, 4, ..., 10} | Bilaterally fixed pupils |
@@ -91,7 +91,7 @@ packageVersion("phoenix")
 #'         <li> SpO<sub>2</sub>: pulse oximetry oxygen saturation</li>
 #'     </ul>
 #'     <li> Age: measured in months and is not adjusted for prematurity. </li>
-#'     <li> SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when SpO<sub>2</sub> &leq 97. </li>
+#'     <li> SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when SpO<sub>2</sub> &leq; 97. </li>
 #'     <li> Vasoactive medications: any systmic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin. </li>
 #'     <li> lactate can be arterial or venous.  Reference range 0.5 - 2.2 mmol/L </li>
 #'     <li> MAP - Use measured arterial pressue preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3 </li>
@@ -230,8 +230,11 @@ resp_data <- unique(resp_data)
 resp_data$phoenix_respiratory_score <- factor(phoenix_respiratory(pfr, sfr, imv, o2, data = resp_data))
 
 resp_data$oxygen_support <-
-  interaction(resp_data$imv, resp_data$o2) |>
-  factor(levels = c("0.0", "0.1", "1.1"), c("No Oxygen Support", "Non-invasive Oxygen Support", "Invasive Oxygen Support"))
+  factor(
+    interaction(resp_data$imv, resp_data$o2),
+    levels = c("0.0", "0.1", "1.1"),
+    labels = c("No Oxygen Support", "Non-invasive Oxygen Support", "Invasive Oxygen Support")
+  )
 
 ggplot2::ggplot(data = resp_data) +
   ggplot2::theme_classic() +
