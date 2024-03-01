@@ -234,8 +234,11 @@ resp_data <- unique(resp_data)
 resp_data$phoenix_respiratory_score <- factor(phoenix_respiratory(pfr, sfr, imv, o2, data = resp_data))
 
 resp_data$oxygen_support <-
-  interaction(resp_data$imv, resp_data$o2) |>
-  factor(levels = c("0.0", "0.1", "1.1"), c("No Oxygen Support", "Non-invasive Oxygen Support", "Invasive Oxygen Support"))
+  factor(
+    interaction(resp_data$imv, resp_data$o2),
+    levels = c("0.0", "0.1", "1.1"),
+    labels = c("No Oxygen Support", "Non-invasive Oxygen Support", "Invasive Oxygen Support")
+  )
 
 ggplot2::ggplot(data = resp_data) +
   ggplot2::theme_classic() +
