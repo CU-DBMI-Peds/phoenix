@@ -15,9 +15,11 @@
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 described in:
 
-* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto, Bennett, DeWitt, Russell et.al. (2024)
+* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto, Bennett, DeWitt, Russell et al. (2024)
 
-* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et.al. (2024).
+  * <small> Drs Sanchez-Pinto and Bennett contributed equally; Dr DeWitt and Mr Russel contributed equall.</small>
+
+* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
 The best overview for this package is the R vignette which you can view locally
 after installing the R package via
@@ -27,7 +29,7 @@ vignette("phoenix")
 or you can read it online
 [here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 
-The Phoenix Criteria has been implemented as an
+The Phoenix Criteria have been implemented as:
 
 * R package
 * python module
@@ -58,7 +60,7 @@ install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 
 ### Use
 
-The package comes with an example data set call `sepsis.`  To get the Phoenix
+The package comes with an example data set called `sepsis.`  To get the Phoenix
 score and determine sepsis (score &geq; 2) and septic shock (score &geq; 2 and
 cardiovascular dysfunction, just call the `phoenix` function:
 
