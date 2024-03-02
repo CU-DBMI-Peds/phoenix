@@ -3,37 +3,26 @@
 #' Assess the Phoenix endocrine organ dysfunction score.  This score is not part
 #' of the Phoenix score, only part of the Phoenix-8 score.
 #'
-#' @section Phoenix Endocrine Scoring:
-#' The endocrine dysfunction score is based on blood glucose with one point
-#' for levels < 50 mg/dL or > 150 mg/dL.
+#' @section Phoenix Endocrine Scoring: The endocrine dysfunction score is based
+#' on blood glucose with one point for levels < 50 mg/dL or > 150 mg/dL.
 #'
 #' @inheritParams phoenix8
 #'
 #' @return a integer vector with values 0 or 1
 #'
-#' As with all other Phoenix organ system scores, missing values in the data
-#' set will map to a score of zero - this is consistent with the development of
-#' the criteria.
+#' As with all other Phoenix organ system scores, missing values in the data set
+#' will map to a score of zero - this is consistent with the development of the
+#' criteria.
 #'
-#' @seealso
-#' \itemize{
-#'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
-#'     Sepsis score based on the four organ systems:
-#'     \itemize{
-#'       \item \code{\link{phoenix_cardiovascular}},
-#'       \item \code{\link{phoenix_coagulation}},
-#'       \item \code{\link{phoenix_neurologic}},
-#'       \item \code{\link{phoenix_respiratory}},
-#'     }
-#'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-#'     Sepsis criteria based on the four organ systems noted above and
-#'     \itemize{
-#'       \item \code{\link{phoenix_endocrine}},
-#'       \item \code{\link{phoenix_immunologic}},
-#'       \item \code{\link{phoenix_renal}},
-#'       \item \code{\link{phoenix_hepatic}},
-#'     }
-#' }
+#' @seealso \itemize{ \item \code{\link{phoenix}} for generating the diagnostic
+#' Phoenix Sepsis score based on the four organ systems: \itemize{ \item
+#' \code{\link{phoenix_cardiovascular}}, \item
+#' \code{\link{phoenix_coagulation}}, \item \code{\link{phoenix_neurologic}},
+#' \item \code{\link{phoenix_respiratory}}, } \item \code{\link{phoenix8}} for
+#' generating the diagnostic Phoenix 8 Sepsis criteria based on the four organ
+#' systems noted above and \itemize{ \item \code{\link{phoenix_endocrine}},
+#' \item \code{\link{phoenix_immunologic}}, \item \code{\link{phoenix_renal}},
+#' \item \code{\link{phoenix_hepatic}}, } }
 #'
 #' \code{vignette('phoenix')} for more details and examples.
 #'
@@ -41,13 +30,13 @@
 #'
 #' Sanchez-Pinto* LN, Bennett* TD, DeWitt** PE, Russell** S, et al. Development
 #' and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock.
-#' JAMA. Published online January 21, 2024. doi:10.1001/jama.2024.0196
+#' JAMA. Published online January 21, 2024. \doi{doi:10.1001/jama.2024.0196}
 #'
 #' *Drs Sanchez-Pinto and Bennett contributed equally; **Dr DeWitt and Mr Russell contributed equally
 #'
 #' Schlapbach LJ, Watson RS, Sorce LR, et al. International Consensus Criteria
 #' for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
-#' 2024. doi:10.1001/jama.2024.0179
+#' 2024. \doi{doi:10.1001/jama.2024.0179}
 #'
 #' @examples
 #'

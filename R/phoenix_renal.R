@@ -60,13 +60,13 @@
 #'
 #' Sanchez-Pinto* LN, Bennett* TD, DeWitt** PE, Russell** S, et al. Development
 #' and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock.
-#' JAMA. Published online January 21, 2024. doi:10.1001/jama.2024.0196
+#' JAMA. Published online January 21, 2024. \doi{doi:10.1001/jama.2024.0196}
 #'
 #' *Drs Sanchez-Pinto and Bennett contributed equally; **Dr DeWitt and Mr Russell contributed equally
 #'
 #' Schlapbach LJ, Watson RS, Sorce LR, et al. International Consensus Criteria
 #' for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
-#' 2024. doi:10.1001/jama.2024.0179
+#' 2024. \doi{doi:10.1001/jama.2024.0179}
 #'
 #' @examples
 #'
