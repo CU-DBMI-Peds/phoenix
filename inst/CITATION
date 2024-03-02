@@ -1,6 +1,6 @@
-citHeader("To cite the development of the Phoenix Criateria: Sanchez-Pinto et.al.
-(2024) and Schlapbach et.al. (2024).  To cite the R package call cite DeWitt et.al.
-(2024) (inpress and will be updated soon)")
+citHeader("To cite the development of the Phoenix Criateria: Sanchez-Pinto et al.
+(2024) and Schlapbach et al. (2024).  To cite the R package cite DeWitt et al.
+(2024) (in press and will be updated soon)")
 
 bibentry(
   bibtype = "Article",
