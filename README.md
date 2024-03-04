@@ -15,9 +15,9 @@
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 described in:
 
-* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto, Bennett, DeWitt, Russell et al. (2024)
+* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto&ast;, Bennett&ast;, DeWitt&ast;&ast;, Russell&ast;&ast; et al. (2024)
 
-  * <small> Drs Sanchez-Pinto and Bennett contributed equally; Dr DeWitt and Mr Russel contributed equall.</small>
+  * <small> &ast; Drs Sanchez-Pinto and Bennett contributed equally; &ast;&ast; Dr DeWitt and Mr Russel contributed equall.</small>
 
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
