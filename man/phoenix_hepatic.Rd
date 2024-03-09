@@ -14,7 +14,7 @@ phoenix_hepatic(
 \arguments{
 \item{bilirubin}{numeric vector; units of mg/dL}
 
-\item{alt}{numeric vector; units of IU/L}
+\item{alt}{alanine aminotransferase; a numeric vector; units of IU/L}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 

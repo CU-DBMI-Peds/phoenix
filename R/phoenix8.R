@@ -25,11 +25,11 @@
 #' @param gcs integer vector; total Glasgow Comma Score
 #' @param fixed_pupils integer vector; 1 = bilaterally fixed pupil, 0 = otherwise
 #' @param glucose numeric vector; blood glucose measured in mg/dL
-#' @param anc numeric vector; units of 1,000 cells per cubic millimeter
-#' @param alc numeric vector; units of 1,000 cells per cubic millimeter
+#' @param anc absolute neutrophil count; a numeric vector; units of 1,000 cells per cubic millimeter
+#' @param alc absolute lymphocyte count; a numeric vector; units of 1,000 cells per cubic millimeter
 #' @param creatinine numeric vector; units of mg/dL
 #' @param bilirubin numeric vector; units of mg/dL
-#' @param alt numeric vector; units of IU/L
+#' @param alt alanine aminotransferase; a numeric vector; units of IU/L
 #' @param data a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors
 #' @param ... pass through
 #'

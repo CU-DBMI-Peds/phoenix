@@ -7,9 +7,9 @@
 phoenix_immunologic(anc = NA_real_, alc = NA_real_, data = parent.frame(), ...)
 }
 \arguments{
-\item{anc}{numeric vector; units of 1,000 cells per cubic millimeter}
+\item{anc}{absolute neutrophil count; a numeric vector; units of 1,000 cells per cubic millimeter}
 
-\item{alc}{numeric vector; units of 1,000 cells per cubic millimeter}
+\item{alc}{absolute lymphocyte count; a numeric vector; units of 1,000 cells per cubic millimeter}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 

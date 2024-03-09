@@ -123,6 +123,14 @@ This extended criteria uses the four organ systems above along with four additio
 |&nbsp;&nbsp; 144 &leq; Age       | Creatinine &lt; 1.0 mg/dL | Creatinine &geq; 1.0 mg/dL |
 |**Hepatic** (0-1 point) | Total bilirubin &lt; 4 mg/dL and ALT &gt; 102 IU/L | Total bilirubin &geq; 4 mg/dL and/or ALT &gt; 102 IU/L |
 
+<small>
+  <ul>
+    <li> ANC: Absolute neutrophil count
+    <li> ALC: Absolute lymphocyte count
+    <li> ALT: alanine aminotransferase
+  </ul>
+</small>
+
 # Development of the Criteria
 
 Details on the developed of the criteria are described in
