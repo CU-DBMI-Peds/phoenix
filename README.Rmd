@@ -33,11 +33,11 @@ vignette("phoenix")
 or you can read it online
 [here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 
-The Phoenix Criteria have been implemented as:
+The Phoenix Criteria have been implemented as in a
 
-* R package
-* python module
-* SQL queries
+* R package,
+* Python module, and
+* example SQL queries.
 
 The repository has been built with R as the primary and default language.
 
@@ -132,7 +132,7 @@ sepsis = pd.read_csv("./python/sepsis.csv")
 
 phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
-    sf_ratio = sepsis["spo2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
     imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],

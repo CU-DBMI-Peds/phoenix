@@ -15,9 +15,9 @@
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 described in:
 
-* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto, Bennett, DeWitt, Russell et.al. (2024)
+* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto, Bennett, DeWitt, Russell et al. (2024)
 
-* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et.al. (2024).
+* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
 The best overview for this package is the R vignette which you can view locally
 after installing the R package via
@@ -27,11 +27,11 @@ vignette("phoenix")
 or you can read it online
 [here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 
-The Phoenix Criteria has been implemented as an
+The Phoenix Criteria have been implemented as in a
 
-* R package
-* python module
-* SQL queries
+* R package,
+* Python module, and
+* example SQL queries.
 
 The repository has been built with R as the primary and default language.
 
@@ -58,7 +58,7 @@ install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 
 ### Use
 
-The package comes with an example data set call `sepsis.`  To get the Phoenix
+The package comes with an example data set called `sepsis.`  To get the Phoenix
 score and determine sepsis (score &geq; 2) and septic shock (score &geq; 2 and
 cardiovascular dysfunction, just call the `phoenix` function:
 
@@ -128,7 +128,7 @@ sepsis = pd.read_csv("./python/sepsis.csv")
 
 phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
-    sf_ratio = sepsis["spo2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
     imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
@@ -142,27 +142,29 @@ phx.phoenix(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
     )
-#>     phoenix_respiratory_score  phoenix_cardiovascular_score  phoenix_coagulation_score  phoenix_neurologic_score  phoenix_sepsis_score  phoenix_sepsis  phoenix_septic_shock
-#> 0                           3                             2                          1                         0                     6               1                     1
-#> 1                           3                             2                          1                         1                     7               1                     1
-#> 2                           3                             1                          2                         0                     6               1                     1
-#> 3                           0                             0                          1                         0                     1               0                     0
-#> 4                           0                             0                          0                         0                     0               0                     0
-#> 5                           3                             1                          2                         1                     7               1                     1
-#> 6                           3                             4                          2                         0                     9               1                     1
-#> 7                           0                             0                          1                         0                     1               0                     0
-#> 8                           3                             3                          1                         1                     8               1                     1
-#> 9                           3                             0                          0                         1                     4               1                     0
-#> 10                          3                             3                          1                         2                     9               1                     1
-#> 11                          1                             0                          0                         0                     1               0                     0
-#> 12                          0                             0                          0                         0                     0               0                     0
-#> 13                          2                             2                          1                         0                     5               1                     1
-#> 14                          3                             3                          2                         0                     8               1                     1
-#> 15                          0                             2                          1                         0                     3               1                     1
-#> 16                          2                             2                          1                         0                     5               1                     1
-#> 17                          3                             2                          2                         0                     7               1                     1
-#> 18                          2                             2                          0                         0                     4               1                     1
-#> 19                          0                             1                          1                         0                     2               1                     1
+#>     phoenix_respiratory_score  ...  phoenix_septic_shock
+#> 0                           0  ...                     1
+#> 1                           3  ...                     1
+#> 2                           3  ...                     1
+#> 3                           0  ...                     0
+#> 4                           0  ...                     0
+#> 5                           3  ...                     1
+#> 6                           3  ...                     1
+#> 7                           0  ...                     0
+#> 8                           3  ...                     1
+#> 9                           3  ...                     0
+#> 10                          3  ...                     1
+#> 11                          1  ...                     0
+#> 12                          0  ...                     0
+#> 13                          2  ...                     1
+#> 14                          3  ...                     1
+#> 15                          0  ...                     1
+#> 16                          2  ...                     1
+#> 17                          3  ...                     1
+#> 18                          2  ...                     1
+#> 19                          0  ...                     1
+#> 
+#> [20 rows x 7 columns]
 ```
 
 
