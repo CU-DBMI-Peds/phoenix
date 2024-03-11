@@ -12,24 +12,143 @@ Septic Shock" by Sanchez-Pinto, Bennett, DeWitt, Russell et al. (2024)
 Pediatric Sepsis and Septic Shock" by Schlapbach, Watson, Sorce, et al.
 (2024) \doi{doi:10.1001/jama.2024.0179}.
 }
+\section{How To Cite}{
+
+
+When using this R package in your research please cite the Phoenix criteria
+and the package.  You can get details more information via
+
+\code{citation('phoenix')}
+
+You can get bibtex entries for all the citations via
+
+\code{print(citation('phoenix'), bibtex = TRUE)}
+
+And you can get the up-to-date version and year information for the
+\pkg{phoenix} pacakge via
+
+\code{print(citation('phoenix', auto = TRUE))} and
+\code{print(citation('phoenix', auto = TRUE), bibtex = TRUE)}.
+}
+
 \references{
-Sanchez-Pinto* LN, Bennett* TD, DeWitt** PE, Russell** S, et al. Development
-and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock.
-JAMA. Published online January 21, 2024. \doi{doi:10.1001/jama.2024.0196}
+There are two major publications to reference with respect to the development
+of the Phoenix criteria.
 
-*Drs Sanchez-Pinto and Bennett contributed equally; **Dr DeWitt and Mr Russell contributed equally
+\itemize{
+\item
+L. Nelson Sanchez-Pinto, MD, MBI*;
+Tellen D. Bennett, MD, MS*;
+Peter E. DeWitt, PhD**;
+Seth Russell, MS**;
+Margaret N. Rebull, MA;
+Blake Martin, MD;
+Samuel Akech, MBChB, MMED;
+David J. Albers, PhD;
+Elizabeth R. Alpern, MD, MSCE;
+Fran Balamuth, MD, PhD, MSCE;
+Melania Bembea, MD, MPH, PhD;
+Mohammod Jobayer Chisti, MBBS, MMed, PhD;
+Idris Evans, MD, MSc;
+Christopher M. Horvat, MD, MHA;
+Juan Camilo Jaramillo-Bustamante, MD;
+Niranjan Kissoon, MD;
+Kusum Menon, MD, MSc;
+Halden F. Scott, MD, MSCS;
+Scott L. Weiss, MD;
+Matthew O. Wiens, PharmD, PhD;
+Jerry J. Zimmerman, MD, PhD;
+Andrew C. Argent, MD, MBBCh, MMed***;
+Lauren R. Sorce, PhD, RN, CPNP-AC/PC23***;
+Luregn J. Schlapbach, MD, PhD***;
+R. Scott Watson, MD, MPH***;
+and the Society of Critical Care Medicine Pediatric Sepsis Definition Task Force
+\strong{Development
+and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic
+Shock.}
+JAMA.
+2024;331(8):675–686.
+Published online January 21, 2024.
+\doi{doi:10.1001/jama.2024.0196}
 
-Schlapbach LJ, Watson RS, Sorce LR, et al. International Consensus Criteria
-for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
-2024. \doi{doi:10.1001/jama.2024.0179}
+*Drs Sanchez-Pinto and Bennett contributed equally.
+**Dr DeWitt and Mr Russell contributed equally.
+***Drs Argent, Sorce, Schlapbach, and Watson contributed equally.
+
+\item
+Luregn J. Schlapbach, MD, PhD;
+R. Scott Watson, MD, MPH;
+Lauren R. Sorce, PhD, RN;
+Andrew C. Argent, MD, MBBCh, MMed;
+Kusum Menon, MD, MSc;
+Mark W. Hall, MD;
+Samuel Akech, MBChB, MMED, PhD;
+David J. Albers, PhD;
+Elizabeth R. Alpern, MD, MSCE;
+Fran Balamuth, MD, PhD, MSCE;
+Melania Bembea, MD, PhD;
+Paolo Biban, MD;
+Enitan D. Carrol, MBChB, MD;
+Kathleen Chiotos, MD;
+Mohammod Jobayer Chisti, MBBS, MMed, PhD;
+Peter E. DeWitt, PhD;
+Idris Evans, MD, MSc;
+Cláudio  Flauzino de Oliveira, MD, PhD;
+Christopher M. Horvat, MD, MHA;
+David Inwald, MB, PhD;
+Paul Ishimine, MD31;
+Juan Camilo Jaramillo-Bustamante, MD;
+Michael Levin, MD, PhD;
+Rakesh Lodha, MD;
+Blake Martin, MD;
+Simon Nadel, MBBS;
+Satoshi Nakagawa, MD;
+Mark J. Peters, PhD;
+Adrienne G. Randolph, MD, MS;
+Suchitra Ranjit, MD;
+Margaret N. Rebull, MA;
+Seth Russell, MS;
+Halden F. Scott, MD;
+Daniela Carla de Souza, MD, PhD;
+Pierre Tissieres, MD, DSc;
+Scott L. Weiss, MD, MSCE;
+Matthew O. Wiens, PharmD, PhD;
+James L. Wynn, MD;
+Niranjan Kissoon, MD;
+Jerry J. Zimmerman, MD, PhD;
+L. Nelson Sanchez-Pinto, MD;
+Tellen D. Bennett, MD, MS;
+for the Society of Critical Care Medicine Pediatric Sepsis Definition Task Force
+\strong{International Consensus Criteria for Pediatric Sepsis and Septic Shock.}
+JAMA.
+2024;331(8):665–674.
+\doi{doi:10.1001/jama.2024.0179}
+
+*Drs Schlapbach, Watson, Sorce, and Argent contributed equally.
+**Drs Sanchez-Pinto and Bennett contributed equally.
+}
 }
 \seealso{
-Useful links:
 \itemize{
-  \item \url{https://github.com/CU-DBMI-Peds/phoenix/}
-  \item Report bugs at \url{https://github.com/CU-DBMI-Peds/phoenix/issues}
+  \item \code{\link{phoenix}} for generating the diagnostic Phoenix
+    Sepsis score based on the four organ systems:
+    \itemize{
+      \item \code{\link{phoenix_cardiovascular}},
+      \item \code{\link{phoenix_coagulation}},
+      \item \code{\link{phoenix_neurologic}},
+      \item \code{\link{phoenix_respiratory}},
+    }
+  \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
+    Sepsis criteria based on the four organ systems noted above and
+    \itemize{
+      \item \code{\link{phoenix_endocrine}},
+      \item \code{\link{phoenix_immunologic}},
+      \item \code{\link{phoenix_renal}},
+      \item \code{\link{phoenix_hepatic}},
+    }
 }
 
+\code{vignette('phoenix')} for more details and examples.
 }
 \author{
 \strong{Maintainer}: Peter DeWitt \email{peter.dewitt@cuanschutz.com} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID})

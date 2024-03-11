@@ -43,6 +43,20 @@ The Phoenix Criteria have been implemented as:
 
 The repository has been built with R as the primary and default language.
 
+## Citation
+If you use this package in your work, please cite the Phoenix criteria by citing
+the two JAMA papers.  Please cite this code base by citing the research letter,
+and if using the R package, cite it explicitly as well.
+
+```{r}
+# Manuscripts
+print(citation("phoenix"), bibtex = TRUE)
+
+# R package
+print(citation("phoenix", auto = TRUE), bibtex = TRUE)
+```
+
+
 ## R
 
 ### Install
