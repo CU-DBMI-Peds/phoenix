@@ -58,15 +58,15 @@ phoenix8(
 
 \item{glucose}{numeric vector; blood glucose measured in mg/dL}
 
-\item{anc}{numeric vector; units of 1,000 cells per cubic millimeter}
+\item{anc}{absolute neutrophil count; a numeric vector; units of 1,000 cells per cubic millimeter}
 
-\item{alc}{numeric vector; units of 1,000 cells per cubic millimeter}
+\item{alc}{absolute lymphocyte count; a numeric vector; units of 1,000 cells per cubic millimeter}
 
 \item{creatinine}{numeric vector; units of mg/dL}
 
 \item{bilirubin}{numeric vector; units of mg/dL}
 
-\item{alt}{numeric vector; units of IU/L}
+\item{alt}{alanine aminotransferase; a numeric vector; units of IU/L}
 
 \item{age}{numeric vector age in months}
 
