@@ -35,7 +35,7 @@ creatinine levels.
 
 
  \tabular{lll}{
-   Age in (0, 1) months \tab \tab \cr
+   Age in [0, 1) months \tab \tab \cr
      \tab creatinine [0, 0.8) mg/dL \tab 0 points \cr
      \tab creatinine [0.8, Inf) mg/dL \tab 1 point  \cr
    Age in [1, 12) months \tab \tab \cr

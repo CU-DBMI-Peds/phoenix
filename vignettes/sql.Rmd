@@ -143,13 +143,13 @@ points AS (
     CASE WHEN lactate >= 11 THEN 2
          WHEN lactate >=  5 THEN 1
          ELSE 0 END AS lactate_points,
-    CASE WHEN (age >    0 AND age <    1) AND (map < 17) THEN 2
+    CASE WHEN (age >=   0 AND age <    1) AND (map < 17) THEN 2
          WHEN (age >=   1 AND age <   12) AND (map < 25) THEN 2
          WHEN (age >=  12 AND age <   24) AND (map < 31) THEN 2
          WHEN (age >=  24 AND age <   60) AND (map < 32) THEN 2
          WHEN (age >=  60 AND age <  144) AND (map < 36) THEN 2
          WHEN (age >= 144 AND age <= 216) AND (map < 38) THEN 2
-         WHEN (age >    0 AND age <    1) AND (map < 31) THEN 1
+         WHEN (age >=   0 AND age <    1) AND (map < 31) THEN 1
          WHEN (age >=   1 AND age <   12) AND (map < 39) THEN 1
          WHEN (age >=  12 AND age <   24) AND (map < 44) THEN 1
          WHEN (age >=  24 AND age <   60) AND (map < 45) THEN 1
@@ -329,7 +329,7 @@ stopifnot(identical(DF$phoenix_immunologic_score, immu_r))
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "renal"}
 SELECT
   pid,
-  CASE WHEN (age >    0 AND age <    1) AND (creatinine >= 0.8) THEN 1
+  CASE WHEN (age >=   0 AND age <    1) AND (creatinine >= 0.8) THEN 1
        WHEN (age >=   1 AND age <   12) AND (creatinine >= 0.3) THEN 1
        WHEN (age >=  12 AND age <   24) AND (creatinine >= 0.4) THEN 1
        WHEN (age >=  24 AND age <   60) AND (creatinine >= 0.6) THEN 1

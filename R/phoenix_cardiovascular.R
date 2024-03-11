@@ -33,7 +33,7 @@
 #'
 #'  \emph{MAP}
 #'  \tabular{lll}{
-#'    Age in (0, 1) months  \tab \tab \cr
+#'    Age in [0, 1) months  \tab \tab \cr
 #'      \tab [31, Inf) mmHg \tab 0 points \cr
 #'      \tab [17, 31)  mmHg \tab 1 point  \cr
 #'      \tab [0, 17)   mmHg \tab 2 points \cr
@@ -174,7 +174,7 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
   lct_score <- (lct >= 11) + (lct >= 5)
   map_score <-
      (
-      (age >    0 & age <    1) * ((map < 17) + (map < 31)) +
+      (age >=   0 & age <    1) * ((map < 17) + (map < 31)) +
       (age >=   1 & age <   12) * ((map < 25) + (map < 39)) +
       (age >=  12 & age <   24) * ((map < 31) + (map < 44)) +
       (age >=  24 & age <   60) * ((map < 32) + (map < 45)) +

@@ -34,7 +34,7 @@ def phoenix_cardiovascular(vasoactives, lactate, age, map):
     vas_score = (vas > 1).astype(int) + (vas > 0).astype(int)
     lct_score = (lct >= 11).astype(int) + (lct >= 5).astype(int)
     map_score = (
-      ((age >    0) & (age <    1)).astype(int) * ((map < 17).astype(int) + (map < 31).astype(int)) +
+      ((age >=   0) & (age <    1)).astype(int) * ((map < 17).astype(int) + (map < 31).astype(int)) +
       ((age >=   1) & (age <   12)).astype(int) * ((map < 25).astype(int) + (map < 39).astype(int)) +
       ((age >=  12) & (age <   24)).astype(int) * ((map < 31).astype(int) + (map < 44).astype(int)) +
       ((age >=  24) & (age <   60)).astype(int) * ((map < 32).astype(int) + (map < 45).astype(int)) +
@@ -81,7 +81,7 @@ def phoenix_renal(creatinine, age):
     crt[idx] = 0
     age[idx] = 0
     rtn = (
-            ((age >    0) & (age <    1)).astype(int) * (crt >= 0.8).astype(int) +
+            ((age >=   0) & (age <    1)).astype(int) * (crt >= 0.8).astype(int) +
             ((age >=   1) & (age <   12)).astype(int) * (crt >= 0.3).astype(int) +
             ((age >=  12) & (age <   24)).astype(int) * (crt >= 0.4).astype(int) +
             ((age >=  24) & (age <   60)).astype(int) * (crt >= 0.6).astype(int) +

@@ -69,7 +69,7 @@ for each of systolic vasoactive medications, lactate, and MAP.
 
  \emph{MAP}
  \tabular{lll}{
-   Age in (0, 1) months  \tab \tab \cr
+   Age in [0, 1) months  \tab \tab \cr
      \tab [31, Inf) mmHg \tab 0 points \cr
      \tab [17, 31)  mmHg \tab 1 point  \cr
      \tab [0, 17)   mmHg \tab 2 points \cr
