@@ -29,7 +29,6 @@ vignette("phoenix")
 or you can read it online
 [here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 
-
 The Phoenix Criteria have been implemented as in a
 
 * R package,
@@ -259,29 +258,27 @@ phx.phoenix(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
     )
-#>     phoenix_respiratory_score  ...  phoenix_septic_shock
-#> 0                           0  ...                     1
-#> 1                           3  ...                     1
-#> 2                           3  ...                     1
-#> 3                           0  ...                     0
-#> 4                           0  ...                     0
-#> 5                           3  ...                     1
-#> 6                           3  ...                     1
-#> 7                           0  ...                     0
-#> 8                           3  ...                     1
-#> 9                           3  ...                     0
-#> 10                          3  ...                     1
-#> 11                          1  ...                     0
-#> 12                          0  ...                     0
-#> 13                          2  ...                     1
-#> 14                          3  ...                     1
-#> 15                          0  ...                     1
-#> 16                          2  ...                     1
-#> 17                          3  ...                     1
-#> 18                          2  ...                     1
-#> 19                          0  ...                     1
-#> 
-#> [20 rows x 7 columns]
+#>     phoenix_respiratory_score  phoenix_cardiovascular_score  phoenix_coagulation_score  phoenix_neurologic_score  phoenix_sepsis_score  phoenix_sepsis  phoenix_septic_shock
+#> 0                           0                             2                          1                         0                     3               1                     1
+#> 1                           3                             2                          1                         1                     7               1                     1
+#> 2                           3                             1                          2                         0                     6               1                     1
+#> 3                           0                             0                          1                         0                     1               0                     0
+#> 4                           0                             0                          0                         0                     0               0                     0
+#> 5                           3                             1                          2                         1                     7               1                     1
+#> 6                           3                             4                          2                         0                     9               1                     1
+#> 7                           0                             0                          1                         0                     1               0                     0
+#> 8                           3                             3                          1                         1                     8               1                     1
+#> 9                           3                             0                          0                         1                     4               1                     0
+#> 10                          3                             3                          1                         2                     9               1                     1
+#> 11                          1                             0                          0                         0                     1               0                     0
+#> 12                          0                             0                          0                         0                     0               0                     0
+#> 13                          2                             2                          1                         0                     5               1                     1
+#> 14                          3                             3                          2                         0                     8               1                     1
+#> 15                          0                             2                          1                         0                     3               1                     1
+#> 16                          2                             2                          1                         0                     5               1                     1
+#> 17                          3                             2                          2                         0                     7               1                     1
+#> 18                          2                             2                          0                         0                     4               1                     1
+#> 19                          0                             1                          1                         0                     2               1                     1
 ```
 
 
