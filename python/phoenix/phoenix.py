@@ -34,12 +34,12 @@ def phoenix_cardiovascular(vasoactives, lactate, age, map):
     vas_score = (vas > 1).astype(int) + (vas > 0).astype(int)
     lct_score = (lct >= 11).astype(int) + (lct >= 5).astype(int)
     map_score = (
-      (               (age <   1)).astype(int) * ((map < 17).astype(int) + (map < 31).astype(int)) +
-      ((age >=   1) & (age <  12)).astype(int) * ((map < 25).astype(int) + (map < 39).astype(int)) +
-      ((age >=  12) & (age <  24)).astype(int) * ((map < 31).astype(int) + (map < 44).astype(int)) +
-      ((age >=  24) & (age <  60)).astype(int) * ((map < 32).astype(int) + (map < 45).astype(int)) +
-      ((age >=  60) & (age < 144)).astype(int) * ((map < 36).astype(int) + (map < 49).astype(int)) +
-      ((age >= 144)              ).astype(int) * ((map < 38).astype(int) + (map < 52).astype(int))
+      ((age >=   0) & (age <    1)).astype(int) * ((map < 17).astype(int) + (map < 31).astype(int)) +
+      ((age >=   1) & (age <   12)).astype(int) * ((map < 25).astype(int) + (map < 39).astype(int)) +
+      ((age >=  12) & (age <   24)).astype(int) * ((map < 31).astype(int) + (map < 44).astype(int)) +
+      ((age >=  24) & (age <   60)).astype(int) * ((map < 32).astype(int) + (map < 45).astype(int)) +
+      ((age >=  60) & (age <  144)).astype(int) * ((map < 36).astype(int) + (map < 49).astype(int)) +
+      ((age >= 144) & (age <= 216)).astype(int) * ((map < 38).astype(int) + (map < 52).astype(int))
     )
 
     return(np.array(vas_score + lct_score + map_score))
@@ -81,12 +81,12 @@ def phoenix_renal(creatinine, age):
     crt[idx] = 0
     age[idx] = 0
     rtn = (
-            (               (age <   1)).astype(int) * (crt >= 0.8).astype(int) +
-            ((age >=   1) & (age <  12)).astype(int) * (crt >= 0.3).astype(int) +
-            ((age >=  12) & (age <  24)).astype(int) * (crt >= 0.4).astype(int) +
-            ((age >=  24) & (age <  60)).astype(int) * (crt >= 0.6).astype(int) +
-            ((age >=  60) & (age < 144)).astype(int) * (crt >= 0.7).astype(int) +
-            ((age >= 144)              ).astype(int) * (crt >= 1.0).astype(int)
+            ((age >=   0) & (age <    1)).astype(int) * (crt >= 0.8).astype(int) +
+            ((age >=   1) & (age <   12)).astype(int) * (crt >= 0.3).astype(int) +
+            ((age >=  12) & (age <   24)).astype(int) * (crt >= 0.4).astype(int) +
+            ((age >=  24) & (age <   60)).astype(int) * (crt >= 0.6).astype(int) +
+            ((age >=  60) & (age <  144)).astype(int) * (crt >= 0.7).astype(int) +
+            ((age >= 144) & (age <= 216)).astype(int) * (crt >= 1.0).astype(int)
           )
     return(np.array(rtn))
 
@@ -121,7 +121,7 @@ def phoenix8(pf_ratio, sf_ratio, imv, other_respiratory_support, vasoactives, la
     hepatic = phoenix_hepatic(bilirubin, alt)
     total8 = total + endo + immu + renal + hepatic
     rtn = pd.DataFrame(data = np.column_stack((resp, card, coag, neur, total, sepsis, septic_shock, endo, immu, renal, hepatic, total8)))
-    rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock", "phoenix_endocrine_score", "phoenix_immunologic_score", "phoenix_renal_score", "phoenix_hepatic_score", "phoenix8_score"] 
+    rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock", "phoenix_endocrine_score", "phoenix_immunologic_score", "phoenix_renal_score", "phoenix_hepatic_score", "phoenix8_score"]
     return(rtn)
 
 

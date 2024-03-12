@@ -6,7 +6,7 @@
 #' @section Phoenix Renal Scoring:
 #'
 #'  \tabular{lll}{
-#'    Age < 1 month \tab \tab \cr
+#'    Age in [0, 1) months \tab \tab \cr
 #'      \tab creatinine [0, 0.8) mg/dL \tab 0 points \cr
 #'      \tab creatinine [0.8, Inf) mg/dL \tab 1 point  \cr
 #'    Age in [1, 12) months \tab \tab \cr
@@ -21,7 +21,7 @@
 #'    Age in [60, 144) months \tab\tab \cr
 #'      \tab creatinine in [0, 0.7) mg/dL \tab 0 points \cr
 #'      \tab creatinine in [0.7, Inf)  mg/dL \tab 1 point  \cr
-#'    Age in [144, Inf) months \tab\tab \cr
+#'    Age in [144, 216] months \tab\tab \cr
 #'      \tab creatinine in [0, 1.0) mg/dL \tab 0 points \cr
 #'      \tab creatinine in [1.0, Inf)  mg/dL \tab 1 point  \cr
 #'  }
@@ -95,11 +95,11 @@ phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.f
   age <- replace(age, missing_idx, 0)
   crt <- replace(crt, missing_idx, 0)
 
-  (             age <   1) * (crt >= 0.8) +
-  (age >=   1 & age <  12) * (crt >= 0.3) +
-  (age >=  12 & age <  24) * (crt >= 0.4) +
-  (age >=  24 & age <  60) * (crt >= 0.6) +
-  (age >=  60 & age < 144) * (crt >= 0.7) +
-  (age >= 144            ) * (crt >= 1.0)
+  (age >=   0 & age <    1) * (crt >= 0.8) +
+  (age >=   1 & age <   12) * (crt >= 0.3) +
+  (age >=  12 & age <   24) * (crt >= 0.4) +
+  (age >=  24 & age <   60) * (crt >= 0.6) +
+  (age >=  60 & age <  144) * (crt >= 0.7) +
+  (age >= 144 & age <= 216) * (crt >= 1.0)
 
 }
