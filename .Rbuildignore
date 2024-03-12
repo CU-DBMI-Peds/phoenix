@@ -12,3 +12,4 @@
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^.*\.vim$
+^cran-comments\.md$
