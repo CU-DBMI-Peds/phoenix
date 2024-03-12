@@ -1,5 +1,5 @@
 Package: phoenix
-Title: Phoenix Sepsis Criteria
+Title: The Phoenix Pediatric Sepsis and Septic Shock Criteria
 Version: 1.0.0
 Authors@R:
     c(
@@ -16,7 +16,8 @@ Description: Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
     and Bennett contributed equally to this manuscript; Dr. DeWitt and Mr.
     Russell contributed equally to the manuscript) and "International Consensus
     Criteria for Pediatric Sepsis and Septic Shock" by Schlapbach, Watson,
-    Sorce, et al. (2024) <doi:10.1001/jama.2024.0179>.
+    Sorce, Argent, et al. (2024) <doi:10.1001/jama.2024.0179> (Drs Schlapbach,
+    Watson, Sorce, and Argent contributed equally).
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
