@@ -118,7 +118,7 @@
 #' \code{print(citation('phoenix'), bibtex = TRUE)}
 #'
 #' And you can get the up-to-date version and year information for the
-#' \pkg{phoenix} pacakge via
+#' \pkg{phoenix} package via
 #'
 #' \code{print(citation('phoenix', auto = TRUE))} and
 #' \code{print(citation('phoenix', auto = TRUE), bibtex = TRUE)}.
