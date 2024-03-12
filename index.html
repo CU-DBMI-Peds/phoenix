@@ -15,9 +15,11 @@
 <meta property="og:description" content='Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
     described in "Development and Validation of the Phoenix Criteria for
     Pediatric Sepsis and Septic Shock" by Sanchez-Pinto, Bennett, DeWitt,
-    Russell et.al. (2024) &lt;doi:10.1001/jama.2024.0196&gt; and
-    "International Consensus Criteria for Pediatric Sepsis and Septic Shock" by
-    Schlapbach, Watson, Sorce, et.al. (2024) &lt;doi:10.1001/jama.2024.0179&gt;.'>
+    Russell et al. (2024) &lt;doi:10.1001/jama.2024.0196&gt; (Drs. Sanchez-Pinto
+    and Bennett contributed equally to this manuscript; Dr. DeWitt and Mr.
+    Russell contributed equally to the manuscript) and "International Consensus
+    Criteria for Pediatric Sepsis and Septic Shock" by Schlapbach, Watson,
+    Sorce, et al. (2024) &lt;doi:10.1001/jama.2024.0179&gt;.'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -94,7 +96,12 @@
 --></p>
 <p>Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as described in:</p>
 <ul>
-<li><p><a href="doi:10.1001/jama.2024.0196">“Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock”</a> by Sanchez-Pinto, Bennett, DeWitt, Russell et al. (2024)</p></li>
+<li>
+<p><a href="doi:10.1001/jama.2024.0196">“Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock”</a> by Sanchez-Pinto*, Bennett*, DeWitt**, Russell** et al. (2024)</p>
+<ul>
+<li><small> * Drs Sanchez-Pinto and Bennett contributed equally; ** Dr DeWitt and Mr Russel contributed equally.</small></li>
+</ul>
+</li>
 <li><p><a href="doi:10.1001/jama.2024.0179">“International Consensus Criteria for Pediatric Sepsis and Septic Shock”</a> by Schlapbach, Watson, Sorce, et al. (2024).</p></li>
 </ul>
 <p>The best overview for this package is the R vignette which you can view locally after installing the R package via</p>
@@ -108,6 +115,116 @@
 <li>example SQL queries.</li>
 </ul>
 <p>The repository has been built with R as the primary and default language.</p>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use this package in your work, please cite the Phoenix criteria by citing the two JAMA papers. Please cite this code base by citing the research letter, and if using the R package, cite it explicitly as well.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Manuscripts</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"phoenix"</span><span class="op">)</span>, bibtex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; There are two references to cite the Phoenix criteria:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 1) Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024); and</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 2) Schlapbach, Watson, Sorce, Argent, et al. (2024).</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; There are two references to cite for the R package itself:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 1) DeWitt et al. (2024) (in press and will be updated soon); and</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 2) the result of evaluating `citation('phoenix', auto = FALSE)`</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Sanchez-Pinto, Nelson L, Bennett, D. T, DeWitt, E. P, Russell, Seth,</span></span>
+<span><span class="co">#&gt;   Rebull, N. M, Martin, Blake, Akech, Samuel, Albers, J. D, Alpern, R.</span></span>
+<span><span class="co">#&gt;   E, Balamuth, Fran, Bembea, Melania, Chisti, Jobayer M, Evans, Idris,</span></span>
+<span><span class="co">#&gt;   Horvat, M. C, Jaramillo-Bustamante, Camilo J, Kissoon, Niranjan,</span></span>
+<span><span class="co">#&gt;   Menon, Kusum, Scott, F. H, Weiss, L. S, Wiens, O. M, Zimmerman, J. J,</span></span>
+<span><span class="co">#&gt;   Argent, C. A, Sorce, R. L, Schlapbach, J. L, Watson, Scott R, Force</span></span>
+<span><span class="co">#&gt;   SoCCMPSDT (2024). "Development and Validation of the Phoenix Criteria</span></span>
+<span><span class="co">#&gt;   for Pediatric Sepsis and Septic Shock." _JAMA_, *331*(8), 675-686.</span></span>
+<span><span class="co">#&gt;   ISSN 0098-7484, doi:10.1001/jama.2024.0196</span></span>
+<span><span class="co">#&gt;   &lt;https://doi.org/10.1001/jama.2024.0196&gt;, Drs Sanchez-Pinto and</span></span>
+<span><span class="co">#&gt;   Bennett contributed equally. Drs DeWitt and Mr Russell contributed</span></span>
+<span><span class="co">#&gt;   equally. Drs Argent, Sorce, Schlapbach, and Watson contributed</span></span>
+<span><span class="co">#&gt;   equally.,</span></span>
+<span><span class="co">#&gt;   https://jamanetwork.com/journals/jama/articlepdf/2814296/jama_sanchezpinto_2024_oi_240003_1709591810.56162.pdf,</span></span>
+<span><span class="co">#&gt;   &lt;https://doi.org/10.1001/jama.2024.0196&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Article{,</span></span>
+<span><span class="co">#&gt;     author = {{Sanchez-Pinto} and L. Nelson and {Bennett} and Tellen D. and {DeWitt} and Peter E. and {Russell} and {Seth} and {Rebull} and Margaret N. and {Martin} and {Blake} and {Akech} and {Samuel} and {Albers} and David J. and {Alpern} and Elizabeth R. and {Balamuth} and {Fran} and {Bembea} and {Melania} and {Chisti} and Mohammod Jobayer and {Evans} and {Idris} and {Horvat} and Christopher M. and {Jaramillo-Bustamante} and Juan Camilo and {Kissoon} and {Niranjan} and {Menon} and {Kusum} and {Scott} and Halden F. and {Weiss} and Scott L. and {Wiens} and Matthew O. and {Zimmerman} and Jerry J. and {Argent} and Andrew C. and {Sorce} and Lauren R. and {Schlapbach} and Luregn J. and {Watson} and R. Scott and Society of Critical Care Medicine Pediatric Sepsis Definition Task Force},</span></span>
+<span><span class="co">#&gt;     title = {Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock},</span></span>
+<span><span class="co">#&gt;     journal = {JAMA},</span></span>
+<span><span class="co">#&gt;     volume = {331},</span></span>
+<span><span class="co">#&gt;     number = {8},</span></span>
+<span><span class="co">#&gt;     pages = {675-686},</span></span>
+<span><span class="co">#&gt;     year = {2024},</span></span>
+<span><span class="co">#&gt;     month = {02},</span></span>
+<span><span class="co">#&gt;     abstract = {The Society of Critical Care Medicine Pediatric Sepsis Definition Task Force sought to develop and validate new clinical criteria for pediatric sepsis and septic shock using measures of organ dysfunction through a data-driven approach.To derive and validate novel criteria for pediatric sepsis and septic shock across differently resourced settings.Multicenter, international, retrospective cohort study in 10 health systems in the US, Colombia, Bangladesh, China, and Kenya, 3 of which were used as external validation sites. Data were collected from emergency and inpatient encounters for children (aged \&amp;lt;18 years) from 2010 to 2019: 3 049 699 in the development (including derivation and internal validation) set and 581 317 in the external validation set.Stacked regression models to predict mortality in children with suspected infection were derived and validated using the best-performing organ dysfunction subscores from 8 existing scores. The final model was then translated into an integer-based score used to establish binary criteria for sepsis and septic shock.The primary outcome for all analyses was in-hospital mortality. Model- and integer-based score performance measures included the area under the precision recall curve (AUPRC; primary) and area under the receiver operating characteristic curve (AUROC; secondary). For binary criteria, primary performance measures were positive predictive value and sensitivity.Among the 172 984 children with suspected infection in the first 24 hours (development set; 1.2\% mortality), a 4-organ-system model performed best. The integer version of that model, the Phoenix Sepsis Score, had AUPRCs of 0.23 to 0.38 (95\% CI range, 0.20-0.39) and AUROCs of 0.71 to 0.92 (95\% CI range, 0.70-0.92) to predict mortality in the validation sets. Using a Phoenix Sepsis Score of 2 points or higher in children with suspected infection as criteria for sepsis and sepsis plus 1 or more cardiovascular point as criteria for septic shock resulted in a higher positive predictive value and higher or similar sensitivity compared with the 2005 International Pediatric Sepsis Consensus Conference (IPSCC) criteria across differently resourced settings.The novel Phoenix sepsis criteria, which were derived and validated using data from higher- and lower-resource settings, had improved performance for the diagnosis of pediatric sepsis and septic shock compared with the existing IPSCC criteria.},</span></span>
+<span><span class="co">#&gt;     issn = {0098-7484},</span></span>
+<span><span class="co">#&gt;     doi = {10.1001/jama.2024.0196},</span></span>
+<span><span class="co">#&gt;     url = {https://doi.org/10.1001/jama.2024.0196},</span></span>
+<span><span class="co">#&gt;     eprint = {https://jamanetwork.com/journals/jama/articlepdf/2814296/jama_sanchezpinto_2024_oi_240003_1709591810.56162.pdf},</span></span>
+<span><span class="co">#&gt;     note = {Drs Sanchez-Pinto and Bennett contributed equally. Drs DeWitt and Mr Russell contributed equally. Drs Argent, Sorce, Schlapbach, and Watson contributed equally.},</span></span>
+<span><span class="co">#&gt;   }</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Schlapbach, J. L, Watson, Scott R, Sorce, R. L, Argent, C. A, Menon,</span></span>
+<span><span class="co">#&gt;   Kusum, Hall, W. M, Akech, Samuel, Albers, J. D, Alpern, R. E,</span></span>
+<span><span class="co">#&gt;   Balamuth, Fran, Bembea, Melania, Biban, Paolo, Carrol, D. E, Chiotos,</span></span>
+<span><span class="co">#&gt;   Kathleen, Chisti, Jobayer M, DeWitt, E. P, Evans, Idris, de Oliveira</span></span>
+<span><span class="co">#&gt;   F, Cláudio, Horvat, M. C, Inwald, David, Ishimine, Paul,</span></span>
+<span><span class="co">#&gt;   Jaramillo-Bustamante, Camilo J, Levin, Michael, Lodha, Rakesh,</span></span>
+<span><span class="co">#&gt;   Martin, Blake, Nadel, Simon, Nakagawa, Satoshi, Peters, J. M,</span></span>
+<span><span class="co">#&gt;   Randolph, G. A, Ranjit, Suchitra, Rebull, N. M, Russell, Seth, Scott,</span></span>
+<span><span class="co">#&gt;   F. H, de Souza, Carla D, Tissieres, Pierre, Weiss, L. S, Wiens, O. M,</span></span>
+<span><span class="co">#&gt;   Wynn, L. J, Kissoon, Niranjan, Zimmerman, J. J, Sanchez-Pinto, Nelson</span></span>
+<span><span class="co">#&gt;   L, Bennett, D. T, Force SoCCMPSDT (2024). "International Consensus</span></span>
+<span><span class="co">#&gt;   Criteria for Pediatric Sepsis and Septic Shock." _JAMA_, *331*(8),</span></span>
+<span><span class="co">#&gt;   665-674. ISSN 0098-7484, doi:10.1001/jama.2024.0179</span></span>
+<span><span class="co">#&gt;   &lt;https://doi.org/10.1001/jama.2024.0179&gt;, Drs Schlapbach, Watson,</span></span>
+<span><span class="co">#&gt;   Sorce, and Argent contributed equally. Drs Sanchez-Pinto and Bennett</span></span>
+<span><span class="co">#&gt;   contributed equally.,</span></span>
+<span><span class="co">#&gt;   https://jamanetwork.com/journals/jama/articlepdf/2814297/jama_schlapbach_2024_oi_240002_1708641862.24494.pdf,</span></span>
+<span><span class="co">#&gt;   &lt;https://doi.org/10.1001/jama.2024.0179&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Article{,</span></span>
+<span><span class="co">#&gt;     author = {{Schlapbach} and Luregn J. and {Watson} and R. Scott and {Sorce} and Lauren R. and {Argent} and Andrew C. and {Menon} and {Kusum} and {Hall} and Mark W. and {Akech} and {Samuel} and {Albers} and David J. and {Alpern} and Elizabeth R. and {Balamuth} and {Fran} and {Bembea} and {Melania} and {Biban} and {Paolo} and {Carrol} and Enitan D. and {Chiotos} and {Kathleen} and {Chisti} and Mohammod Jobayer and {DeWitt} and Peter E. and {Evans} and {Idris} and Flauzino {de Oliveira} and {Cláudio} and {Horvat} and Christopher M. and {Inwald} and {David} and {Ishimine} and {Paul} and {Jaramillo-Bustamante} and Juan Camilo and {Levin} and {Michael} and {Lodha} and {Rakesh} and {Martin} and {Blake} and {Nadel} and {Simon} and {Nakagawa} and {Satoshi} and {Peters} and Mark J. and {Randolph} and Adrienne G. and {Ranjit} and {Suchitra} and {Rebull} and Margaret N. and {Russell} and {Seth} and {Scott} and Halden F. and {de Souza} and Daniela Carla and {Tissieres} and {Pierre} and {Weiss} and Scott L. and {Wiens} and Matthew O. and {Wynn} and James L. and {Kissoon} and {Niranjan} and {Zimmerman} and Jerry J. and {Sanchez-Pinto} and L. Nelson and {Bennett} and Tellen D. and Society of Critical Care Medicine Pediatric Sepsis Definition Task Force},</span></span>
+<span><span class="co">#&gt;     title = {International Consensus Criteria for Pediatric Sepsis and Septic Shock},</span></span>
+<span><span class="co">#&gt;     journal = {JAMA},</span></span>
+<span><span class="co">#&gt;     volume = {331},</span></span>
+<span><span class="co">#&gt;     number = {8},</span></span>
+<span><span class="co">#&gt;     pages = {665-674},</span></span>
+<span><span class="co">#&gt;     year = {2024},</span></span>
+<span><span class="co">#&gt;     month = {02},</span></span>
+<span><span class="co">#&gt;     abstract = {Sepsis is a leading cause of death among children worldwide. Current pediatric-specific criteria for sepsis were published in 2005 based on expert opinion. In 2016, the Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3) defined sepsis as life-threatening organ dysfunction caused by a dysregulated host response to infection, but it excluded children.To update and evaluate criteria for sepsis and septic shock in children.The Society of Critical Care Medicine (SCCM) convened a task force of 35 pediatric experts in critical care, emergency medicine, infectious diseases, general pediatrics, nursing, public health, and neonatology from 6 continents. Using evidence from an international survey, systematic review and meta-analysis, and a new organ dysfunction score developed based on more than 3 million electronic health record encounters from 10 sites on 4 continents, a modified Delphi consensus process was employed to develop criteria.Based on survey data, most pediatric clinicians used sepsis to refer to infection with life-threatening organ dysfunction, which differed from prior pediatric sepsis criteria that used systemic inflammatory response syndrome (SIRS) criteria, which have poor predictive properties, and included the redundant term, severe sepsis. The SCCM task force recommends that sepsis in children be identified by a Phoenix Sepsis Score of at least 2 points in children with suspected infection, which indicates potentially life-threatening dysfunction of the respiratory, cardiovascular, coagulation, and/or neurological systems. Children with a Phoenix Sepsis Score of at least 2 points had in-hospital mortality of 7.1\% in higher-resource settings and 28.5\% in lower-resource settings, more than 8 times that of children with suspected infection not meeting these criteria. Mortality was higher in children who had organ dysfunction in at least 1 of 4—respiratory, cardiovascular, coagulation, and/or neurological—organ systems that was not the primary site of infection. Septic shock was defined as children with sepsis who had cardiovascular dysfunction, indicated by at least 1 cardiovascular point in the Phoenix Sepsis Score, which included severe hypotension for age, blood lactate exceeding 5 mmol/L, or need for vasoactive medication. Children with septic shock had an in-hospital mortality rate of 10.8\% and 33.5\% in higher- and lower-resource settings, respectively.The Phoenix sepsis criteria for sepsis and septic shock in children were derived and validated by the international SCCM Pediatric Sepsis Definition Task Force using a large international database and survey, systematic review and meta-analysis, and modified Delphi consensus approach. A Phoenix Sepsis Score of at least 2 identified potentially life-threatening organ dysfunction in children younger than 18 years with infection, and its use has the potential to improve clinical care, epidemiological assessment, and research in pediatric sepsis and septic shock around the world.},</span></span>
+<span><span class="co">#&gt;     issn = {0098-7484},</span></span>
+<span><span class="co">#&gt;     doi = {10.1001/jama.2024.0179},</span></span>
+<span><span class="co">#&gt;     url = {https://doi.org/10.1001/jama.2024.0179},</span></span>
+<span><span class="co">#&gt;     eprint = {https://jamanetwork.com/journals/jama/articlepdf/2814297/jama_schlapbach_2024_oi_240002_1708641862.24494.pdf},</span></span>
+<span><span class="co">#&gt;     note = {Drs Schlapbach, Watson, Sorce, and Argent contributed equally. Drs Sanchez-Pinto and Bennett contributed equally.},</span></span>
+<span><span class="co">#&gt;   }</span></span>
+<span></span>
+<span><span class="co"># R package</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"phoenix"</span>, auto <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, bibtex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in citation("phoenix", auto = TRUE): could not determine year for</span></span>
+<span><span class="co">#&gt; 'phoenix' from package DESCRIPTION file</span></span>
+<span><span class="co">#&gt; To cite package 'phoenix' in publications use:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   DeWitt P (????). _phoenix: Phoenix Sepsis Criteria_. R package</span></span>
+<span><span class="co">#&gt;   version 0.0.0.9001, &lt;https://github.com/CU-DBMI-Peds/phoenix/&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Manual{,</span></span>
+<span><span class="co">#&gt;     title = {phoenix: Phoenix Sepsis Criteria},</span></span>
+<span><span class="co">#&gt;     author = {Peter DeWitt},</span></span>
+<span><span class="co">#&gt;     note = {R package version 0.0.0.9001},</span></span>
+<span><span class="co">#&gt;     url = {https://github.com/CU-DBMI-Peds/phoenix/},</span></span>
+<span><span class="co">#&gt;   }</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h2>
@@ -123,12 +240,12 @@
 <h4 id="developmental">Developmental<a class="anchor" aria-label="anchor" href="#developmental"></a>
 </h4>
 <p>Install the development version of <code>phoenix</code> directly from github via the <a href="https://github.com/r-lib/remotes/" class="external-link"><code>remotes</code></a> package:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>(<span class="st">"remotes"</span> <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>()))) {</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">warning</span>(<span class="st">"installing remotes from https://cran.rstudio.com"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"remotes"</span>, <span class="at">repo =</span> <span class="st">"https://cran.rstudio.com"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>}</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"cu-dbmi-peds/phoenix"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>(<span class="st">"remotes"</span> <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>()))) {</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">warning</span>(<span class="st">"installing remotes from https://cran.rstudio.com"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"remotes"</span>, <span class="at">repo =</span> <span class="st">"https://cran.rstudio.com"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"cu-dbmi-peds/phoenix"</span>)</span></code></pre></div>
 <p><em>NOTE:</em> If you are working on a Windows machine you will need to download and install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link"><code>Rtools</code></a>.</p>
 </div>
 </div>
@@ -136,7 +253,7 @@
 <h3 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
 </h3>
 <p>The package comes with an example data set called <code>sepsis.</code> To get the Phoenix score and determine sepsis (score ≥ 2) and septic shock (score ≥ 2 and cardiovascular dysfunction, just call the <code>phoenix</code> function:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CU-DBMI-Peds/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">phoenix_scores</span> <span class="op">&lt;-</span></span>
@@ -187,50 +304,50 @@
 </h2>
 <p>The subdirectory <code>python</code> provided a module and example use. It is our goal to make this python code more robust and distribute it via PyPI soon.</p>
 <p>You can read the article <a href="https://cu-dbmi-peds.github.io/phoenix/articles/python.html" class="external-link">The Phoenix Septic Criteria in python</a> for details and examples of using the python code as is.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="im">import</span> python.phoenix <span class="im">as</span> phx</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>sepsis <span class="op">=</span> pd.read_csv(<span class="st">"./python/sepsis.csv"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>phx.phoenix(</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>],</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>),</span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>    )</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt;     phoenix_respiratory_score  ...  phoenix_septic_shock</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; 0                           0  ...                     1</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; 1                           3  ...                     1</span></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; 2                           3  ...                     1</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 3                           0  ...                     0</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 4                           0  ...                     0</span></span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 5                           3  ...                     1</span></span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 6                           3  ...                     1</span></span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; 7                           0  ...                     0</span></span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; 8                           3  ...                     1</span></span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; 9                           3  ...                     0</span></span>
-<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; 10                          3  ...                     1</span></span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; 11                          1  ...                     0</span></span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; 12                          0  ...                     0</span></span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; 13                          2  ...                     1</span></span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; 14                          3  ...                     1</span></span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; 15                          0  ...                     1</span></span>
-<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; 16                          2  ...                     1</span></span>
-<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; 17                          3  ...                     1</span></span>
-<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; 18                          2  ...                     1</span></span>
-<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; 19                          0  ...                     1</span></span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; [20 rows x 7 columns]</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="im">import</span> python.phoenix <span class="im">as</span> phx</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>sepsis <span class="op">=</span> pd.read_csv(<span class="st">"./python/sepsis.csv"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>phx.phoenix(</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    pf_ratio <span class="op">=</span> sepsis[<span class="st">"pao2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>],</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>    sf_ratio <span class="op">=</span> np.where(sepsis[<span class="st">"spo2"</span>] <span class="op">&lt;=</span> <span class="dv">97</span>, sepsis[<span class="st">"spo2"</span>] <span class="op">/</span> sepsis[<span class="st">"fio2"</span>], np.nan),</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>    imv      <span class="op">=</span> sepsis[<span class="st">"vent"</span>],</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>    fibrinogen <span class="op">=</span> sepsis[<span class="st">'fibrinogen'</span>],</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>    gcs <span class="op">=</span> sepsis[<span class="st">"gcs_total"</span>],</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>    fixed_pupils <span class="op">=</span> (sepsis[<span class="st">"pupil"</span>] <span class="op">==</span> <span class="st">"both-fixed"</span>).astype(<span class="bu">int</span>),</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>    )</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt;     phoenix_respiratory_score  ...  phoenix_septic_shock</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; 0                           0  ...                     1</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; 1                           3  ...                     1</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; 2                           3  ...                     1</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; 3                           0  ...                     0</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; 4                           0  ...                     0</span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt; 5                           3  ...                     1</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt; 6                           3  ...                     1</span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt; 7                           0  ...                     0</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt; 8                           3  ...                     1</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; 9                           3  ...                     0</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; 10                          3  ...                     1</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; 11                          1  ...                     0</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; 12                          0  ...                     0</span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt; 13                          2  ...                     1</span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt; 14                          3  ...                     1</span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt; 15                          0  ...                     1</span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#&gt; 16                          2  ...                     1</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co">#&gt; 17                          3  ...                     1</span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co">#&gt; 18                          2  ...                     1</span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt; 19                          0  ...                     1</span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a><span class="co">#&gt; [20 rows x 7 columns]</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="sql">SQL<a class="anchor" aria-label="anchor" href="#sql"></a>
