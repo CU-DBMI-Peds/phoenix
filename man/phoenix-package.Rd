@@ -151,7 +151,7 @@ JAMA.
 \code{vignette('phoenix')} for more details and examples.
 }
 \author{
-\strong{Maintainer}: Peter DeWitt \email{peter.dewitt@cuanschutz.com} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID})
+\strong{Maintainer}: Peter DeWitt \email{peter.dewitt@cuanschutz.edu} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID})
 
 Other contributors:
 \itemize{
