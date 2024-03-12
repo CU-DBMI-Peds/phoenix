@@ -17,7 +17,7 @@ described in:
 
 * ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto&ast;, Bennett&ast;, DeWitt&ast;&ast;, Russell&ast;&ast; et al. (2024)
 
-  * <small> &ast; Drs Sanchez-Pinto and Bennett contributed equally; &ast;&ast; Dr DeWitt and Mr Russel contributed equally.</small>
+  * <small> &ast; Drs Sanchez-Pinto and Bennett contributed equally; &ast;&ast; Dr DeWitt and Mr Russell contributed equally.</small>
 
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
@@ -28,7 +28,6 @@ vignette("phoenix")
 ```
 or you can read it online
 [here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
-
 
 The Phoenix Criteria have been implemented as in a
 
@@ -237,58 +236,4 @@ for details and examples of using the python code as is.
 
 
 
-```python
-import numpy as np
-import pandas as pd
-import python.phoenix as phx
-sepsis = pd.read_csv("./python/sepsis.csv")
-
-phx.phoenix(
-    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
-    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    imv      = sepsis["vent"],
-    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
-    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
-    lactate = sepsis["lactate"],
-    age = sepsis["age"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
-    platelets = sepsis['platelets'],
-    inr = sepsis['inr'],
-    d_dimer = sepsis['d_dimer'],
-    fibrinogen = sepsis['fibrinogen'],
-    gcs = sepsis["gcs_total"],
-    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
-    )
-#>     phoenix_respiratory_score  ...  phoenix_septic_shock
-#> 0                           0  ...                     1
-#> 1                           3  ...                     1
-#> 2                           3  ...                     1
-#> 3                           0  ...                     0
-#> 4                           0  ...                     0
-#> 5                           3  ...                     1
-#> 6                           3  ...                     1
-#> 7                           0  ...                     0
-#> 8                           3  ...                     1
-#> 9                           3  ...                     0
-#> 10                          3  ...                     1
-#> 11                          1  ...                     0
-#> 12                          0  ...                     0
-#> 13                          2  ...                     1
-#> 14                          3  ...                     1
-#> 15                          0  ...                     1
-#> 16                          2  ...                     1
-#> 17                          3  ...                     1
-#> 18                          2  ...                     1
-#> 19                          0  ...                     1
-#> 
-#> [20 rows x 7 columns]
-```
-
-
-## SQL
-
-Read [The Phoenix Sepsis Criteria in SQL](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
-article for details and examples of implementing the scoring rubrics in SQL.
-These examples are done in SQLite but will be easily translated into other SQL
-dialects.
 
