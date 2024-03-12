@@ -60,15 +60,9 @@
 #'
 #' \code{vignette('phoenix')} for more details and examples.
 #'
-#' @references
+#' @references See reference details in \code{\link{phoenix-package}} or by calling
+#' \code{citation('phoenix')}.
 #'
-#' Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and Validation of
-#' the Phoenix Criteria for Pediatric Sepsis and Septic Shock. JAMA. Published
-#' online January 21, 2024. doi:10.1001/jama.2024.0196
-#'
-#' Schlapbach LJ, Watson RS, Sorce LR, et al. International Consensus Criteria
-#' for Pediatric Sepsis and Septic Shock. JAMA. Published online January 21,
-#' 2024. doi:10.1001/jama.2024.0179
 #'
 #' @examples
 #'

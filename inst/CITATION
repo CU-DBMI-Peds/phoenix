@@ -1,30 +1,49 @@
-citHeader("To cite the development of the Phoenix Criateria: Sanchez-Pinto et al.
-(2024) and Schlapbach et al. (2024).  To cite the R package cite DeWitt et al.
-(2024) (in press and will be updated soon)")
+citHeader("
+There are two references to cite the Phoenix criteria: 
+
+1) Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024); and\n
+2) Schlapbach, Watson, Sorce, Argent, et al. (2024).
+
+There are two references to cite for the R package itself:
+
+1) DeWitt et al. (2024) (in press and will be updated soon); and\n
+2) the result of evaluating `citation('phoenix', auto = FALSE)`
+"
+)
 
 bibentry(
-  bibtype = "Article",
+  bibtype = "article",
   author = "Sanchez-Pinto, L. Nelson and Bennett, Tellen D. and DeWitt, Peter E. and Russell, Seth and Rebull, Margaret N. and Martin, Blake and Akech, Samuel and Albers, David J. and Alpern, Elizabeth R. and Balamuth, Fran and Bembea, Melania and Chisti, Mohammod Jobayer and Evans, Idris and Horvat, Christopher M. and Jaramillo-Bustamante, Juan Camilo and Kissoon, Niranjan and Menon, Kusum and Scott, Halden F. and Weiss, Scott L. and Wiens, Matthew O. and Zimmerman, Jerry J. and Argent, Andrew C. and Sorce, Lauren R. and Schlapbach, Luregn J. and Watson, R. Scott and Society of Critical Care Medicine Pediatric Sepsis Definition Task Force",
   title = "Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock",
   journal = "JAMA",
+  volume = "331",
+  number = "8",
+  pages = "675-686",
   year = "2024",
-  month = "01",
+  month = "02",
+  abstract = "The Society of Critical Care Medicine Pediatric Sepsis Definition Task Force sought to develop and validate new clinical criteria for pediatric sepsis and septic shock using measures of organ dysfunction through a data-driven approach.To derive and validate novel criteria for pediatric sepsis and septic shock across differently resourced settings.Multicenter, international, retrospective cohort study in 10 health systems in the US, Colombia, Bangladesh, China, and Kenya, 3 of which were used as external validation sites. Data were collected from emergency and inpatient encounters for children (aged \\&lt;18 years) from 2010 to 2019: 3 049 699 in the development (including derivation and internal validation) set and 581 317 in the external validation set.Stacked regression models to predict mortality in children with suspected infection were derived and validated using the best-performing organ dysfunction subscores from 8 existing scores. The final model was then translated into an integer-based score used to establish binary criteria for sepsis and septic shock.The primary outcome for all analyses was in-hospital mortality. Model- and integer-based score performance measures included the area under the precision recall curve (AUPRC; primary) and area under the receiver operating characteristic curve (AUROC; secondary). For binary criteria, primary performance measures were positive predictive value and sensitivity.Among the 172 984 children with suspected infection in the first 24 hours (development set; 1.2\\% mortality), a 4-organ-system model performed best. The integer version of that model, the Phoenix Sepsis Score, had AUPRCs of 0.23 to 0.38 (95\\% CI range, 0.20-0.39) and AUROCs of 0.71 to 0.92 (95\\% CI range, 0.70-0.92) to predict mortality in the validation sets. Using a Phoenix Sepsis Score of 2 points or higher in children with suspected infection as criteria for sepsis and sepsis plus 1 or more cardiovascular point as criteria for septic shock resulted in a higher positive predictive value and higher or similar sensitivity compared with the 2005 International Pediatric Sepsis Consensus Conference (IPSCC) criteria across differently resourced settings.The novel Phoenix sepsis criteria, which were derived and validated using data from higher- and lower-resource settings, had improved performance for the diagnosis of pediatric sepsis and septic shock compared with the existing IPSCC criteria.",
   issn = "0098-7484",
   doi = "10.1001/jama.2024.0196",
   url = "https://doi.org/10.1001/jama.2024.0196",
-  eprint = "https://jamanetwork.com/journals/jama/articlepdf/2814296/jama_sanchezpinto_2024_oi_240003_1705616409.24209.pdf",
-)
+  eprint = "https://jamanetwork.com/journals/jama/articlepdf/2814296/jama_sanchezpinto_2024_oi_240003_1709591810.56162.pdf",
+  note = "Drs Sanchez-Pinto and Bennett contributed equally. Drs DeWitt and Mr Russell contributed equally. Drs Argent, Sorce, Schlapbach, and Watson contributed equally."
+  )
 
 bibentry(
-  bibtype = "Article",
-  author = "Schlapbach, Luregn J. and Watson, R. Scott and Sorce, Lauren R. and Argent, Andrew C. and Menon, Kusum and Hall, Mark W. and Akech, Samuel and Albers, David J. and Alpern, Elizabeth R. and Balamuth, Fran and Bembea, Melania and Biban, Paolo and Carrol, Enitan D. and Chiotos, Kathleen and Chisti, Mohammod Jobayer and DeWitt, Peter E. and Evans, Idris and Flauzino de Oliveira, Cláudio  and Horvat, Christopher M. and Inwald, David and Ishimine, Paul and Jaramillo-Bustamante, Juan Camilo and Levin, Michael and Lodha, Rakesh and Martin, Blake and Nadel, Simon and Nakagawa, Satoshi and Peters, Mark J. and Randolph, Adrienne G. and Ranjit, Suchitra and Rebull, Margaret N. and Russell, Seth and Scott, Halden F. and de Souza, Daniela Carla and Tissieres, Pierre and Weiss, Scott L. and Wiens, Matthew O. and Wynn, James L. and Kissoon, Niranjan and Zimmerman, Jerry J. and Sanchez-Pinto, L. Nelson and Bennett, Tellen D. and Society of Critical Care Medicine Pediatric Sepsis Definition Task Force",
-  title = "International Consensus Criteria for Pediatric Sepsis and Septic Shock",
-  journal = "JAMA",
-  year = "2024",
-  month = "01",
-  issn = "0098-7484",
-  doi = "10.1001/jama.2024.0179",
-  url = "https://doi.org/10.1001/jama.2024.0179",
-  eprint = "https://jamanetwork.com/journals/jama/articlepdf/2814297/jama_schlapbach_2024_oi_240002_1705616415.31602.pdf",
-)
+    bibtype = "article",
+    author = "Schlapbach, Luregn J. and Watson, R. Scott and Sorce, Lauren R. and Argent, Andrew C. and Menon, Kusum and Hall, Mark W. and Akech, Samuel and Albers, David J. and Alpern, Elizabeth R. and Balamuth, Fran and Bembea, Melania and Biban, Paolo and Carrol, Enitan D. and Chiotos, Kathleen and Chisti, Mohammod Jobayer and DeWitt, Peter E. and Evans, Idris and Flauzino de Oliveira, Cláudio  and Horvat, Christopher M. and Inwald, David and Ishimine, Paul and Jaramillo-Bustamante, Juan Camilo and Levin, Michael and Lodha, Rakesh and Martin, Blake and Nadel, Simon and Nakagawa, Satoshi and Peters, Mark J. and Randolph, Adrienne G. and Ranjit, Suchitra and Rebull, Margaret N. and Russell, Seth and Scott, Halden F. and de Souza, Daniela Carla and Tissieres, Pierre and Weiss, Scott L. and Wiens, Matthew O. and Wynn, James L. and Kissoon, Niranjan and Zimmerman, Jerry J. and Sanchez-Pinto, L. Nelson and Bennett, Tellen D. and Society of Critical Care Medicine Pediatric Sepsis Definition Task Force",
+    title = "International Consensus Criteria for Pediatric Sepsis and Septic Shock",
+    journal = "JAMA",
+    volume = "331",
+    number = "8",
+    pages = "665-674",
+    year = "2024",
+    month = "02",
+    abstract = "Sepsis is a leading cause of death among children worldwide. Current pediatric-specific criteria for sepsis were published in 2005 based on expert opinion. In 2016, the Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3) defined sepsis as life-threatening organ dysfunction caused by a dysregulated host response to infection, but it excluded children.To update and evaluate criteria for sepsis and septic shock in children.The Society of Critical Care Medicine (SCCM) convened a task force of 35 pediatric experts in critical care, emergency medicine, infectious diseases, general pediatrics, nursing, public health, and neonatology from 6 continents. Using evidence from an international survey, systematic review and meta-analysis, and a new organ dysfunction score developed based on more than 3 million electronic health record encounters from 10 sites on 4 continents, a modified Delphi consensus process was employed to develop criteria.Based on survey data, most pediatric clinicians used sepsis to refer to infection with life-threatening organ dysfunction, which differed from prior pediatric sepsis criteria that used systemic inflammatory response syndrome (SIRS) criteria, which have poor predictive properties, and included the redundant term, severe sepsis. The SCCM task force recommends that sepsis in children be identified by a Phoenix Sepsis Score of at least 2 points in children with suspected infection, which indicates potentially life-threatening dysfunction of the respiratory, cardiovascular, coagulation, and/or neurological systems. Children with a Phoenix Sepsis Score of at least 2 points had in-hospital mortality of 7.1\\% in higher-resource settings and 28.5\\% in lower-resource settings, more than 8 times that of children with suspected infection not meeting these criteria. Mortality was higher in children who had organ dysfunction in at least 1 of 4—respiratory, cardiovascular, coagulation, and/or neurological—organ systems that was not the primary site of infection. Septic shock was defined as children with sepsis who had cardiovascular dysfunction, indicated by at least 1 cardiovascular point in the Phoenix Sepsis Score, which included severe hypotension for age, blood lactate exceeding 5 mmol/L, or need for vasoactive medication. Children with septic shock had an in-hospital mortality rate of 10.8\\% and 33.5\\% in higher- and lower-resource settings, respectively.The Phoenix sepsis criteria for sepsis and septic shock in children were derived and validated by the international SCCM Pediatric Sepsis Definition Task Force using a large international database and survey, systematic review and meta-analysis, and modified Delphi consensus approach. A Phoenix Sepsis Score of at least 2 identified potentially life-threatening organ dysfunction in children younger than 18 years with infection, and its use has the potential to improve clinical care, epidemiological assessment, and research in pediatric sepsis and septic shock around the world.",
+    issn = "0098-7484",
+    doi = "10.1001/jama.2024.0179",
+    url = "https://doi.org/10.1001/jama.2024.0179",
+    eprint = "https://jamanetwork.com/journals/jama/articlepdf/2814297/jama_schlapbach_2024_oi_240002_1708641862.24494.pdf",
+    note = "Drs Schlapbach, Watson, Sorce, and Argent contributed equally. Drs Sanchez-Pinto and Bennett contributed equally."
+  )
 
