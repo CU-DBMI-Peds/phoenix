@@ -7,10 +7,8 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/CU-DBMI-Peds/phoenix/graph/badge.svg?token=PKLXJ9SQOD)](https://app.codecov.io/gh/CU-DBMI-Peds/phoenix)
-<!--
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/phoenix)](http://www.r-pkg.org/pkg/phoenix)
--->
 
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 described in:
@@ -137,15 +135,16 @@ print(citation("phoenix", auto = TRUE), bibtex = TRUE)
 #> 'phoenix' from package DESCRIPTION file
 #> To cite package 'phoenix' in publications use:
 #> 
-#>   DeWitt P (????). _phoenix: Phoenix Sepsis Criteria_. R package
-#>   version 0.0.0.9001, <https://github.com/CU-DBMI-Peds/phoenix/>.
+#>   DeWitt P (????). _phoenix: The Phoenix Pediatric Sepsis and Septic
+#>   Shock Criteria_. R package version 1.0.0,
+#>   <https://github.com/CU-DBMI-Peds/phoenix/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {phoenix: Phoenix Sepsis Criteria},
+#>     title = {phoenix: The Phoenix Pediatric Sepsis and Septic Shock Criteria},
 #>     author = {Peter DeWitt},
-#>     note = {R package version 0.0.0.9001},
+#>     note = {R package version 1.0.0},
 #>     url = {https://github.com/CU-DBMI-Peds/phoenix/},
 #>   }
 ```
