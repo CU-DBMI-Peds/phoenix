@@ -25,4 +25,4 @@ pid , age   , fio2 , pao2 , spo2 , vent , gcs_total , pupil         , platelets 
 '
 )
 
-save(sepsis, file = "data/sepsis.rda")
+save(sepsis, file = "../data/sepsis.rda")
