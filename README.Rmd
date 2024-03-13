@@ -33,10 +33,10 @@ vignette("phoenix")
 or you can read it online
 [here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 
-The Phoenix Criteria have been implemented as in a
+The Phoenix Criteria have been implemented in
 
-* R package,
-* Python module, and
+* an R package,
+* a Python module, and
 * example SQL queries.
 
 The repository has been built with R as the primary and default language.
@@ -46,13 +46,16 @@ If you use this package in your work, please cite the Phoenix criteria by citing
 the two JAMA papers.  Please cite this code base by citing the research letter,
 and if using the R package, cite it explicitly as well.
 
-```{r}
+Bibtex formated citations can be retrived within R via
+```{r, eval = FALSE}
 # Manuscripts
 print(citation("phoenix"), bibtex = TRUE)
 
 # R package
 print(citation("phoenix", auto = TRUE), bibtex = TRUE)
 ```
+Or in this repo from the file
+[`inst/CITATION`](https://github.com/CU-DBMI-Peds/phoenix/blob/main/inst/CITATION)
 
 
 ## R
@@ -110,14 +113,6 @@ phoenix_scores <-
   )
 
 str(phoenix_scores)
-# 'data.frame':	20 obs. of  7 variables:
-#  $ phoenix_respiratory_score   : int  0 3 3 0 0 3 3 0 3 3 ...
-#  $ phoenix_cardiovascular_score: int  2 2 1 0 0 1 4 0 3 0 ...
-#  $ phoenix_coagulation_score   : int  1 1 2 1 0 2 2 1 1 0 ...
-#  $ phoenix_neurologic_score    : int  0 1 0 0 0 1 0 0 1 1 ...
-#  $ phoenix_sepsis_score        : int  3 7 6 1 0 7 9 1 8 4 ...
-#  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...
-#  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...
 ```
 
 ## python
