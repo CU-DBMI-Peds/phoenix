@@ -130,7 +130,7 @@ This extended criteria uses the four organ systems above along with four additio
 |&nbsp;&nbsp;  24 &leq; Age &lt;   60 | Creatinine &lt; 0.6 mg/dL | Creatinine &geq; 0.6 mg/dL |
 |&nbsp;&nbsp;  60 &leq; Age &lt;  144 | Creatinine &lt; 0.7 mg/dL | Creatinine &geq; 0.7 mg/dL |
 |&nbsp;&nbsp; 144 &leq; Age &leq; 216 | Creatinine &lt; 1.0 mg/dL | Creatinine &geq; 1.0 mg/dL |
-|**Hepatic** (0-1 point) | Total bilirubin &lt; 4 mg/dL and ALT &gt; 102 IU/L | Total bilirubin &geq; 4 mg/dL and/or ALT &gt; 102 IU/L |
+|**Hepatic** (0-1 point) | Total bilirubin &lt; 4 mg/dL and ALT &leq; 102 IU/L | Total bilirubin &geq; 4 mg/dL and/or ALT &gt; 102 IU/L |
 
 <small>
   <ul>
