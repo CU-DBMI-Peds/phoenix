@@ -104,12 +104,12 @@ score &geq; 1).
     </ul>
     <li> Age: measured in months and is not adjusted for prematurity. </li>
     <li> SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when SpO<sub>2</sub> &leq; 97. </li>
-    <li> Vasoactive medications: any systmic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin. </li>
+    <li> Vasoactive medications: any systemic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin. </li>
     <li> lactate can be arterial or venous.  Reference range 0.5 - 2.2 mmol/L </li>
-    <li> MAP - Use measured arterial pressue preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3 </li>
+    <li> MAP - Use measured arterial pressure preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3 </li>
     <li> Coagulation variable reference ranges: platelets, 150-450 10<sup>3</sup>/&mu;L; D-dimer, &lt; 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL.  International normalized ratio reference range is based on local reference prothrombintime. </li>
-    <li> Neurologi dysfunciton scoring was pragmatically validated in both sedated and onsedated patients and those with and without IMV. </li>
-    <li> GCS measures level of consciousness based on verbal, eye, and motor respose.  Values are integers from 3 to 15 with higher scores indicating better neurologic function. </li>
+    <li> Neurologic dysfunction scoring was pragmatically validated in both sedated and on sedated patients and those with and without IMV. </li>
+    <li> GCS measures level of consciousness based on verbal, eye, and motor response.  Values are integers from 3 to 15 with higher scores indicating better neurologic function. </li>
   </ul>
 </small>
 
@@ -402,7 +402,7 @@ ggplot2::ggplot(DF) +
   ggplot2::geom_tile() +
   ggplot2::facet_grid(lactate_bin ~ paste("Vasoactive Medications:", vasoactives)) +
   ggplot2::scale_fill_brewer(name = "Phoenix Cardiovascular Score", palette = "Spectral", direction = -1) +
-  ggplot2::ylab("Mean Arterial Pressue (mmHg)") +
+  ggplot2::ylab("Mean Arterial Pressure (mmHg)") +
   ggplot2::xlab("Age (months)") +
   ggplot2::guides(fill = ggplot2::guide_legend(nrow = 1)) +
   ggplot2::theme(legend.position = "bottom")
