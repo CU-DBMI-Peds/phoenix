@@ -1,0 +1,37 @@
+library(hexSticker)
+
+s_without_title <- sticker(
+    subplot = "phoenix_1200x1200.png",
+    s_x = 1.00,
+    s_y = 1.00,
+    s_width = 1.01,
+    s_height = 1.01,
+    package = '',
+    #p_x = 1,
+    #p_y = 1.6,
+    #p_color = "#111111",
+    #p_family = "serif",
+    #p_fontface = "plain",
+    #p_size = 18,
+    h_size = 0.0,
+    #h_fill = "#009F96",# "#A2AAAD",
+    h_color = "#000000",
+    #spotlight = TRUE,
+    #l_x = 1.5,
+    #l_y = 0.5,
+    #l_width = 3,
+    #l_height = 3,
+    #l_alpha = 0.1,
+    #url = "",
+    #u_x = 1,
+    #u_y = 0.08,
+    #u_color = "black",
+    #u_family = "Aller_Rg",
+    #u_size = 1.5,
+    #u_angle = 30,
+    white_around_sticker = TRUE,
+    filename = "hexsticker.png",
+    #asp = 1,
+    #dpi = 300
+  )
+plot(s_without_title)
