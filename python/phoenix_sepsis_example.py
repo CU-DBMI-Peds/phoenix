@@ -1,13 +1,13 @@
 import numpy as np
 import pandas as pd
-import phoenix
+import phoenix as phx
 
 # examples
 sepsis = pd.read_csv("sepsis.csv")
 sepsis
 
 print("Respiratory")
-resp = phoenix.phoenix_respiratory(
+resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
     imv      = sepsis["vent"],
@@ -18,7 +18,7 @@ print(type(resp))
 print(resp)
 
 print("Cardiovascular")
-card = phoenix.phoenix_cardiovascular(
+card = phx.phoenix_cardiovascular(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
@@ -28,7 +28,7 @@ print(type(card))
 print(card)
 
 print("Coagulation")
-coag = phoenix.phoenix_coagulation(
+coag = phx.phoenix_coagulation(
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
@@ -38,7 +38,7 @@ print(type(coag))
 print(coag)
 
 print("Neurologic")
-neuro = phoenix.phoenix_neurologic(
+neuro = phx.phoenix_neurologic(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int)
 )
@@ -47,7 +47,7 @@ print(neuro)
 
 
 print("Phoenix")
-phoenix = phoenix.phoenix(
+phoenix = phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = sepsis["spo2"] / sepsis["fio2"],
     imv      = sepsis["vent"],

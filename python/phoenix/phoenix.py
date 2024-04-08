@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-def phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support):
+def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respiratory_support = np.nan):
     pfr = np.nan_to_num(pf_ratio, nan = 500)
     sfr = np.nan_to_num(sf_ratio, nan = 500)
     imv = np.nan_to_num(imv,      nan = 0)
@@ -18,7 +18,7 @@ def phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support):
 
     return(np.array(rtn))
 
-def phoenix_cardiovascular(vasoactives, lactate, age, map):
+def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan, map = np.nan):
     vas = np.nan_to_num(vasoactives, nan = 0)
     lct = np.nan_to_num(lactate, nan = 0)
 
@@ -44,7 +44,7 @@ def phoenix_cardiovascular(vasoactives, lactate, age, map):
 
     return(np.array(vas_score + lct_score + map_score))
 
-def phoenix_coagulation(platelets, inr, d_dimer, fibrinogen):
+def phoenix_coagulation(platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan):
     plt = np.nan_to_num(platelets, nan = 1000)
     inr = np.nan_to_num(inr, nan = 0)
     ddm = np.nan_to_num(d_dimer, nan = 0)
@@ -56,7 +56,7 @@ def phoenix_coagulation(platelets, inr, d_dimer, fibrinogen):
     rtn[(rtn > 2)] = 2
     return(np.array(rtn))
 
-def phoenix_neurologic(gcs, fixed_pupils):
+def phoenix_neurologic(gcs = np.nan, fixed_pupils = np.nan):
     gcs = np.nan_to_num(gcs, nan = 15)
     fpl = np.nan_to_num(fixed_pupils, nan = 0)
     rtn = (fpl * 2).astype(int) + (gcs <= 10).astype(int)
@@ -64,16 +64,16 @@ def phoenix_neurologic(gcs, fixed_pupils):
 
     return(np.array(rtn))
 
-def phoenix_endocrine(glucose):
+def phoenix_endocrine(glucose = np.nan):
     glc = np.nan_to_num(glucose, nan = 100)
     return( np.array(((glc < 50) | (glc > 150)).astype(int)))
 
-def phoenix_immunologic(anc, alc):
+def phoenix_immunologic(anc = np.nan, alc = np.nan):
     anc = np.nan_to_num(anc, nan = 555)
     alc = np.nan_to_num(alc, nan = 1111)
     return(np.array(((anc < 500) | (alc < 1000)).astype(int)))
 
-def phoenix_renal(creatinine, age):
+def phoenix_renal(creatinine = np.nan, age = np.nan):
     # set both creatinine and age to 0 if either is missing
     idx = np.isnan(creatinine) | np.isnan(age)
     crt = np.nan_to_num(creatinine, nan = 0)
@@ -90,12 +90,12 @@ def phoenix_renal(creatinine, age):
           )
     return(np.array(rtn))
 
-def phoenix_hepatic(bilirubin, alt):
+def phoenix_hepatic(bilirubin = np.nan, alt = np.nan):
     bil = np.nan_to_num(bilirubin, nan = 0)
     alt = np.nan_to_num(alt, nan = 0)
     return( np.array(((bil >= 4) | (alt > 102)).astype(int)))
 
-def phoenix(pf_ratio, sf_ratio, imv, other_respiratory_support, vasoactives, lactate, map, platelets, inr, d_dimer, fibrinogen, gcs, fixed_pupils, age):
+def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, age = np.nan):
     resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)
     card = phoenix_cardiovascular(vasoactives, lactate, age, map)
     coag = phoenix_coagulation(platelets, inr, d_dimer, fibrinogen)
@@ -107,7 +107,7 @@ def phoenix(pf_ratio, sf_ratio, imv, other_respiratory_support, vasoactives, lac
     rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock"]
     return(rtn)
 
-def phoenix8(pf_ratio, sf_ratio, imv, other_respiratory_support, vasoactives, lactate, map, platelets, inr, d_dimer, fibrinogen, gcs, fixed_pupils, glucose, anc, alc, creatinine, bilirubin, alt, age):
+def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, glucose = np.nan, anc = np.nan, alc = np.nan, creatinine = np.nan, bilirubin = np.nan, alt = np.nan, age = np.nan):
     resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)
     card = phoenix_cardiovascular(vasoactives, lactate, age, map)
     coag = phoenix_coagulation(platelets, inr, d_dimer, fibrinogen)
