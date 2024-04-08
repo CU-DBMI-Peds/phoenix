@@ -25,21 +25,18 @@ def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan,
     # for age and map, if one is missing set both values so a score of 0 is
     # returned.  use np.nan_to_num to copy the data before using [idx] to set al
     # the missing values
-    idx = np.isnan(age) | np.isnan(map)
     age = np.nan_to_num(age, nan = 222)
     map = np.nan_to_num(map, nan = 100)
-    age[idx] = 222
-    map[idx] = 100
 
     vas_score = (vas > 1).astype(int) + (vas > 0).astype(int)
     lct_score = (lct >= 11).astype(int) + (lct >= 5).astype(int)
     map_score = (
-      ((age >=   0) & (age <    1)).astype(int) * ((map < 17).astype(int) + (map < 31).astype(int)) +
-      ((age >=   1) & (age <   12)).astype(int) * ((map < 25).astype(int) + (map < 39).astype(int)) +
-      ((age >=  12) & (age <   24)).astype(int) * ((map < 31).astype(int) + (map < 44).astype(int)) +
-      ((age >=  24) & (age <   60)).astype(int) * ((map < 32).astype(int) + (map < 45).astype(int)) +
-      ((age >=  60) & (age <  144)).astype(int) * ((map < 36).astype(int) + (map < 49).astype(int)) +
-      ((age >= 144) & (age <= 216)).astype(int) * ((map < 38).astype(int) + (map < 52).astype(int))
+            ((age >=   0) & (age <    1)).astype(int) * ((map < 17).astype(int) + (map < 31).astype(int)) +
+            ((age >=   1) & (age <   12)).astype(int) * ((map < 25).astype(int) + (map < 39).astype(int)) +
+            ((age >=  12) & (age <   24)).astype(int) * ((map < 31).astype(int) + (map < 44).astype(int)) +
+            ((age >=  24) & (age <   60)).astype(int) * ((map < 32).astype(int) + (map < 45).astype(int)) +
+            ((age >=  60) & (age <  144)).astype(int) * ((map < 36).astype(int) + (map < 49).astype(int)) +
+            ((age >= 144) & (age <= 216)).astype(int) * ((map < 38).astype(int) + (map < 52).astype(int))
     )
 
     return(np.array(vas_score + lct_score + map_score))
@@ -53,14 +50,17 @@ def phoenix_coagulation(platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibr
           (inr > 1.3).astype(int) +\
           (ddm > 2).astype(int) +\
           (fib < 100).astype(int)
-    rtn[(rtn > 2)] = 2
+
+    rtn = np.minimum(2, rtn)
+
     return(np.array(rtn))
 
 def phoenix_neurologic(gcs = np.nan, fixed_pupils = np.nan):
     gcs = np.nan_to_num(gcs, nan = 15)
     fpl = np.nan_to_num(fixed_pupils, nan = 0)
     rtn = (fpl * 2).astype(int) + (gcs <= 10).astype(int)
-    rtn[(rtn > 2)] = 2
+
+    rtn = np.minimum(2, rtn)
 
     return(np.array(rtn))
 
