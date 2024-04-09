@@ -1,0 +1,160 @@
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# phoenix: Phoenix Sepsis and Phoenix-8 Sepsis Criteria
+
+Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
+described in:
+
+* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto&ast;, Bennett&ast;, DeWitt&ast;&ast;, Russell&ast;&ast; et al. (2024)
+
+  * <small> &ast; Drs Sanchez-Pinto and Bennett contributed equally; &ast;&ast; Dr DeWitt and Mr Russell contributed equally.</small>
+
+* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
+
+## Phoenix Criteria
+A patient is consided septic if they have a suspected (or proven) infection with
+at total Phoenix score of at least two points.  The Phoenix score is the sum of
+the scores from four organ dysfunction scores:
+
+1. Respiratory,
+2. Cardiovascular,
+3. Coagulation, and
+4. Neurologic.
+
+Septic shock is defined as sepsis with at least one cardiovascular point.
+
+In addition to the Phoenix criteria there is an extended crieria intended for
+research, Phoenix-8, which includes the four organ systems above along with
+
+5. Endocrine,
+6. Immunologic,
+7. Renal, and 
+8. Hepatic.
+
+## Software
+
+* Python module
+* [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
+* Example SQL queries
+
+* Source code on [github](https://github.com/CU-DBMI-Peds/phoenix/)
+* [Issue tracker](https://github.com/CU-DBMI-Peds/phoenix/issues/)
+
+
+
+## Example use of the Python Module
+
+```{r, label = setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(reticulate)
+
+if (!virtualenv_exists(envname = "phoenix")) {
+  virtualenv_create(envname = "phoenix")
+  virtualenv_install(envname = "phoenix", packages = normalizePath('.'))
+  virtualenv_install(envname = "phoenix", packages = c("numpy", "pandas"))
+}
+
+use_virtualenv(virtualenv = "phoenix")
+```
+
+```{python}
+import numpy as np
+import pandas as pd
+import importlib.resources
+
+import phoenix as phx
+```
+
+There is an example data set included in the package in a file called
+`sepsis.csv`.  Load that file to use in the following examples.
+
+```{python}
+# read in the example data set
+with importlib.resources.path('phoenix', 'data') as data_path:
+    sepsis = pd.read_csv(data_path / "sepsis.csv")
+
+print(sepsis)
+```
+
+### Organ Dysfunction Scoring
+There is one funciton for each of the eight component organ dysfunction scores.
+
+1. Respiratory,
+2. Cardiovascular
+3. Coagulation
+4. Neurologic
+5. Endocrine
+6. Immunologic
+7. Renal
+8. Hepatic
+
+The Phoenix score and criteria is based on 
+respiratory,
+cardiovascular,
+coagulation, and
+neurologic.  Sepsis is defined as a total score of at least two points and 
+
+### Respiratory Dysfunction Scoring
+
+
+```{python}
+print("Respiratory Score")
+resp = phx.phoenix_respiratory(
+    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
+    imv      = sepsis["vent"],
+    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy()
+    )
+print(type(resp))
+print(resp)
+
+print("Cardiovascular Score")
+card = phx.phoenix_cardiovascular(
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    lactate = sepsis["lactate"],
+    age = sepsis["age"],
+    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
+)
+print(type(card))
+print(card)
+
+print("Coagulation Score")
+coag = phx.phoenix_coagulation(
+    platelets = sepsis['platelets'],
+    inr = sepsis['inr'],
+    d_dimer = sepsis['d_dimer'],
+    fibrinogen = sepsis['fibrinogen']
+)
+print(type(coag))
+print(coag)
+
+print("Neurologic Score")
+neuro = phx.phoenix_neurologic(
+    gcs = sepsis["gcs_total"],
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int)
+)
+print(type(neuro))
+print(neuro)
+
+
+print("Phoenix Sepsis Score")
+phoenix = phx.phoenix(
+    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
+    sf_ratio = sepsis["spo2"] / sepsis["fio2"],
+    imv      = sepsis["vent"],
+    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    lactate = sepsis["lactate"],
+    age = sepsis["age"],
+    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    platelets = sepsis['platelets'],
+    inr = sepsis['inr'],
+    d_dimer = sepsis['d_dimer'],
+    fibrinogen = sepsis['fibrinogen'],
+    gcs = sepsis["gcs_total"],
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
+    )
+
+print(type(phoenix))
+print(phoenix)
+```
