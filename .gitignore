@@ -9,3 +9,4 @@
 .DS_Store
 python/build/*
 python/phoenix.egg-info/*
+python/dist/*
