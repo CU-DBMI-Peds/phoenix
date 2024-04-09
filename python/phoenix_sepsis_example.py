@@ -2,6 +2,11 @@ import numpy as np
 import pandas as pd
 import phoenix as phx
 
+#help("phoenix")
+#help("phoenix8")
+#help("phx.phoenix_respiratory")
+#help("help")
+
 # examples
 sepsis = pd.read_csv("sepsis.csv")
 sepsis

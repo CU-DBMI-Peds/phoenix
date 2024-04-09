@@ -30,15 +30,15 @@ phoenix8(
 )
 }
 \arguments{
-\item{pf_ratio}{numeric vector}
+\item{pf_ratio}{numeric vector for the PaO2/FiO2 ratio; PaO2 = arterial oxygen pressure; FiO2 = fraction of inspired oxygen;  PaO2 is measured in mmHg and FiO2 is from 0.21 (room air) to 1.00.}
 
-\item{sf_ratio}{numeric vector}
+\item{sf_ratio}{numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92\% oxygen saturation on room air is 92/0.21 = 438.0952.}
 
 \item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
 
 \item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
 
-\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient}
+\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasocative medications are considered: dobutamine, dopamine, epinepherine, milrinone, norepinephrine, vasopressin.}
 
 \item{lactate}{numeric vector with the lactate value in mmol/L}
 

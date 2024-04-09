@@ -14,7 +14,7 @@ Functions for applying the Phoenix Pediatric Sepsis and Septic Shock criteria
   * `phoenix_respiratory()`
   * `phoenix_cardiovascular()`
   * `phoenix_coagulation()`
-  * `phoenix_neuorologic()`
+  * `phoenix_neurologic()`
   * `phoenix_endocrine()`
   * `phoenix_immunologic()`
   * `phoenix_renal()`
