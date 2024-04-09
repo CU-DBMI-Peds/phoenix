@@ -17,3 +17,7 @@ dependencies = [
   "numpy",
   "pandas"
 ]
+
+[project.urls]
+Homepage = "https://cu-dbmi-peds.github.io/phoenix/index.html"
+Issues = "https://github.com/CU-DBMI-Peds/phoenix/issues"
