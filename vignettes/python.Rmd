@@ -1,5 +1,7 @@
 ---
 title: "The Phoenix Sepsis Criteria in Python"
+resource_files:
+  - python/*
 output:
  rmarkdown::html_vignette:
    toc: true
