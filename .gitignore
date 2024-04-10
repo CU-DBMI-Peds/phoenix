@@ -8,5 +8,5 @@
 .Rproj.user
 .DS_Store
 python/build/*
-python/phoenix.egg-info/*
+python/*.egg-info/*
 python/dist/*
