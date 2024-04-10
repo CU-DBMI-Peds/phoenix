@@ -1,7 +1,5 @@
 ---
 title: "The Phoenix Sepsis Criteria in Python"
-resource_files:
-  - python/*
 output:
  rmarkdown::html_vignette:
    toc: true
@@ -27,8 +25,6 @@ knitr::opts_chunk$set(collapse = TRUE)
 library(reticulate)
 library(phoenix)
 
-#virtualenv_remove(envname = "phoenix", confirm = FALSE)
-
 if (!virtualenv_exists(envname = "phoenix")) {
   virtualenv_create(envname = "phoenix")
   virtualenv_install(envname = "phoenix", packages = c("numpy", "pandas"))
@@ -39,10 +35,6 @@ if (!virtualenv_exists(envname = "phoenix")) {
   }
   virtualenv_install(envname = "phoenix", packages = p)
 }
-
-# just incase you need this... a work around fo virtualenv issues on github actions
-#import sys
-#sys.path.append('../python')
 
 use_virtualenv(virtualenv = "phoenix")
 ```
