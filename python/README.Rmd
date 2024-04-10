@@ -31,6 +31,30 @@ research, Phoenix-8, which includes the four organ systems above along with
 7. Renal, and 
 8. Hepatic.
 
+## Phoenix Rubric
+
+```{r, echo = FALSE, results = "asis"}
+tab <-
+  scan(file = system.file("phoenix_rubric.md", package = "phoenix"),
+       what = character(),
+       sep = "\n",
+       quiet = TRUE)
+cat(tab, sep = "\n")
+cat("\n")
+```
+
+<small>
+```{r, echo = FALSE, results = "asis"}
+ftnt <-
+  scan(file = system.file("phoenix_rubric_footnotes.md", package = "phoenix"),
+       what = character(),
+       sep = "\n",
+       quiet = TRUE)
+cat(ftnt[1:9], sep = "\n\n")
+```
+</small>
+
+
 ## Software
 
 * Python module
@@ -39,7 +63,6 @@ research, Phoenix-8, which includes the four organ systems above along with
 
 * Source code on [github](https://github.com/CU-DBMI-Peds/phoenix/)
 * [Issue tracker](https://github.com/CU-DBMI-Peds/phoenix/issues/)
-
 
 
 ## Example use of the Python Module
@@ -56,6 +79,13 @@ if (!virtualenv_exists(envname = "phoenix")) {
 
 use_virtualenv(virtualenv = "phoenix")
 ```
+
+### Install phoenix
+
+```{python, eval = FALSE}
+pip install phoenix
+```
+
 
 ```{python}
 import numpy as np

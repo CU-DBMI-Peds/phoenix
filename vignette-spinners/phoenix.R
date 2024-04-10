@@ -86,7 +86,6 @@ packageVersion("phoenix")
 #' ## Phoenix Scoring Rubric
 #'
 #+ echo = FALSE, results = "asis"
-
 tab <-
   scan(file = system.file("phoenix_rubric.md", package = "phoenix"),
        what = character(),

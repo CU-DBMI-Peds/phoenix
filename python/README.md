@@ -11,16 +11,101 @@ described in:
 
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
+## Phoenix Criteria
+A patient is consided septic if they have a suspected (or proven) infection with
+at total Phoenix score of at least two points.  The Phoenix score is the sum of
+the scores from four organ dysfunction scores:
+
+1. Respiratory,
+2. Cardiovascular,
+3. Coagulation, and
+4. Neurologic.
+
+Septic shock is defined as sepsis with at least one cardiovascular point.
+
+In addition to the Phoenix criteria there is an extended crieria intended for
+research, Phoenix-8, which includes the four organ systems above along with
+
+5. Endocrine,
+6. Immunologic,
+7. Renal, and 
+8. Hepatic.
+
+## Phoenix Rubric
+
+| Organ System                                                          | 0 Points                         | 1 Point                 | 2 Points                 | 3 Points | 
+| :------                                                               | :--                              | :--                     | :--                      | :--      | 
+| **Respiratory** (0-3 points)                                          |                                  |                         |                          |          | 
+|                                                                       |                                  | Any respiratory support | IMV^a^                   | IMV      | 
+| &nbsp;&nbsp;PaO~2~:FiO~2~                                             | &geq; 400                        | < 400                   | < 200                    | < 100    | 
+| &nbsp;&nbsp;SpO~2~:FiO~2~^b^                                          | &geq; 292                        | < 292                   | < 220                    | < 148    | 
+| **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |                                  |                         |                          |          | 
+| &nbsp;&nbsp; Systemic Vasoactive Medications^c^                       | No medications                   | 1 medication            | 2 or more medications    |          | 
+| &nbsp;&nbsp; Lactate^d^ (mmol/L)                                      | &lt; 5                           | 5 &leg; Lactate &lt; 11 | &geq; 11                 |          | 
+| &nbsp;&nbsp; Age^e^ (months) adjusted MAP^f^ (mmHg)                   |                                  |                         |                          |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age &lt;   1                       | &geq; 31                         | 17 &leq; MAP &lt; 31    | &lt; 17                  |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;   1 &leq; Age &lt;  12                       | &geq; 39                         | 25 &leq; MAP &lt; 39    | &lt; 25                  |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;  12 &leq; Age &lt;  24                       | &geq; 44                         | 31 &leq; MAP &lt; 44    | &lt; 31                  |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;  24 &leq; Age &lt;  60                       | &geq; 45                         | 32 &leq; MAP &lt; 45    | &lt; 32                  |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;  60 &leq; Age &lt; 144                       | &geq; 49                         | 36 &leq; MAP &lt; 49    | &lt; 36                  |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp; 144 &leq; Age &lt; 216                       | &geq; 52                         | 38 &leq; MAP &lt; 52    | &lt; 38                  |          | 
+| **Coagulation**^g^ (0-2 points; 1 for each lab; max of 2 points)      |                                  |                         |                          |          | 
+| &nbsp;&nbsp; Platelets (1000/&mu;L)                                   | &geq; 100                        | &lt; 100                |                          |          | 
+| &nbsp;&nbsp; INR                                                      | &leq; 1.3                        | &gt; 1.3                |                          |          | 
+| &nbsp;&nbsp; D-Dimer (mg/L FEU)                                       | &leq; 2                          | &gt; 2                  |                          |          | 
+| &nbsp;&nbsp; Fibrinogen (mg/dL)                                       | &geq; 100                        | &lt; 100                |                          |          | 
+| **Neurologic**^h^ (0-2 points)                                        |                                  |                         |                          |          | 
+| &nbsp;&nbsp;                                                          | GCS^i^ &geq; 11                  | GCS &leq; 10            | Bilaterally fixed pupils |          | 
+| **Endocrine** (0-1 point)                                             |                                  |                         |                          |          | 
+| &nbsp;&nbsp; Blood Glucose (mg/dL)                                    | 50 &leq; Blood Glucose &leq; 150 | &lt; 50; or &gt; 150    |                          |          | 
+| **Immunologic** (0-1 point; point from ANC and/or ALC)                |                                  |                         |                          |          | 
+| &nbsp;&nbsp; ANC (cells/mm^3^)                                        | &geq; 500                        | &lt; 500                |                          |          | 
+| &nbsp;&nbsp; ALC (cells/mm^3^)                                        | &geq; 1000                       | &lt; 1000               |                          |          | 
+| **Renal** (0-1 point)                                                 |                                  |                         |                          |          | 
+| &nbsp;&nbsp; Age^e^ (months) adjusted Creatinine (mg/dL)              |                                  |                         |                          |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age &lt;   1                       | &lt; 0.8                         | &geq; 0.8               |                          |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;   1 &leq; Age &lt;  12                       | &lt; 0.3                         | &geq; 0.3               |                          |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;  12 &leq; Age &lt;  24                       | &lt; 0.4                         | &geq; 0.4               |                          |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;  24 &leq; Age &lt;  60                       | &lt; 0.6                         | &geq; 0.6               |                          |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp;  60 &leq; Age &lt; 144                       | &lt; 0.7                         | &geq; 0.7               |                          |          | 
+| &nbsp;&nbsp;&nbsp;&nbsp; 144 &leq; Age &lt; 216                       | &lt; 1.0                         | &geq; 1.0               |                          |          | 
+| **Hepatic** (0-1 point; point from total bilirubin and/or ALT)        |                                  |                         |                          |          | 
+| &nbsp;&nbsp; Total Bilirubin (mg/dL)                                  | &lt; 4                           | &geq; 4                 |                          |          | 
+| &nbsp;&nbsp; ALT (IU/L)                                               | &leq; 102                        | &gt; 102                |                          |          | 
+
+<small>
+^a^Abbreviations: ALC: Absolute lymphocyte count; ALT: alanine aminotransferase; ANC: Absolute neutrophil count; FEU: fibrinogen equivalent units; FiO~2~: fraction of inspired oxygen; GCS: Glasgow Coma Score; IMV: invasive mechanical ventilation; INR: International normalized ratio; MAP: mean arterial pressure; PaO~2~: arterial oxygen pressure; SpO~2~: pulse oximetry oxygen saturation;
+
+^b^SpO~2~:FiO~2~ is only valid when SpO~2~ &leq; 97.
+
+^c^Vasoactive medications: any systemic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin.
+
+^d^Lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
+
+^e^Age: measured in months and is not adjusted for prematurity.
+
+^f^MAP - Use measured mean arterial pressure preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3
+
+^g^Coagulation variable reference ranges: platelets, 150-450 103/μL; D-dimer, < 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL. International normalized ratio reference range is based on local reference prothrombin time.
+
+^h^Neurologic dysfunction scoring was pragmatically validated in both sedated and on sedated patients and those with and without IMV.
+
+^i^GCS measures level of consciousness based on verbal, eye, and motor response. Values are integers from 3 to 15 with higher scores indicating better neurologic function.
+</small>
+
+
 ## Software
 
-* python module
+* Python module
 * [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
 * Example SQL queries
 
 * Source code on [github](https://github.com/CU-DBMI-Peds/phoenix/)
 * [Issue tracker](https://github.com/CU-DBMI-Peds/phoenix/issues/)
 
-## Example use
+
+
+## Example use of the Python Module
 
 
 
@@ -28,13 +113,20 @@ described in:
 ```python
 import numpy as np
 import pandas as pd
-import phoenix as phx
 import importlib.resources
 
+import phoenix as phx
+```
+
+There is an example data set included in the package in a file called
+`sepsis.csv`.  Load that file to use in the following examples.
+
+
+```python
 # read in the example data set
 with importlib.resources.path('phoenix', 'data') as data_path:
     sepsis = pd.read_csv(data_path / "sepsis.csv")
-## <string>:3: DeprecationWarning: path is deprecated. Use files() instead. Refer to https://importlib-resources.readthedocs.io/en/latest/using.html#migrating-from-legacy for migration advice.
+## <string>:2: DeprecationWarning: path is deprecated. Use files() instead. Refer to https://importlib-resources.readthedocs.io/en/latest/using.html#migrating-from-legacy for migration advice.
 
 print(sepsis)
 ##     pid     age  fio2  pao2  spo2  vent  gcs_total          pupil  platelets    inr  ...  epinephrine  milrinone  norepinephrine  vasopressin  glucose     anc    alc  creatinine  bilirubin     alt
@@ -60,7 +152,31 @@ print(sepsis)
 ## 19   20   71.90   NaN   NaN   NaN     0        NaN            NaN       78.0  1.160  ...            1          0               0            0    159.8   3.410  2.850       0.418      0.363    22.0
 ## 
 ## [20 rows x 27 columns]
+```
 
+### Organ Dysfunction Scoring
+There is one funciton for each of the eight component organ dysfunction scores.
+
+1. Respiratory,
+2. Cardiovascular
+3. Coagulation
+4. Neurologic
+5. Endocrine
+6. Immunologic
+7. Renal
+8. Hepatic
+
+The Phoenix score and criteria is based on 
+respiratory,
+cardiovascular,
+coagulation, and
+neurologic.  Sepsis is defined as a total score of at least two points and 
+
+### Respiratory Dysfunction Scoring
+
+
+
+```python
 print("Respiratory Score")
 ## Respiratory Score
 resp = phx.phoenix_respiratory(
