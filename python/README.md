@@ -28,7 +28,7 @@ research, Phoenix-8, which includes the four organ systems above along with
 
 5. Endocrine,
 6. Immunologic,
-7. Renal, and 
+7. Renal, and
 8. Hepatic.
 
 ## Phoenix Rubric
@@ -104,7 +104,6 @@ research, Phoenix-8, which includes the four organ systems above along with
 * [Issue tracker](https://github.com/CU-DBMI-Peds/phoenix/issues/)
 
 
-
 ## Example use of the Python Module
 
 
@@ -165,12 +164,6 @@ There is one funciton for each of the eight component organ dysfunction scores.
 6. Immunologic
 7. Renal
 8. Hepatic
-
-The Phoenix score and criteria is based on 
-respiratory,
-cardiovascular,
-coagulation, and
-neurologic.  Sepsis is defined as a total score of at least two points and 
 
 ### Respiratory Dysfunction Scoring
 
