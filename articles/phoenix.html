@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phoenix</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0-9000</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/python.html">The Phoenix Sepsis Criteria in python</a>
+      <a href="../articles/python.html">The Phoenix Sepsis Criteria in Python</a>
     </li>
     <li>
       <a href="../articles/sql.html">The Phoenix Sepsis Criteria in sql</a>
@@ -97,7 +97,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CU-DBMI-Peds/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"phoenix"</span><span class="op">)</span></span>
-<span><span class="co">## [1] '1.0.0'</span></span></code></pre></div>
+<span><span class="co">## [1] '1.0.0.9000'</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="development-and-international-consensus">Development and International Consensus<a class="anchor" aria-label="anchor" href="#development-and-international-consensus"></a>
 </h2>
@@ -116,31 +116,58 @@ It was determined during the development of the criteria that a score
 based on four organ systems was sufficient for diagnosis of sepsis and
 septic shock. An extended score based on eight organ systems was
 reported as well.</p>
-<p><strong>Sepsis Definition:</strong></p>
+<div class="section level3">
+<h3 id="sepsis-definition">Sepsis Definition:<a class="anchor" aria-label="anchor" href="#sepsis-definition"></a>
+</h3>
 <p>A pediatric patient is to be diagnosed as having sepsis if:</p>
 <ol style="list-style-type: decimal">
 <li><p>Suspected/Confirmed infection (receipt of systemic antimicrobials
 and microbiological testing with in first 24 hours of hospital
 presentation), and</p></li>
-<li><p>A total Phoenix Sepsis Score ≥ 2.</p></li>
+<li>
+<p>A total Phoenix Sepsis Score ≥ 2. The score is the sum of the</p>
+<ol style="list-style-type: decimal">
+<li>respiratory,</li>
+<li>cardiovascular,</li>
+<li>coagulation, and</li>
+<li>neurologic</li>
 </ol>
-<p><strong>Septic Shock Definition:</strong></p>
+</li>
+</ol>
+<p>scores.</p>
+</div>
+<div class="section level3">
+<h3 id="septic-shock-definition">Septic Shock Definition:<a class="anchor" aria-label="anchor" href="#septic-shock-definition"></a>
+</h3>
 <p>A patient is to be diagnosed as having septic shock if the patient
 meets the criteria for sepsis and has any cardiovascular dysfunction
 (cardiovascular score ≥ 1).</p>
+</div>
 <div class="section level3">
-<h3 id="phoenix-scoring">Phoenix Scoring<a class="anchor" aria-label="anchor" href="#phoenix-scoring"></a>
+<h3 id="phoenix-8-score">Phoenix-8 Score:<a class="anchor" aria-label="anchor" href="#phoenix-8-score"></a>
+</h3>
+<p>The research focused metric is the sum of the four organ dysfunction
+scores for Phoenix and</p>
+<ol start="5" style="list-style-type: decimal">
+<li>endocrine,</li>
+<li>immunologic,</li>
+<li>renal, and</li>
+<li>hepatic.</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="phoenix-scoring-rubric">Phoenix Scoring Rubric<a class="anchor" aria-label="anchor" href="#phoenix-scoring-rubric"></a>
 </h3>
 <table class="table">
 <colgroup>
-<col width="18%">
-<col width="20%">
-<col width="18%">
-<col width="20%">
-<col width="20%">
+<col width="36%">
+<col width="15%">
+<col width="15%">
+<col width="15%">
+<col width="15%">
 </colgroup>
 <thead><tr class="header">
-<th align="left"></th>
+<th align="left">Organ System</th>
 <th align="left">0 Points</th>
 <th align="left">1 Point</th>
 <th align="left">2 Points</th>
@@ -150,288 +177,328 @@ meets the criteria for sepsis and has any cardiovascular dysfunction
 <tr class="odd">
 <td align="left">
 <strong>Respiratory</strong> (0-3 points)</td>
-<td align="left">PaO<sub>2</sub>:FiO<sub>2</sub> ≥ 400 and
-SpO<sub>2</sub>:FiO<sub>2</sub> ≥ 292</td>
-<td align="left">(PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 400 or
-SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 292) and any respiratory
-support</td>
-<td align="left">(PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 200 or
-SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 220) and IMV</td>
-<td align="left">(PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 100 or
-SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 148) and IMV</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Any respiratory support</td>
+<td align="left">IMV<sup>a</sup>
+</td>
+<td align="left">IMV</td>
+</tr>
+<tr class="odd">
+<td align="left">  PaO<sub>2</sub>:FiO<sub>2</sub>
+</td>
+<td align="left">≥ 400</td>
+<td align="left">&lt; 400</td>
+<td align="left">&lt; 200</td>
+<td align="left">&lt; 100</td>
+</tr>
+<tr class="even">
+<td align="left">  SpO<sub>2</sub>:FiO<sub>2</sub><sup>b</sup>
+</td>
+<td align="left">≥ 292</td>
+<td align="left">&lt; 292</td>
+<td align="left">&lt; 220</td>
+<td align="left">&lt; 148</td>
+</tr>
+<tr class="odd">
 <td align="left">
-<strong>Cardiovascular</strong> (0-6 points)</td>
+<strong>Cardiovascular</strong> (0-6 points; sum of
+medications, Lactate, and MAP)</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
-<td align="left">   <em>Vasoactive Medications</em>
+<tr class="even">
+<td align="left">   Systemic Vasoactive Medications<sup>c</sup>
 </td>
 <td align="left">No medications</td>
 <td align="left">1 medication</td>
 <td align="left">2 or more medications</td>
 <td align="left"></td>
 </tr>
+<tr class="odd">
+<td align="left">   Lactate<sup>d</sup> (mmol/L)</td>
+<td align="left">&lt; 5</td>
+<td align="left">5 ⋚ Lactate &lt; 11</td>
+<td align="left">≥ 11</td>
+<td align="left"></td>
+</tr>
 <tr class="even">
-<td align="left">   <em>Lactate</em>
-</td>
-<td align="left">[0, 5) mmol/L</td>
-<td align="left">[5, 11) mmol/L</td>
-<td align="left">[11, ∞) mmol/L</td>
+<td align="left">   Age<sup>e</sup> (months) adjusted MAP<sup>f</sup>
+(mmHg)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">   <em>MAP</em>
-</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
 <td align="left">     0 ≤ Age &lt; 1</td>
-<td align="left">[31, ∞) mmHg</td>
-<td align="left">[17, 31) mmHg</td>
-<td align="left">[0, 17) mmHg</td>
+<td align="left">≥ 31</td>
+<td align="left">17 ≤ MAP &lt; 31</td>
+<td align="left">&lt; 17</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">     1 ≤ Age &lt; 12</td>
-<td align="left">[39, ∞) mmHg</td>
-<td align="left">[25, 39) mmHg</td>
-<td align="left">[0, 25) mmHg</td>
+<td align="left">≥ 39</td>
+<td align="left">25 ≤ MAP &lt; 39</td>
+<td align="left">&lt; 25</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">     12 ≤ Age &lt; 24</td>
-<td align="left">[44, ∞) mmHg</td>
-<td align="left">[31, 44) mmHg</td>
-<td align="left">[0, 31) mmHg</td>
+<td align="left">≥ 44</td>
+<td align="left">31 ≤ MAP &lt; 44</td>
+<td align="left">&lt; 31</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">     24 ≤ Age &lt; 60</td>
-<td align="left">[45, ∞) mmHg</td>
-<td align="left">[32, 45) mmHg</td>
-<td align="left">[0, 32) mmHg</td>
+<td align="left">≥ 45</td>
+<td align="left">32 ≤ MAP &lt; 45</td>
+<td align="left">&lt; 32</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">     60 ≤ Age &lt; 144</td>
-<td align="left">[49, ∞) mmHg</td>
-<td align="left">[36, 49) mmHg</td>
-<td align="left">[0, 36) mmHg</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">     144 ≤ Age ≤ 216</td>
-<td align="left">[52, ∞) mmHg</td>
-<td align="left">[38, 52) mmHg</td>
-<td align="left">[0, 38) mmHg</td>
+<td align="left">≥ 49</td>
+<td align="left">36 ≤ MAP &lt; 49</td>
+<td align="left">&lt; 36</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
+<td align="left">     144 ≤ Age &lt; 216</td>
+<td align="left">≥ 52</td>
+<td align="left">38 ≤ MAP &lt; 52</td>
+<td align="left">&lt; 38</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">
-<strong>Coagulation</strong> (0-2 points)</td>
+<strong>Coagulation</strong><sup>g</sup> (0-2 points; 1
+for each lab; max of 2 points)</td>
 <td align="left"></td>
-<td align="left">1 point each; max 2</td>
 <td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">   Platelets</td>
-<td align="left">[100, ∞) K/μL</td>
-<td align="left">[0, 100) K/μL</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
+<td align="left">   Platelets (1000/μL)</td>
+<td align="left">≥ 100</td>
+<td align="left">&lt; 100</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">   INR</td>
-<td align="left">[0 , 1.3]</td>
-<td align="left">(1.3, ∞)</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">   D-Dimer</td>
-<td align="left">[0, 2] mg/L FEU</td>
-<td align="left">(2, ∞) mg/L FEU</td>
+<td align="left">≤ 1.3</td>
+<td align="left">&gt; 1.3</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">   Fibrinogen</td>
-<td align="left">[100, ∞) mg/dL</td>
-<td align="left">[0, 100) mg/dL</td>
+<td align="left">   D-Dimer (mg/L FEU)</td>
+<td align="left">≤ 2</td>
+<td align="left">&gt; 2</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
+<td align="left">   Fibrinogen (mg/dL)</td>
+<td align="left">≥ 100</td>
+<td align="left">&lt; 100</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
 <td align="left">
-<strong>Neurologic</strong> (0-2 points)</td>
-<td align="left">GCS ∈ {11, 12, 13, 14, 15}</td>
-<td align="left">GCS ∈ {3, 4, …, 10}</td>
+<strong>Neurologic</strong><sup>h</sup> (0-2
+points)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">  </td>
+<td align="left">GCS<sup>i</sup> ≥ 11</td>
+<td align="left">GCS ≤ 10</td>
 <td align="left">Bilaterally fixed pupils</td>
 <td align="left"></td>
 </tr>
-</tbody>
-</table>
-<small>
-<ul>
-<li>
-Abbreviations:
-</li>
-<ul>
-<li>
-FEU: fibrinogen equivalent units
-</li>
-<li>
-FiO<sub>2</sub>: fraction of inspired oxygen
-</li>
-<li>
-GCS: Glasgow Coma Score
-</li>
-<li>
-IMV: invasive mechanical ventalation
-</li>
-<li>
-INR: International normalized ratio
-</li>
-<li>
-MAP: mean arterial pressure
-</li>
-<li>
-SpO<sub>2</sub>: pulse oximetry oxygen saturation
-</li>
-</ul>
-<li>
-Age: measured in months and is not adjusted for prematurity.
-</li>
-<li>
-SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when
-SpO<sub>2</sub> ≤ 97.
-</li>
-<li>
-Vasoactive medications: any systemic dose of dobutamine, dopamine,
-epinephrine, milrinone, norepinephrine, and/or vasopressin.
-</li>
-<li>
-lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
-</li>
-<li>
-MAP - Use measured arterial pressure preferentially (invasive arterial
-if available, or non-invasive oscillometric), alternatively use the
-calculation diastolic + (systolic - diastolic) / 3
-</li>
-<li>
-Coagulation variable reference ranges: platelets, 150-450
-10<sup>3</sup>/μL; D-dimer, &lt; 0.5 mg/L FEU; fibrinogen, 180-410
-mg/dL. International normalized ratio reference range is based on local
-reference prothrombintime.
-</li>
-<li>
-Neurologic dysfunction scoring was pragmatically validated in both
-sedated and on sedated patients and those with and without IMV.
-</li>
-<li>
-GCS measures level of consciousness based on verbal, eye, and motor
-response. Values are integers from 3 to 15 with higher scores indicating
-better neurologic function.
-</li>
-</ul></small><p></p>
-</div>
-<div class="section level3">
-<h3 id="phoenix-8-scoring">Phoenix 8 Scoring<a class="anchor" aria-label="anchor" href="#phoenix-8-scoring"></a>
-</h3>
-<p>This extended criteria uses the four organ systems above along with
-four additional organ dysfunction scores.</p>
-<table class="table">
-<colgroup>
-<col width="32%">
-<col width="36%">
-<col width="32%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="left">0 Points</th>
-<th align="left">1 Point</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
+<tr class="even">
 <td align="left">
 <strong>Endocrine</strong> (0-1 point)</td>
-<td align="left">blood glucose ∈ [50, 150] mg/dL</td>
-<td align="left">blood glucose ∉ [50, 150] mg/dL</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Blood Glucose (mg/dL)</td>
+<td align="left">50 ≤ Blood Glucose ≤ 150</td>
+<td align="left">&lt; 50; or &gt; 150</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">
-<strong>Immunologic</strong> (0-1 point)</td>
-<td align="left">ANC ≥ 500 and ALC ≥ 1000 cells /mm<sup>3</sup>
-</td>
-<td align="left">ANC &lt; 500 and/or ALC &lt; 1000
-cells/mm<sup>3</sup>
-</td>
+<strong>Immunologic</strong> (0-1 point; point from ANC
+and/or ALC)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">   ANC (cells/mm<sup>3</sup>)</td>
+<td align="left">≥ 500</td>
+<td align="left">&lt; 500</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">   ALC (cells/mm<sup>3</sup>)</td>
+<td align="left">≥ 1000</td>
+<td align="left">&lt; 1000</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">
 <strong>Renal</strong> (0-1 point)</td>
 <td align="left"></td>
 <td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">   0 ≤ Age &lt; 1</td>
-<td align="left">Creatinine &lt; 0.8 mg/dL</td>
-<td align="left">Creatinine ≥ 0.8 mg/dL</td>
+<td align="left">   Age<sup>e</sup> (months) adjusted Creatinine
+(mg/dL)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">   1 ≤ Age &lt; 12</td>
-<td align="left">Creatinine &lt; 0.3 mg/dL</td>
-<td align="left">Creatinine ≥ 0.3 mg/dL</td>
+<td align="left">     0 ≤ Age &lt; 1</td>
+<td align="left">&lt; 0.8</td>
+<td align="left">≥ 0.8</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">   12 ≤ Age &lt; 24</td>
-<td align="left">Creatinine &lt; 0.4 mg/dL</td>
-<td align="left">Creatinine ≥ 0.4 mg/dL</td>
+<td align="left">     1 ≤ Age &lt; 12</td>
+<td align="left">&lt; 0.3</td>
+<td align="left">≥ 0.3</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">   24 ≤ Age &lt; 60</td>
-<td align="left">Creatinine &lt; 0.6 mg/dL</td>
-<td align="left">Creatinine ≥ 0.6 mg/dL</td>
+<td align="left">     12 ≤ Age &lt; 24</td>
+<td align="left">&lt; 0.4</td>
+<td align="left">≥ 0.4</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">   60 ≤ Age &lt; 144</td>
-<td align="left">Creatinine &lt; 0.7 mg/dL</td>
-<td align="left">Creatinine ≥ 0.7 mg/dL</td>
+<td align="left">     24 ≤ Age &lt; 60</td>
+<td align="left">&lt; 0.6</td>
+<td align="left">≥ 0.6</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">   144 ≤ Age ≤ 216</td>
-<td align="left">Creatinine &lt; 1.0 mg/dL</td>
-<td align="left">Creatinine ≥ 1.0 mg/dL</td>
+<td align="left">     60 ≤ Age &lt; 144</td>
+<td align="left">&lt; 0.7</td>
+<td align="left">≥ 0.7</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
+<td align="left">     144 ≤ Age &lt; 216</td>
+<td align="left">&lt; 1.0</td>
+<td align="left">≥ 1.0</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">
-<strong>Hepatic</strong> (0-1 point)</td>
-<td align="left">Total bilirubin &lt; 4 mg/dL and ALT ≤ 102 IU/L</td>
-<td align="left">Total bilirubin ≥ 4 mg/dL and/or ALT &gt; 102 IU/L</td>
+<strong>Hepatic</strong> (0-1 point; point from total
+bilirubin and/or ALT)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">   Total Bilirubin (mg/dL)</td>
+<td align="left">&lt; 4</td>
+<td align="left">≥ 4</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">   ALT (IU/L)</td>
+<td align="left">≤ 102</td>
+<td align="left">&gt; 102</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
-<small>
-<ul>
-<li>
-ANC: Absolute neutrophil count
-</li>
-<li>
-ALC: Absolute lymphocyte count
-</li>
-<li>
-ALT: alanine aminotransferase
-</li>
-</ul></small><p></p>
+<p><sup>a</sup>Abbreviations: ALC: Absolute lymphocyte count; ALT:
+alanine aminotransferase; ANC: Absolute neutrophil count; FEU:
+fibrinogen equivalent units; FiO<sub>2</sub>: fraction of inspired
+oxygen; GCS: Glasgow Coma Score; IMV: invasive mechanical ventilation;
+INR: International normalized ratio; MAP: mean arterial pressure;
+PaO<sub>2</sub>: arterial oxygen pressure; SpO<sub>2</sub>: pulse
+oximetry oxygen saturation;</p>
+<p><sup>b</sup>SpO<sub>2</sub>:FiO<sub>2</sub> is only valid when
+SpO<sub>2</sub> ≤ 97.</p>
+<p><sup>c</sup>Vasoactive medications: any systemic dose of dobutamine,
+dopamine, epinephrine, milrinone, norepinephrine, and/or
+vasopressin.</p>
+<p><sup>d</sup>Lactate can be arterial or venous. Reference range 0.5 -
+2.2 mmol/L</p>
+<p><sup>e</sup>Age: measured in months and is not adjusted for
+prematurity.</p>
+<p><sup>f</sup>MAP - Use measured mean arterial pressure preferentially
+(invasive arterial if available, or non-invasive oscillometric),
+alternatively use the calculation diastolic + (systolic - diastolic) /
+3</p>
+<p><sup>g</sup>Coagulation variable reference ranges: platelets, 150-450
+103/μL; D-dimer, &lt; 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL.
+International normalized ratio reference range is based on local
+reference prothrombin time.</p>
+<p><sup>h</sup>Neurologic dysfunction scoring was pragmatically
+validated in both sedated and on sedated patients and those with and
+without IMV.</p>
+<p><sup>i</sup>GCS measures level of consciousness based on verbal, eye,
+and motor response. Values are integers from 3 to 15 with higher scores
+indicating better neurologic function.</p>
+<p><sup>j</sup>The verbosity of this table is greater than in the tables
+in the original source publications.<span class="citation">(Sanchez-Pinto et al. 2024; Schlapbach et al.
+2024)</span> The inequalities reported in this table, and the specific
+values reported in this table, reflect how the criteria is implemented
+in software whereas the source publications reported tables consistent
+with clinical practice. A couple notable differences. 1 cardiovascular
+point is reached for a lactate value of “5-10.9 mmol/L” and 2 points for
+lactate ≥ 11 mmol/L.1,2 There is an implication of rounding lactate to
+one decimal place and assessing the criteria. The software simplifies
+the work by considering lactate values to be a floating point value that
+could take on any real value and thus the logic of “5 ≤ lactate &lt; 11”
+for 1 point. Additionally, for MAP, the criteria listed in this table is
+consistent with common clinical practice of interpreting MAP as integer
+values. The criteria listed in this table is used with the assumption
+that MAP values are floating point values.</p>
 </div>
 </div>
 <div class="section level2">
@@ -449,11 +516,8 @@ was not order. Further, the Phoenix criteria was developed to be useful
 in both high, medium, and low resource settings where some labs and
 values might be uncommon or impossible to get. As such, we encourage end
 users of this package to do the same - missing values are missing and
-should not be imputed.</p>
-<center>
-<strong><strong>The Phoenix Criteria is valid on “known
-data”</strong></strong>
-</center>
+should not be imputed. <strong><strong>The Phoenix Criteria is valid on
+“known data.”</strong></strong></p>
 <p><strong>Worst in first 24 hours:</strong> The score was developed on
 the worse measured value during the first 24 hours of an hospital
 encounter. For example, consider the following patient encounter and
@@ -552,7 +616,7 @@ high-flow, non-invasive positive pressure, or IMV.</p></li>
 <div class="section level4">
 <h4 id="scores">Scores<a class="anchor" aria-label="anchor" href="#scores"></a>
 </h4>
-<p><img src="phoenix_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
+<p><img src="phoenix_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="example-use">Example Use<a class="anchor" aria-label="anchor" href="#example-use"></a>
@@ -817,7 +881,7 @@ systemic blood pressure (mmHg).</p></li>
 <div class="section level4">
 <h4 id="scores-1">Scores<a class="anchor" aria-label="anchor" href="#scores-1"></a>
 </h4>
-<p><img src="phoenix_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<p><img src="phoenix_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="example-use-1">Example Use<a class="anchor" aria-label="anchor" href="#example-use-1"></a>
@@ -1168,7 +1232,7 @@ time require for blood to clot.</p></li>
 </h4>
 <p>While there are four components to this score, the maximum number of
 points assigned is 2.</p>
-<p><img src="phoenix_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
+<p><img src="phoenix_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="example-use-2">Example Use<a class="anchor" aria-label="anchor" href="#example-use-2"></a>
@@ -3596,7 +3660,7 @@ points, so he meets criteria for sepsis.</p>
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-sanchez_2024_development" class="csl-entry">
+<div id="ref-sanchezpinto_2024_development" class="csl-entry">
 Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, Seth
 Russell, Margaret N. Rebull, Blake Martin, Samuel Akech, et al. 2024.
 <span>“<span class="nocase">Development and Validation of the Phoenix

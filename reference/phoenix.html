@@ -19,7 +19,7 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phoenix</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0-9000</span>
       </span>
     </div>
 
@@ -37,7 +37,7 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/python.html">The Phoenix Sepsis Criteria in python</a>
+      <a href="../articles/python.html">The Phoenix Sepsis Criteria in Python</a>
     </li>
     <li>
       <a href="../articles/sql.html">The Phoenix Sepsis Criteria in sql</a>
@@ -96,11 +96,11 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pf_ratio</dt>
-<dd><p>numeric vector</p></dd>
+<dd><p>numeric vector for the PaO2/FiO2 ratio; PaO2 = arterial oxygen pressure; FiO2 = fraction of inspired oxygen;  PaO2 is measured in mmHg and FiO2 is from 0.21 (room air) to 1.00.</p></dd>
 
 
 <dt>sf_ratio</dt>
-<dd><p>numeric vector</p></dd>
+<dd><p>numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92% oxygen saturation on room air is 92/0.21 = 438.0952.</p></dd>
 
 
 <dt>imv</dt>
@@ -112,7 +112,7 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 
 
 <dt>vasoactives</dt>
-<dd><p>an integer vector, the number of systemic vasoactive medications being administered to the patient</p></dd>
+<dd><p>an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasocative medications are considered: dobutamine, dopamine, epinepherine, milrinone, norepinephrine, vasopressin.</p></dd>
 
 
 <dt>lactate</dt>
