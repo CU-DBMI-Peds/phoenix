@@ -33,6 +33,26 @@ if (!virtualenv_exists(envname = "phoenix")) {
 
 use_virtualenv(virtualenv = "phoenix")
 
+
+
+rubric <-
+  scan(file = system.file("phoenix_rubric.md", package = "phoenix"),
+       what = character(),
+       sep = "\n",
+       quiet = TRUE)
+cat(rubric, sep = "\n")
+cat("\n")
+
+ftnt <-
+  scan(file = system.file("phoenix_rubric_footnotes.md", package = "phoenix"),
+       what = character(),
+       sep = "\n",
+       quiet = TRUE)
+cat(ftnt, sep = "\n\n")
+
+abbrviations <- strsplit(ftnt[1], ";")[[1]]
+abbrviations <- trimws(sub("\\^a\\^Abbreviations:", "", abbrviations))
+abbrviations <- paste0(abbrviations, ";")
 ```
 
 # Introduction
@@ -80,8 +100,38 @@ python module.
 ```{python}
 path = importlib.resources.files('phoenix')
 sepsis = pd.read_csv(path.joinpath('data').joinpath('sepsis.csv'))
+print(sepsis.shape)
 print(sepsis.head())
 ```
+ | Column Name    | Note                                                        |
+ | :--            | :---                                                        |
+ | pid            | patient identification number                               |
+ | age            | age in months                                               |
+ | fio2           | fraction of inspired oxygen                                 |
+ | pao2           | partial pressure of oxygen in arterial blood (mmHg)         |
+ | spo2           | pulse oximetry                                              |
+ | vent           | indicator for invasive mechanical ventilation               |
+ | gcs_total      | total Glasgow Coma Scale                                    |
+ | pupil          | character vector reporting if pupils are reactive or fixed. |
+ | platelets      | platelets measured in 1,000 / microliter                    |
+ | inr            | international normalized ratio                              |
+ | d_dimer        | D-dimer; units of mg/L FEU                                  |
+ | fibrinogen     | units of mg/dL                                              |
+ | dbp            | diagnostic blood pressure (mmHg)                            |
+ | sbp            | systolic blood pressure (mmHg)                              |
+ | lactate        | units of mmol/L                                             |
+ | dobutamine     | indicator for receiving systemic dobutamine                 |
+ | dopamine       | indicator for receiving systemic dopamine                   |
+ | epinephrine    | indicator for receiving systemic epinephrine                |
+ | milrinone      | indicator for receiving systemic milrinone                  |
+ | norepinephrine | indicator for receiving systemic norepinephrine             |
+ | vasopressin    | indicator for receiving systemic vasopressin                |
+ | glucose        | units of mg/dL                                              |
+ | anc            | units of 1,000 cells per cubic millimeter                   |
+ | alc            | units of 1,000 cells per cubic millimeter                   |
+ | creatinine     | units of mg/dL                                              |
+ | bilirubin      | units of mg/dL                                              |
+ | alt            | units of IU/L                                               |
 
 ## Organ Dysfunction Scores
 
@@ -89,6 +139,20 @@ All eight organ dysfunction scoring functions return integer valued numpy
 arrays.
 
 ### Respiratory
+
+Scoring for respiratory dysfunction:
+
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 1],
+    "\n^a^",
+    abbrviations[grepl("IMV|SpO|PaO", abbrviations)],
+    "\n",
+    ftnt[grepl("\\^b\\^", ftnt)], sep = "\n")
+```
+
+
 ```{python}
 py_resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
@@ -113,9 +177,19 @@ stopifnot(identical(r_resp, as.integer(py$py_resp)))
 
 ### Cardiovascular
 
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 2],
+    #"\n^a^",
+    #abbrviations[grepl("IMV|SpO|PaO", abbrviations)],
+    "\n",
+    ftnt[grepl("\\^(d|e|f)\\^", ftnt)], sep = "\n")
+```
+
 ```{python}
 py_card = phx.phoenix_cardiovascular(
-    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + 
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] +
                   sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
@@ -138,6 +212,18 @@ stopifnot(identical(r_card, as.integer(py$py_card)))
 
 ### Coagulation
 
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 3],
+    #"\n^a^",
+    abbrviations[grepl("INR|FEU", abbrviations)],
+    "\n",
+    ftnt[grepl("\\^(g)\\^", ftnt)],
+    sep = "\n"
+)
+```
+
 ```{python}
 py_coag = phx.phoenix_coagulation(
     platelets = sepsis['platelets'],
@@ -155,6 +241,18 @@ stopifnot(identical(r_coag, as.integer(py$py_coag)))
 ```
 
 ### Neurologic
+
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 4],
+    #"\n^a^",
+    abbrviations[grepl("INR|FEU", abbrviations)],
+    "\n",
+    ftnt[grepl("\\^(h|i)\\^", ftnt)],
+    sep = "\n"
+)
+```
 
 ```{python}
 py_neur = phx.phoenix_neurologic(
@@ -177,6 +275,18 @@ stopifnot(identical(r_neur, as.integer(py$py_neur)))
 
 ### Endocrine
 
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 5],
+    #"\n^a^",
+    #abbrviations[grepl("INR|FEU", abbrviations)],
+    #"\n",
+    #ftnt[grepl("\\^(h|i)\\^", ftnt)],
+    sep = "\n"
+)
+```
+
 ```{python}
 py_endo = phx.phoenix_endocrine(sepsis["glucose"])
 print(type(py_endo))
@@ -189,6 +299,17 @@ stopifnot(identical(r_endo, as.integer(py$py_endo)))
 ```
 
 ### Immunologic
+
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 6],
+    abbrviations[grepl("A(NC|LC)", abbrviations)],
+    #"\n",
+    #ftnt[grepl("\\^(h|i)\\^", ftnt)],
+    sep = "\n"
+)
+```
 
 ```{python}
 py_immu = phx.phoenix_immunologic(sepsis["anc"], sepsis["alc"])
@@ -203,6 +324,17 @@ stopifnot(identical(r_immu, as.integer(py$py_immu)))
 
 ### Renal
 
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 7],
+    #abbrviations[grepl("A(NC|LC)", abbrviations)],
+    #"\n",
+    #ftnt[grepl("\\^(h|i)\\^", ftnt)],
+    sep = "\n"
+)
+```
+
 ```{python}
 py_renal = phx.phoenix_renal(sepsis["creatinine"], sepsis["age"])
 print(type(py_renal))
@@ -216,6 +348,17 @@ stopifnot(identical(r_renal, as.integer(py$py_renal)))
 
 ### Hepatic
 
+```{r echo = FALSE, results = "asis"}
+cat(
+    rubric[1:2],
+    rubric[cumsum(grepl("\\*\\*", rubric)) == 8],
+    abbrviations[grepl("ALT", abbrviations)],
+    #"\n",
+    #ftnt[grepl("\\^(h|i)\\^", ftnt)],
+    sep = "\n"
+)
+```
+
 ```{python}
 py_hepatic = phx.phoenix_hepatic(sepsis["bilirubin"], sepsis["alt"])
 print(type(py_hepatic))
@@ -227,8 +370,19 @@ r_hepatic <- phoenix_hepatic(bilirubin = bilirubin, alt = alt, data = sepsis)
 stopifnot(identical(r_hepatic, as.integer(py$py_hepatic)))
 ```
 
-
 ## Phoenix
+
+The Phoenix score is the sum of the
+1. respiratory,
+2. cardiovascular,
+3. coagulation, and
+4. neurologic
+organ dysfunction scores.
+
+Sepsis is the condition of having a suspected (or confirmed) infection with two
+or more Phoenix points.
+
+Septic Shock is defined as sepsis with at least one cardiovascular point.
 
 ```{python}
 py_phoenix_scores = phx.phoenix(
@@ -247,6 +401,8 @@ py_phoenix_scores = phx.phoenix(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
     )
+print(py_phoenix_scores.info())
+print(py_phoenix_scores.head())
 ```
 
 ```{r, include = FALSE}
@@ -280,6 +436,13 @@ all.equal(r_phoenix_scores, as.data.frame(py$py_phoenix_scores),
 
 ## Phoenix-8
 
+The Phoenix-8 score is the sum of the Phoenix score along with points form the
+other four organ systems:
+5. endocrine,
+6. immunologic,
+7. renal, and
+8. hepatic.
+
 ```{python}
 py_phoenix8_scores = phx.phoenix8(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
@@ -303,6 +466,8 @@ py_phoenix8_scores = phx.phoenix8(
     alt = sepsis["alt"],
     age = sepsis["age"]
     )
+print(py_phoenix8_scores.info())
+print(py_phoenix8_scores.head())
 ```
 
 ```{r, include = FALSE}
