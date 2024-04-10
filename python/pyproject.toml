@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 phoenix = ["*.csv"]
 
 [project]
-name = "phoenix"
+name = "phoenix_sepsis"
 version = "1.0.0-9001"
 authors = [
   {name = "Peter E. DeWitt", email = "peter.dewitt@cuanschutz.edu"},
