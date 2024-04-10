@@ -5,6 +5,9 @@ PKG_VERSION = $(shell gawk '/^version =/{print substr($$3,2,length($$3)-2)}' pyp
 
 all : dist/$(PKG_NAME)-$(PKG_VERSION).tar.gz
 
+test: 
+	echo $(PKG_NAME)
+
 dist/$(PKG_NAME)-$(PKG_VERSION).tar.gz : pyproject.toml LICENSE README.md phoenix/__init__.py phoenix/phoenix.py MANIFEST.in
 	python -m build
 
