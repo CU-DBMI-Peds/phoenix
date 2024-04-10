@@ -1,21 +1,10 @@
-^a^: Abbreviations:
-  ALC: Absolute lymphocyte count;
-  ALT: alanine aminotransferase;
-  ANC: Absolute neutrophil count;
-  FEU: fibrinogen equivalent units;
-  FiO~2~: fraction of inspired oxygen;
-  GCS: Glasgow Coma Score;
-  IMV: invasive mechanical ventilation;
-  INR: International normalized ratio;
-  MAP: mean arterial pressure;
-  PaO~2~: arterial oxygen pressure;
-  SpO~2~: pulse oximetry oxygen saturation;
-^b^: SpO~2~:FiO~2~ is only valid when SpO~2~ &leq; 97.
-^c^: Vasoactive medications: any systemic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin.
-^d^: Lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
-^e^: Age: measured in months and is not adjusted for prematurity.
-^f^: MAP - Use measured mean arterial pressure preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3
-^g^: Coagulation variable reference ranges: platelets, 150-450 103/μL; D-dimer, < 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL. International normalized ratio reference range is based on local reference prothrombin time.
-^h^: Neurologic dysfunction scoring was pragmatically validated in both sedated and on sedated patients and those with and without IMV.
-^i^: GCS measures level of consciousness based on verbal, eye, and motor response. Values are integers from 3 to 15 with higher scores indicating better neurologic function.
-^j^: The verbosity of this table is greater than in the tables in the original source publications.[@sanchezpinto_2024_development;@schlapback_2024_international] The inequalities reported in this table, and the specific values reported in this table, reflect how the criteria is implemented in software whereas the source publications reported tables consistent with clinical practice.  A couple notable differences.  1 cardiovascular point is reached for a lactate value of “5-10.9 mmol/L” and 2 points for lactate ≥ 11 mmol/L.1,2  There is an implication of rounding lactate to one decimal place and assessing the criteria.  The software simplifies the work by considering lactate values to be a floating point value that could take on any real value and thus the logic of “5 ≤ lactate < 11” for 1 point.  Additionally, for MAP, the criteria listed in this table is consistent with common clinical practice of interpreting MAP as integer values.  The criteria listed in this table is used with the assumption that MAP values are floating point values.
+^a^Abbreviations: ALC: Absolute lymphocyte count; ALT: alanine aminotransferase; ANC: Absolute neutrophil count; FEU: fibrinogen equivalent units; FiO~2~: fraction of inspired oxygen; GCS: Glasgow Coma Score; IMV: invasive mechanical ventilation; INR: International normalized ratio; MAP: mean arterial pressure; PaO~2~: arterial oxygen pressure; SpO~2~: pulse oximetry oxygen saturation;
+^b^SpO~2~:FiO~2~ is only valid when SpO~2~ &leq; 97.
+^c^Vasoactive medications: any systemic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin.
+^d^Lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
+^e^Age: measured in months and is not adjusted for prematurity.
+^f^MAP - Use measured mean arterial pressure preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3
+^g^Coagulation variable reference ranges: platelets, 150-450 103/μL; D-dimer, < 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL. International normalized ratio reference range is based on local reference prothrombin time.
+^h^Neurologic dysfunction scoring was pragmatically validated in both sedated and on sedated patients and those with and without IMV.
+^i^GCS measures level of consciousness based on verbal, eye, and motor response. Values are integers from 3 to 15 with higher scores indicating better neurologic function.
+^j^The verbosity of this table is greater than in the tables in the original source publications.[@sanchezpinto_2024_development;@schlapbach_2024_international] The inequalities reported in this table, and the specific values reported in this table, reflect how the criteria is implemented in software whereas the source publications reported tables consistent with clinical practice.  A couple notable differences.  1 cardiovascular point is reached for a lactate value of “5-10.9 mmol/L” and 2 points for lactate ≥ 11 mmol/L.1,2  There is an implication of rounding lactate to one decimal place and assessing the criteria.  The software simplifies the work by considering lactate values to be a floating point value that could take on any real value and thus the logic of “5 ≤ lactate < 11” for 1 point.  Additionally, for MAP, the criteria listed in this table is consistent with common clinical practice of interpreting MAP as integer values.  The criteria listed in this table is used with the assumption that MAP values are floating point values.
