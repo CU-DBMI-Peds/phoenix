@@ -27,16 +27,27 @@ knitr::opts_chunk$set(collapse = TRUE)
 library(reticulate)
 library(phoenix)
 
+#virtualenv_remove(envname = "phoenix", confirm = FALSE)
+
 if (!virtualenv_exists(envname = "phoenix")) {
   virtualenv_create(envname = "phoenix")
   virtualenv_install(envname = "phoenix", packages = c("numpy", "pandas"))
-  virtualenv_install(envname = "phoenix", packages = normalizePath('python'))
+
+  p <- normalizePath("python")  # for how build_site is called locally
+  if (!dir.exists(p)) {
+    p <- normalizePath("../python") # for how build_site is called in github actions
+  }
+  virtualenv_install(envname = "phoenix", packages = p)
 }
 
+# just incase you need this... a work around fo virtualenv issues on github actions
+#import sys
+#sys.path.append('../python')
+
 use_virtualenv(virtualenv = "phoenix")
+```
 
-
-
+```{r label = 'rubic setup', include = FALSE}
 rubric <-
   scan(file = system.file("phoenix_rubric.md", package = "phoenix"),
        what = character(),
@@ -56,18 +67,6 @@ abbrviations <- strsplit(ftnt[1], ";")[[1]]
 abbrviations <- trimws(sub("\\^a\\^Abbreviations:", "", abbrviations))
 abbrviations <- paste0(abbrviations, ";")
 ```
-
-# Introduction
-
-For those who are primarily working in python and want or need to implement the
-Phoenix Sepsis criteria there are a couple options.
-
-1. Use [rpy2](https://rpy2.github.io/index.html) to use the phoenix R package
-   within python
-
-2. Use the [python module](https://github.com/dewittpe/phoenix/tree/main/python).
-   The rest of this article will focus on the use of this module
-
 
 # Background
 It would be helpful to read the first few sections of the [Get
