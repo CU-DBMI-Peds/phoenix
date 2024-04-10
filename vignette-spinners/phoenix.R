@@ -36,7 +36,7 @@ packageVersion("phoenix")
 #' # Development and International Consensus
 #'
 #' Details on the development of the diagnostic Phoenix Sepsis Criteria are in
-#' [@sanchez_2024_development](https://doi.org/10.1001/jama.2024.0196).  This
+#' [@sanchezpinto_2024_development](https://doi.org/10.1001/jama.2024.0196).  This
 #' manuscript covers the data-driven and modified Delphi process leading to an
 #' international consensus for the criteria
 #' ([@schlapbach_2024_international](https://doi.org/10.1001/jama.2024.0179)).
@@ -51,96 +51,62 @@ packageVersion("phoenix")
 #' organ systems was sufficient for diagnosis of sepsis and septic shock.  An
 #' extended score based on eight organ systems was reported as well.
 #'
-#' **Sepsis Definition:**
+#' ## Sepsis Definition:
 #'
 #' A pediatric patient is to be diagnosed as having sepsis if:
 #'
 #' 1. Suspected/Confirmed infection (receipt of systemic antimicrobials and
 #' microbiological testing with in first 24 hours of hospital presentation), and
 #'
-#' 2. A total Phoenix Sepsis Score &geq; 2.
+#' 2. A total Phoenix Sepsis Score &geq; 2.  The score is the sum of the
 #'
-#' **Septic Shock Definition:**
+#'    1. respiratory,
+#'    2. cardiovascular,
+#'    3. coagulation, and
+#'    4. neurologic
+#'
+#' scores.
+#'
+#' ## Septic Shock Definition:
 #'
 #' A patient is to be diagnosed as having septic shock if the patient meets the
 #' criteria for sepsis and has any cardiovascular dysfunction (cardiovascular
 #' score &geq; 1).
 #'
-#' ## Phoenix Scoring
+#' ## Phoenix-8 Score:
 #'
-#' |        | 0 Points | 1 Point | 2 Points | 3 Points |
-#' |:-------|:-------- |:------- |:-------- |:-------- |
-#' |**Respiratory** (0-3 points) | PaO<sub>2</sub>:FiO<sub>2</sub> &geq; 400 and SpO<sub>2</sub>:FiO<sub>2</sub> &geq; 292 | (PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 400 or SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 292) and any respiratory support | (PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 200 or SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 220) and IMV | (PaO<sub>2</sub>:FiO<sub>2</sub> &lt; 100 or SpO<sub>2</sub>:FiO<sub>2</sub> &lt; 148) and IMV |
-#' |**Cardiovascular** (0-6 points) |
-#' |&nbsp;&nbsp; _Vasoactive Medications_ | No medications | 1 medication | 2 or more medications |
-#' |&nbsp;&nbsp; _Lactate_ | [0, 5) mmol/L | [5, 11) mmol/L | [11, &infin;) mmol/L |
-#' |&nbsp;&nbsp; _MAP_ | | | |
-#' |&nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age &lt;    1 | [31, &infin;) mmHg | [17, 31) mmHg | [0, 17) mmHg |
-#' |&nbsp;&nbsp;&nbsp;&nbsp;   1 &leq; Age &lt;   12 | [39, &infin;) mmHg | [25, 39) mmHg | [0, 25) mmHg |
-#' |&nbsp;&nbsp;&nbsp;&nbsp;  12 &leq; Age &lt;   24 | [44, &infin;) mmHg | [31, 44) mmHg | [0, 31) mmHg |
-#' |&nbsp;&nbsp;&nbsp;&nbsp;  24 &leq; Age &lt;   60 | [45, &infin;) mmHg | [32, 45) mmHg | [0, 32) mmHg |
-#' |&nbsp;&nbsp;&nbsp;&nbsp;  60 &leq; Age &lt;  144 | [49, &infin;) mmHg | [36, 49) mmHg | [0, 36) mmHg |
-#' |&nbsp;&nbsp;&nbsp;&nbsp; 144 &leq; Age &leq; 216 | [52, &infin;) mmHg | [38, 52) mmHg | [0, 38) mmHg |
-#' |**Coagulation** (0-2 points) | | 1 point each; max 2 |
-#' |&nbsp;&nbsp; Platelets  | [100, &infin;) K/&mu;L | [0, 100) K/&mu;L |
-#' |&nbsp;&nbsp; INR        | [0 , 1.3] | (1.3, &infin;) |
-#' |&nbsp;&nbsp; D-Dimer    | [0, 2] mg/L FEU | (2, &infin;) mg/L FEU |
-#' |&nbsp;&nbsp; Fibrinogen | [100, &infin;) mg/dL | [0, 100) mg/dL |
-#' |**Neurologic** (0-2 points) | GCS &#8712; {11, 12, 13, 14, 15} | GCS &#8712; {3, 4, ..., 10} | Bilaterally fixed pupils |
-#' <small>
-#'   <ul>
-#'     <li>Abbreviations:</li>
-#'       <ul>
-#'         <li> FEU: fibrinogen equivalent units </li>
-#'         <li> FiO<sub>2</sub>: fraction of inspired oxygen </li>
-#'         <li> GCS: Glasgow Coma Score </li>
-#'         <li> IMV: invasive mechanical ventalation</li>
-#'         <li> INR: International normalized ratio </li>
-#'         <li> MAP: mean arterial pressure</li>
-#'         <li> SpO<sub>2</sub>: pulse oximetry oxygen saturation</li>
-#'     </ul>
-#'     <li> Age: measured in months and is not adjusted for prematurity. </li>
-#'     <li> SpO<sub>2</sub> : FiO<sub>2</sub> is only to be used when SpO<sub>2</sub> &leq; 97. </li>
-#'     <li> Vasoactive medications: any systemic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin. </li>
-#'     <li> lactate can be arterial or venous.  Reference range 0.5 - 2.2 mmol/L </li>
-#'     <li> MAP - Use measured arterial pressure preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3 </li>
-#'     <li> Coagulation variable reference ranges: platelets, 150-450 10<sup>3</sup>/&mu;L; D-dimer, &lt; 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL.  International normalized ratio reference range is based on local reference prothrombintime. </li>
-#'     <li> Neurologic dysfunction scoring was pragmatically validated in both sedated and on sedated patients and those with and without IMV. </li>
-#'     <li> GCS measures level of consciousness based on verbal, eye, and motor response.  Values are integers from 3 to 15 with higher scores indicating better neurologic function. </li>
-#'   </ul>
-#' </small>
+#' The research focused metric is the sum of the four organ dysfunction scores
+#' for Phoenix and
 #'
+#'    5. endocrine,
+#'    6. immunologic,
+#'    7. renal, and
+#'    8. hepatic.
 #'
-#' ## Phoenix 8 Scoring
+#' ## Phoenix Scoring Rubric
 #'
-#' This extended criteria uses the four organ systems above along with four additional organ dysfunction scores.
-#'
-#'
-#' |        | 0 Points | 1 Point |
-#' |:-------|:-------- |:------- |
-#' |**Endocrine** (0-1 point) | blood glucose &#8712; [50, 150] mg/dL | blood glucose &#8713; [50, 150] mg/dL |
-#' |**Immunologic** (0-1 point) | ANC &geq; 500 and ALC &geq; 1000 cells /mm<sup>3</sup> | ANC &lt; 500 and/or ALC &lt; 1000 cells/mm<sup>3</sup> |
-#' |**Renal** (0-1 point) |
-#' |&nbsp;&nbsp;   0 &leq; Age &lt;    1 | Creatinine &lt; 0.8 mg/dL | Creatinine &geq; 0.8 mg/dL |
-#' |&nbsp;&nbsp;   1 &leq; Age &lt;   12 | Creatinine &lt; 0.3 mg/dL | Creatinine &geq; 0.3 mg/dL |
-#' |&nbsp;&nbsp;  12 &leq; Age &lt;   24 | Creatinine &lt; 0.4 mg/dL | Creatinine &geq; 0.4 mg/dL |
-#' |&nbsp;&nbsp;  24 &leq; Age &lt;   60 | Creatinine &lt; 0.6 mg/dL | Creatinine &geq; 0.6 mg/dL |
-#' |&nbsp;&nbsp;  60 &leq; Age &lt;  144 | Creatinine &lt; 0.7 mg/dL | Creatinine &geq; 0.7 mg/dL |
-#' |&nbsp;&nbsp; 144 &leq; Age &leq; 216 | Creatinine &lt; 1.0 mg/dL | Creatinine &geq; 1.0 mg/dL |
-#' |**Hepatic** (0-1 point) | Total bilirubin &lt; 4 mg/dL and ALT &leq; 102 IU/L | Total bilirubin &geq; 4 mg/dL and/or ALT &gt; 102 IU/L |
-#'
-#' <small>
-#'   <ul>
-#'     <li> ANC: Absolute neutrophil count
-#'     <li> ALC: Absolute lymphocyte count
-#'     <li> ALT: alanine aminotransferase
-#'   </ul>
-#' </small>
+#+ echo = FALSE, results = "asis"
+
+tab <-
+  scan(file = system.file("phoenix_rubric.md", package = "phoenix"),
+       what = character(),
+       sep = "\n",
+       quiet = TRUE)
+cat(tab, sep = "\n")
+cat("\n")
+
+ftnt <-
+  scan(file = system.file("phoenix_rubric_footnotes.md", package = "phoenix"),
+       what = character(),
+       sep = "\n",
+       quiet = TRUE)
+cat(ftnt, sep = "\n\n")
+
 #'
 #' # Development of the Criteria
 #'
 #' Details on the developed of the criteria are described in
-#' @sanchez_2024_development and @schlapbach_2024_international and end users
+#' @sanchezpinto_2024_development and @schlapbach_2024_international and end users
 #' are encouraged to review these papers.  A couple quick notes about the data
 #' and use in general.  Some specific details will be provided in each of the
 #' sections for each organ system.
@@ -153,8 +119,7 @@ packageVersion("phoenix")
 #' where some labs and values might be uncommon or impossible to get.  As such,
 #' we encourage end users of this package to do the same - missing values are
 #' missing and should not be imputed.
-#'
-#' <center>**__The Phoenix Criteria is valid on "known data"__**</center>
+#' **__The Phoenix Criteria is valid on "known data."__**
 #'
 #' **Worst in first 24 hours:** The score was developed on the worse measured
 #' value during the first 24 hours of an hospital encounter.
@@ -722,7 +687,7 @@ knitr::kable(phoenix8_scores, format = "html", align = "c")
 #' # Clinical Vignettes
 #'
 #' These are taken from the supplemental material of
-#' [@sanchez_2024_development](https://doi.org/10.1001/jama.2024.0196)
+#' [@sanchezpinto_2024_development](https://doi.org/10.1001/jama.2024.0196)
 #'
 #' ## Clinical Vignette 1
 #'
