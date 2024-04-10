@@ -12,7 +12,7 @@ described in:
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
 ## Phoenix Criteria
-A patient is consided septic if they have a suspected (or proven) infection with
+A patient is consider septic if they have a suspected (or proven) infection with
 at total Phoenix score of at least two points.  The Phoenix score is the sum of
 the scores from four organ dysfunction scores:
 
@@ -23,7 +23,7 @@ the scores from four organ dysfunction scores:
 
 Septic shock is defined as sepsis with at least one cardiovascular point.
 
-In addition to the Phoenix criteria there is an extended crieria intended for
+In addition to the Phoenix criteria there is an extended criteria intended for
 research, Phoenix-8, which includes the four organ systems above along with
 
 5. Endocrine,
@@ -36,33 +36,33 @@ research, Phoenix-8, which includes the four organ systems above along with
 | Organ System                                                          | 0 Points                         | 1 Point                 | 2 Points                 | 3 Points | 
 | :------                                                               | :--                              | :--                     | :--                      | :--      | 
 | **Respiratory** (0-3 points)                                          |                                  |                         |                          |          | 
-|                                                                       |                                  | Any respiratory support | IMV^a^                   | IMV      | 
-| &nbsp;&nbsp;PaO~2~:FiO~2~                                             | &geq; 400                        | < 400                   | < 200                    | < 100    | 
-| &nbsp;&nbsp;SpO~2~:FiO~2~^b^                                          | &geq; 292                        | < 292                   | < 220                    | < 148    | 
+|                                                                       |                                  | Any respiratory support | IMV<sup>a</sup>                   | IMV      | 
+| &nbsp;&nbsp;PaO<sub>2</sub>:FiO<sub>2</sub>                                             | &geq; 400                        | < 400                   | < 200                    | < 100    | 
+| &nbsp;&nbsp;SpO<sub>2</sub>:FiO<sub>2</sub><sup>b</sup>                                          | &geq; 292                        | < 292                   | < 220                    | < 148    | 
 | **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |                                  |                         |                          |          | 
-| &nbsp;&nbsp; Systemic Vasoactive Medications^c^                       | No medications                   | 1 medication            | 2 or more medications    |          | 
-| &nbsp;&nbsp; Lactate^d^ (mmol/L)                                      | &lt; 5                           | 5 &leg; Lactate &lt; 11 | &geq; 11                 |          | 
-| &nbsp;&nbsp; Age^e^ (months) adjusted MAP^f^ (mmHg)                   |                                  |                         |                          |          | 
+| &nbsp;&nbsp; Systemic Vasoactive Medications<sup>c</sup>                       | No medications                   | 1 medication            | 2 or more medications    |          | 
+| &nbsp;&nbsp; Lactate<sup>d</sup> (mmol/L)                                      | &lt; 5                           | 5 &leg; Lactate &lt; 11 | &geq; 11                 |          | 
+| &nbsp;&nbsp; Age<sup>e</sup> (months) adjusted MAP<sup>f</sup> (mmHg)                   |                                  |                         |                          |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age &lt;   1                       | &geq; 31                         | 17 &leq; MAP &lt; 31    | &lt; 17                  |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   1 &leq; Age &lt;  12                       | &geq; 39                         | 25 &leq; MAP &lt; 39    | &lt; 25                  |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;  12 &leq; Age &lt;  24                       | &geq; 44                         | 31 &leq; MAP &lt; 44    | &lt; 31                  |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;  24 &leq; Age &lt;  60                       | &geq; 45                         | 32 &leq; MAP &lt; 45    | &lt; 32                  |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;  60 &leq; Age &lt; 144                       | &geq; 49                         | 36 &leq; MAP &lt; 49    | &lt; 36                  |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp; 144 &leq; Age &lt; 216                       | &geq; 52                         | 38 &leq; MAP &lt; 52    | &lt; 38                  |          | 
-| **Coagulation**^g^ (0-2 points; 1 for each lab; max of 2 points)      |                                  |                         |                          |          | 
+| **Coagulation**<sup>g</sup> (0-2 points; 1 for each lab; max of 2 points)      |                                  |                         |                          |          | 
 | &nbsp;&nbsp; Platelets (1000/&mu;L)                                   | &geq; 100                        | &lt; 100                |                          |          | 
 | &nbsp;&nbsp; INR                                                      | &leq; 1.3                        | &gt; 1.3                |                          |          | 
 | &nbsp;&nbsp; D-Dimer (mg/L FEU)                                       | &leq; 2                          | &gt; 2                  |                          |          | 
 | &nbsp;&nbsp; Fibrinogen (mg/dL)                                       | &geq; 100                        | &lt; 100                |                          |          | 
-| **Neurologic**^h^ (0-2 points)                                        |                                  |                         |                          |          | 
-| &nbsp;&nbsp;                                                          | GCS^i^ &geq; 11                  | GCS &leq; 10            | Bilaterally fixed pupils |          | 
+| **Neurologic**<sup>h</sup> (0-2 points)                                        |                                  |                         |                          |          | 
+| &nbsp;&nbsp;                                                          | GCS<sup>i</sup> &geq; 11                  | GCS &leq; 10            | Bilaterally fixed pupils |          | 
 | **Endocrine** (0-1 point)                                             |                                  |                         |                          |          | 
 | &nbsp;&nbsp; Blood Glucose (mg/dL)                                    | 50 &leq; Blood Glucose &leq; 150 | &lt; 50; or &gt; 150    |                          |          | 
 | **Immunologic** (0-1 point; point from ANC and/or ALC)                |                                  |                         |                          |          | 
-| &nbsp;&nbsp; ANC (cells/mm^3^)                                        | &geq; 500                        | &lt; 500                |                          |          | 
-| &nbsp;&nbsp; ALC (cells/mm^3^)                                        | &geq; 1000                       | &lt; 1000               |                          |          | 
+| &nbsp;&nbsp; ANC (cells/mm<sup>3</sup>)                                        | &geq; 500                        | &lt; 500                |                          |          | 
+| &nbsp;&nbsp; ALC (cells/mm<sup>3</sup>)                                        | &geq; 1000                       | &lt; 1000               |                          |          | 
 | **Renal** (0-1 point)                                                 |                                  |                         |                          |          | 
-| &nbsp;&nbsp; Age^e^ (months) adjusted Creatinine (mg/dL)              |                                  |                         |                          |          | 
+| &nbsp;&nbsp; Age<sup>e</sup> (months) adjusted Creatinine (mg/dL)              |                                  |                         |                          |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age &lt;   1                       | &lt; 0.8                         | &geq; 0.8               |                          |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   1 &leq; Age &lt;  12                       | &lt; 0.3                         | &geq; 0.3               |                          |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;  12 &leq; Age &lt;  24                       | &lt; 0.4                         | &geq; 0.4               |                          |          | 
@@ -74,35 +74,31 @@ research, Phoenix-8, which includes the four organ systems above along with
 | &nbsp;&nbsp; ALT (IU/L)                                               | &leq; 102                        | &gt; 102                |                          |          | 
 
 <small>
-^a^Abbreviations: ALC: Absolute lymphocyte count; ALT: alanine aminotransferase; ANC: Absolute neutrophil count; FEU: fibrinogen equivalent units; FiO~2~: fraction of inspired oxygen; GCS: Glasgow Coma Score; IMV: invasive mechanical ventilation; INR: International normalized ratio; MAP: mean arterial pressure; PaO~2~: arterial oxygen pressure; SpO~2~: pulse oximetry oxygen saturation;
+<sup>a</sup>Abbreviations: ALC: Absolute lymphocyte count; ALT: alanine aminotransferase; ANC: Absolute neutrophil count; FEU: fibrinogen equivalent units; FiO<sub>2</sub>: fraction of inspired oxygen; GCS: Glasgow Coma Score; IMV: invasive mechanical ventilation; INR: International normalized ratio; MAP: mean arterial pressure; PaO<sub>2</sub>: arterial oxygen pressure; SpO<sub>2</sub>: pulse oximetry oxygen saturation;
 
-^b^SpO~2~:FiO~2~ is only valid when SpO~2~ &leq; 97.
+<sup>b</sup>SpO<sub>2</sub>:FiO<sub>2</sub> is only valid when SpO<sub>2</sub> &leq; 97.
 
-^c^Vasoactive medications: any systemic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin.
+<sup>c</sup>Vasoactive medications: any systemic dose of dobutamine, dopamine, epinephrine, milrinone, norepinephrine, and/or vasopressin.
 
-^d^Lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
+<sup>d</sup>Lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
 
-^e^Age: measured in months and is not adjusted for prematurity.
+<sup>e</sup>Age: measured in months and is not adjusted for prematurity.
 
-^f^MAP - Use measured mean arterial pressure preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3
+<sup>f</sup>MAP - Use measured mean arterial pressure preferentially (invasive arterial if available, or non-invasive oscillometric), alternatively use the calculation diastolic + (systolic - diastolic) / 3
 
-^g^Coagulation variable reference ranges: platelets, 150-450 103/μL; D-dimer, < 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL. International normalized ratio reference range is based on local reference prothrombin time.
+<sup>g</sup>Coagulation variable reference ranges: platelets, 150-450 103/μL; D-dimer, < 0.5 mg/L FEU; fibrinogen, 180-410 mg/dL. International normalized ratio reference range is based on local reference prothrombin time.
 
-^h^Neurologic dysfunction scoring was pragmatically validated in both sedated and on sedated patients and those with and without IMV.
+<sup>h</sup>Neurologic dysfunction scoring was pragmatically validated in both sedated and on sedated patients and those with and without IMV.
 
-^i^GCS measures level of consciousness based on verbal, eye, and motor response. Values are integers from 3 to 15 with higher scores indicating better neurologic function.
+<sup>i</sup>GCS measures level of consciousness based on verbal, eye, and motor response. Values are integers from 3 to 15 with higher scores indicating better neurologic function.
 </small>
 
 
 ## Software
 
 * Python module
-* [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
-* Example SQL queries
-
-* Source code on [github](https://github.com/CU-DBMI-Peds/phoenix/)
-* [Issue tracker](https://github.com/CU-DBMI-Peds/phoenix/issues/)
-
+* R package: [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
+* [Example SQL queries](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
 
 ## Example use of the Python Module
 
@@ -117,61 +113,35 @@ import importlib.resources
 import phoenix as phx
 ```
 
+### Example Data set
+
 There is an example data set included in the package in a file called
 `sepsis.csv`.  Load that file to use in the following examples.
 
 
 ```python
 # read in the example data set
-with importlib.resources.path('phoenix', 'data') as data_path:
-    sepsis = pd.read_csv(data_path / "sepsis.csv")
-## <string>:2: DeprecationWarning: path is deprecated. Use files() instead. Refer to https://importlib-resources.readthedocs.io/en/latest/using.html#migrating-from-legacy for migration advice.
-
-print(sepsis)
-##     pid     age  fio2  pao2  spo2  vent  gcs_total          pupil  platelets    inr  ...  epinephrine  milrinone  norepinephrine  vasopressin  glucose     anc    alc  creatinine  bilirubin     alt
-## 0     1    0.06  0.75   NaN  99.0     1        NaN            NaN      199.0  1.460  ...            1          1               0            0      NaN     NaN    NaN       1.030        NaN    36.0
-## 1     2  201.70  0.75  75.3  95.0     1        5.0  both-reactive      243.0  1.180  ...            0          0               1            0    110.0  14.220  2.220       0.510      0.200    32.0
-## 2     3   20.80  1.00  49.5   NaN     1       15.0  both-reactive       49.0  1.600  ...            0          0               0            0     93.0   2.210  0.190       0.330      0.800   182.0
-## 3     4  192.50   NaN   NaN   NaN     0       14.0            NaN        NaN  1.300  ...            0          0               0            0    110.0   3.184  0.645       0.310      8.500    21.0
-## 4     5  214.40   NaN  38.7  95.0     0        NaN            NaN      393.0    NaN  ...            0          0               0            0      NaN     NaN    NaN       0.520        NaN     NaN
-## 5     6  101.20  0.60  69.9  88.0     1        3.0  both-reactive       86.0  1.230  ...            0          0               0            0    147.0  20.200  0.240       0.770      1.200    15.0
-## 6     7  150.70  0.50   NaN  31.0     1        NaN            NaN       65.0  3.100  ...            1          1               0            1      NaN     NaN    NaN       1.470      1.700  3664.0
-## 7     8  159.70  0.30   NaN  97.0     1       15.0  both-reactive      215.0  0.970  ...            0          0               0            0    100.0   3.760  1.550       0.580      0.500    50.0
-## 8     9  176.10  0.65  51.0  82.0     1        3.0  both-reactive      101.0  1.080  ...            1          1               1            1    264.0   8.770  3.600       1.230     21.100   151.0
-## 9    10    6.60  0.80   NaN  76.0     1        3.0  both-reactive      292.0    NaN  ...            0          0               0            0     93.0   9.084  4.617       0.180        NaN     NaN
-## 10   11   36.70  0.65  54.0   NaN     1        3.0     both-fixed        NaN  3.000  ...            1          0               0            0    341.0     NaN    NaN       0.870      0.180     NaN
-## 11   12   37.40  0.35   NaN  91.0     0        NaN            NaN        NaN    NaN  ...            0          0               0            0      NaN     NaN    NaN         NaN        NaN     NaN
-## 12   13    0.12  0.30   NaN  97.0     1        NaN            NaN        NaN    NaN  ...            0          0               0            0      NaN     NaN    NaN         NaN        NaN     NaN
-## 13   14   62.30  0.50   NaN  89.0     1        NaN            NaN       24.0  1.146  ...            1          1               0            0      NaN     NaN    NaN       0.120      3.300    60.0
-## 14   15   10.60  1.00  42.5  45.0     1        NaN            NaN       82.0  1.424  ...            1          1               0            1      NaN     NaN    NaN       1.300      1.300  1792.0
-## 15   16    0.89   NaN   NaN   NaN     0        NaN            NaN      355.0  1.230  ...            1          1               1            0     82.4   4.720  4.300       0.418      1.579    15.0
-## 16   17   10.70  0.45  61.3  97.0     1       11.0  both-reactive      166.0  1.000  ...            1          1               0            1    130.0   9.380  1.310       0.290      0.600    41.0
-## 17   18   10.60  1.00  64.1  92.0     1        NaN            NaN       80.0  1.641  ...            1          1               0            1      NaN     NaN    NaN       1.100      1.300  1790.0
-## 18   19    0.17  0.50   NaN  97.0     1        NaN            NaN      190.0    NaN  ...            1          1               0            0    103.0  12.570  2.810       1.200        NaN     NaN
-## 19   20   71.90   NaN   NaN   NaN     0        NaN            NaN       78.0  1.160  ...            1          0               0            0    159.8   3.410  2.850       0.418      0.363    22.0
+path = importlib.resources.files('phoenix')
+sepsis = pd.read_csv(path.joinpath('data').joinpath('sepsis.csv'))
+print(sepsis.head())
+##    pid     age  fio2  pao2  spo2  vent  gcs_total          pupil  platelets   inr  ...  epinephrine  milrinone  norepinephrine  vasopressin  glucose     anc    alc  creatinine  bilirubin    alt
+## 0    1    0.06  0.75   NaN  99.0     1        NaN            NaN      199.0  1.46  ...            1          1               0            0      NaN     NaN    NaN        1.03        NaN   36.0
+## 1    2  201.70  0.75  75.3  95.0     1        5.0  both-reactive      243.0  1.18  ...            0          0               1            0    110.0  14.220  2.220        0.51        0.2   32.0
+## 2    3   20.80  1.00  49.5   NaN     1       15.0  both-reactive       49.0  1.60  ...            0          0               0            0     93.0   2.210  0.190        0.33        0.8  182.0
+## 3    4  192.50   NaN   NaN   NaN     0       14.0            NaN        NaN  1.30  ...            0          0               0            0    110.0   3.184  0.645        0.31        8.5   21.0
+## 4    5  214.40   NaN  38.7  95.0     0        NaN            NaN      393.0   NaN  ...            0          0               0            0      NaN     NaN    NaN        0.52        NaN    NaN
 ## 
-## [20 rows x 27 columns]
+## [5 rows x 27 columns]
 ```
 
 ### Organ Dysfunction Scoring
-There is one funciton for each of the eight component organ dysfunction scores.
+There is one function for each of the eight component organ dysfunction scores.
+Each of these functions return a numpy array of integers.
 
-1. Respiratory,
-2. Cardiovascular
-3. Coagulation
-4. Neurologic
-5. Endocrine
-6. Immunologic
-7. Renal
-8. Hepatic
-
-### Respiratory Dysfunction Scoring
-
+#### Respiratory Dysfunction Scoring
 
 
 ```python
-print("Respiratory Score")
-## Respiratory Score
 resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
@@ -182,9 +152,12 @@ print(type(resp))
 ## <class 'numpy.ndarray'>
 print(resp)
 ## [0 3 3 0 0 3 3 0 3 3 3 1 0 2 3 0 2 3 2 0]
+```
 
-print("Cardiovascular Score")
-## Cardiovascular Score
+#### Cardiovascular Dysfunction Scoring
+
+
+```python
 card = phx.phoenix_cardiovascular(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
@@ -195,9 +168,12 @@ print(type(card))
 ## <class 'numpy.ndarray'>
 print(card)
 ## [2 2 1 0 0 1 4 0 3 0 3 0 0 2 3 2 2 2 2 1]
+```
 
-print("Coagulation Score")
-## Coagulation Score
+#### Coagulation Dysfunction Scoring
+
+
+```python
 coag = phx.phoenix_coagulation(
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
@@ -208,9 +184,12 @@ print(type(coag))
 ## <class 'numpy.ndarray'>
 print(coag)
 ## [1 1 2 1 0 2 2 1 1 0 1 0 0 1 2 1 1 2 0 1]
+```
 
-print("Neurologic Score")
-## Neurologic Score
+#### Neurologic Dysfunction Scoring
+
+
+```python
 neuro = phx.phoenix_neurologic(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int)
@@ -219,10 +198,61 @@ print(type(neuro))
 ## <class 'numpy.ndarray'>
 print(neuro)
 ## [0 1 0 0 0 1 0 0 1 1 2 0 0 0 0 0 0 0 0 0]
+```
+
+#### Endocrine Dysfunction Scoring
 
 
-print("Phoenix Sepsis Score")
-## Phoenix Sepsis Score
+```python
+endo = phx.phoenix_endocrine(sepsis["glucose"])
+print(type(endo))
+## <class 'numpy.ndarray'>
+print(endo)
+## [0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 1]
+```
+
+#### Immunologic Dysfunction Scoring
+
+
+```python
+immu = phx.phoenix_immunologic(sepsis["anc"], sepsis["alc"])
+print(type(immu))
+## <class 'numpy.ndarray'>
+print(immu)
+## [0 1 1 1 0 1 0 1 1 1 0 0 0 0 0 1 1 0 1 1]
+```
+
+#### Renal Dysfunction Scoring
+
+
+```python
+renal = phx.phoenix_renal(sepsis["creatinine"], sepsis["age"])
+print(type(renal))
+## <class 'numpy.ndarray'>
+print(renal)
+## [1 0 0 0 0 1 1 0 1 0 1 0 0 0 1 0 0 1 1 0]
+```
+
+#### Hepatic Dysfunction Scoring
+
+
+```python
+hepatic = phx.phoenix_hepatic(sepsis["bilirubin"], sepsis["alt"])
+print(type(hepatic))
+## <class 'numpy.ndarray'>
+print(hepatic)
+## [0 0 1 1 0 0 1 0 1 0 0 0 0 0 1 0 0 1 0 0]
+```
+
+### Phoenix Scoring
+
+The Phoenix score is the sum of the respiratory, cardiovascular, coagulation,
+and neurologic scores.  Sepsis is defined as a total score of at least two
+points and septic shock is defined as sepsis with at least one cardiovascular
+point.
+
+
+```python
 phoenix = phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = sepsis["spo2"] / sepsis["fio2"],
@@ -237,31 +267,88 @@ phoenix = phx.phoenix(
     d_dimer = sepsis['d_dimer'],
     fibrinogen = sepsis['fibrinogen'],
     gcs = sepsis["gcs_total"],
-    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
-    )
-
-print(type(phoenix))
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int))
+print(phoenix.info())
 ## <class 'pandas.core.frame.DataFrame'>
-print(phoenix)
-##     phoenix_respiratory_score  phoenix_cardiovascular_score  phoenix_coagulation_score  phoenix_neurologic_score  phoenix_sepsis_score  phoenix_sepsis  phoenix_septic_shock
-## 0                           3                             2                          1                         0                     6               1                     1
-## 1                           3                             2                          1                         1                     7               1                     1
-## 2                           3                             1                          2                         0                     6               1                     1
-## 3                           0                             0                          1                         0                     1               0                     0
-## 4                           0                             0                          0                         0                     0               0                     0
-## 5                           3                             1                          2                         1                     7               1                     1
-## 6                           3                             4                          2                         0                     9               1                     1
-## 7                           0                             0                          1                         0                     1               0                     0
-## 8                           3                             3                          1                         1                     8               1                     1
-## 9                           3                             0                          0                         1                     4               1                     0
-## 10                          3                             3                          1                         2                     9               1                     1
-## 11                          1                             0                          0                         0                     1               0                     0
-## 12                          0                             0                          0                         0                     0               0                     0
-## 13                          2                             2                          1                         0                     5               1                     1
-## 14                          3                             3                          2                         0                     8               1                     1
-## 15                          0                             2                          1                         0                     3               1                     1
-## 16                          2                             2                          1                         0                     5               1                     1
-## 17                          3                             2                          2                         0                     7               1                     1
-## 18                          2                             2                          0                         0                     4               1                     1
-## 19                          0                             1                          1                         0                     2               1                     1
+## RangeIndex: 20 entries, 0 to 19
+## Data columns (total 7 columns):
+##  #   Column                        Non-Null Count  Dtype
+## ---  ------                        --------------  -----
+##  0   phoenix_respiratory_score     20 non-null     int64
+##  1   phoenix_cardiovascular_score  20 non-null     int64
+##  2   phoenix_coagulation_score     20 non-null     int64
+##  3   phoenix_neurologic_score      20 non-null     int64
+##  4   phoenix_sepsis_score          20 non-null     int64
+##  5   phoenix_sepsis                20 non-null     int64
+##  6   phoenix_septic_shock          20 non-null     int64
+## dtypes: int64(7)
+## memory usage: 1.2 KB
+## None
+print(phoenix.head())
+##    phoenix_respiratory_score  phoenix_cardiovascular_score  phoenix_coagulation_score  phoenix_neurologic_score  phoenix_sepsis_score  phoenix_sepsis  phoenix_septic_shock
+## 0                          3                             2                          1                         0                     6               1                     1
+## 1                          3                             2                          1                         1                     7               1                     1
+## 2                          3                             1                          2                         0                     6               1                     1
+## 3                          0                             0                          1                         0                     1               0                     0
+## 4                          0                             0                          0                         0                     0               0                     0
 ```
+
+### Phoenix-8 Scoring
+
+Phoenix-8 is an extended score using all eight organ dysfunction scores.
+
+
+```python
+phoenix8_scores = phx.phoenix8(
+    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
+    imv      = sepsis["vent"],
+    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    lactate = sepsis["lactate"],
+    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    platelets = sepsis['platelets'],
+    inr = sepsis['inr'],
+    d_dimer = sepsis['d_dimer'],
+    fibrinogen = sepsis['fibrinogen'],
+    gcs = sepsis["gcs_total"],
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
+    glucose = sepsis["glucose"],
+    anc = sepsis["anc"],
+    alc = sepsis["alc"],
+    creatinine = sepsis["creatinine"],
+    bilirubin = sepsis["bilirubin"],
+    alt = sepsis["alt"],
+    age = sepsis["age"])
+print(phoenix8_scores.info())
+## <class 'pandas.core.frame.DataFrame'>
+## RangeIndex: 20 entries, 0 to 19
+## Data columns (total 12 columns):
+##  #   Column                        Non-Null Count  Dtype
+## ---  ------                        --------------  -----
+##  0   phoenix_respiratory_score     20 non-null     int64
+##  1   phoenix_cardiovascular_score  20 non-null     int64
+##  2   phoenix_coagulation_score     20 non-null     int64
+##  3   phoenix_neurologic_score      20 non-null     int64
+##  4   phoenix_sepsis_score          20 non-null     int64
+##  5   phoenix_sepsis                20 non-null     int64
+##  6   phoenix_septic_shock          20 non-null     int64
+##  7   phoenix_endocrine_score       20 non-null     int64
+##  8   phoenix_immunologic_score     20 non-null     int64
+##  9   phoenix_renal_score           20 non-null     int64
+##  10  phoenix_hepatic_score         20 non-null     int64
+##  11  phoenix8_score                20 non-null     int64
+## dtypes: int64(12)
+## memory usage: 2.0 KB
+## None
+print(phoenix8_scores.head())
+##    phoenix_respiratory_score  phoenix_cardiovascular_score  phoenix_coagulation_score  phoenix_neurologic_score  ...  phoenix_immunologic_score  phoenix_renal_score  phoenix_hepatic_score  phoenix8_score
+## 0                          0                             2                          1                         0  ...                          0                    1                      0               4
+## 1                          3                             2                          1                         1  ...                          1                    0                      0               8
+## 2                          3                             1                          2                         0  ...                          1                    0                      1               8
+## 3                          0                             0                          1                         0  ...                          1                    0                      1               3
+## 4                          0                             0                          0                         0  ...                          0                    0                      0               0
+## 
+## [5 rows x 12 columns]
+```
+

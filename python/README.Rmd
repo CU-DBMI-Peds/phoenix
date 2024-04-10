@@ -12,7 +12,7 @@ described in:
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
 ## Phoenix Criteria
-A patient is consided septic if they have a suspected (or proven) infection with
+A patient is consider septic if they have a suspected (or proven) infection with
 at total Phoenix score of at least two points.  The Phoenix score is the sum of
 the scores from four organ dysfunction scores:
 
@@ -23,7 +23,7 @@ the scores from four organ dysfunction scores:
 
 Septic shock is defined as sepsis with at least one cardiovascular point.
 
-In addition to the Phoenix criteria there is an extended crieria intended for
+In addition to the Phoenix criteria there is an extended criteria intended for
 research, Phoenix-8, which includes the four organ systems above along with
 
 5. Endocrine,
@@ -34,7 +34,7 @@ research, Phoenix-8, which includes the four organ systems above along with
 ## Phoenix Rubric
 
 ```{r, echo = FALSE, results = "asis"}
-# Need to use github flavored markdown for this readme which means chaning the
+# Need to use github flavored markdown for this readme which means changing the
 # pandoc flavor to github flavor
 tab <-
   scan(file = system.file("phoenix_rubric.md", package = "phoenix"),
@@ -49,7 +49,7 @@ cat("\n")
 
 <small>
 ```{r, echo = FALSE, results = "asis"}
-# Need to use github flavored markdown for this readme which means chaning the
+# Need to use github flavored markdown for this readme which means changing the
 # pandoc flavor to github flavor
 ftnt <-
   scan(file = system.file("phoenix_rubric_footnotes.md", package = "phoenix"),
@@ -92,6 +92,8 @@ import importlib.resources
 import phoenix as phx
 ```
 
+### Example Data set
+
 There is an example data set included in the package in a file called
 `sepsis.csv`.  Load that file to use in the following examples.
 
@@ -103,7 +105,8 @@ print(sepsis.head())
 ```
 
 ### Organ Dysfunction Scoring
-There is one funciton for each of the eight component organ dysfunction scores.
+There is one function for each of the eight component organ dysfunction scores.
+Each of these functions return a numpy array of integers.
 
 #### Respiratory Dysfunction Scoring
 
@@ -189,8 +192,12 @@ print(hepatic)
 
 ### Phoenix Scoring
 
+The Phoenix score is the sum of the respiratory, cardiovascular, coagulation,
+and neurologic scores.  Sepsis is defined as a total score of at least two
+points and septic shock is defined as sepsis with at least one cardiovascular
+point.
+
 ```{python}
-print("Phoenix Sepsis Score")
 phoenix = phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = sepsis["spo2"] / sepsis["fio2"],
@@ -205,14 +212,14 @@ phoenix = phx.phoenix(
     d_dimer = sepsis['d_dimer'],
     fibrinogen = sepsis['fibrinogen'],
     gcs = sepsis["gcs_total"],
-    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
-    )
-
-print(type(phoenix))
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int))
+print(phoenix.info())
 print(phoenix.head())
 ```
 
 ### Phoenix-8 Scoring
+
+Phoenix-8 is an extended score using all eight organ dysfunction scores.
 
 ```{python}
 phoenix8_scores = phx.phoenix8(
@@ -235,10 +242,8 @@ phoenix8_scores = phx.phoenix8(
     creatinine = sepsis["creatinine"],
     bilirubin = sepsis["bilirubin"],
     alt = sepsis["alt"],
-    age = sepsis["age"]
-    )
-
-print(type(phoenix8_scores))
+    age = sepsis["age"])
+print(phoenix8_scores.info())
 print(phoenix8_scores.head())
 ```
 
