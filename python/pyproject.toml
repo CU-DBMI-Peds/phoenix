@@ -7,7 +7,7 @@ phoenix = ["*.csv"]
 
 [project]
 name = "phoenix_sepsis"
-version = "1.0.0.9001"
+version = "1.0.0.9002"
 authors = [
   {name = "Peter E. DeWitt", email = "peter.dewitt@cuanschutz.edu"},
   {name = "Seth Russell", email = "seth.russell@cuanschutz.edu"},

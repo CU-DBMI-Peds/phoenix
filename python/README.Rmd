@@ -34,22 +34,30 @@ research, Phoenix-8, which includes the four organ systems above along with
 ## Phoenix Rubric
 
 ```{r, echo = FALSE, results = "asis"}
+# Need to use github flavored markdown for this readme which means chaning the
+# pandoc flavor to github flavor
 tab <-
   scan(file = system.file("phoenix_rubric.md", package = "phoenix"),
        what = character(),
        sep = "\n",
        quiet = TRUE)
+tab <- gsub("\\^(\\w)\\^", "<sup>\\1</sup>", tab)
+tab <- gsub("\\~(\\w)\\~", "<sub>\\1</sub>", tab)
 cat(tab, sep = "\n")
 cat("\n")
 ```
 
 <small>
 ```{r, echo = FALSE, results = "asis"}
+# Need to use github flavored markdown for this readme which means chaning the
+# pandoc flavor to github flavor
 ftnt <-
   scan(file = system.file("phoenix_rubric_footnotes.md", package = "phoenix"),
        what = character(),
        sep = "\n",
        quiet = TRUE)
+ftnt <- gsub("\\^(\\w)\\^", "<sup>\\1</sup>", ftnt)
+ftnt <- gsub("\\~(\\w)\\~", "<sub>\\1</sub>", ftnt)
 cat(ftnt[1:9], sep = "\n\n")
 ```
 </small>
@@ -58,12 +66,8 @@ cat(ftnt[1:9], sep = "\n\n")
 ## Software
 
 * Python module
-* [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
-* Example SQL queries
-
-* Source code on [github](https://github.com/CU-DBMI-Peds/phoenix/)
-* [Issue tracker](https://github.com/CU-DBMI-Peds/phoenix/issues/)
-
+* R package: [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
+* [Example SQL queries](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
 
 ## Example use of the Python Module
 
@@ -93,29 +97,17 @@ There is an example data set included in the package in a file called
 
 ```{python}
 # read in the example data set
-with importlib.resources.path('phoenix', 'data') as data_path:
-    sepsis = pd.read_csv(data_path / "sepsis.csv")
-
-print(sepsis)
+path = importlib.resources.files('phoenix')
+sepsis = pd.read_csv(path.joinpath('data').joinpath('sepsis.csv'))
+print(sepsis.head())
 ```
 
 ### Organ Dysfunction Scoring
 There is one funciton for each of the eight component organ dysfunction scores.
 
-1. Respiratory,
-2. Cardiovascular
-3. Coagulation
-4. Neurologic
-5. Endocrine
-6. Immunologic
-7. Renal
-8. Hepatic
-
-### Respiratory Dysfunction Scoring
-
+#### Respiratory Dysfunction Scoring
 
 ```{python}
-print("Respiratory Score")
 resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
@@ -124,8 +116,11 @@ resp = phx.phoenix_respiratory(
     )
 print(type(resp))
 print(resp)
+```
 
-print("Cardiovascular Score")
+#### Cardiovascular Dysfunction Scoring
+
+```{python}
 card = phx.phoenix_cardiovascular(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
@@ -134,8 +129,11 @@ card = phx.phoenix_cardiovascular(
 )
 print(type(card))
 print(card)
+```
 
-print("Coagulation Score")
+#### Coagulation Dysfunction Scoring
+
+```{python}
 coag = phx.phoenix_coagulation(
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
@@ -144,16 +142,54 @@ coag = phx.phoenix_coagulation(
 )
 print(type(coag))
 print(coag)
+```
 
-print("Neurologic Score")
+#### Neurologic Dysfunction Scoring
+
+```{python}
 neuro = phx.phoenix_neurologic(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int)
 )
 print(type(neuro))
 print(neuro)
+```
 
+#### Endocrine Dysfunction Scoring
 
+```{python}
+endo = phx.phoenix_endocrine(sepsis["glucose"])
+print(type(endo))
+print(endo)
+```
+
+#### Immunologic Dysfunction Scoring
+
+```{python}
+immu = phx.phoenix_immunologic(sepsis["anc"], sepsis["alc"])
+print(type(immu))
+print(immu)
+```
+
+#### Renal Dysfunction Scoring
+
+```{python}
+renal = phx.phoenix_renal(sepsis["creatinine"], sepsis["age"])
+print(type(renal))
+print(renal)
+```
+
+#### Hepatic Dysfunction Scoring
+
+```{python}
+hepatic = phx.phoenix_hepatic(sepsis["bilirubin"], sepsis["alt"])
+print(type(hepatic))
+print(hepatic)
+```
+
+### Phoenix Scoring
+
+```{python}
 print("Phoenix Sepsis Score")
 phoenix = phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
@@ -173,5 +209,36 @@ phoenix = phx.phoenix(
     )
 
 print(type(phoenix))
-print(phoenix)
+print(phoenix.head())
 ```
+
+### Phoenix-8 Scoring
+
+```{python}
+phoenix8_scores = phx.phoenix8(
+    pf_ratio = sepsis["pao2"] / sepsis["fio2"],
+    sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
+    imv      = sepsis["vent"],
+    other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    lactate = sepsis["lactate"],
+    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    platelets = sepsis['platelets'],
+    inr = sepsis['inr'],
+    d_dimer = sepsis['d_dimer'],
+    fibrinogen = sepsis['fibrinogen'],
+    gcs = sepsis["gcs_total"],
+    fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
+    glucose = sepsis["glucose"],
+    anc = sepsis["anc"],
+    alc = sepsis["alc"],
+    creatinine = sepsis["creatinine"],
+    bilirubin = sepsis["bilirubin"],
+    alt = sepsis["alt"],
+    age = sepsis["age"]
+    )
+
+print(type(phoenix8_scores))
+print(phoenix8_scores.head())
+```
+
