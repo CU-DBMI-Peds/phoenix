@@ -43,7 +43,7 @@
 #' @export
 phoenix_endocrine <- function(glucose = NA_real_, data = parent.frame(), ...) {
 
-  glc <- eval(expr = substitute(glucose), envir = data)
+  glc <- eval(expr = substitute(glucose), envir = data, enclos = parent.frame())
 
   # set "healthy" value for missing data
   glc <- replace(glc, which(is.na(glc)), 100)
