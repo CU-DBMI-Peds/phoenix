@@ -1,8 +1,15 @@
-# Version 1.0.0.9000
+# Version 1.0.0.9000:
 
-Update documentation.
+## New Features:
 
-# Version 1.0.0
+* The function `map` has been added to get the estimated mean arterial pressure
+  from systallic and diastolic pressures.
+
+## Other Changes:
+
+* Update documentation.
+
+# Version 1.0.0:
 
 Initial Release
 

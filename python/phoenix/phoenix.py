@@ -1,6 +1,21 @@
 import numpy as np
 import pandas as pd
 
+def map(sbp, dbp):
+    """
+    Mean Arterial Pressure
+
+    Estimated mean arterial pressure is (2/3)*DBP + (1/3)*SBP
+
+    Parameters:
+        sbp : systolic blood pressure (mmHg)
+        dbp : diastolic blood pressure (mmHg)
+
+    Returns:
+        a np.array
+    """
+    return(np.array(2/3 * dbp + 1/3 * sbp))
+
 def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respiratory_support = np.nan):
     """
     Phoenix Respiratory Scoring
