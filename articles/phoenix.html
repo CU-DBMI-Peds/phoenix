@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Phoenix Sepsis Criteria • phoenix</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phoenix</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CU-DBMI-Peds/phoenix/" class="external-link">phoenix</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"phoenix"</span><span class="op">)</span></span>
-<span><span class="co">## [1] '1.0.0.9000'</span></span></code></pre></div>
+<span><span class="co">## [1] '1.1.0'</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="development-and-international-consensus">Development and International Consensus<a class="anchor" aria-label="anchor" href="#development-and-international-consensus"></a>
 </h2>
@@ -886,6 +886,10 @@ systemic blood pressure (mmHg).</p></li>
 <div class="section level4">
 <h4 id="example-use-1">Example Use<a class="anchor" aria-label="anchor" href="#example-use-1"></a>
 </h4>
+<p>Note: the mean arterial pressure can be approximated by 2/3<em>DBP +
+1/3</em>SBP. To simplify the work and help reduce potential errors, the
+function <code>map</code> has been provided to estimate the mean
+arterial pressure given sbp and dbp.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">card_example</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"dobutamine"</span>, <span class="st">"dopamine"</span>, <span class="st">"epinephrine"</span>, <span class="st">"milrinone"</span>, <span class="st">"norepinephrine"</span>, <span class="st">"vasopressin"</span>, <span class="st">"lactate"</span>, <span class="st">"dbp"</span>, <span class="st">"sbp"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span></span>
@@ -895,7 +899,7 @@ systemic blood pressure (mmHg).</p></li>
 <span>    vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
 <span>    lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
 <span>    age <span class="op">=</span> <span class="va">age</span>,</span>
-<span>    map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>    map <span class="op">=</span> <span class="fu"><a href="../reference/map.html">map</a></span><span class="op">(</span>sbp <span class="op">=</span> <span class="va">sbp</span>, dbp <span class="op">=</span> <span class="va">dbp</span><span class="op">)</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">card_example</span></span></code></pre></div>
@@ -2169,7 +2173,7 @@ scores.</p>
 <span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
 <span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
 <span>      age <span class="op">=</span> <span class="va">age</span>,</span>
-<span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>      map <span class="op">=</span> <span class="fu"><a href="../reference/map.html">map</a></span><span class="op">(</span><span class="va">sbp</span>, <span class="va">dbp</span><span class="op">)</span>,</span>
 <span>    <span class="co"># coagulation</span></span>
 <span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span>
 <span>      inr <span class="op">=</span> <span class="va">inr</span>,</span>
@@ -2710,7 +2714,7 @@ calling <code>phoenix8</code>.</p>
 <span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span>
 <span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span>
 <span>      age <span class="op">=</span> <span class="va">age</span>, <span class="co"># Also used in the renal assessment.</span></span>
-<span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span>
+<span>      map <span class="op">=</span> <span class="fu"><a href="../reference/map.html">map</a></span><span class="op">(</span>sbp <span class="op">=</span> <span class="va">sbp</span>, dbp <span class="op">=</span> <span class="va">dbp</span><span class="op">)</span>,</span>
 <span>    <span class="co"># coagulation</span></span>
 <span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span>
 <span>      inr <span class="op">=</span> <span class="va">inr</span>,</span>
@@ -3695,7 +3699,7 @@ January. <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link">
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

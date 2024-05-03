@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Phoenix Sepsis Criteria in Python • phoenix</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phoenix</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -435,12 +435,16 @@ prematurity. <sup>f</sup>MAP - Use measured mean arterial pressure
 preferentially (invasive arterial if available, or non-invasive
 oscillometric), alternatively use the calculation diastolic + (systolic
 - diastolic) / 3</p>
+<p>As with the R package, the Python module has a function
+<code>map</code> to simplify the estimation of mean arterial pressure
+based on systolic and diagnostic pressures. MAP is approximated as
+(2/3)<em>DBP + (1/3)</em>SBP.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>py_card <span class="op">=</span> phx.phoenix_cardiovascular(</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                  sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> phx.<span class="bu">map</span>(sepsis[<span class="st">"sbp"</span>], sepsis[<span class="st">"dbp"</span>])</span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>)</span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(py_card))</span>
 <span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">## &lt;class 'numpy.ndarray'&gt;</span></span>
@@ -823,7 +827,7 @@ point.</p>
 <span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>    age <span class="op">=</span> sepsis[<span class="st">"age"</span>],</span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> phx.<span class="bu">map</span>(sepsis[<span class="st">"sbp"</span>], sepsis[<span class="st">"dbp"</span>]),</span>
 <span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
 <span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
@@ -870,7 +874,7 @@ renal, and 8. hepatic.</p>
 <span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    other_respiratory_support <span class="op">=</span> (sepsis[<span class="st">"fio2"</span>] <span class="op">&gt;</span> <span class="fl">0.21</span>).astype(<span class="bu">int</span>).to_numpy(),</span>
 <span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>    vasoactives <span class="op">=</span> sepsis[<span class="st">"dobutamine"</span>] <span class="op">+</span> sepsis[<span class="st">"dopamine"</span>] <span class="op">+</span> sepsis[<span class="st">"epinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"milrinone"</span>] <span class="op">+</span> sepsis[<span class="st">"norepinephrine"</span>] <span class="op">+</span> sepsis[<span class="st">"vasopressin"</span>],</span>
 <span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>    lactate <span class="op">=</span> sepsis[<span class="st">"lactate"</span>],</span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> sepsis[<span class="st">"dbp"</span>] <span class="op">+</span> (sepsis[<span class="st">"sbp"</span>] <span class="op">-</span> sepsis[<span class="st">"dbp"</span>]) <span class="op">/</span> <span class="dv">3</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="bu">map</span> <span class="op">=</span> phx.<span class="bu">map</span>(sepsis[<span class="st">"sbp"</span>], sepsis[<span class="st">"dbp"</span>]),</span>
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>    platelets <span class="op">=</span> sepsis[<span class="st">'platelets'</span>],</span>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>    inr <span class="op">=</span> sepsis[<span class="st">'inr'</span>],</span>
 <span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>    d_dimer <span class="op">=</span> sepsis[<span class="st">'d_dimer'</span>],</span>
@@ -936,7 +940,7 @@ renal, and 8. hepatic.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
