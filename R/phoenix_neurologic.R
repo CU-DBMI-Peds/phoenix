@@ -83,8 +83,8 @@
 #' @export
 phoenix_neurologic <- function(gcs = NA_integer_, fixed_pupils = NA_real_, data = parent.frame(), ...) {
 
-  gcs <- eval(expr = substitute(gcs), envir = data)
-  fpl <- eval(expr = substitute(fixed_pupils), envir = data)
+  gcs <- eval(expr = substitute(gcs), envir = data, enclos = parent.frame())
+  fpl <- eval(expr = substitute(fixed_pupils), envir = data, enclos = parent.frame())
 
   lngths <- c(length(gcs), length(fpl))
   n <- max(lngths)

@@ -76,8 +76,8 @@
 #' @export
 phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.frame(), ...) {
 
-  crt <- eval(expr = substitute(creatinine), envir = data)
-  age <- eval(expr = substitute(age), envir = data)
+  crt <- eval(expr = substitute(creatinine), envir = data, enclos = parent.frame())
+  age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
 
   lngths <- c(length(crt), length(age))
   n <- max(lngths)

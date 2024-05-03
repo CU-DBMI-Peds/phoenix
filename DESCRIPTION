@@ -1,6 +1,6 @@
 Package: phoenix
 Title: The Phoenix Pediatric Sepsis and Septic Shock Criteria
-Version: 1.0.0-9000
+Version: 1.1.0
 Authors@R:
     c(
       person(given = "Peter", family = "DeWitt",  email = "peter.dewitt@cuanschutz.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6391-0795")),

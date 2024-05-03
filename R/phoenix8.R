@@ -14,7 +14,7 @@
 #' @param sf_ratio numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92\% oxygen saturation on room air is 92/0.21 = 438.0952.
 #' @param imv invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)
 #' @param other_respiratory_support other respiratory support; numeric or integer vector, (0 = no support; 1 = support)
-#' @param vasoactives an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasocative medications are considered: dobutamine, dopamine, epinepherine, milrinone, norepinephrine, vasopressin.
+#' @param vasoactives an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasoactive medications are considered: dobutamine, dopamine, epinephrine, milrinone, norepinephrine, vasopressin.
 #' @param lactate numeric vector with the lactate value in mmol/L
 #' @param age numeric vector age in months
 #' @param map numeric vector, mean arterial pressure in mmHg
@@ -134,19 +134,19 @@ phoenix8 <- function(
   cl$data <- NULL
 
   cl[[1]] <- quote(phoenix)
-  rtn <- eval(as.call(cl), envir = data)
+  rtn <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- quote(phoenix_endocrine)
-  rtn$phoenix_endocrine_score <- eval(as.call(cl), envir = data)
+  rtn$phoenix_endocrine_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- quote(phoenix_immunologic)
-  rtn$phoenix_immunologic_score <- eval(as.call(cl), envir = data)
+  rtn$phoenix_immunologic_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- quote(phoenix_renal)
-  rtn$phoenix_renal_score <- eval(as.call(cl), envir = data)
+  rtn$phoenix_renal_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- quote(phoenix_hepatic)
-  rtn$phoenix_hepatic_score <- eval(as.call(cl), envir = data)
+  rtn$phoenix_hepatic_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   rtn$phoenix8_sepsis_score <-
     rtn[["phoenix_sepsis_score"]] +

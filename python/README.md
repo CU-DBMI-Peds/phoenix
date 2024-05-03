@@ -124,12 +124,12 @@ There is an example data set included in the package in a file called
 path = importlib.resources.files('phoenix')
 sepsis = pd.read_csv(path.joinpath('data').joinpath('sepsis.csv'))
 print(sepsis.head())
-##    pid     age  fio2  pao2  spo2  vent  gcs_total          pupil  platelets   inr  ...  epinephrine  milrinone  norepinephrine  vasopressin  glucose     anc    alc  creatinine  bilirubin    alt
-## 0    1    0.06  0.75   NaN  99.0     1        NaN            NaN      199.0  1.46  ...            1          1               0            0      NaN     NaN    NaN        1.03        NaN   36.0
-## 1    2  201.70  0.75  75.3  95.0     1        5.0  both-reactive      243.0  1.18  ...            0          0               1            0    110.0  14.220  2.220        0.51        0.2   32.0
-## 2    3   20.80  1.00  49.5   NaN     1       15.0  both-reactive       49.0  1.60  ...            0          0               0            0     93.0   2.210  0.190        0.33        0.8  182.0
-## 3    4  192.50   NaN   NaN   NaN     0       14.0            NaN        NaN  1.30  ...            0          0               0            0    110.0   3.184  0.645        0.31        8.5   21.0
-## 4    5  214.40   NaN  38.7  95.0     0        NaN            NaN      393.0   NaN  ...            0          0               0            0      NaN     NaN    NaN        0.52        NaN    NaN
+##    pid     age  fio2  pao2  spo2  vent  gcs_total          pupil  platelets   inr  d_dimer  ...  dopamine  epinephrine  milrinone  norepinephrine  vasopressin  glucose     anc    alc  creatinine  bilirubin    alt
+## 0    1    0.06  0.75   NaN  99.0     1        NaN            NaN      199.0  1.46      NaN  ...         1            1          1               0            0      NaN     NaN    NaN        1.03        NaN   36.0
+## 1    2  201.70  0.75  75.3  95.0     1        5.0  both-reactive      243.0  1.18     2.45  ...         1            0          0               1            0    110.0  14.220  2.220        0.51        0.2   32.0
+## 2    3   20.80  1.00  49.5   NaN     1       15.0  both-reactive       49.0  1.60      NaN  ...         1            0          0               0            0     93.0   2.210  0.190        0.33        0.8  182.0
+## 3    4  192.50   NaN   NaN   NaN     0       14.0            NaN        NaN  1.30     2.82  ...         0            0          0               0            0    110.0   3.184  0.645        0.31        8.5   21.0
+## 4    5  214.40   NaN  38.7  95.0     0        NaN            NaN      393.0   NaN      NaN  ...         0            0          0               0            0      NaN     NaN    NaN        0.52        NaN    NaN
 ## 
 ## [5 rows x 27 columns]
 ```

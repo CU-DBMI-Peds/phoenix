@@ -357,6 +357,11 @@ ggplot2::ggplot(DF) +
 #'
 #' ### Example Use
 #'
+#' Note: the mean arterial pressure can be approximated by 2/3*DBP + 1/3*SBP.
+#' To simplify the work and help reduce potential errors, the function
+{{ backtick(map) }}
+#' has been provided to estimate the mean arterial pressure given sbp and dbp.
+#'
 #+ results = "hide"
 card_example <-
   sepsis[c("pid", "dobutamine", "dopamine", "epinephrine", "milrinone", "norepinephrine", "vasopressin", "lactate", "dbp", "sbp", "age")]
@@ -366,7 +371,7 @@ card_example$score <-
     vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
     lactate = lactate,
     age = age,
-    map = dbp + (sbp - dbp)/3,
+    map = map(sbp = sbp, dbp = dbp),
     data = sepsis)
 
 card_example
@@ -598,7 +603,7 @@ phoenix_scores <-
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age,
-      map = dbp + (sbp - dbp)/3,
+      map = map(sbp, dbp),
     # coagulation
       platelets = platelets,
       inr = inr,
@@ -650,7 +655,7 @@ phoenix8_scores <-
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age, # Also used in the renal assessment.
-      map = dbp + (sbp - dbp)/3,
+      map = map(sbp = sbp, dbp = dbp),
     # coagulation
       platelets = platelets,
       inr = inr,

@@ -95,10 +95,10 @@
 #' @export
 phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = NA_integer_, other_respiratory_support = NA_integer_, data = parent.frame(), ...) {
 
-  pfr <- eval(expr = substitute(pf_ratio), envir = data)
-  sfr <- eval(expr = substitute(sf_ratio), envir = data)
-  imv <- eval(expr = substitute(imv),      envir = data)
-  ors <- eval(expr = substitute(other_respiratory_support), envir = data)
+  pfr <- eval(expr = substitute(pf_ratio), envir = data, enclos = parent.frame())
+  sfr <- eval(expr = substitute(sf_ratio), envir = data, enclos = parent.frame())
+  imv <- eval(expr = substitute(imv),      envir = data, enclos = parent.frame())
+  ors <- eval(expr = substitute(other_respiratory_support), envir = data, enclos = parent.frame())
 
   lngths <- c(length(pfr), length(sfr), length(imv), length(ors))
   n <- max(lngths)

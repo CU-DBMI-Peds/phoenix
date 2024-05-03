@@ -52,8 +52,8 @@
 #' @export
 phoenix_hepatic <- function(bilirubin = NA_real_, alt = NA_real_, data = parent.frame(), ...) {
 
-  bil <- eval(expr = substitute(bilirubin), envir = data)
-  alt <- eval(expr = substitute(alt), envir = data)
+  bil <- eval(expr = substitute(bilirubin), envir = data, enclos = parent.frame())
+  alt <- eval(expr = substitute(alt), envir = data, enclos = parent.frame())
 
   lngths <- c(length(bil), length(alt))
   n <- max(lngths)

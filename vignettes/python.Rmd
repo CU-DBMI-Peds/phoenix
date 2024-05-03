@@ -25,6 +25,8 @@ knitr::opts_chunk$set(collapse = TRUE)
 library(reticulate)
 library(phoenix)
 
+#virtualenv_remove(envname = "phoenix")
+
 if (!virtualenv_exists(envname = "phoenix")) {
   virtualenv_create(envname = "phoenix")
   virtualenv_install(envname = "phoenix", packages = c("numpy", "pandas"))
@@ -180,13 +182,17 @@ cat(
     ftnt[grepl("\\^(d|e|f)\\^", ftnt)], sep = "\n")
 ```
 
+As with the R package, the Python module has a function `map` to simplify the
+estimation of mean arterial pressure based on systolic and diagnostic pressures.
+MAP is approximated as (2/3)*DBP + (1/3)*SBP.
+
 ```{python}
 py_card = phx.phoenix_cardiovascular(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] +
                   sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
+    map = phx.map(sepsis["sbp"], sepsis["dbp"])
 )
 print(type(py_card))
 print(py_card)
@@ -197,7 +203,7 @@ r_card <- phoenix_cardiovascular(
   vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
   lactate = lactate,
   age = age,
-  map = dbp + (sbp - dbp)/3,
+  map = map(sbp, dbp),
   data = sepsis
 )
 stopifnot(identical(r_card, as.integer(py$py_card)))
@@ -386,7 +392,7 @@ py_phoenix_scores = phx.phoenix(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    map = phx.map(sepsis["sbp"], sepsis["dbp"]),
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
@@ -444,7 +450,7 @@ py_phoenix8_scores = phx.phoenix8(
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    map = phx.map(sepsis["sbp"], sepsis["dbp"]),
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],

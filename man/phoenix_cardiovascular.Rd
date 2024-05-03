@@ -14,7 +14,7 @@ phoenix_cardiovascular(
 )
 }
 \arguments{
-\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasocative medications are considered: dobutamine, dopamine, epinepherine, milrinone, norepinephrine, vasopressin.}
+\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasoactive medications are considered: dobutamine, dopamine, epinephrine, milrinone, norepinephrine, vasopressin.}
 
 \item{lactate}{numeric vector with the lactate value in mmol/L}
 
