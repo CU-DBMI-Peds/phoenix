@@ -1,3 +1,21 @@
+# Version 1.1.0
+- Initial submission 3 May 2024
+- Update documentation update
+- add the function `map`
+
+## R CMD check results
+
+* local R 4.4.0 - Status OK
+
+* Github Actions:
+  * macOS R-4.4.0 - Status OK
+  * windows R-4.4.0 - Status OK
+  * ubuntu R-4.4.0 - Status OK
+  * ubuntu R-devel - Status OK
+  * ubuntu R-4.3.3 - Status OK
+
+
+
 # Version 1.0.0
 - This is a new release
 - Initial submission 11 Mar 2024
