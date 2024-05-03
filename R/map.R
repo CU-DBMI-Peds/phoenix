@@ -1,12 +1,12 @@
 #' Mean Arterial Pressure
 #'
-#' Estimate mean arterial pressure from systolic and diasoltic blood pressures.
+#' Estimate mean arterial pressure from systolic and diastolic blood pressures.
 #'
 #' Mean Arterial Pressure is approximated by:
 #' (DBP + (SBP - DBP) / 3) = (2/3) DBP + (1/3) SBP
 #'
 #' @param sbp numeric vector, systolic blood pressure measured in mmHg
-#' @param dbp numeric vetor, diasoltic blood pressure measured in mmHg
+#' @param dbp numeric vector, diastolic blood pressure measured in mmHg
 #'
 #' @return a numeric vector
 #'

@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/CU-DBMI-Peds/phoenix/graph/badge.svg?token=PKLXJ9SQOD)](https://app.codecov.io/gh/CU-DBMI-Peds/phoenix)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/phoenix)](http://www.r-pkg.org/pkg/phoenix)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/phoenix)](https://www.r-pkg.org/pkg/phoenix)
 
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 described in:
@@ -40,7 +40,7 @@ If you use this package in your work, please cite the Phoenix criteria by citing
 the two JAMA papers.  Please cite this code base by citing the research letter,
 and if using the R package, cite it explicitly as well.
 
-Bibtex formated citations can be retrived within R via
+Bibtex formatted citations can be retrieved within R via
 
 ```r
 # Manuscripts
@@ -82,9 +82,9 @@ install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 ### Examples
 
 Details on the Phoenix criteria and the use of the R package can be found in the
-the manual for the package, the [Get
-started](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html) on the
-website, or the vignette within R
+manual for the package, the
+[Get started](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html) on
+the website, or the vignette within R
 
 ```r
 vignette("phoenix")
@@ -92,13 +92,17 @@ vignette("phoenix")
 
 ## Python
 
-A python module will be resleased on PyPi soon
+A python module is available on PyPi.  You can install it via `pip`
+
+
+```python
+pip install phoenix-sepsis
+```
+
 
 ### Examples
 
-The forth coming pypi description file
-
-You can read the article [The Phoenix Septic Criteria in Python](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
+Read the article [The Phoenix Septic Criteria in Python](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
 for details and examples of using the python code as is.
 
 ## SQL

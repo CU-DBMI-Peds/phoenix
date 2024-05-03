@@ -1,4 +1,4 @@
-name: phoenix
+name: phoenix-dev
 channels:
   - conda-forge
 dependencies:

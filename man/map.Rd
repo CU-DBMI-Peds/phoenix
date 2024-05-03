@@ -9,13 +9,13 @@ map(sbp, dbp)
 \arguments{
 \item{sbp}{numeric vector, systolic blood pressure measured in mmHg}
 
-\item{dbp}{numeric vetor, diasoltic blood pressure measured in mmHg}
+\item{dbp}{numeric vector, diastolic blood pressure measured in mmHg}
 }
 \value{
 a numeric vector
 }
 \description{
-Estimate mean arterial pressure from systolic and diasoltic blood pressures.
+Estimate mean arterial pressure from systolic and diastolic blood pressures.
 }
 \details{
 Mean Arterial Pressure is approximated by:
