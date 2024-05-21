@@ -1,2 +1,40 @@
 template:
+  bootstrap: 5
   assests: python/phoenix/*.py
+
+reference:
+
+- title: Phoenix
+- contents:
+  - phoenix
+
+- subtitle: Component Scores
+- contents:
+  - phoenix_respiratory
+  - phoenix_cardiovascular
+  - phoenix_coagulation
+  - phoenix_neurologic
+
+- title: Phoenix-8
+- contents:
+  - phoenix8
+- subtitle: Component Scores
+- contents:
+  - phoenix_respiratory
+  - phoenix_cardiovascular
+  - phoenix_coagulation
+  - phoenix_neurologic
+  - phoenix_immunologic
+  - phoenix_endocrine
+  - phoenix_hepatic
+  - phoenix_renal
+  - sepsis
+  - map
+
+- title: Utilities
+- subtitle: Data sets
+- contents:
+  - sepsis
+- subtitle: Functions
+- contents:
+    - map
