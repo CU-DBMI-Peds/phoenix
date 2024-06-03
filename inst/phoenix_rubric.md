@@ -6,7 +6,7 @@
 | &nbsp;&nbsp;SpO~2~:FiO~2~^b^                                          | &geq; 292                        | < 292                   | < 220                    | < 148    | 
 | **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |                                  |                         |                          |          | 
 | &nbsp;&nbsp; Systemic Vasoactive Medications^c^                       | No medications                   | 1 medication            | 2 or more medications    |          | 
-| &nbsp;&nbsp; Lactate^d^ (mmol/L)                                      | &lt; 5                           | 5 &leg; Lactate &lt; 11 | &geq; 11                 |          | 
+| &nbsp;&nbsp; Lactate^d^ (mmol/L)                                      | &lt; 5                           | 5 &leq; Lactate &lt; 11 | &geq; 11                 |          | 
 | &nbsp;&nbsp; Age^e^ (months) adjusted MAP^f^ (mmHg)                   |                                  |                         |                          |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age &lt;   1                       | &geq; 31                         | 17 &leq; MAP &lt; 31    | &lt; 17                  |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   1 &leq; Age &lt;  12                       | &geq; 39                         | 25 &leq; MAP &lt; 39    | &lt; 25                  |          | 
