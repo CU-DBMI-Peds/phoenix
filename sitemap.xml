@@ -1,72 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/phoenix.html</loc>
-  </url>
-  <url>
-    <loc>/articles/python.html</loc>
-  </url>
-  <url>
-    <loc>/articles/sql.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/map.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix8.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_cardiovascular.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_coagulation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_endocrine.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_hepatic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_immunologic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_neurologic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_renal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/phoenix_respiratory.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sepsis.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/phoenix.html</loc></url>
+<url><loc>/articles/python.html</loc></url>
+<url><loc>/articles/sql.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/map.html</loc></url>
+<url><loc>/reference/phoenix-package.html</loc></url>
+<url><loc>/reference/phoenix.html</loc></url>
+<url><loc>/reference/phoenix8.html</loc></url>
+<url><loc>/reference/phoenix_cardiovascular.html</loc></url>
+<url><loc>/reference/phoenix_coagulation.html</loc></url>
+<url><loc>/reference/phoenix_endocrine.html</loc></url>
+<url><loc>/reference/phoenix_hepatic.html</loc></url>
+<url><loc>/reference/phoenix_immunologic.html</loc></url>
+<url><loc>/reference/phoenix_neurologic.html</loc></url>
+<url><loc>/reference/phoenix_renal.html</loc></url>
+<url><loc>/reference/phoenix_respiratory.html</loc></url>
+<url><loc>/reference/sepsis.html</loc></url>
 </urlset>
+
