@@ -11,6 +11,13 @@ described in:
 
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
+Cite the package by citing the application note:
+
+    Peter E DeWitt, Seth Russell, Margaret N Rebull, L Nelson Sanchez-Pinto, Tellen
+    D Bennett, phoenix: an R package and Python module for calculating the Phoenix
+    pediatric sepsis score and criteria, JAMIA Open, Volume 7, Issue 3, October
+    2024, ooae066, https://doi.org/10.1093/jamiaopen/ooae066
+
 ## Phoenix Criteria
 A patient is consider septic if they have a suspected (or proven) infection with
 at total Phoenix score of at least two points.  The Phoenix score is the sum of

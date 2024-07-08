@@ -37,12 +37,17 @@ The repository has been built with R as the primary and default language.
 
 ## Citation
 If you use this package in your work, please cite the Phoenix criteria by citing
-the two JAMA papers.  Please cite this code base by citing the research letter,
+the two JAMA papers.  Please cite this code base by citing the application note,
 and if using the R package, cite it explicitly as well.
+
+    Peter E DeWitt, Seth Russell, Margaret N Rebull, L Nelson Sanchez-Pinto, Tellen
+    D Bennett, phoenix: an R package and Python module for calculating the Phoenix
+    pediatric sepsis score and criteria, JAMIA Open, Volume 7, Issue 3, October
+    2024, ooae066, [doi:10.1093/jamiaopen/ooae066](doi:10.1093/jamiaopen/ooae066)
 
 Bibtex formatted citations can be retrieved within R via
 
-```r
+``` r
 # Manuscripts
 print(citation("phoenix"), bibtex = TRUE)
 
@@ -61,7 +66,7 @@ Or in this repo from the file
 Install the current release from the Comprehensive R Archive Network (CRAN).
 Within R call:
 
-```r
+``` r
 install.packages("phoenix", repos = "https://cran.rstudio.com")
 ```
 
@@ -86,7 +91,7 @@ manual for the package, the
 [Get started](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html) on
 the website, or the vignette within R
 
-```r
+``` r
 vignette("phoenix")
 ```
 
@@ -95,7 +100,7 @@ vignette("phoenix")
 A python module is available on PyPi.  You can install it via `pip`
 
 
-```python
+``` python
 pip install phoenix-sepsis
 ```
 

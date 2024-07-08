@@ -1,13 +1,13 @@
 citHeader("
-There are two references to cite the Phoenix criteria: 
+There are two references to cite the Phoenix criteria:
 
 1) Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024); and\n
 2) Schlapbach, Watson, Sorce, Argent, et al. (2024).
 
 There are two references to cite for the R package itself:
 
-1) DeWitt et al. (2024) (in press and will be updated soon); and\n
-2) the result of evaluating `citation('phoenix', auto = FALSE)`
+1) DeWitt, Russell, Rebull, et al. (2024); and\n
+2) the result of evaluating `citation('phoenix', auto = TRUE)`
 "
 )
 
@@ -47,3 +47,15 @@ bibentry(
     note = "Drs Schlapbach, Watson, Sorce, and Argent contributed equally. Drs Sanchez-Pinto and Bennett contributed equally."
   )
 
+bibentry(
+    bibtype = "article",
+    author = "DeWitt, Peter E and Russell, Seth and Rebull, Margaret N and Sanchez-Pinto, L Nelson and Bennett, Tellen D",
+    title = "phoenix: an R package and Python module for calculating the Phoenix pediatric sepsis score and criteria",
+    journal = "JAMIA Open",
+    volume = "7",
+    issue = "3",
+    month = "October",
+    year = "2024",
+    doi = "10.1093/jamiaopen/ooae066",
+    eprint = "https://academic.oup.com/jamiaopen/article/7/3/ooae066/7706304",
+)
