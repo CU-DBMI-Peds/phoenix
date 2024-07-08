@@ -1,71 +1,23 @@
-# Version 1.1.0
-- Initial submission 3 May 2024
-- Update documentation update
-- add the function `map`
+# Version 1.1.1
+- Initial submission 8 July 2024
+- Update documentation
 
 ## R CMD check results
 
 * local R 4.4.0 - Status OK
 
 * Github Actions:
-  * macOS R-4.4.0 - Status OK
-  * windows R-4.4.0 - Status OK
-  * ubuntu R-4.4.0 - Status OK
+  * macOS R-4.4.1 - Status OK
+  * windows R-4.4.1 - Status OK
+  * ubuntu R-4.4.1 - Status OK
   * ubuntu R-devel - Status OK
   * ubuntu R-4.3.3 - Status OK
 
+NOTE: possible misspelled words in DESCRIPTION
+
+  Rebull (22:62)
 
 
-# Version 1.0.0
-- This is a new release
-- Initial submission 11 Mar 2024
-
-
-## R CMD check results
-
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
-
-
-## Additional checks:
-
-* Github Actions:
-  * macOS R-4.3.2
-  * windows R-4.3.2
-  * ubuntu R-4.3.2
-  * ubuntu R-devel
-  * ubuntu R-4.2.3
-
-* rhub
-
-  * Windows Server 2022; R-devel
-
-  Possibly misspelled words in DESCRIPTION:
-  DeWitt (14:67, 16:61)  -- Correct spelling of my family name
-  Drs (15:57)            -- Correct spelling
-  Schlapbach (18:56)     -- This name is correctly spelled
-  Sorce (19:5)           -- This name is correctly spelled
-  al (15:16, 19:15)      -- part of 'et al.'
-  et (15:13, 19:12)
-
-
-* win-builder.r-project.org
-
-  * R-devel
-    - Status OK
-
-  * R version 4.3.2
-    - Status OK
-
-* Local (macOS Monterey 12.6)
-  * R 4.3.2
-
-## Reverse dependencies
-
-    None
-
-## Reverse suggests
-
-    None
-
+"Rebull" is the correct spelling of the family name of one of the authors
+referenced in the description.  Rebull is listed as one of the package authors
+as well.

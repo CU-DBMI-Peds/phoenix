@@ -1,3 +1,7 @@
+# Version 1.1.1:
+
+* updated documentation and citation details.
+
 # Version 1.1.0:
 
 ## New Features:
