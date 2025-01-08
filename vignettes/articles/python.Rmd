@@ -5,7 +5,7 @@ output:
    toc: true
    toc_depth: 2
    number_sections: false
-bibliography: references.bib
+bibliography: ../references.bib
 vignette: >
  %\VignetteIndexEntry{The Phoenix Sepsis Criteria in Python}
  %\VignetteEngine{knitr::rmarkdown}
