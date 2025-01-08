@@ -205,6 +205,20 @@ cat(ftnt, sep = "\n\n")
 #' ### Scores
 #'
 #+ echo = FALSE, results = "hide", fig.width = 7, fig.height = 4
+#| fig-alt: >
+#|   Respiratory scoring graphic.  Three side by side plots.  All three have
+#|   SpO2:FiO2 (SF) ratio on the x-axis and PaO2:FiO2 (PF) on the y-axis.  The
+#|   left most plot is for patients with no oxygen support.  It is filled
+#|   completely blue indicating a Phoenix Respiratory Score of 0 regardless of
+#|   the SF ratio or PF ratio.  The center plot is for patients with
+#|   non-invasive oxygen support.  The upper right corner for high SF and PF
+#|   ratios, is blue for a Phoenix Respiratory Score of 0.  The rest of the plot
+#|   is a pale green color representing a Phoenix Respiratory Score of 1.  The
+#|   plot on the right is for patients with invasive oxygen support.  High SF or
+#|   PF ratios are blue for scores of 0.  As the SF and PF ratios decrease the
+#|   color of the plot changes from blue to pale green, to light orange, to red.
+#|   The colors represent Phoenix Respiratory Scores of 0, 1, 2, and 3
+#|   respectively.
 resp_data <-
   expand.grid(pfr = seq(0, 450, by = 10), sfr = seq(0, 450, by = 10), imv = c(0, 1), o2 = c(0, 1))
 resp_data$o2 <- pmax(resp_data$imv, resp_data$o2)
@@ -331,6 +345,12 @@ knitr::kable(resp_example)
 #' ### Scores
 #'
 #+ echo = FALSE, results = "hide", fig.width = 7, fig.height = 7
+#| fig-alt: >
+#|   A 9 panel graphic providing a visual reorientation of the Phoenix
+#|   Cardiovascular scores based on mean arterial pressure (y-axis), age in
+#|   months (x-axis), number of vasoactive medications (columns), and lactate
+#|   (rows).  The plots are colored from blue to red with blue representing a
+#|   score of 0 and red representing a score of 6.
 DF <- expand.grid(vasoactives = 0:2,
                   lactate = seq(0, 15, by = 1),
                   age = seq(0, 18 * 12, by = 1),
@@ -406,6 +426,9 @@ knitr::kable(card_example)
 #' assigned is 2.
 #'
 #+ echo = FALSE, results = "hide", fig.height = 7, fig.width = 7
+#| fig-alt: >
+#|   Illustration of the Phoenix Coagulation Score by Fibrinogen, Platelets,
+#|   D-Dimer, and INR values.
 DF <- expand.grid(platelets = c(10, 150),
                   inr = c(1.0, 1.5),
                   d_dimer = c(1.2, 4.0),
