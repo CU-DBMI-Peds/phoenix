@@ -33,7 +33,7 @@ if (!virtualenv_exists(envname = "phoenix")) {
 
   p <- normalizePath("python")  # for how build_site is called locally
   if (!dir.exists(p)) {
-    p <- normalizePath("../python") # for how build_site is called in github actions
+    p <- normalizePath("../../python") # for how build_site is called in github actions
   }
   virtualenv_install(envname = "phoenix", packages = p)
 }
