@@ -11,3 +11,4 @@ docs/*
 python/build/*
 python/*.egg-info/*
 python/dist/*
+docs
