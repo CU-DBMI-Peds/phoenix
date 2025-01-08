@@ -2,6 +2,8 @@ template:
   bootstrap: 5
   assests: python/phoenix/*.py
 
+url: https://cu-dbmi-peds.github.io/phoenix
+
 reference:
 
 - title: Phoenix
