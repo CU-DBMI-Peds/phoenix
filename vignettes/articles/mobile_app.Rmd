@@ -9,8 +9,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-The Phoenix Sepsis Calculator Mobile Application has been developed for iPhone
-and iPad.
+The Phoenix Sepsis Calculator Mobile Application has been developed for iOS and
+Android.
 
 Release on the app store is coming soon.  Additional details about the mobile
 application will be posted here shortly.
@@ -18,7 +18,7 @@ application will be posted here shortly.
 ## Privacy Policy
 
 This policy applies to all information collected within the Phoenix Sepsis
-Calculator app for iPhone or iPad.
+Calculator app for iOS and Android.
 
 ### Information saved
 Settings of the Phoenix Sepsis Calculator app are stored locally on your mobile
