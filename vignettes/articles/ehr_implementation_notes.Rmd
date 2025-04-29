@@ -9,4 +9,44 @@ knitr::opts_chunk$set(
 )
 ```
 
-Coming soon!!! 
+Comming soon!
+
+# Respiratory
+## PaO_2_
+## SpO_2_
+## FiO_2_
+
+# Cardiovascular
+## Systemic Vasocactive Medications
+
+## Lactate
+
+## Age
+## Blood Pressure
+
+# Coagulation
+
+## Platelets
+## INR
+## D-dimer
+## Fibrinogen
+
+# Neurologic
+## GCS
+## Pupils
+
+# Endocrine
+## Glucose
+
+# Immunologic
+## ANC
+## ALC
+
+# Renal
+## Age (see notes in cardiovascular)
+## Creatinine
+
+# Hepatic
+## Total Bilirubin
+## ALT
+
