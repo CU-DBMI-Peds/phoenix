@@ -1,5 +1,5 @@
-devtools::load_all('~/R-dev/phoenix')
-devtools::document("~/R-dev/phoenix")
+#devtools::load_all('~/R-dev/phoenix')
+#devtools::document("~/R-dev/phoenix")
 library(phoenix)
 set.seed(42)
 
@@ -36,7 +36,7 @@ idx <- sample(idx, size = N)
 DATA[["pf_ratio"]][idx] <- sample(U)
 
 temp <-
-data_checks(imv = imv,
+check_data(imv = imv,
                                 other_respiratory_support = other_respiratory_support,
                                 fio2 = fio2,
                                 spo2 = spo2,
@@ -52,7 +52,7 @@ data_checks(imv = imv,
 #with(show_fails(temp, test = 1), table(imv))
 
 temp <-
-data_checks(imv = vent,
+check_data(imv = vent,
                                 other_respiratory_support = as.integer(fio2 > 0.21),
                                 fio2 = fio2,
                                 spo2 = spo2,

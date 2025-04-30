@@ -14,13 +14,11 @@
 #' @param fio2 numeric vector,  FiO2 is the fraction of inspired oxygen with
 #' expected values between 0.21 (room air) to 1.00.
 #'
-#' @name data_checks
-NULL
-
+#' @seealso \link{\code{show_warnings}}, \link{\code{show_failures}},
+#' \link{\code{report}}
 #'
-#' @rdname data_checks
 #' @export
-data_checks <- function(
+check_data <- function(
     pf_ratio = NA_real_
   , sf_ratio = NA_real_
   , pao2 = NA_real_
@@ -173,39 +171,33 @@ data_checks <- function(
   tests
 }
 
-#' @rdname data_checks
 #' @export
 show_warnings <- function(x, test) {
   UseMethod("show_warnings")
 }
 
-#' @rdname data_checks
 #' @export
 show_warnings.phoenix_data_check <- function(x, test) {
   idx <- x[[test]][["warning"]]
   x[["considered_data"]][idx, ]
 }
 
-#' @rdname data_checks
 #' @export
 show_fails <- function(x, test) {
   UseMethod("show_fails")
 }
 
-#' @rdname data_checks
 #' @export
 show_fails.phoenix_data_check <- function(x, test) {
   idx <- x[[test]][["fail"]]
   x[["considered_data"]][idx, ]
 }
 
-#' @rdname data_checks
 #' @export
 report <- function(x, ...) {
   UseMethod("report")
 }
 
-#' @rdname data_checks
 #' @export
 report.phoenix_data_check <- function(x, ...) {
   DF <-
@@ -223,7 +215,7 @@ report.phoenix_data_check <- function(x, ...) {
 
 #' @export
 print.phoenix_data_check <- function(x, ...) {
-  str(x)
+  utils::str(x)
 }
 
 #' @export
@@ -250,7 +242,6 @@ print.phoenix_data_check_report <- function(x, ...) {
   invisible(x)
 }
 
-
 ################################################################################
 # Non-exported functions
 length_check <- function(..., data = parent.frame())
@@ -267,6 +258,6 @@ length_check <- function(..., data = parent.frame())
     }
     stop(msg)
   }
-  
+
   invisible(TRUE)
 }
