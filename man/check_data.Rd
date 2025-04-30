@@ -15,6 +15,18 @@ check_data(
   fio2 = NA_real_,
   imv = NA_integer_,
   other_respiratory_support = NA_integer_,
+  vasoactives = NA_integer_,
+  dopamine = NA_integer_,
+  dobutamine = NA_integer_,
+  epinephrine = NA_integer_,
+  norepinephrine = NA_integer_,
+  milrinone = NA_integer_,
+  vasopressin = NA_integer_,
+  lactate = NA_real_,
+  age = NA_real_,
+  sbp = NA_real_,
+  dbp = NA_real_,
+  map = NA_real_,
   data = parent.frame()
 )
 
@@ -44,6 +56,20 @@ expected values between 0.21 (room air) to 1.00.}
 \item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
 
 \item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
+
+\item{vasoactives}{an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasoactive medications are considered: dobutamine, dopamine, epinephrine, milrinone, norepinephrine, vasopressin.}
+
+\item{dopamine, dobutamine, epinephrine, norepinephrine, milrinone, vasopressin}{integer valued indicator columns for receipt of the specific vasoactive
+medication}
+
+\item{lactate}{numeric vector with the lactate value in mmol/L}
+
+\item{age}{numeric vector age in months}
+
+\item{sbp, dbp}{numeric vectors for systolic and diastolic blood pressure in
+mmHg.}
+
+\item{map}{numeric vector, mean arterial pressure in mmHg}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
@@ -195,4 +221,24 @@ summary(chk)
 show_warnings(chk, test = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))")
 show_failures(chk, test = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))")
 
+################################################################################
+# The Full sepsis data set and check
+chk <- check_data(fio2 = fio2,
+                  pao2 = pao2,
+                  spo2 = spo2,
+                  imv = vent,
+                  other_respiratory_support = as.integer(fio2 > 0.21),
+                  pf_ratio = pao2 / fio2,
+                  sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+                  age = age,
+                  vasoactives = dopamine + dobutamine + epinephrine + norepinephrine + milrinone + vasopressin,
+                  dopamine = dopamine,
+                  dobutamine = dobutamine,
+                  epinephrine = epinephrine,
+                  norepinephrine = norepinephrine,
+                  milrinone = milrinone,
+                  vasopressin = vasopressin,
+                  data = sepsis)
+chk
+show_failures(chk, 21)
 }

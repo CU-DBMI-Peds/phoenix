@@ -13,6 +13,11 @@
 #' valid for use in Phoenix if SpO2 is less than or equal to 97.
 #' @param fio2 numeric vector,  FiO2 is the fraction of inspired oxygen with
 #' expected values between 0.21 (room air) to 1.00.
+#' @param dopamine,dobutamine,epinephrine,norepinephrine,milrinone,vasopressin
+#' integer valued indicator columns for receipt of the specific vasoactive
+#' medication
+#' @param sbp,dbp numeric vectors for systolic and diastolic blood pressure in
+#' mmHg.
 #'
 #' @return
 #'
@@ -35,6 +40,18 @@ check_data <- function(
   , fio2 = NA_real_
   , imv = NA_integer_
   , other_respiratory_support = NA_integer_
+  , vasoactives = NA_integer_
+  , dopamine = NA_integer_
+  , dobutamine = NA_integer_
+  , epinephrine = NA_integer_
+  , norepinephrine = NA_integer_
+  , milrinone = NA_integer_
+  , vasopressin = NA_integer_
+  , lactate = NA_real_
+  , age = NA_real_
+  , sbp = NA_real_
+  , dbp = NA_real_
+  , map = NA_real_
   , data = parent.frame()
   ) {
 
@@ -45,6 +62,20 @@ check_data <- function(
   fio2     <- eval(expr = substitute(fio2),     envir = data, enclos = parent.frame())
   imv      <- eval(expr = substitute(imv),      envir = data, enclos = parent.frame())
   other_respiratory_support  <- eval(expr = substitute(other_respiratory_support), envir = data, enclos = parent.frame())
+
+  age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
+
+  vasoactives    <- eval(expr = substitute(vasoactives),    envir = data, enclos = parent.frame())
+  dopamine       <- eval(expr = substitute(dopamine),       envir = data, enclos = parent.frame())
+  dobutamine     <- eval(expr = substitute(dobutamine),     envir = data, enclos = parent.frame())
+  epinephrine    <- eval(expr = substitute(epinephrine),    envir = data, enclos = parent.frame())
+  norepinephrine <- eval(expr = substitute(norepinephrine), envir = data, enclos = parent.frame())
+  milrinone      <- eval(expr = substitute(milrinone),      envir = data, enclos = parent.frame())
+  vasopressin    <- eval(expr = substitute(vasopressin),    envir = data, enclos = parent.frame())
+  lactate        <- eval(expr = substitute(lactate),        envir = data, enclos = parent.frame())
+  sbp            <- eval(expr = substitute(sbp),            envir = data, enclos = parent.frame())
+  dbp            <- eval(expr = substitute(dbp),            envir = data, enclos = parent.frame())
+  map            <- eval(expr = substitute(map),            envir = data, enclos = parent.frame())
 
   length_check(pf_ratio = pf_ratio,
                sf_ratio = sf_ratio, pao2 = pao2,
@@ -62,6 +93,18 @@ check_data <- function(
   stopifnot(is.numeric(sf_ratio))
   stopifnot(is.numeric(imv))
   stopifnot(is.numeric(other_respiratory_support))
+  stopifnot(is.numeric(age))
+  stopifnot(is.numeric(vasoactives))
+  stopifnot(is.numeric(dopamine))
+  stopifnot(is.numeric(dobutamine))
+  stopifnot(is.numeric(epinephrine))
+  stopifnot(is.numeric(norepinephrine))
+  stopifnot(is.numeric(milrinone))
+  stopifnot(is.numeric(vasopressin))
+  stopifnot(is.numeric(lactate))
+  stopifnot(is.numeric(sbp))
+  stopifnot(is.numeric(dbp))
+  stopifnot(is.numeric(map))
 
   ##############################################################################
   # Tests to report on
@@ -174,6 +217,74 @@ check_data <- function(
     pass = is.na(pao2) | is.na(fio2) | is.na(pf_ratio) | ( (pao2 / fio2) > (pf_ratio - sqrt(.Machine$double.eps)) & (pao2 / fio2) < (pf_ratio + sqrt(.Machine$double.eps)))
   )
 
+  # Age in months
+  new_test(
+    test = "0 <= age < 216",
+    skip = all(is.na(age)),
+    pass = is.na(age) | (age >= 0 & age < 216)
+  )
+  # vasoactive medications is an integer valued column with values 0:6
+  new_test(
+    test = "vasoactives %in% 0:6",
+    skip = all(is.na(vasoactives)),
+    pass = is.na(vasoactives) | (vasoactives %in% 0:6)
+  )
+  new_test(
+    test = "dopamine %in% 0:1",
+    skip = all(is.na(dopamine)),
+    pass = is.na(dopamine) | (dopamine %in% 0:1)
+  )
+  new_test(
+    test = "dobutamine %in% 0:1",
+    skip = all(is.na(dobutamine)),
+    pass = is.na(dobutamine) | (dobutamine %in% 0:1)
+  )
+  new_test(
+    test = "epinephrine %in% 0:1",
+    skip = all(is.na(epinephrine)),
+    pass = is.na(epinephrine) | (epinephrine %in% 0:1)
+  )
+  new_test(
+    test = "norepinephrine %in% 0:1",
+    skip = all(is.na(norepinephrine)),
+    pass = is.na(norepinephrine) | (norepinephrine %in% 0:1)
+  )
+  new_test(
+    test = "milrinone %in% 0:1",
+    skip = all(is.na(milrinone)),
+    pass = is.na(milrinone) | (milrinone %in% 0:1)
+  )
+  new_test(
+    test = "vasopressin %in% 0:1",
+    skip = all(is.na(vasopressin)),
+    pass = is.na(vasopressin) | (vasopressin %in% 0:1)
+  )
+
+  v6 <- ifelse(is.na(dopamine),       0, dopamine) +
+        ifelse(is.na(dobutamine),     0, dobutamine) +
+        ifelse(is.na(epinephrine),    0, epinephrine) +
+        ifelse(is.na(norepinephrine), 0, norepinephrine) +
+        ifelse(is.na(milrinone),      0, milrinone) +
+        ifelse(is.na(vasopressin),    0, vasopressin)
+
+  new_test(
+    test = "vasoactives = dop + dob + epi + nor + mil + vas",
+    skip = all(is.na(vasoactives)) |
+      (
+       all(is.na(dopamine))    & all(is.na(dobutamine)) &
+       all(is.na(epinephrine)) & all(is.na(norepinephrine)) &
+       all(is.na(milrinone))   & all(is.na(vasopressin))
+      ),
+    pass = is.na(vasoactives) | 
+      (
+       is.na(dopamine)    & is.na(dobutamine) &
+       is.na(epinephrine) & is.na(norepinephrine) &
+       is.na(milrinone)   & is.na(vasopressin)
+     ) |
+     (vasoactives == v6)
+  )
+
+
   ##############################################################################
   # Build a simple report for the results
   tests[["report"]] <-
@@ -204,7 +315,27 @@ check_data <- function(
   ##############################################################################
   #
   tests[["considered_data"]] <-
-    data.frame(fio2, spo2, pao2, sf_ratio, pf_ratio, imv, other_respiratory_support)
+    data.frame(
+        fio2
+      , spo2
+      , pao2
+      , sf_ratio
+      , pf_ratio
+      , imv
+      , other_respiratory_support
+      , vasoactives 
+      , dopamine 
+      , dobutamine 
+      , epinephrine 
+      , norepinephrine
+      , milrinone
+      , vasopressin 
+      , lactate 
+      , age
+      , sbp
+      , dbp
+      , map
+    )
 
   class(tests) <- "phoenix_data_check"
   tests

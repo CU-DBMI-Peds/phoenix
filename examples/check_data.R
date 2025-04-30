@@ -123,3 +123,23 @@ summary(chk)
 show_warnings(chk, test = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))")
 show_failures(chk, test = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))")
 
+################################################################################
+# The Full sepsis data set and check
+chk <- check_data(fio2 = fio2,
+                  pao2 = pao2,
+                  spo2 = spo2,
+                  imv = vent,
+                  other_respiratory_support = as.integer(fio2 > 0.21),
+                  pf_ratio = pao2 / fio2,
+                  sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+                  age = age,
+                  vasoactives = dopamine + dobutamine + epinephrine + norepinephrine + milrinone + vasopressin,
+                  dopamine = dopamine,
+                  dobutamine = dobutamine,
+                  epinephrine = epinephrine,
+                  norepinephrine = norepinephrine,
+                  milrinone = milrinone,
+                  vasopressin = vasopressin,
+                  data = sepsis)
+chk
+show_failures(chk, 21)
