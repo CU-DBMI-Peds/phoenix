@@ -2,7 +2,9 @@
 % Please edit documentation in R/check_data.R
 \name{check_data}
 \alias{check_data}
-\title{Phoenix Input Data Quality Checks}
+\alias{show_warnings}
+\alias{show_failures}
+\title{Checking Data Assumptions for Phoenix}
 \usage{
 check_data(
   pf_ratio = NA_real_,
@@ -14,6 +16,10 @@ check_data(
   other_respiratory_support = NA_integer_,
   data = parent.frame()
 )
+
+show_warnings(x, test)
+
+show_failures(x, test)
 }
 \arguments{
 \item{pf_ratio}{numeric vector for the PaO2/FiO2 ratio; PaO2 = arterial oxygen pressure; FiO2 = fraction of inspired oxygen;  PaO2 is measured in mmHg and FiO2 is from 0.21 (room air) to 1.00.}
@@ -38,11 +44,16 @@ expected values between 0.21 (room air) to 1.00.}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 }
-\description{
-A suite of functions for identifying potentially invalid data values in the
-input data for Phoenix scoring.
+\value{
+\code{check_data} returns a \code{phoenix_data_check} object.  This
+is a list of tests and a \code{data.frame} called "considered_data" which is
+the effective data set considered.  This is an important distinction.  Say
+you check \code{sf_ratio = spo2/fio2}.  The \code{check_data} will only check
+the assuptions around sf_ration specifically, and will not check assumptions
+about spo2 or fio2.  To get checks of all three you will need to specify all
+three in the call to \code{check_data}.
 }
-\seealso{
-\link{\code{show_warnings}}, \link{\code{show_failures}},
-\link{\code{report}}
+\description{
+A suite of tests for identifying potentially invalid data values in the
+input data for Phoenix scoring.
 }

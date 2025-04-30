@@ -1,6 +1,6 @@
-#' Phoenix Input Data Quality Checks
+#' Checking Data Assumptions for Phoenix
 #'
-#' A suite of functions for identifying potentially invalid data values in the
+#' A suite of tests for identifying potentially invalid data values in the
 #' input data for Phoenix scoring.
 #'
 #' @inheritParams phoenix8
@@ -14,8 +14,15 @@
 #' @param fio2 numeric vector,  FiO2 is the fraction of inspired oxygen with
 #' expected values between 0.21 (room air) to 1.00.
 #'
-#' @seealso \link{\code{show_warnings}}, \link{\code{show_failures}},
-#' \link{\code{report}}
+#' @return 
+#'
+#' \code{check_data} returns a \code{phoenix_data_check} object.  This
+#' is a list of tests and a \code{data.frame} called "considered_data" which is
+#' the effective data set considered.  This is an important distinction.  Say
+#' you check \code{sf_ratio = spo2/fio2}.  The \code{check_data} will only check
+#' the assuptions around sf_ration specifically, and will not check assumptions
+#' about spo2 or fio2.  To get checks of all three you will need to specify all
+#' three in the call to \code{check_data}.
 #'
 #' @export
 check_data <- function(
@@ -58,8 +65,10 @@ check_data <- function(
   ##############################################################################
   # Tests to report on
   tests <- list()
+
   new_test <- function(test = "", warn_if = "", skip, pass = !fail, warn = NULL, fail = !pass) {
-    thistest <- list(list(test = test, warn_if = warn_if))
+    thistest <- list(list(warn_if = warn_if))
+    names(thistest) <- test
     if (skip) {
       thistest[[1]][["pass"]]    <- integer(0)
       thistest[[1]][["warning"]] <- integer(0)
@@ -164,6 +173,17 @@ check_data <- function(
     pass = is.na(pao2) | is.na(fio2) | is.na(pf_ratio) | ( (pao2 / fio2) > (pf_ratio - sqrt(.Machine$double.eps)) & (pao2 / fio2) < (pf_ratio + sqrt(.Machine$double.eps)))
   )
 
+  ##############################################################################
+  # Build a simple report for the results
+  tests[["report"]] <-
+    data.frame(test    = names(tests),
+               warn_if = sapply(tests, function(x) x[["warn_if"]]),
+               pass    = sapply(tests, function(x) length(x[["pass"]])),
+               warning = sapply(tests, function(x) length(x[["warning"]])),
+               fail    = sapply(tests, function(x) length(x[["fail"]])),
+               skipped = sapply(tests, function(x) x[["skip"]]),
+               row.names = NULL)
+
   tests[["considered_data"]] <-
     data.frame(fio2, spo2, pao2, sf_ratio, pf_ratio, imv, other_respiratory_support)
 
@@ -171,6 +191,7 @@ check_data <- function(
   tests
 }
 
+#' @rdname check_data
 #' @export
 show_warnings <- function(x, test) {
   UseMethod("show_warnings")
@@ -182,58 +203,33 @@ show_warnings.phoenix_data_check <- function(x, test) {
   x[["considered_data"]][idx, ]
 }
 
+#' @rdname check_data
 #' @export
-show_fails <- function(x, test) {
+show_failures <- function(x, test) {
   UseMethod("show_fails")
 }
 
 #' @export
-show_fails.phoenix_data_check <- function(x, test) {
+show_failures.phoenix_data_check <- function(x, test) {
   idx <- x[[test]][["fail"]]
   x[["considered_data"]][idx, ]
 }
 
 #' @export
-report <- function(x, ...) {
-  UseMethod("report")
-}
-
-#' @export
-report.phoenix_data_check <- function(x, ...) {
-  DF <-
-    data.frame(test    = sapply(x[-length(x)], function(x) x[["test"]]),
-               warn_if = sapply(x[-length(x)], function(x) x[["warn_if"]]),
-               pass    = sapply(x[-length(x)], function(x) length(x[["pass"]])),
-               warning = sapply(x[-length(x)], function(x) length(x[["warning"]])),
-               fail    = sapply(x[-length(x)], function(x) length(x[["fail"]])),
-               skipped = sapply(x[-length(x)], function(x) x[["skip"]]),
-               row.names = NULL
-    )
-  class(DF) <- c("phoenix_data_check_report", class(DF))
-  DF
-}
-
-#' @export
 print.phoenix_data_check <- function(x, ...) {
-  utils::str(x)
-}
-
-#' @export
-print.phoenix_data_check_report <- function(x, ...) {
   cat("\nReport of the number of rows passing, failing, or with warning(s)\n\n")
-  NextMethod(x)
 
-  if (any(x[["warning"]] > 0) | any(x[["fail"]] > 0)) {
+  if (any(x[["report"]][["warning"]] > 0) | any(x[["report"]][["fail"]] > 0)) {
 
-    if (any(x[["warning"]] > 0)) {
+    if (any(x[["report"]][["warning"]] > 0)) {
       warning("There is at least one test with warnings.")
     }
 
-    if (any(x[["fail"]] > 0)) {
+    if (any(x[["report"]][["fail"]] > 0)) {
       warning("There is at least one test with failings.")
     }
 
-  } else if (all(x[["skipped"]])) {
+  } else if (all(x[["report"]][["skipped"]])) {
       warning("All tests were skipped")
   } else {
     message("No warnings.  No failures.")

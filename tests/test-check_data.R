@@ -1,4 +1,4 @@
-#devtools::load_all('~/R-dev/phoenix')
+devtools::load_all('~/R-dev/phoenix')
 #devtools::document("~/R-dev/phoenix")
 library(phoenix)
 set.seed(42)
@@ -36,18 +36,18 @@ idx <- sample(idx, size = N)
 DATA[["pf_ratio"]][idx] <- sample(U)
 
 temp <-
-check_data(imv = imv,
-                                other_respiratory_support = other_respiratory_support,
-                                fio2 = fio2,
-                                spo2 = spo2,
-                                pao2 = pao2,
-                                sf_ratio = sf_ratio,
-                                pf_ratio = pf_ratio,
-                                data = DATA)
+  check_data(imv = imv,
+             other_respiratory_support = other_respiratory_support,
+             fio2 = fio2,
+             spo2 = spo2,
+             pao2 = pao2,
+             sf_ratio = sf_ratio,
+             pf_ratio = pf_ratio,
+             data = DATA)
 #lapply(temp, names)
 #temp# |> print()
 #temp
-#report(temp)
+temp
 #show_warnings(temp, test = 4) |> head()
 #with(show_fails(temp, test = 1), table(imv))
 
@@ -58,6 +58,6 @@ check_data(imv = vent,
                                 spo2 = spo2,
                                 pao2 = pao2,
                                 data = sepsis)
-temp |> report()
+temp
 #show_fails(temp, 3)
 

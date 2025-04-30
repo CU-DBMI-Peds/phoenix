@@ -3,7 +3,7 @@
 ## User visable changes
 
 * Add the function `data_check` for checking assumptions about the input data
-  - Also add `report`, `show_warnings`, and `show_failures` for working with the
+  - Also add `show_warnings`, and `show_failures` for working with the
     results from `data_check`
 
 ## Non User visable changes
