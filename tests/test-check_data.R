@@ -48,6 +48,8 @@ temp <-
 #temp# |> print()
 #temp
 temp
+print(temp)
+summary(temp)
 #show_warnings(temp, test = 4) |> head()
 #with(show_fails(temp, test = 1), table(imv))
 
@@ -58,6 +60,8 @@ check_data(imv = vent,
                                 spo2 = spo2,
                                 pao2 = pao2,
                                 data = sepsis)
-temp
+str(temp)
+print(temp)
+summary(temp)
 #show_fails(temp, 3)
 

@@ -14,7 +14,7 @@
 #' @param fio2 numeric vector,  FiO2 is the fraction of inspired oxygen with
 #' expected values between 0.21 (room air) to 1.00.
 #'
-#' @return 
+#' @return
 #'
 #' \code{check_data} returns a \code{phoenix_data_check} object.  This
 #' is a list of tests and a \code{data.frame} called "considered_data" which is
@@ -23,6 +23,8 @@
 #' the assuptions around sf_ration specifically, and will not check assumptions
 #' about spo2 or fio2.  To get checks of all three you will need to specify all
 #' three in the call to \code{check_data}.
+#'
+#' @example examples/check_data.R
 #'
 #' @export
 check_data <- function(
@@ -45,8 +47,7 @@ check_data <- function(
   other_respiratory_support  <- eval(expr = substitute(other_respiratory_support), envir = data, enclos = parent.frame())
 
   length_check(pf_ratio = pf_ratio,
-               sf_ratio = sf_ratio,
-               pao2 = pao2,
+               sf_ratio = sf_ratio, pao2 = pao2,
                spo2 = spo2,
                fio2 = fio2,
                imv = imv,
@@ -184,6 +185,24 @@ check_data <- function(
                skipped = sapply(tests, function(x) x[["skip"]]),
                row.names = NULL)
 
+  ##############################################################################
+  #
+  if (any(tests[["report"]][["warning"]] > 0) | any(tests[["report"]][["fail"]] > 0)) {
+
+    if (any(tests[["report"]][["warning"]] > 0)) {
+      warning("There is at least one test with warnings.")
+    }
+
+    if (any(tests[["report"]][["fail"]] > 0)) {
+      warning("There is at least one test with failures.")
+    }
+
+  } else if (all(tests[["report"]][["skipped"]])) {
+    warning("All tests were skipped.")
+  }
+
+  ##############################################################################
+  #
   tests[["considered_data"]] <-
     data.frame(fio2, spo2, pao2, sf_ratio, pf_ratio, imv, other_respiratory_support)
 
@@ -192,6 +211,8 @@ check_data <- function(
 }
 
 #' @rdname check_data
+#' @param x a \code{phoenix_data_check} object
+#' @param test the name or index of the test you want
 #' @export
 show_warnings <- function(x, test) {
   UseMethod("show_warnings")
@@ -215,28 +236,58 @@ show_failures.phoenix_data_check <- function(x, test) {
   x[["considered_data"]][idx, ]
 }
 
+#' @rdname check_data
+#' @param full_report when \code{TRUE} print all tests.  When \code{FALSE} print
+#' only non-skipped tests.
 #' @export
-print.phoenix_data_check <- function(x, ...) {
+print.phoenix_data_check <- function(x, full_report = FALSE, ...) {
+  stopifnot(isTRUEisFALSE(full_report))
   cat("\nReport of the number of rows passing, failing, or with warning(s)\n\n")
 
-  if (any(x[["report"]][["warning"]] > 0) | any(x[["report"]][["fail"]] > 0)) {
-
-    if (any(x[["report"]][["warning"]] > 0)) {
-      warning("There is at least one test with warnings.")
-    }
-
-    if (any(x[["report"]][["fail"]] > 0)) {
-      warning("There is at least one test with failings.")
-    }
-
-  } else if (all(x[["report"]][["skipped"]])) {
-      warning("All tests were skipped")
+  if (full_report) {
+    print(x[["report"]])
   } else {
-    message("No warnings.  No failures.")
+    print(x[["report"]][["skipped"]][!x[["report"]][["skipped"]], ])
+  }
+
+
+  invisible(x)
+}
+
+#' @export
+summary.phoenix_data_check <- function(object, ...) {
+  tests <- nrow(object[["report"]])
+  skips <- sum(object[["report"]][["skipped"]])
+  fails <- sum(object[["report"]][["fail"]] > 0)
+  warns <- sum(object[["report"]][["warning"]] > 0)
+  pass  <- sum((object[["report"]][["pass"]] > 0) &
+               (object[["report"]][["fail"]] == 0) &
+               (object[["report"]][["warning"]] == 0) &
+               !(object[["report"]][["skipped"]]))
+  rtn <- list(tests = tests,
+              tests_skipped = skips,
+              tests_failed  = fails,
+              tests_warned  = warns,
+              tests_pass    = pass)
+  class(rtn) <- "phoenix_data_check_summary"
+  rtn
+}
+
+#' @export
+print.phoenix_data_check_summary <- function(x, ...) {
+  labels <- c("tests:", "  skipped:", "  failed:", "  warned:", "  passed:")
+  values <- c(x$tests, x$tests_skipped, x$tests_failed, x$tests_warned, x$tests_pass)
+
+  label_width <- max(nchar(labels))
+  value_width <- max(nchar(as.character(values)))
+
+  for (i in 1:length(labels)) {
+    cat(sprintf("%-*s %*d\n", label_width, labels[i], value_width, values[i]))
   }
 
   invisible(x)
 }
+
 
 ################################################################################
 # Non-exported functions

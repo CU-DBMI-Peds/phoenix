@@ -4,6 +4,7 @@
 \alias{check_data}
 \alias{show_warnings}
 \alias{show_failures}
+\alias{print.phoenix_data_check}
 \title{Checking Data Assumptions for Phoenix}
 \usage{
 check_data(
@@ -20,6 +21,8 @@ check_data(
 show_warnings(x, test)
 
 show_failures(x, test)
+
+\method{print}{phoenix_data_check}(x, full_report = FALSE, ...)
 }
 \arguments{
 \item{pf_ratio}{numeric vector for the PaO2/FiO2 ratio; PaO2 = arterial oxygen pressure; FiO2 = fraction of inspired oxygen;  PaO2 is measured in mmHg and FiO2 is from 0.21 (room air) to 1.00.}
@@ -43,6 +46,15 @@ expected values between 0.21 (room air) to 1.00.}
 \item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
+
+\item{x}{a \code{phoenix_data_check} object}
+
+\item{test}{the name or index of the test you want}
+
+\item{full_report}{when \code{TRUE} print all tests.  When \code{FALSE} print
+only non-skipped tests.}
+
+\item{...}{pass through}
 }
 \value{
 \code{check_data} returns a \code{phoenix_data_check} object.  This
@@ -56,4 +68,7 @@ three in the call to \code{check_data}.
 \description{
 A suite of tests for identifying potentially invalid data values in the
 input data for Phoenix scoring.
+}
+\examples{
+check_data(imv = 2)
 }
