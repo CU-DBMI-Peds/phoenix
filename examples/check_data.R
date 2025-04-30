@@ -1,3 +1,6 @@
+################################################################################
+# EXAMPLE 1
+#
 # Let's check the requirments for spo2, fio2, and sf_ratio
 #
 # Start with a large set of spo2 and fio2 values.  This includes impossible
@@ -50,3 +53,73 @@ unique(sf$spo2)
 # If you want to get the indices for the considered data where the test failed:
 idx <- chk[["0 <= spo2 <= 100"]]$fail
 head(DF[idx, ])
+
+################################################################################
+# Example 2
+#
+# Use the example sepsis data set provided in the phoenix package
+#
+# We'll focus on the elements needed for respiratory scoring.  The sepsis data
+# set only has FiO2, PaO2, SpO2, and an indicator for invasive mechanical
+# ventilation.  We need to build the pf_ratio, the sf_ratio, and the
+# other_respiratory_support vectors.
+#
+# Start by checking the data that is provided.  All the checks pass.
+chk <- check_data(fio2 = fio2, pao2 = pao2, spo2 = spo2, imv = vent, data = sepsis)
+summary(chk)
+
+# Let's add on a definition for other_respiratory_support
+chk <- check_data(fio2 = fio2,
+                  pao2 = pao2,
+                  spo2 = spo2,
+                  imv = vent,
+                  other_respiratory_support = as.integer(fio2 > 0.21),
+                  data = sepsis)
+summary(chk)
+
+# A useful feature of check_data is that it will return the "considered_data"
+# which will have the vector for other_respiratory_support now
+head(chk$considered_data)
+
+# Let's build the pf_ratio,  no warnings, no failed tests.
+chk <- check_data(fio2 = fio2,
+                  pao2 = pao2,
+                  spo2 = spo2,
+                  imv = vent,
+                  other_respiratory_support = as.integer(fio2 > 0.21),
+                  pf_ratio = pao2 / fio2,
+                  data = sepsis)
+summary(chk)
+
+# Build the sf_ratio, we now have tests with warnings and failures
+chk <- check_data(fio2 = fio2,
+                  pao2 = pao2,
+                  spo2 = spo2,
+                  imv = vent,
+                  other_respiratory_support = as.integer(fio2 > 0.21),
+                  pf_ratio = pao2 / fio2,
+                  sf_ratio = spo2 / fio2,
+                  data = sepsis)
+summary(chk)
+
+chk
+show_failures(chk, test = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))")
+
+# The problem is that SpO2 > 97 which makes the sf_ratio invalid for phoenix
+# scoring. See references for details.
+
+# Let's improve the definition for the sf_ratio.  This will remove the notice of
+# a failed test, but will retain the warning of a spo2 value greater than 97.
+chk <- check_data(fio2 = fio2,
+                  pao2 = pao2,
+                  spo2 = spo2,
+                  imv = vent,
+                  other_respiratory_support = as.integer(fio2 > 0.21),
+                  pf_ratio = pao2 / fio2,
+                  sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+                  data = sepsis)
+chk
+summary(chk)
+show_warnings(chk, test = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))")
+show_failures(chk, test = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))")
+

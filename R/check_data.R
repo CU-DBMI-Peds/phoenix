@@ -148,12 +148,12 @@ check_data <- function(
   new_test(
     test = "(fio2 > 0.21) == other_respiratory_support",
     skip = all(is.na(fio2)) | all(is.na(other_respiratory_support)),
-    pass = (as.integer(fio2 > 0.21) == other_respiratory_support)
+    pass = is.na(fio2) | is.na(other_respiratory_support) | (as.integer(fio2 > 0.21) == other_respiratory_support)
   )
 
   ## check for the condition that sf_ratio is only used when spo2 is <= 97
   new_test(
-    test    = "spo2 <= 97 | (spo2 > 97 & is.na(sf_ratio))",
+    test    = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))",
     warn_if = "spo2 > 97",
     skip    = all(is.na(sf_ratio)) | all(is.na(spo2)),
     pass    = is.na(sf_ratio) | is.na(spo2) | ((spo2 > 97) & is.na(sf_ratio)) | (spo2 <= 97),
