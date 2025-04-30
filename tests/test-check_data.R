@@ -1,5 +1,3 @@
-devtools::load_all('~/R-dev/phoenix')
-#devtools::document("~/R-dev/phoenix")
 library(phoenix)
 set.seed(42)
 

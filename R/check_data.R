@@ -227,7 +227,7 @@ show_warnings.phoenix_data_check <- function(x, test) {
 #' @rdname check_data
 #' @export
 show_failures <- function(x, test) {
-  UseMethod("show_fails")
+  UseMethod("show_failures")
 }
 
 #' @export
@@ -241,13 +241,13 @@ show_failures.phoenix_data_check <- function(x, test) {
 #' only non-skipped tests.
 #' @export
 print.phoenix_data_check <- function(x, full_report = FALSE, ...) {
-  stopifnot(isTRUEisFALSE(full_report))
+  stopifnot(isTRUEorFALSE(full_report))
   cat("\nReport of the number of rows passing, failing, or with warning(s)\n\n")
 
   if (full_report) {
     print(x[["report"]])
   } else {
-    print(x[["report"]][["skipped"]][!x[["report"]][["skipped"]], ])
+    print(x[["report"]][which(!x[["report"]][["skipped"]]), c("test", "warn_if", "pass", "warning", "fail")])
   }
 
 
@@ -287,7 +287,6 @@ print.phoenix_data_check_summary <- function(x, ...) {
 
   invisible(x)
 }
-
 
 ################################################################################
 # Non-exported functions
