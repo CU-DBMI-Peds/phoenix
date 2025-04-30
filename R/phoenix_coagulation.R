@@ -70,18 +70,7 @@ phoenix_coagulation <- function(platelets = NA_real_, inr = NA_real_, d_dimer = 
   ddm <- eval(expr = substitute(d_dimer), envir = data, enclos = parent.frame())
   fib <- eval(expr = substitute(fibrinogen), envir = data, enclos = parent.frame())
 
-  lngths <- c(length(plt), length(inr), length(ddm), length(fib))
-  n <- max(lngths)
-
-  if (!all(lngths %in% c(1L, n))) {
-    fmt <- paste("All inputs need to either have the same length or have length 1.",
-                 "Length of platelets is %s;",
-                 "Length of inr is %s;",
-                 "Length of d_dimer is %s;",
-                 "Length of fibrinogen is %s.")
-    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
-    stop(msg)
-  }
+  length_check(platelets = plt, inr = inr, d_dimer = ddm, fibrinogen = fib)
 
   # set "healthy" value for missing data
   plt <- replace(plt, which(is.na(plt)), Inf)

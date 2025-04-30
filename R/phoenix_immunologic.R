@@ -61,16 +61,7 @@ phoenix_immunologic <- function(anc = NA_real_, alc = NA_real_, data = parent.fr
   anc <- eval(expr = substitute(anc), envir = data, enclos = parent.frame())
   alc <- eval(expr = substitute(alc), envir = data, enclos = parent.frame())
 
-  lngths <- c(length(anc), length(alc))
-  n <- max(lngths)
-
-  if (!all(lngths %in% c(1L, n))) {
-    fmt <- paste("All inputs need to either have the same length or have length 1.",
-                 "Length of anc is %s;",
-                 "Length of alc is %s.")
-    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
-    stop(msg)
-  }
+  length_check(anc = anc, alc = alc)
 
   # set "healthy" value for missing data
   anc <- replace(anc, which(is.na(anc)), 555)

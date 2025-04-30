@@ -79,16 +79,7 @@ phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.f
   crt <- eval(expr = substitute(creatinine), envir = data, enclos = parent.frame())
   age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
 
-  lngths <- c(length(crt), length(age))
-  n <- max(lngths)
-
-  if (!all(lngths %in% c(1L, n))) {
-    fmt <- paste("All inputs need to either have the same length or have length 1.",
-                 "Length of creatinine is %s;",
-                 "Length of age is %s.")
-    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
-    stop(msg)
-  }
+  length_check(creatinine = crt, age = age)
 
   # set "healthy" value for missing data
   missing_idx <- which(is.na(age) | is.na(crt))
