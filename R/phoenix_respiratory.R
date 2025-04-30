@@ -100,18 +100,7 @@ phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = 
   imv <- eval(expr = substitute(imv),      envir = data, enclos = parent.frame())
   ors <- eval(expr = substitute(other_respiratory_support), envir = data, enclos = parent.frame())
 
-  lngths <- c(length(pfr), length(sfr), length(imv), length(ors))
-  n <- max(lngths)
-
-  if (!all(lngths %in% c(1L, n))) {
-    fmt <- paste("All inputs need to either have the same length or have length 1.",
-                 "Length of pf_ratio is %s;",
-                 "Length of sf_ratio is %s;",
-                 "Length of imv is %s;",
-                 "Length of other_respiratory_support is %s.")
-    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
-    stop(msg)
-  }
+  length_check(pf_ratio = pfr, sf_ratio = sfr, imv = imv, other_respiratory_support = ors)
 
   # set "healthy" value for missing data
   pfr <- replace(pfr, which(is.na(pfr)), 500)

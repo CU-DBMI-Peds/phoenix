@@ -1,3 +1,12 @@
+# Version 1.1.1.9000:
+
+## User visable changes
+
+## Non User visable changes
+
+* Add the non-exported function `length_check` 
+* Improvements to testing suite
+
 # Version 1.1.1:
 
 * updated documentation and citation details.
