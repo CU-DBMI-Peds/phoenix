@@ -133,24 +133,12 @@
 #'
 #' @export
 phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_, age = NA_real_, map = NA_real_, data = parent.frame(), ...) {
-
   vas <- eval(expr = substitute(vasoactives), envir = data, enclos = parent.frame())
   lct <- eval(expr = substitute(lactate), envir = data, enclos = parent.frame())
   age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
   map <- eval(expr = substitute(map), envir = data, enclos = parent.frame())
 
-  lngths <- c(length(vas), length(lct), length(age), length(map))
-  n <- max(lngths)
-
-  if (!all(lngths %in% c(1L, n))) {
-    fmt <- paste("All inputs need to either have the same length or have length 1.",
-                 "Length of vasoactives is %s;",
-                 "Length of lactate is %s;",
-                 "Length of age is %s;",
-                 "Length of map is %s.")
-    msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
-    stop(msg)
-  }
+  length_check(vasoactives = vas, lactate = lct, age = age, map = map)
 
   # set "healthy" value for missing data
   vas <- as.integer(replace(vas, which(is.na(vas)), 0))

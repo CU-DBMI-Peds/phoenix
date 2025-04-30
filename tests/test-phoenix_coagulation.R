@@ -60,18 +60,12 @@ stopifnot(identical(phoenix_coagulation(fibrinogen = 99, d_dimer = c(NA, 1.9, 2.
 ################################################################################
 # verify error if lengths differ
 x <- tryCatch(phoenix_coagulation(platelets = numeric(0)), error = function(e) e)
-stopifnot(inherits(x, "simpleError"))
-stopifnot(identical(
-  x$message,
- "All inputs need to either have the same length or have length 1. Length of platelets is 0; Length of inr is 1; Length of d_dimer is 1; Length of fibrinogen is 1."
-))
+stopifnot(isTRUE(inherits(x, "error")))
+stopifnot(grepl("All inputs need to either have the same length or have length 1.", x$message))
 
 x <- tryCatch(phoenix_coagulation(platelets = c(NA, NA), d_dimer = c(NA, NA, NA)), error = function(e) e)
-stopifnot(inherits(x, "simpleError"))
-stopifnot(identical(
-  x$message,
- "All inputs need to either have the same length or have length 1. Length of platelets is 2; Length of inr is 1; Length of d_dimer is 3; Length of fibrinogen is 1."
-))
+stopifnot(isTRUE(inherits(x, "error")))
+stopifnot(grepl("All inputs need to either have the same length or have length 1.", x$message))
 
 
 ################################################################################

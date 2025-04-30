@@ -20,18 +20,12 @@ stopifnot(identical(phoenix_neurologic(data = sepsis), 0L))
 ################################################################################
 # verify error if lengths differ
 x <- tryCatch(phoenix_neurologic(gcs = numeric(0)), error = function(e) e)
-stopifnot(inherits(x, "simpleError"))
-stopifnot(identical(
-  x$message,
- "All inputs need to either have the same length or have length 1. Length of gcs is 0; Length of fixed_pupils is 1."
-))
+stopifnot(isTRUE(inherits(x, "error")))
+stopifnot(grepl("All inputs need to either have the same length or have length 1.", x$message))
 
 x <- tryCatch(phoenix_neurologic(gcs = c(NA, NA), fixed_pupils = c(NA, NA, NA)), error = function(e) e)
-stopifnot(inherits(x, "simpleError"))
-stopifnot(identical(
-  x$message,
- "All inputs need to either have the same length or have length 1. Length of gcs is 2; Length of fixed_pupils is 3."
-))
+stopifnot(isTRUE(inherits(x, "error")))
+stopifnot(grepl("All inputs need to either have the same length or have length 1.", x$message))
 
 ################################################################################
 #                                 End of File                                  #
