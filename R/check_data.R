@@ -52,6 +52,18 @@ check_data <- function(
   , sbp = NA_real_
   , dbp = NA_real_
   , map = NA_real_
+  , platelets = NA_real_
+  , inr = NA_real_
+  , d_dimer = NA_real_
+  , fibrinogen = NA_real_
+  , gcs = NA_real_
+  , fixed_pupils = NA_real_
+  , glucose = NA_real_
+  , anc = NA_real_
+  , alc = NA_real_
+  , creatinine = NA_real_
+  , bilirubin = NA_real_
+  , alt = NA_real_
   , data = parent.frame()
   ) {
 
@@ -62,9 +74,7 @@ check_data <- function(
   fio2     <- eval(expr = substitute(fio2),     envir = data, enclos = parent.frame())
   imv      <- eval(expr = substitute(imv),      envir = data, enclos = parent.frame())
   other_respiratory_support  <- eval(expr = substitute(other_respiratory_support), envir = data, enclos = parent.frame())
-
-  age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
-
+  age            <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
   vasoactives    <- eval(expr = substitute(vasoactives),    envir = data, enclos = parent.frame())
   dopamine       <- eval(expr = substitute(dopamine),       envir = data, enclos = parent.frame())
   dobutamine     <- eval(expr = substitute(dobutamine),     envir = data, enclos = parent.frame())
@@ -76,13 +86,51 @@ check_data <- function(
   sbp            <- eval(expr = substitute(sbp),            envir = data, enclos = parent.frame())
   dbp            <- eval(expr = substitute(dbp),            envir = data, enclos = parent.frame())
   map            <- eval(expr = substitute(map),            envir = data, enclos = parent.frame())
+  platelets      <- eval(expr = substitute(platelets),      envir = data, enclos = parent.frame())
+  inr            <- eval(expr = substitute(inr),            envir = data, enclos = parent.frame())
+  d_dimer        <- eval(expr = substitute(d_dimer),        envir = data, enclos = parent.frame())
+  fibrinogen     <- eval(expr = substitute(fibrinogen),     envir = data, enclos = parent.frame())
+  gcs            <- eval(expr = substitute(gcs),            envir = data, enclos = parent.frame())
+  fixed_pupils   <- eval(expr = substitute(fixed_pupils),   envir = data, enclos = parent.frame())
+  glucose        <- eval(expr = substitute(glucose),        envir = data, enclos = parent.frame())
+  anc            <- eval(expr = substitute(anc),            envir = data, enclos = parent.frame())
+  alc            <- eval(expr = substitute(alc),            envir = data, enclos = parent.frame())
+  creatinine     <- eval(expr = substitute(creatinine),     envir = data, enclos = parent.frame())
+  bilirubin      <- eval(expr = substitute(bilirubin),      envir = data, enclos = parent.frame())
+  alt            <- eval(expr = substitute(alt),            envir = data, enclos = parent.frame())
 
-  length_check(pf_ratio = pf_ratio,
-               sf_ratio = sf_ratio, pao2 = pao2,
-               spo2 = spo2,
-               fio2 = fio2,
-               imv = imv,
-               other_respiratory_support = other_respiratory_support)
+  length_check(
+      pf_ratio                  = pf_ratio
+    , sf_ratio                  = sf_ratio
+    , pao2                      = pao2
+    , spo2                      = spo2
+    , fio2                      = fio2
+    , imv                       = imv
+    , other_respiratory_support = other_respiratory_support
+    , vasoactives               = vasoactives
+    , dopamine                  = dopamine
+    , dobutamine                = dobutamine
+    , epinephrine               = epinephrine
+    , norepinephrine            = norepinephrine
+    , milrinone                 = milrinone
+    , vasopressin               = vasopressin
+    , lactate                   = lactate
+    , sbp                       = sbp
+    , dbp                       = dbp
+    , map                       = map
+    , platelets                 = platelets
+    , inr                       = inr
+    , d_dimer                   = d_dimer
+    , fibrinogen                = fibrinogen
+    , gcs                       = gcs
+    , fixed_pupils              = fixed_pupils
+    , glucose                   = glucose
+    , anc                       = anc
+    , alc                       = alc
+    , creatinine                = creatinine
+    , bilirubin                 = bilirubin
+    , alt                       = alt
+  )
 
   # checks for mode
   # recall that is.numeric will return TRUE for reals and integers
@@ -105,9 +153,23 @@ check_data <- function(
   stopifnot(is.numeric(sbp))
   stopifnot(is.numeric(dbp))
   stopifnot(is.numeric(map))
+  stopifnot(is.numeric(platelets))
+  stopifnot(is.numeric(inr))
+  stopifnot(is.numeric(d_dimer))
+  stopifnot(is.numeric(fibrinogen))
+  stopifnot(is.numeric(gcs))
+  stopifnot(is.numeric(fixed_pupils))
+  stopifnot(is.numeric(glucose))
+  stopifnot(is.numeric(anc))
+  stopifnot(is.numeric(alc))
+  stopifnot(is.numeric(creatinine))
+  stopifnot(is.numeric(bilirubin))
+  stopifnot(is.numeric(alt))
 
   ##############################################################################
   # Tests to report on
+  # A list of the tests is stored in the list defined here and new tests are
+  # defined by the function new_test
   tests <- list()
 
   new_test <- function(test = "", warn_if = "", skip, pass = !fail, warn = NULL, fail = !pass) {
@@ -275,13 +337,127 @@ check_data <- function(
        all(is.na(epinephrine)) & all(is.na(norepinephrine)) &
        all(is.na(milrinone))   & all(is.na(vasopressin))
       ),
-    pass = is.na(vasoactives) | 
-      (
-       is.na(dopamine)    & is.na(dobutamine) &
-       is.na(epinephrine) & is.na(norepinephrine) &
-       is.na(milrinone)   & is.na(vasopressin)
-     ) |
-     (vasoactives == v6)
+    pass = (is.na(vasoactives) & v6 == 0) | (vasoactives == v6)
+  )
+
+  new_test(
+    test = "0 <= lactate",
+    skip = all(is.na(lactate)),
+    pass = is.na(lactate) | lactate >= 0
+  )
+
+  new_test(
+    test = "0 <= sbp",
+    skip = all(is.na(sbp)),
+    pass = is.na(sbp) | sbp >= 0
+  )
+
+  new_test(
+    test = "0 <= dbp",
+    skip = all(is.na(dbp)),
+    pass = is.na(dbp) | dbp >= 0
+  )
+
+  new_test(
+    test = "sbp >= dbp",
+    skip = all(is.na(sbp)) & all(is.na(dbp)),
+    pass = is.na(dbp) | is.na(sbp) | sbp >= dbp
+  )
+
+  new_test(
+    test = "0 <= map",
+    skip = all(is.na(map)),
+    pass = is.na(map) | sbp >= 0
+  )
+
+  new_test(
+    test = "dbp <= map",
+    skip = all(is.na(map)) & all(is.na(dbp)),
+    pass = is.na(map) | is.na(dbp) | (map >= dbp)
+  )
+
+  new_test(
+    test = "map <= sbp",
+    skip = all(is.na(map)) & all(is.na(sbp)),
+    pass = is.na(map) | is.na(sbp) | (map <= sbp)
+  )
+
+  new_test(
+    test = "dbp <= map <= sbp",
+    skip = all(is.na(map)) & all(is.na(sbp)) & all(is.na(dbp)),
+    pass = is.na(map) | is.na(sbp) | is.na(dbp) | ((map >= dbp) & (map <= sbp))
+  )
+
+  new_test(
+    test = "0 <= platelets",
+    skip = all(is.na(platelets)),
+    pass = is.na(platelets) | 0 <= platelets
+  )
+
+  new_test(
+    test = "0 <= inr",
+    skip = all(is.na(inr)),
+    pass = is.na(inr) | 0 <= inr
+  )
+
+  new_test(
+    test = "0 <= d_dimer",
+    skip = all(is.na(d_dimer)),
+    pass = is.na(d_dimer) | 0 <= d_dimer
+  )
+
+  new_test(
+    test = "0 <= fibrinogen",
+    skip = all(is.na(fibrinogen)),
+    pass = is.na(fibrinogen) | 0 <= fibrinogen
+  )
+
+  new_test(
+    test = "gcs %in% 3:15",
+    skip = all(is.na(gcs)),
+    pass = is.na(gcs) | (gcs %in% 3:15)
+  )
+
+  new_test(
+    test = "fixed_pupils %in% 0:1",
+    skip = all(is.na(fixed_pupils)),
+    pass = is.na(fixed_pupils) | (fixed_pupils %in% c(0, 1))
+  )
+  
+  new_test(
+    test = "0 <= glucose",
+    skip = all(is.na(glucose)),
+    pass = is.na(glucose) | (glucose >= 0)
+  )
+
+  new_test(
+    test = "0 <= anc",
+    skip = all(is.na(anc)),
+    pass = is.na(anc) | (anc >= 0)
+  )
+
+  new_test(
+    test = "0 <= alc",
+    skip = all(is.na(alc)),
+    pass = is.na(alc) | (alc >= 0)
+  )
+
+  new_test(
+    test = "0 <= creatinine",
+    skip = all(is.na(creatinine)),
+    pass = is.na(creatinine) | (creatinine >= 0)
+  )
+
+  new_test(
+    test = "0 <= bilirubin",
+    skip = all(is.na(bilirubin)),
+    pass = is.na(bilirubin) | (bilirubin >= 0)
+  )
+
+  new_test(
+    test = "0 <= alt",
+    skip = all(is.na(alt)),
+    pass = is.na(alt) | (alt >= 0)
   )
 
 
@@ -316,25 +492,37 @@ check_data <- function(
   #
   tests[["considered_data"]] <-
     data.frame(
-        fio2
-      , spo2
-      , pao2
+        pf_ratio
       , sf_ratio
-      , pf_ratio
+      , pao2
+      , spo2
+      , fio2
       , imv
       , other_respiratory_support
-      , vasoactives 
-      , dopamine 
-      , dobutamine 
-      , epinephrine 
+      , vasoactives
+      , dopamine
+      , dobutamine
+      , epinephrine
       , norepinephrine
       , milrinone
-      , vasopressin 
-      , lactate 
+      , vasopressin
+      , lactate
       , age
       , sbp
       , dbp
       , map
+      , platelets
+      , inr
+      , d_dimer
+      , fibrinogen
+      , gcs
+      , fixed_pupils
+      , glucose
+      , anc
+      , alc
+      , creatinine
+      , bilirubin
+      , alt
     )
 
   class(tests) <- "phoenix_data_check"

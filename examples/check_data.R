@@ -140,6 +140,24 @@ chk <- check_data(fio2 = fio2,
                   norepinephrine = norepinephrine,
                   milrinone = milrinone,
                   vasopressin = vasopressin,
+                  lactate = lactate,
+                  sbp = sbp,
+                  dbp = dbp,
+                  map = map(sbp, dbp),
+                  platelets = platelets,
+                  inr = inr,
+                  d_dimer = d_dimer,
+                  fibrinogen = fibrinogen,
+                  gcs = gcs_total,
+                  fixed_pupils = as.integer(pupil == "both-fixed"),
+                  glucose = glucose,
+                  anc = anc,
+                  alc = alc,
+                  creatinine = creatinine,
+                  bilirubin = bilirubin,
+                  alt = alt,
                   data = sepsis)
-chk
-show_failures(chk, 21)
+
+summary(chk)
+print(chk, full_report = TRUE)
+#show_failures(chk, 21)

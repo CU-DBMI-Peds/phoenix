@@ -27,6 +27,18 @@ check_data(
   sbp = NA_real_,
   dbp = NA_real_,
   map = NA_real_,
+  platelets = NA_real_,
+  inr = NA_real_,
+  d_dimer = NA_real_,
+  fibrinogen = NA_real_,
+  gcs = NA_real_,
+  fixed_pupils = NA_real_,
+  glucose = NA_real_,
+  anc = NA_real_,
+  alc = NA_real_,
+  creatinine = NA_real_,
+  bilirubin = NA_real_,
+  alt = NA_real_,
   data = parent.frame()
 )
 
@@ -70,6 +82,30 @@ medication}
 mmHg.}
 
 \item{map}{numeric vector, mean arterial pressure in mmHg}
+
+\item{platelets}{numeric vector for platelets counts in units of 1,000/uL (thousand per microliter)}
+
+\item{inr}{numeric vector for the international normalised ratio blood test}
+
+\item{d_dimer}{numeric vector for D-Dimer, units of mg/L FEU}
+
+\item{fibrinogen}{numeric vector units of mg/dL}
+
+\item{gcs}{integer vector; total Glasgow Comma Score}
+
+\item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 = otherwise}
+
+\item{glucose}{numeric vector; blood glucose measured in mg/dL}
+
+\item{anc}{absolute neutrophil count; a numeric vector; units of 1,000 cells per cubic millimeter}
+
+\item{alc}{absolute lymphocyte count; a numeric vector; units of 1,000 cells per cubic millimeter}
+
+\item{creatinine}{numeric vector; units of mg/dL}
+
+\item{bilirubin}{numeric vector; units of mg/dL}
+
+\item{alt}{alanine aminotransferase; a numeric vector; units of IU/L}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
@@ -238,7 +274,24 @@ chk <- check_data(fio2 = fio2,
                   norepinephrine = norepinephrine,
                   milrinone = milrinone,
                   vasopressin = vasopressin,
+                  lactate = lactate,
+                  sbp = sbp,
+                  dbp = dbp,
+                  map = map(sbp, dbp),
+                  platelets = platelets,
+                  inr = inr,
+                  d_dimer = d_dimer,
+                  fibrinogen = fibrinogen,
+                  gcs = gcs_total,
+                  fixed_pupils = as.integer(pupil == "both-fixed"),
+                  glucose = glucose,
+                  anc = anc,
+                  alc = alc,
+                  creatinine = creatinine,
+                  bilirubin = bilirubin,
+                  alt = alt,
                   data = sepsis)
-chk
-show_failures(chk, 21)
+
+print(chk, full_report = TRUE)
+#show_failures(chk, 21)
 }
