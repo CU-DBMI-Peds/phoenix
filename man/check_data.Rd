@@ -292,6 +292,7 @@ chk <- check_data(fio2 = fio2,
                   alt = alt,
                   data = sepsis)
 
+summary(chk)
 print(chk, full_report = TRUE)
 #show_failures(chk, 21)
 }
