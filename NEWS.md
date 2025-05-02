@@ -2,13 +2,14 @@
 
 ## Bug Fixes
 
-* correct the limits for assessing immunologic disfunction (#11)
+* correct the limits for assessing immunologic dysfunction (#11)
 
 ## Other Changes
 
 * Improve documentation
 
   * Fix copy and paste errors
+  * Add expected units to examples
 
 # Version 1.1.1:
 
