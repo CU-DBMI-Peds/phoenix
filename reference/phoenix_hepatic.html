@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,7 +116,11 @@ greater than 102 IU/L.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using the example sepsis data set</span></span></span>
-<span class="r-in"><span><span class="va">hep_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"bilirubin"</span>, <span class="st">"alt"</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="co"># recall expected units:</span></span></span>
+<span class="r-in"><span><span class="co">#   (total) bilirubin: mg/dL</span></span></span>
+<span class="r-in"><span><span class="co">#   alt: IU/L</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">hep_example</span>       <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"bilirubin"</span>, <span class="st">"alt"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">hep_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu">phoenix_hepatic</span><span class="op">(</span><span class="va">bilirubin</span>, <span class="va">alt</span>, <span class="va">sepsis</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">hep_example</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    pid bilirubin  alt score</span>
@@ -145,6 +149,7 @@ greater than 102 IU/L.</p>
 <span class="r-in"><span><span class="va">DF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>bil <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">3.2</span>, <span class="fl">4.0</span>, <span class="fl">4.3</span><span class="op">)</span>, alt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">99</span>, <span class="fl">102</span>, <span class="fl">106</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">phoenix_hepatic</span><span class="op">(</span>bilirubin <span class="op">=</span> <span class="va">bil</span>, alt <span class="op">=</span> <span class="va">alt</span>, data <span class="op">=</span> <span class="va">DF</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0 0 1 1 0 0 1 1 0 0 1 1 1 1 1 1</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

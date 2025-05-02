@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,10 +128,10 @@ score of 2.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using the example data set</span></span></span>
 <span class="r-in"><span><span class="fu">phoenix_coagulation</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  platelets <span class="op">=</span> <span class="va">platelets</span>,</span></span>
-<span class="r-in"><span>  inr <span class="op">=</span> <span class="va">inr</span>,</span></span>
-<span class="r-in"><span>  d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,</span></span>
-<span class="r-in"><span>  fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,</span></span>
+<span class="r-in"><span>  platelets <span class="op">=</span> <span class="va">platelets</span>,    <span class="co"># 1000/uL (thousand per microliter)</span></span></span>
+<span class="r-in"><span>  inr <span class="op">=</span> <span class="va">inr</span>,                <span class="co"># unitless</span></span></span>
+<span class="r-in"><span>  d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,        <span class="co"># mg/L FEU</span></span></span>
+<span class="r-in"><span>  fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,  <span class="co"># mg/dL</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">sepsis</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1 1 2 1 0 2 2 1 1 0 1 0 0 1 2 1 1 2 0 1</span>

@@ -11,7 +11,7 @@ which is based on four organ systems."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -224,35 +224,36 @@ respective manual files.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using the example sepsis data set, read more details in the vignette</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">phoenix8_scores</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">phoenix8</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="co"># respiratory</span></span></span>
+<span class="r-in"><span>    <span class="co"># Respiratory</span></span></span>
 <span class="r-in"><span>      pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span></span>
 <span class="r-in"><span>      sf_ratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spo2</span> <span class="op">&lt;=</span> <span class="fl">97</span>, <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>, <span class="cn">NA_real_</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      imv <span class="op">=</span> <span class="va">vent</span>,</span></span>
 <span class="r-in"><span>      other_respiratory_support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">fio2</span> <span class="op">&gt;</span> <span class="fl">0.21</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    <span class="co"># cardiovascular</span></span></span>
+<span class="r-in"><span>    <span class="co"># Cardiovascular</span></span></span>
 <span class="r-in"><span>      vasoactives <span class="op">=</span> <span class="va">dobutamine</span> <span class="op">+</span> <span class="va">dopamine</span> <span class="op">+</span> <span class="va">epinephrine</span> <span class="op">+</span> <span class="va">milrinone</span> <span class="op">+</span> <span class="va">norepinephrine</span> <span class="op">+</span> <span class="va">vasopressin</span>,</span></span>
 <span class="r-in"><span>      lactate <span class="op">=</span> <span class="va">lactate</span>,</span></span>
 <span class="r-in"><span>      age <span class="op">=</span> <span class="va">age</span>, <span class="co"># Also used in the renal assessment.</span></span></span>
 <span class="r-in"><span>      map <span class="op">=</span> <span class="va">dbp</span> <span class="op">+</span> <span class="op">(</span><span class="va">sbp</span> <span class="op">-</span> <span class="va">dbp</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span>,</span></span>
-<span class="r-in"><span>    <span class="co"># coagulation</span></span></span>
+<span class="r-in"><span>    <span class="co"># Coagulation</span></span></span>
 <span class="r-in"><span>      platelets <span class="op">=</span> <span class="va">platelets</span>,</span></span>
 <span class="r-in"><span>      inr <span class="op">=</span> <span class="va">inr</span>,</span></span>
 <span class="r-in"><span>      d_dimer <span class="op">=</span> <span class="va">d_dimer</span>,</span></span>
 <span class="r-in"><span>      fibrinogen <span class="op">=</span> <span class="va">fibrinogen</span>,</span></span>
-<span class="r-in"><span>    <span class="co"># neurologic</span></span></span>
+<span class="r-in"><span>    <span class="co"># Neurologic</span></span></span>
 <span class="r-in"><span>      gcs <span class="op">=</span> <span class="va">gcs_total</span>,</span></span>
 <span class="r-in"><span>      fixed_pupils <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">pupil</span> <span class="op">==</span> <span class="st">"both-fixed"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    <span class="co"># endocrine</span></span></span>
+<span class="r-in"><span>    <span class="co"># Endocrine</span></span></span>
 <span class="r-in"><span>      glucose <span class="op">=</span> <span class="va">glucose</span>,</span></span>
-<span class="r-in"><span>    <span class="co"># immunologic</span></span></span>
+<span class="r-in"><span>    <span class="co"># Immunologic</span></span></span>
 <span class="r-in"><span>      anc <span class="op">=</span> <span class="va">anc</span>,</span></span>
 <span class="r-in"><span>      alc <span class="op">=</span> <span class="va">alc</span>,</span></span>
-<span class="r-in"><span>    <span class="co"># renal</span></span></span>
+<span class="r-in"><span>    <span class="co"># Renal</span></span></span>
 <span class="r-in"><span>      creatinine <span class="op">=</span> <span class="va">creatinine</span>,</span></span>
 <span class="r-in"><span>      <span class="co"># no need to specify age again</span></span></span>
-<span class="r-in"><span>    <span class="co"># hepatic</span></span></span>
+<span class="r-in"><span>    <span class="co"># Hepatic</span></span></span>
 <span class="r-in"><span>      bilirubin <span class="op">=</span> <span class="va">bilirubin</span>,</span></span>
 <span class="r-in"><span>      alt <span class="op">=</span> <span class="va">alt</span>,</span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">sepsis</span></span></span>
@@ -268,10 +269,10 @@ respective manual files.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix_endocrine_score     : int  0 0 0 0 0 0 0 0 1 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix_immunologic_score   : int  0 1 1 1 0 1 0 1 1 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix_immunologic_score   : int  0 0 1 1 0 1 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix_renal_score         : int  1 0 0 0 0 1 1 0 1 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix_hepatic_score       : int  0 0 1 1 0 0 1 0 1 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix8_sepsis_score       : int  4 8 8 3 0 9 11 2 12 5 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ phoenix8_sepsis_score       : int  4 7 8 3 0 9 11 1 11 4 ...</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

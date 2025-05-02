@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cu-dbmi-peds.github.io/phoenix">phoenix</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"phoenix"</span><span class="op">)</span></span>
-<span><span class="co">## [1] '1.1.1'</span></span></code></pre></div>
+<span><span class="co">## [1] '1.1.2'</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="development-and-international-consensus">Development and International Consensus<a class="anchor" aria-label="anchor" href="#development-and-international-consensus"></a>
 </h2>
@@ -1720,7 +1720,7 @@ scoring.</p>
 <td align="right">2</td>
 <td align="right">14.220</td>
 <td align="right">2.220</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
@@ -1756,19 +1756,19 @@ scoring.</p>
 <td align="right">8</td>
 <td align="right">3.760</td>
 <td align="right">1.550</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">9</td>
 <td align="right">8.770</td>
 <td align="right">3.600</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">10</td>
 <td align="right">9.084</td>
 <td align="right">4.617</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">11</td>
@@ -1804,13 +1804,13 @@ scoring.</p>
 <td align="right">16</td>
 <td align="right">4.720</td>
 <td align="right">4.300</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">17</td>
 <td align="right">9.380</td>
 <td align="right">1.310</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">18</td>
@@ -1822,13 +1822,13 @@ scoring.</p>
 <td align="right">19</td>
 <td align="right">12.570</td>
 <td align="right">2.810</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">20</td>
 <td align="right">3.410</td>
 <td align="right">2.850</td>
-<td align="right">1</td>
+<td align="right">0</td>
 </tr>
 </tbody>
 </table>
@@ -2722,10 +2722,10 @@ calling <code>phoenix8</code>.</p>
 <span><span class="co">##  $ phoenix_sepsis              : int  1 1 1 0 0 1 1 0 1 1 ...</span></span>
 <span><span class="co">##  $ phoenix_septic_shock        : int  1 1 1 0 0 1 1 0 1 0 ...</span></span>
 <span><span class="co">##  $ phoenix_endocrine_score     : int  0 0 0 0 0 0 0 0 1 0 ...</span></span>
-<span><span class="co">##  $ phoenix_immunologic_score   : int  0 1 1 1 0 1 0 1 1 1 ...</span></span>
+<span><span class="co">##  $ phoenix_immunologic_score   : int  0 0 1 1 0 1 0 0 0 0 ...</span></span>
 <span><span class="co">##  $ phoenix_renal_score         : int  1 0 0 0 0 1 1 0 1 0 ...</span></span>
 <span><span class="co">##  $ phoenix_hepatic_score       : int  0 0 1 1 0 0 1 0 1 0 ...</span></span>
-<span><span class="co">##  $ phoenix8_sepsis_score       : int  4 8 8 3 0 9 11 2 12 5 ...</span></span></code></pre></div>
+<span><span class="co">##  $ phoenix8_sepsis_score       : int  4 7 8 3 0 9 11 1 11 4 ...</span></span></code></pre></div>
 <p>The results as a easy to read table:</p>
 <table class="table">
 <thead><tr>
@@ -2831,16 +2831,16 @@ phoenix8 sepsis score
 0
 </td>
 <td style="text-align:center;">
-1
-</td>
-<td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
-8
+0
+</td>
+<td style="text-align:center;">
+7
 </td>
 </tr>
 <tr>
@@ -3059,16 +3059,16 @@ phoenix8 sepsis score
 0
 </td>
 <td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
 1
-</td>
-<td style="text-align:center;">
-0
-</td>
-<td style="text-align:center;">
-0
-</td>
-<td style="text-align:center;">
-2
 </td>
 </tr>
 <tr>
@@ -3097,7 +3097,7 @@ phoenix8 sepsis score
 1
 </td>
 <td style="text-align:center;">
-1
+0
 </td>
 <td style="text-align:center;">
 1
@@ -3106,7 +3106,7 @@ phoenix8 sepsis score
 1
 </td>
 <td style="text-align:center;">
-12
+11
 </td>
 </tr>
 <tr>
@@ -3135,16 +3135,16 @@ phoenix8 sepsis score
 0
 </td>
 <td style="text-align:center;">
-1
-</td>
-<td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
-5
+0
+</td>
+<td style="text-align:center;">
+4
 </td>
 </tr>
 <tr>
@@ -3363,16 +3363,16 @@ phoenix8 sepsis score
 0
 </td>
 <td style="text-align:center;">
-1
-</td>
-<td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
-4
+0
+</td>
+<td style="text-align:center;">
+3
 </td>
 </tr>
 <tr>
@@ -3401,16 +3401,16 @@ phoenix8 sepsis score
 0
 </td>
 <td style="text-align:center;">
-1
-</td>
-<td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
-6
+0
+</td>
+<td style="text-align:center;">
+5
 </td>
 </tr>
 <tr>
@@ -3477,7 +3477,7 @@ phoenix8 sepsis score
 0
 </td>
 <td style="text-align:center;">
-1
+0
 </td>
 <td style="text-align:center;">
 1
@@ -3486,7 +3486,7 @@ phoenix8 sepsis score
 0
 </td>
 <td style="text-align:center;">
-6
+5
 </td>
 </tr>
 <tr>
@@ -3515,16 +3515,16 @@ phoenix8 sepsis score
 1
 </td>
 <td style="text-align:center;">
-1
-</td>
-<td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
-4
+0
+</td>
+<td style="text-align:center;">
+3
 </td>
 </tr>
 </tbody>

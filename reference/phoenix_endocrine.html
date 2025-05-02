@@ -9,7 +9,7 @@ of the Phoenix score, only part of the Phoenix-8 score."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,9 @@ systems noted above and</p><ul><li><p><code>phoenix_endocrine</code>,</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using the example sepsis data set</span></span></span>
-<span class="r-in"><span><span class="va">endo_example</span> <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"glucose"</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="co"># recall glucose is expected to have units of mg/dL</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">endo_example</span>       <span class="op">&lt;-</span> <span class="va">sepsis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"glucose"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">endo_example</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu">phoenix_endocrine</span><span class="op">(</span><span class="va">glucose</span>, data <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">endo_example</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    pid glucose score</span>
@@ -135,6 +137,8 @@ systems noted above and</p><ul><li><p><code>phoenix_endocrine</code>,</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20  20   159.8     1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># example data set to get all the possible endocrine scores</span></span></span>
+<span class="r-in"><span><span class="co"># recall glucose is expected to have units of mg/dL</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">DF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>glc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">12</span>, <span class="fl">50</span>, <span class="fl">55</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">178</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">phoenix_endocrine</span><span class="op">(</span>glucose <span class="op">=</span> <span class="va">glc</span>, data <span class="op">=</span> <span class="va">DF</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 1 0 0 0 0 1</span>

@@ -11,7 +11,7 @@ Phoenix 8 Sepsis criteria."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,6 +145,16 @@ high-flow, non-invasive positive pressure, or imv.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using the provided example data set:</span></span></span>
+<span class="r-in"><span><span class="co"># Expected units:</span></span></span>
+<span class="r-in"><span><span class="co">#   pf_ratio: PaO2 / FiO2</span></span></span>
+<span class="r-in"><span><span class="co">#     PaO2: mmHg</span></span></span>
+<span class="r-in"><span><span class="co">#     FiO2: decimal between 0.21 (room air) to 1.00 (pure oxygen)</span></span></span>
+<span class="r-in"><span><span class="co">#   sf_ratio: SpO2 / FiO2</span></span></span>
+<span class="r-in"><span><span class="co">#     SpO2: percentage, 0 to 100</span></span></span>
+<span class="r-in"><span><span class="co">#     FiO2: decimal between 0.21 (room air) to 1.00 (pure oxygen)</span></span></span>
+<span class="r-in"><span><span class="co">#   imv: (invasive mechanical ventilation) 1 for yes, 0 for no</span></span></span>
+<span class="r-in"><span><span class="co">#   other_respiratory_support: 1 for yes, 0 for no</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">phoenix_respiratory</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  pf_ratio <span class="op">=</span> <span class="va">pao2</span> <span class="op">/</span> <span class="va">fio2</span>,</span></span>
 <span class="r-in"><span>  sf_ratio <span class="op">=</span> <span class="va">spo2</span> <span class="op">/</span> <span class="va">fio2</span>,</span></span>
