@@ -70,6 +70,16 @@ pf_ratio >= 400 and sf_ratio >= 292 \tab
 \examples{
 
 # Using the provided example data set:
+# Expected units:
+#   pf_ratio: PaO2 / FiO2
+#     PaO2: mmHg
+#     FiO2: decimal between 0.21 (room air) to 1.00 (pure oxygen)
+#   sf_ratio: SpO2 / FiO2
+#     SpO2: percentage, 0 to 100
+#     FiO2: decimal between 0.21 (room air) to 1.00 (pure oxygen)
+#   imv: (invasive mechanical ventilation) 1 for yes, 0 for no
+#   other_respiratory_support: 1 for yes, 0 for no
+
 phoenix_respiratory(
   pf_ratio = pao2 / fio2,
   sf_ratio = spo2 / fio2,

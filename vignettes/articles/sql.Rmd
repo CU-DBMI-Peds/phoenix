@@ -299,8 +299,8 @@ stopifnot(identical(DF$phoenix_endocrine_score, endo_r))
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "immu"}
 SELECT
   pid,
-  CASE WHEN anc <  500 THEN 1
-       WHEN alc < 1000 THEN 1
+  CASE WHEN anc < 0.500 THEN 1 -- Recall expected units are 1000cells/mm³
+       WHEN alc < 1.000 THEN 1 -- Recall expected units are 1000cells/mm³
        ELSE 0 END AS phoenix_immunologic_score
 FROM sepsis
 ```

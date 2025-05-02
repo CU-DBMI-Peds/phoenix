@@ -1,3 +1,16 @@
+# Version 1.1.2:
+
+## Bug Fixes
+
+* correct the limits for assessing immunologic dysfunction (#11)
+
+## Other Changes
+
+* Improve documentation
+
+  * Fix copy and paste errors
+  * Add expected units to examples
+
 # Version 1.1.1:
 
 * updated documentation and citation details.

@@ -11,13 +11,6 @@ described in:
 
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
-Cite the package by citing the application note:
-
-    Peter E DeWitt, Seth Russell, Margaret N Rebull, L Nelson Sanchez-Pinto, Tellen
-    D Bennett, phoenix: an R package and Python module for calculating the Phoenix
-    pediatric sepsis score and criteria, JAMIA Open, Volume 7, Issue 3, October
-    2024, ooae066, https://doi.org/10.1093/jamiaopen/ooae066
-
 ## Phoenix Criteria
 A patient is consider septic if they have a suspected (or proven) infection with
 at total Phoenix score of at least two points.  The Phoenix score is the sum of
@@ -48,7 +41,7 @@ research, Phoenix-8, which includes the four organ systems above along with
 | &nbsp;&nbsp;SpO<sub>2</sub>:FiO<sub>2</sub><sup>b</sup>                                          | &geq; 292                        | < 292                   | < 220                    | < 148    | 
 | **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |                                  |                         |                          |          | 
 | &nbsp;&nbsp; Systemic Vasoactive Medications<sup>c</sup>                       | No medications                   | 1 medication            | 2 or more medications    |          | 
-| &nbsp;&nbsp; Lactate<sup>d</sup> (mmol/L)                                      | &lt; 5                           | 5 &leg; Lactate &lt; 11 | &geq; 11                 |          | 
+| &nbsp;&nbsp; Lactate<sup>d</sup> (mmol/L)                                      | &lt; 5                           | 5 &leq; Lactate &lt; 11 | &geq; 11                 |          | 
 | &nbsp;&nbsp; Age<sup>e</sup> (months) adjusted MAP<sup>f</sup> (mmHg)                   |                                  |                         |                          |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   0 &leq; Age &lt;   1                       | &geq; 31                         | 17 &leq; MAP &lt; 31    | &lt; 17                  |          | 
 | &nbsp;&nbsp;&nbsp;&nbsp;   1 &leq; Age &lt;  12                       | &geq; 39                         | 25 &leq; MAP &lt; 39    | &lt; 25                  |          | 
@@ -112,7 +105,7 @@ research, Phoenix-8, which includes the four organ systems above along with
 
 
 
-```python
+``` python
 import numpy as np
 import pandas as pd
 import importlib.resources
@@ -126,7 +119,7 @@ There is an example data set included in the package in a file called
 `sepsis.csv`.  Load that file to use in the following examples.
 
 
-```python
+``` python
 # read in the example data set
 path = importlib.resources.files('phoenix')
 sepsis = pd.read_csv(path.joinpath('data').joinpath('sepsis.csv'))
@@ -148,7 +141,11 @@ Each of these functions return a numpy array of integers.
 #### Respiratory Dysfunction Scoring
 
 
-```python
+``` python
+# Expected Units:
+#   PaO2: mmHg
+#   FiO2: reported as a decimal, 0.21 to 1.00
+#   Spo2: percentage, values from 0 to 100
 resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
@@ -164,9 +161,23 @@ print(resp)
 #### Cardiovascular Dysfunction Scoring
 
 
-```python
+``` python
+# Expected Units:
+#   vasoactives: vector is expected to be integer values 0, 1, 2, 3, 4, 5, 6.
+#                In this example each of the six possible vasoactive medication
+#                columns are integer value 0 or 1 indicators
+#
+#   lactate: mmol/L
+#
+#   map (mean arterial pressure): mmHg.
+#                                 In the example below we report the map as the
+#                                 weighted average of systolic (sbp) and
+#                                 diastolic (dbp) pressures, also reported in
+#                                 mmHg.
+
 card = phx.phoenix_cardiovascular(
-    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
+    vasoactives = sepsis["dobutamine"] + sepsis["dopamine"]       + sepsis["epinephrine"] +
+                  sepsis["milrinone"]  + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
     map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
@@ -180,7 +191,12 @@ print(card)
 #### Coagulation Dysfunction Scoring
 
 
-```python
+``` python
+# Expected units:
+#   platelets: 1000/μL
+#   inr: 
+#   D-Dimer: (mg/L FEU)
+#   Fibrinogen: mg/dL
 coag = phx.phoenix_coagulation(
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
@@ -196,7 +212,11 @@ print(coag)
 #### Neurologic Dysfunction Scoring
 
 
-```python
+``` python
+# Expected Units:
+#   GCS - Glascow Coma Score: Integers in 3, 4, ..., 14, 15
+#   fixed pupils: 0 or 1 integer values. 1 for bilaterally fixed pupils, 0
+#                 otherwise
 neuro = phx.phoenix_neurologic(
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int)
@@ -210,7 +230,9 @@ print(neuro)
 #### Endocrine Dysfunction Scoring
 
 
-```python
+``` python
+# Expected units:
+#   glucose: mg/dL
 endo = phx.phoenix_endocrine(sepsis["glucose"])
 print(type(endo))
 ## <class 'numpy.ndarray'>
@@ -221,18 +243,24 @@ print(endo)
 #### Immunologic Dysfunction Scoring
 
 
-```python
+``` python
+# Expected Units:
+#   ANC: 1000 cells / mm³
+#   ALC: 1000 cells / mm³
 immu = phx.phoenix_immunologic(sepsis["anc"], sepsis["alc"])
 print(type(immu))
 ## <class 'numpy.ndarray'>
 print(immu)
-## [0 1 1 1 0 1 0 1 1 1 0 0 0 0 0 1 1 0 1 1]
+## [0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 ```
 
 #### Renal Dysfunction Scoring
 
 
-```python
+``` python
+# Expected Units:
+#   age: months
+#   creatinine: mg/dL
 renal = phx.phoenix_renal(sepsis["creatinine"], sepsis["age"])
 print(type(renal))
 ## <class 'numpy.ndarray'>
@@ -243,7 +271,10 @@ print(renal)
 #### Hepatic Dysfunction Scoring
 
 
-```python
+``` python
+# Expected Units:
+#   (total) Bilirubin: mg/dL
+#   ALT: IU/L
 hepatic = phx.phoenix_hepatic(sepsis["bilirubin"], sepsis["alt"])
 print(type(hepatic))
 ## <class 'numpy.ndarray'>
@@ -259,20 +290,26 @@ points and septic shock is defined as sepsis with at least one cardiovascular
 point.
 
 
-```python
+``` python
+# Expected Units: please review the scoring for specific organ systems
+
 phoenix = phx.phoenix(
+   # Respiratory
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = sepsis["spo2"] / sepsis["fio2"],
     imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
+  # Cardiovascular
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
     map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+  # Coagulation
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
     fibrinogen = sepsis['fibrinogen'],
+  # Neurologic
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int))
 print(phoenix.info())
@@ -305,28 +342,47 @@ print(phoenix.head())
 Phoenix-8 is an extended score using all eight organ dysfunction scores.
 
 
-```python
+``` python
+# Expected Units: please review the scoring for specific organ systems
+
 phoenix8_scores = phx.phoenix8(
+
+   # Respiratory
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
     imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
+
+  # Cardiovascular
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    age = sepsis["age"],
+
+  # Coagulation
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
     fibrinogen = sepsis['fibrinogen'],
+
+  # Neurologic
     gcs = sepsis["gcs_total"],
     fixed_pupils = (sepsis["pupil"] == "both-fixed").astype(int),
+
+  # Endocrine
     glucose = sepsis["glucose"],
+
+  # Immunologic
     anc = sepsis["anc"],
     alc = sepsis["alc"],
+
+  # Renal
     creatinine = sepsis["creatinine"],
+    # age needed here too, already noted with cardiovascular
+
+  # Hepatic
     bilirubin = sepsis["bilirubin"],
-    alt = sepsis["alt"],
-    age = sepsis["age"])
+    alt = sepsis["alt"])
 print(phoenix8_scores.info())
 ## <class 'pandas.core.frame.DataFrame'>
 ## RangeIndex: 20 entries, 0 to 19
@@ -351,7 +407,7 @@ print(phoenix8_scores.info())
 print(phoenix8_scores.head())
 ##    phoenix_respiratory_score  phoenix_cardiovascular_score  phoenix_coagulation_score  phoenix_neurologic_score  ...  phoenix_immunologic_score  phoenix_renal_score  phoenix_hepatic_score  phoenix8_score
 ## 0                          0                             2                          1                         0  ...                          0                    1                      0               4
-## 1                          3                             2                          1                         1  ...                          1                    0                      0               8
+## 1                          3                             2                          1                         1  ...                          0                    0                      0               7
 ## 2                          3                             1                          2                         0  ...                          1                    0                      1               8
 ## 3                          0                             0                          1                         0  ...                          1                    0                      1               3
 ## 4                          0                             0                          0                         0  ...                          0                    0                      0               0
