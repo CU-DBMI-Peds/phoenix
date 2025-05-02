@@ -25,7 +25,7 @@ README.md : README.Rmd
 clean :
 	$(RM) -r dist
 	$(RM) -r build
-	$(RM) -r phoenix.egg-info
+	$(RM) -r *.egg-info
 
 # NOTE: helpful resources:
 # https://packaging.python.org/en/latest/tutorials/packaging-projects/
