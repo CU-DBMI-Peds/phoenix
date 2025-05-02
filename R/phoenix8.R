@@ -81,35 +81,36 @@
 #' @examples
 #'
 #' # Using the example sepsis data set, read more details in the vignette
+#'
 #' phoenix8_scores <-
 #'   phoenix8(
-#'     # respiratory
+#'     # Respiratory
 #'       pf_ratio = pao2 / fio2,
 #'       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
 #'       imv = vent,
 #'       other_respiratory_support = as.integer(fio2 > 0.21),
-#'     # cardiovascular
+#'     # Cardiovascular
 #'       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
 #'       lactate = lactate,
 #'       age = age, # Also used in the renal assessment.
 #'       map = dbp + (sbp - dbp)/3,
-#'     # coagulation
+#'     # Coagulation
 #'       platelets = platelets,
 #'       inr = inr,
 #'       d_dimer = d_dimer,
 #'       fibrinogen = fibrinogen,
-#'     # neurologic
+#'     # Neurologic
 #'       gcs = gcs_total,
 #'       fixed_pupils = as.integer(pupil == "both-fixed"),
-#'     # endocrine
+#'     # Endocrine
 #'       glucose = glucose,
-#'     # immunologic
+#'     # Immunologic
 #'       anc = anc,
 #'       alc = alc,
-#'     # renal
+#'     # Renal
 #'       creatinine = creatinine,
 #'       # no need to specify age again
-#'     # hepatic
+#'     # Hepatic
 #'       bilirubin = bilirubin,
 #'       alt = alt,
 #'     data = sepsis
