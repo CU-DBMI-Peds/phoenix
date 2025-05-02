@@ -46,13 +46,10 @@
 #' immu_example$score <- phoenix_immunologic(anc, alc, sepsis)
 #' immu_example
 #'
-#' # using the example sepsis data set
-#' hep_example <- sepsis[c("pid", "bilirubin", "alt")]
-#' hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
-#' hep_example
-#'
-#' # example data set with all possilbe hepatic scores
-#' DF <- expand.grid(anc = c(NA, 200, 500, 600), alc = c(NA, 500, 1000, 2000))
+#' # example data set with all possilbe immunologic scores
+#' # Expected units for anc and alc are 1000 cells / mm^3
+#' DF <- expand.grid(anc = c(NA, 0.200, 0.500, 0.600),
+#'                   alc = c(NA, 0.500, 1.000, 2.000))
 #' phoenix_immunologic(anc = anc, alc = alc, data = DF)
 #'
 #' @export
@@ -73,8 +70,10 @@ phoenix_immunologic <- function(anc = NA_real_, alc = NA_real_, data = parent.fr
   }
 
   # set "healthy" value for missing data
+  # IMPORTANT: Recall the expected input units are 1000 cells / mm^3
   anc <- replace(anc, which(is.na(anc)), 555)
   alc <- replace(alc, which(is.na(alc)), 1111)
 
-  as.integer((anc < 500) | (alc < 1000))
+  as.integer((anc < 0.500) | (alc < 1.000)) 
+
 }
