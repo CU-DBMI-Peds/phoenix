@@ -24,7 +24,7 @@ Description: Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
-URL: https://cu-dbmi-peds.github.io/phoenix, https://github.com/CU-DBMI-Peds/phoenix/
+URL: https://cu-dbmi-peds.github.io/phoenix/, https://github.com/CU-DBMI-Peds/phoenix/
 BugReports: https://github.com/CU-DBMI-Peds/phoenix/issues
 Language: en-us
 LazyData: true
