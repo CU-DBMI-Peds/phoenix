@@ -69,21 +69,71 @@
 
     
     
-<p>Coming soon!</p>
+<p>D_dimer mg/l feu &lt;= 500 GCS Total - gcs_total &gt;= 3 and &lt;= 15
+(i.e. GCS should be between 3 and 15) Lactate mmol/l &lt;= 50 DBP - DBP
+&gt;= 1 and DBP &lt;= 200 SBP - SBP &gt;= 1 and SBP &lt;= 300 MAP (mean
+arterial pressure) - MAP &gt;= 1 and MAP &lt;= 300 Glucose - Glucose
+mg/dl &gt;= 5 and Glucose mg/dl &lt;= 2000</p>
+<div class="section level2">
+<h2 id="general-notes">General notes<a class="anchor" aria-label="anchor" href="#general-notes"></a>
+</h2>
+<ul>
+<li>
+<code>NULL</code> values are treated as non-score generating
+criteria. Do not populate null/unknown/not applicable values with
+estimates or outdated information.</li>
+<li>Values outside ranges mentioned below are treated as
+<code>NULL</code>
+</li>
+<li>Before sending data to the package, verify data. Some values may
+provide warnings, others may throw errors. Verify your processing can
+handle warnings and errors.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
 </h2>
+<p>Provide <strong>one</strong> of the following for the Respiratory
+score:</p>
+<ul>
+<li>PaO<sub>2</sub> to FiO<sub>2</sub> ratio</li>
+<li>SpO<sub>2</sub> to FiO<sub>2</sub> ratio</li>
+<li>PaO<sub>2</sub> and FiO<sub>2</sub>
+</li>
+<li>SpO<sub>2</sub> and FiO<sub>2</sub>
+</li>
+</ul>
+<p>If multiple options are available, select the first one available
+based on order above.</p>
 <div class="section level3">
-<h3 id="pao_2_">PaO_2_<a class="anchor" aria-label="anchor" href="#pao_2_"></a>
+<h3 id="fio2">FiO<sub>2</sub><a class="anchor" aria-label="anchor" href="#fio2"></a>
 </h3>
+<p>Float value with range from 0.21 to 1.00</p>
 </div>
 <div class="section level3">
-<h3 id="spo_2_">SpO_2_<a class="anchor" aria-label="anchor" href="#spo_2_"></a>
+<h3 id="pao2">PaO<sub>2</sub><a class="anchor" aria-label="anchor" href="#pao2"></a>
 </h3>
+<p>Float value greater than 0</p>
 </div>
 <div class="section level3">
-<h3 id="fio_2_">FiO_2_<a class="anchor" aria-label="anchor" href="#fio_2_"></a>
+<h3 id="spo2">SpO<sub>2</sub><a class="anchor" aria-label="anchor" href="#spo2"></a>
 </h3>
+<p>Integer value with range from 0 to 100; &gt; 97% should not be used
+for S/F ratio. If SpO<sub>2</sub> and FiO<sub>2</sub> is passed, package
+will discard values if SpO<sub>2</sub> is &gt;= 97%.</p>
+</div>
+<div class="section level3">
+<h3 id="respiratory-support">Respiratory Support<a class="anchor" aria-label="anchor" href="#respiratory-support"></a>
+</h3>
+<ul>
+<li>The respiratory dysfunction of 1 point can be assessed in any
+patient receiving oxygen support of any kind, including high-flow,
+noninvasive positive pressure, or invasive mechanical ventalation (IMV)
+respiratory support.</li>
+<li>The respiratory dysfunction of 2 point can only be assessed in the
+presence of invasive mechanical ventalation (IMV) respiratory
+support.</li>
+</ul>
 </div>
 </div>
 <div class="section level2">
@@ -92,6 +142,13 @@
 <div class="section level3">
 <h3 id="systemic-vasoactive-medications">Systemic Vasoactive Medications<a class="anchor" aria-label="anchor" href="#systemic-vasoactive-medications"></a>
 </h3>
+<p>Vasoactive medications (dobutamine, dopamine, etc.) should only count
+if they are systemic. In our older dataset, epinephrine had some
+non-systemic medication administrations. e.g. “epinephrine hcl 2.25 %
+inh neb soln” should not count towards the systemic vasoactive
+medication count towards cardiovascular system disfunction points. The
+Phoenix python package documentation does mention this requirement, but
+the package doesn’t enforce it.</p>
 </div>
 <div class="section level3">
 <h3 id="lactate">Lactate<a class="anchor" aria-label="anchor" href="#lactate"></a>
@@ -104,6 +161,7 @@
 <div class="section level3">
 <h3 id="blood-pressure">Blood Pressure<a class="anchor" aria-label="anchor" href="#blood-pressure"></a>
 </h3>
+<p>for BP, prefer arterial over cuff…</p>
 </div>
 </div>
 <div class="section level2">
@@ -132,6 +190,15 @@
 <div class="section level3">
 <h3 id="gcs">GCS<a class="anchor" aria-label="anchor" href="#gcs"></a>
 </h3>
+<p>Package only allows for GCS total. GCS should be an integer in the
+range: 3 - 15</p>
+<p>If GCS total is not available, it can be calculated from the
+subcomponents <code>eye + motor + verbal</code></p>
+<ul>
+<li>GCS Eye range: 1 - 4</li>
+<li>GCS Motor range: 1 - 6</li>
+<li>GCS Verbal range: 1 - 5</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="pupils">Pupils<a class="anchor" aria-label="anchor" href="#pupils"></a>
@@ -176,6 +243,8 @@
 <div class="section level3">
 <h3 id="total-bilirubin">Total Bilirubin<a class="anchor" aria-label="anchor" href="#total-bilirubin"></a>
 </h3>
+<p>Units should be in mg/dL, or converted to mg/dL and range from 0 -
+100.</p>
 </div>
 <div class="section level3">
 <h3 id="alt">ALT<a class="anchor" aria-label="anchor" href="#alt"></a>
