@@ -23,7 +23,11 @@ Mean Arterial Pressure is approximated by:
 }
 \examples{
 
-DF <- expand.grid(sbp = 40:130, dbp = 20:100)
+DF <- expand.grid(
+        sbp = 40:130, # expected units of mmHg
+        dbp = 20:100  # expected units of mmHg
+      )
+
 DF$map <- with(DF, map(sbp, dbp))
 with(DF, plot(sbp, dbp, col = map))
 DF$map[DF$sbp < DF$dbp] <- NA

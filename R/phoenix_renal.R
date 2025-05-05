@@ -62,6 +62,10 @@
 #' @examples
 #'
 #' # using the example sepsis data set
+#' # Expected units:
+#' #   age: months
+#' #   creatinine: mg/dL
+#'
 #' renal_example <- sepsis[c("creatinine", "age")]
 #' renal_example$score <- phoenix_renal(creatinine, age, sepsis)
 #' renal_example

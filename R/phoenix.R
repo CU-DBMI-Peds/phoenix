@@ -52,24 +52,25 @@
 #' @examples
 #'
 #' # Using the example sepsis data set, read more details in the vignette
+#'
 #' phoenix_scores <-
 #'   phoenix(
-#'     # respiratory
+#'     # Respiratory
 #'       pf_ratio = pao2 / fio2,
 #'       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
 #'       imv = vent,
 #'       other_respiratory_support = as.integer(fio2 > 0.21),
-#'     # cardiovascular
+#'     # Cardiovascular
 #'       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
 #'       lactate = lactate,
 #'       age = age,
 #'       map = dbp + (sbp - dbp)/3,
-#'     # coagulation
+#'     # Coagulation
 #'       platelets = platelets,
 #'       inr = inr,
 #'       d_dimer = d_dimer,
 #'       fibrinogen = fibrinogen,
-#'     # neurologic
+#'     # Neurologic
 #'       gcs = gcs_total,
 #'       fixed_pupils = as.integer(pupil == "both-fixed"),
 #'     data = sepsis

@@ -28,23 +28,23 @@ part of Phoenix-8 and not Phoenix.
 }
 \section{Phoenix Immunologic Scoring}{
 
-1 point if ANC < 500 or ALC < 1000 cells per cubic millimeter.
+1 point if ANC < 0.500 or ALC < 1.000 (units are 1000 cells per cubic millimeter).
 }
 
 \examples{
 
 # using the example sepsis data set
+# Expected units for ALC and ANC are 1000 cells per cubic millimeter
+
 immu_example <- sepsis[c("pid", "anc", "alc")]
 immu_example$score <- phoenix_immunologic(anc, alc, sepsis)
 immu_example
 
-# using the example sepsis data set
-hep_example <- sepsis[c("pid", "bilirubin", "alt")]
-hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
-hep_example
+# example data set with all possilbe immunologic scores
+# Expected units for anc and alc are 1000 cells per cubic millimeter
 
-# example data set with all possilbe hepatic scores
-DF <- expand.grid(anc = c(NA, 200, 500, 600), alc = c(NA, 500, 1000, 2000))
+DF <- expand.grid(anc = c(NA, 0.200, 0.500, 0.600),
+                  alc = c(NA, 0.500, 1.000, 2.000))
 phoenix_immunologic(anc = anc, alc = alc, data = DF)
 
 }

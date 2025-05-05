@@ -39,13 +39,18 @@ greater than 102 IU/L.
 \examples{
 
 # using the example sepsis data set
-hep_example <- sepsis[c("pid", "bilirubin", "alt")]
+# recall expected units:
+#   (total) bilirubin: mg/dL
+#   alt: IU/L
+
+hep_example       <- sepsis[c("pid", "bilirubin", "alt")]
 hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
 hep_example
 
 # example data set with all possilbe hepatic scores
 DF <- expand.grid(bil = c(NA, 3.2, 4.0, 4.3), alt = c(NA, 99, 102, 106))
 phoenix_hepatic(bilirubin = bil, alt = alt, data = DF)
+
 }
 \references{
 See reference details in \code{\link{phoenix-package}} or by calling

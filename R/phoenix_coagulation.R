@@ -44,10 +44,10 @@
 #'
 #' # using the example data set
 #' phoenix_coagulation(
-#'   platelets = platelets,
-#'   inr = inr,
-#'   d_dimer = d_dimer,
-#'   fibrinogen = fibrinogen,
+#'   platelets = platelets,    # 1000/uL (thousand per microliter)
+#'   inr = inr,                # unitless
+#'   d_dimer = d_dimer,        # mg/L FEU
+#'   fibrinogen = fibrinogen,  # mg/dL
 #'   data = sepsis
 #' )
 #'

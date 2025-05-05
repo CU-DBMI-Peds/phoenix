@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Comming soon!
+Coming soon!
 
 # Respiratory
 ## PaO_2_
@@ -17,7 +17,7 @@ Comming soon!
 ## FiO_2_
 
 # Cardiovascular
-## Systemic Vasocactive Medications
+## Systemic Vasoactive Medications
 
 ## Lactate
 

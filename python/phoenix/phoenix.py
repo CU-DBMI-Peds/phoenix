@@ -177,7 +177,7 @@ def phoenix_immunologic(anc = np.nan, alc = np.nan):
     """
     anc = np.nan_to_num(anc, nan = 555)
     alc = np.nan_to_num(alc, nan = 1111)
-    return(np.array(((anc < 500) | (alc < 1000)).astype(int)))
+    return(np.array(((anc < 0.500) | (alc < 1.000)).astype(int)))
 
 def phoenix_renal(creatinine = np.nan, age = np.nan):
     """

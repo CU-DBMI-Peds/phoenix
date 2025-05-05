@@ -95,11 +95,12 @@ stopifnot(all(endocrine$expected_score %in% 0:1))
 
 ################################################################################
 # immunolgic
-immunolgic <- expand.grid(anc = c(NA, 200, 500, 600),
-                          alc = c(NA, 500, 1000, 2000))
+# Recall that the expected units for ANC and ALC are 1000 cells/mm^3
+immunolgic <- expand.grid(anc = c(NA, 0.200, 0.500, 0.600),
+                          alc = c(NA, 0.500, 1.000, 2.000))
 immunolgic$expected_score <- 0L
-immunolgic$expected_score[which(immunolgic$anc < 500)] <- 1L
-immunolgic$expected_score[which(immunolgic$alc < 1000)] <- 1L
+immunolgic$expected_score[which(immunolgic$anc < 0.500)] <- 1L
+immunolgic$expected_score[which(immunolgic$alc < 1.000)] <- 1L
 
 stopifnot(!any(is.na(immunolgic$expected_score)))
 stopifnot(all(immunolgic$expected_score %in% 0:1))

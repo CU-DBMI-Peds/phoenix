@@ -1,4 +1,4 @@
-# Version 1.1.1.9000:
+# Version 1.1.2.9000:
 
 ## User visable changes
 
@@ -10,6 +10,19 @@
 
 * Add the non-exported function `length_check` 
 * Improvements to testing suite
+
+# Version 1.1.2:
+
+## Bug Fixes
+
+* correct the limits for assessing immunologic dysfunction (#11)
+
+## Other Changes
+
+* Improve documentation
+
+  * Fix copy and paste errors
+  * Add expected units to examples
 
 # Version 1.1.1:
 

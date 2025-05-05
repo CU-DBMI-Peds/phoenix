@@ -65,8 +65,12 @@
 #'
 #' @examples
 #' # using the example sepsis data set
+#' # Expected units:
+#' #   GCS integer values from 3, 4, 5, ..., 15 
+#' #   fixed_pupils: 1 if bilaterially fixed pupils, 0 otherwise
+#'
 #' phoenix_neurologic(
-#'   gcs = gcs_total,
+#'   gcs = gcs_total, 
 #'   fixed_pupils = as.integer(pupil == "both-fixed"),
 #'   data = sepsis
 #' )
