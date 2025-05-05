@@ -590,23 +590,42 @@ summary.phoenix_data_check <- function(object, ...) {
   skips <- sum(object[["report"]][["skipped"]])
   fails <- sum(object[["report"]][["fail"]] > 0)
   warns <- sum(object[["report"]][["warning"]] > 0)
-  pass  <- sum((object[["report"]][["pass"]] > 0) &
-               (object[["report"]][["fail"]] == 0) &
-               (object[["report"]][["warning"]] == 0) &
-               !(object[["report"]][["skipped"]]))
+  pass_or_skipped  <-
+    sum(
+        (
+         (object[["report"]][["pass"]] > 0) &
+         (object[["report"]][["fail"]] == 0) &
+         (object[["report"]][["warning"]] == 0)
+        ) |
+        (
+         object[["report"]][["skipped"]]
+        )
+  )
+  pass_not_skipped  <-
+    sum(
+        (
+         (object[["report"]][["pass"]] > 0) &
+         (object[["report"]][["fail"]] == 0) &
+         (object[["report"]][["warning"]] == 0)
+        ) &
+        (
+         !object[["report"]][["skipped"]]
+        )
+  )
   rtn <- list(tests = tests,
               tests_skipped = skips,
               tests_failed  = fails,
               tests_warned  = warns,
-              tests_pass    = pass)
+              tests_pass_or_skipped = pass_or_skipped,
+              tests_pass_not_skipped = pass_not_skipped)
   class(rtn) <- "phoenix_data_check_summary"
   rtn
 }
 
 #' @export
 print.phoenix_data_check_summary <- function(x, ...) {
-  labels <- c("tests:", "  skipped:", "  failed:", "  warned:", "  passed:")
-  values <- c(x$tests, x$tests_skipped, x$tests_failed, x$tests_warned, x$tests_pass)
+  labels <- names(x)
+  values <- do.call(c, x)
 
   label_width <- max(nchar(labels))
   value_width <- max(nchar(as.character(values)))
