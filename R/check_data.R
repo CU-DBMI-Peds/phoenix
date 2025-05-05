@@ -285,12 +285,15 @@ check_data <- function(
     skip = all(is.na(age)),
     pass = is.na(age) | (age >= 0 & age < 216)
   )
-  # vasoactive medications is an integer valued column with values 0:6
+
+  # vasoactives is an integer valued column with values 0:6
   new_test(
     test = "vasoactives %in% 0:6",
     skip = all(is.na(vasoactives)),
     pass = is.na(vasoactives) | (vasoactives %in% 0:6)
   )
+
+  # each of the six possible vasoactive medications are 0:1 vectors
   new_test(
     test = "dopamine %in% 0:1",
     skip = all(is.na(dopamine)),
@@ -371,7 +374,7 @@ check_data <- function(
     skip = all(is.na(map)),
     warn_if = "map > 300",
     warn = any(map > 300, na.rm = TRUE),
-    pass = is.na(map) | sbp >= 0
+    pass = is.na(map) | map >= 0
   )
 
   new_test(
