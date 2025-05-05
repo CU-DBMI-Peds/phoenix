@@ -37,6 +37,7 @@ chk <-
   check_data(fio2 = fio2, spo2 = spo2, sf_ratio = sf_ratio, data = DF)
 
 chk
+print(chk, full_report = FALSE) # default
 print(chk, full_report = TRUE)
 summary(chk)
 

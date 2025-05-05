@@ -343,6 +343,8 @@ check_data <- function(
   new_test(
     test = "0 <= lactate",
     skip = all(is.na(lactate)),
+    warn_if = "lactate > 50",
+    warn = any(lactate > 50, na.rm = TRUE),
     pass = is.na(lactate) | lactate >= 0
   )
 
@@ -367,6 +369,8 @@ check_data <- function(
   new_test(
     test = "0 <= map",
     skip = all(is.na(map)),
+    warn_if = "map > 300",
+    warn = any(map > 300, na.rm = TRUE),
     pass = is.na(map) | sbp >= 0
   )
 
@@ -403,6 +407,8 @@ check_data <- function(
   new_test(
     test = "0 <= d_dimer",
     skip = all(is.na(d_dimer)),
+    warn_if = "d_dimer > 500",
+    warn = any(d_dimer > 500, na.rm = TRUE),
     pass = is.na(d_dimer) | 0 <= d_dimer
   )
 
@@ -427,6 +433,8 @@ check_data <- function(
   new_test(
     test = "0 <= glucose",
     skip = all(is.na(glucose)),
+    warn_if = "glucose > 2000",
+    warn = any(glucose > 2000, na.rm = TRUE),
     pass = is.na(glucose) | (glucose >= 0)
   )
 
