@@ -637,6 +637,22 @@ print.phoenix_data_check_summary <- function(x, ...) {
   invisible(x)
 }
 
+#' @export
+report <- function(x, output_file = "report.html", output_dir = getwd(), ...) {
+  UseMethod("report")
+}
+
+#' @export
+report.phoenix_data_check <- function(x, output_file = "report.html", output_dir = getwd(), ...) {
+  requireNamespace("rmarkdown")
+  rmd_template <- system.file("phoenix_data_report.Rmd", package = "phoenix")
+  rmarkdown::render(input = rmd_template,
+                    output_file = output_file,
+                    output_dir = output_dir,
+                    params = list(obj = x),
+                    envir = new.env(parent = globalenv()))
+}
+
 ################################################################################
 # Non-exported functions
 length_check <- function(..., data = parent.frame())

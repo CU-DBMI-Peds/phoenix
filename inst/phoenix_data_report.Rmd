@@ -1,0 +1,192 @@
+---
+title: "Data Checks and Summaries for Phoenix"
+output:
+  html_document:
+    toc: true
+params:
+  obj: NA
+---
+
+```{r label = "setup", include = FALSE}
+requireNamespace("phoenix")
+requireNamespace("qwraps2")
+requireNamespace("knitr")
+requireNamespace("rmarkdown")
+requireNamespace("kableExtra")
+options(qwraps2_markup = "markdown")
+
+# for dev work
+if (interactive()) {
+  chk <- check_data(fio2 = fio2,
+                    pao2 = pao2,
+                    spo2 = spo2,
+                    imv = vent,
+                    other_respiratory_support = as.integer(fio2 > 0.21),
+                    pf_ratio = pao2 / fio2,
+                    sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+                    age = age,
+                    vasoactives = dopamine + dobutamine + epinephrine + norepinephrine + milrinone + vasopressin,
+                    dopamine = dopamine,
+                    dobutamine = dobutamine,
+                    epinephrine = epinephrine,
+                    norepinephrine = norepinephrine,
+                    milrinone = milrinone,
+                    vasopressin = vasopressin,
+                    lactate = lactate,
+                    sbp = sbp,
+                    dbp = dbp,
+                    map = map(sbp, dbp),
+                    platelets = platelets,
+                    inr = inr,
+                    d_dimer = d_dimer,
+                    fibrinogen = fibrinogen,
+                    gcs = gcs_total,
+                    fixed_pupils = as.integer(pupil == "both-fixed"),
+                    glucose = glucose,
+                    anc = anc,
+                    alc = alc,
+                    creatinine = creatinine,
+                    bilirubin = bilirubin,
+                    alt = alt,
+                    data = sepsis)
+  params <- list()
+  params$obj <- chk
+}
+considered_data <- params$obj$considered_data
+report <- params$obj$report
+report$test <- gsub("<=", "≤", report$test)
+report$test <- gsub(">=", "≥", report$test)
+report$test <- gsub("spo2", "SpO<sub>2</sub>", report$test)
+report$test <- gsub("pao2", "PaO<sub>2</sub>", report$test)
+report$test <- gsub("fio2", "FiO<sub>2</sub>", report$test)
+```
+
+# Results from check_data 
+```{r, echo = FALSE, results = "asis"}
+report$skipped <- kableExtra::cell_spec(report$skipped,
+                                        color = ifelse(report$skipped, "black", "white"),
+                                        background = ifelse(report$skipped, "yellow", "green"))
+kableExtra::kbl(report, escape = FALSE) |>
+  kableExtra::kable_paper("striped") 
+```
+
+```{r, echo = FALSE, results = "markup"}
+summary(params$obj)
+```
+
+
+
+# Respiratory Inputs
+
+Possible inputs:
+
+* PaO₂: arterial oxygen pressure measured in mmHg.
+* SpO₂: oxygen saturation, measured as a percent, expected values are integers
+  from 0 to 100.
+* FiO₂: fraction of inspired oxygen (unit less) with expected values from 0.21
+  (room air) to 1.00.
+* pf_ratio: PaO₂ / FiO₂.
+* sf_ratio: SpO₂ / FiO₂ only valid if SpO₂ ≤ 97.
+* imv: invasive mechanical ventalation.  An indicator vector: 0 or 1.
+* other_respiratory_support: indicator vector for any other respiratory support.
+  It is likely that if there is any oxygen support then
+  other_respiratory_support = (FiO₂ ≥ 0.21).  It is possible for a patient to
+  have other respiratory without FiO₂ ≥ 0.21, e.g., being on CPAP without
+  additional oxygen.
+
+## PaO₂ (mmHg)
+
+```{r label = "pao2-summary"}
+
+
+```
+
+```{r label = 'respiratory-inputs', echo = FALSE, results = "asis"}
+qs <- list()
+
+if (any(!is.na(considered_data["pao2"]))) {
+  qs <- c(qs,
+          list("PaO₂ (mmHg)" =
+               list(
+                    "Minimum"            = ~ qwraps2::frmt(min(na.omit(pao2))),
+                    "Median (IQR)"       = ~ qwraps2::median_iqr(na.omit(pao2)),
+                    "Mean (SD)"          = ~ qwraps2::mean_sd(na.omit(pao2), denote_sd = "paren"),
+                    "Maximum"            = ~ qwraps2::frmt(max(na.omit(pao2))),
+                    "Missing: n (%)"     = ~ qwraps2::n_perc(is.na(pao2)),
+                    "PaO₂ < 0: n (%)"    = ~ qwraps2::n_perc(na.omit(pao2 < 0))
+                     )
+               )
+          )
+} else {
+  qs <- c(qs, list("PaO₂ (mmHg)" = list("Missing: n (%)" = ~ qwraps2::n_perc(is.na(pao2)))))
+}
+
+if (any(!is.na(considered_data["spo2"]))) {
+  qs <- c(qs,
+          list("SpO₂" =
+               list(
+                    "Minimum"                = ~ qwraps2::frmt(min(na.omit(spo2))),
+                    "Median (IQR)"           = ~ qwraps2::median_iqr(na.omit(spo2)),
+                    "Mean (SD)"              = ~ qwraps2::mean_sd(na.omit(spo2), denote_sd = "paren"),
+                    "Maximum"                = ~ qwraps2::frmt(max(na.omit(spo2))),
+                    "Missing: n (%)"         = ~ qwraps2::n_perc(is.na(spo2)),
+                    "SpO₂ < 0: n (%)"        = ~ qwraps2::n_perc(na.omit(spo2 < 0)),
+                    "0 ≤ SpO₂ ≤ 1; n (%)"    = ~ qwraps2::n_perc(na.omit((spo2 > 0) & (spo2 < 1))),
+                    "97 < SpO₂ ≤ 100: n (%)" = ~ qwraps2::n_perc(na.omit((spo2 > 97) & (spo2 < 100))),
+                    "SpO₂ > 100: n (%)"      = ~ qwraps2::n_perc(na.omit(spo2 > 100))
+                     )
+               )
+          )
+} else {
+  qs <- c(qs, list("SpO₂" = list("Missing: n (%)" = ~ qwraps2::n_perc(is.na(spo2)))))
+}
+
+if (any(!is.na(considered_data["fio2"]))) {
+  qs <- c(qs,
+          list("FiO₂" =
+               list(
+                    "Minimum"                = ~ qwraps2::frmt(min(na.omit(fio2))),
+                    "Median (IQR)"           = ~ qwraps2::median_iqr(na.omit(fio2)),
+                    "Mean (SD)"              = ~ qwraps2::mean_sd(na.omit(fio2), denote_sd = "paren"),
+                    "Maximum"                = ~ qwraps2::frmt(max(na.omit(fio2))),
+                    "Missing: n (%)"         = ~ qwraps2::n_perc(is.na(fio2)),
+                    "FiO₂ < 0.21: n (%)"     = ~ qwraps2::n_perc(na.omit(fio2 < 0.21)),
+                    "0.21 ≤ FiO₂ ≤ 1.00; n (%)"    = ~ qwraps2::n_perc(na.omit((fio2 >= 0.21) & (fio2 < 1.00))),
+                    "FiO₂ > 1.00: n (%)"      = ~ qwraps2::n_perc(na.omit(fio2 > 1.00))
+                     )
+               )
+          )
+} else {
+  qs <- c(qs, list("FiO₂" = list("Missing: n (%)" = ~ qwraps2::n_perc(is.na(fio2)))))
+}
+
+
+#  qwraps2::qsummary(params$obj$considered_data["pf_ratio"])
+#  qwraps2::qsummary(params$obj$considered_data["sf_ratio"])
+#  qwraps2::qsummary(factor(params$obj$considered_data["imv"]))
+#  qwraps2::qsummary(factor(params$obj$considered_data["other_respiratory_support"]))
+
+x <- qwraps2::summary_table(considered_data, summaries = qs)
+
+# Highlight warnings:
+idx <- (x[, 1] == "&nbsp;&nbsp; 97 < SpO₂ ≤ 100: n (%)") 
+
+x[idx, 1] <- paste('<div style="background-color:#FFFF00;">', x[idx, 1], '</div>')
+x[idx, 2] <- paste('<div style="background-color:#FFFF00;">', x[idx, 2], '</div>')
+
+# Highlight errors - or really bad warnings
+idx <- (x[, 1] == "&nbsp;&nbsp; FiO₂ < 0.21: n (%)") 
+
+x[idx, 1] <- paste('<div style="background-color:#FF0000;">', x[idx, 1], '</div>')
+x[idx, 2] <- paste('<div style="background-color:#FF0000;">', x[idx, 2], '</div>')
+
+kable(x, format = "html", escape = FALSE, align = "lr")
+```
+
+
+
+
+
+
+
+
