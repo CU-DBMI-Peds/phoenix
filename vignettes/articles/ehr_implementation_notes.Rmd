@@ -264,7 +264,7 @@ The overall meta data for vasoactives:
 ### Mean Arterial Pressure (MAP)
 
 There can be many sources of blood pressure.  We used the following hierarchy for
-which value to use in the scoring.  
+which value to use in the scoring.
 
 1. Arterial MAP (direct measurement)
 2. Estimated MAP from arterial systolic (SBP) and arterial diastolic (DBP) pressures
@@ -320,19 +320,65 @@ cat(tail(as.character(body(phoenix::phoenix_cardiovascular)), 4), sep = "\n")
 ## Fibrinogen
 
 # Neurologic
-## GCS
 
-Package only allows for GCS total. GCS should be an integer in the range: 3 - 15
+## Inputs
 
-If GCS total is not available, it can be calculated from the subcomponents `eye + motor + verbal`
+### Glasgow Coma Scale (GCS)
 
-* GCS Eye range: 1 - 4
-* GCS Motor range: 1 - 6
-* GCS Verbal range: 1 - 5
+Phoenix is based on the total GCS score
+* GCS (total):
+  * Units: none
+  * Values: integer values 3, 4, 5, ..., 15
+  * Caveats:
+    * The total GCS is the sum of three component scores, eye, motor, and verable:
+    * We assumed that if we had an updated score for any one of the three componets
+      but not all, then the non-updated componets were assumed to have not
+      changed and did not warrant data entry.  We, therefore, updated the time
+      of the GCS total and all its compoents to the youngest update time for any
+      of the compoents.
+  * Look back: 12 hours
 
-## Pupils
+* GCS (eye):
+  * Units: none
+  * Values: integer values 1, 2, 3, 4
+  * Caveats:
+  * Look back: 12 hours
+
+* GCS (motor):
+  * Units: none
+  * Values: integer values 1, 2, 3, 4, 5, 6
+  * Caveats:
+  * Look back: 12 hours
+
+* GCS (verbal):
+  * Units: none
+  * Values: integer values 1, 2, 3, 4, 5
+  * Caveats:
+  * Look back: 12 hours
+
+### Pupils
+* Units: none
+* Values:
+  * 1: bilaterally fixed pupils
+  * 0: one or zero fixed pupils
+* Caveats:
+* Look back: 6 hours
+
+## Scoring
+
+* At most 2 points.
+* 1 point for GCS ≤ 10
+* 2 points for bilaterally fixed pupils
+
+A patient with a GCS ≤ 10 and bilaterally fixed pupils will have a score of 2.
+
+```{r}
+# fpl: 1 if bilaterally fixed pupils; 0 otherwise
+cat(tail(as.character(body(phoenix::phoenix_neurologic)), 1), sep = "\n")
+```
 
 # Endocrine
+
 ## Glucose
 
 # Immunologic
