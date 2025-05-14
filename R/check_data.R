@@ -249,14 +249,14 @@ check_data <- function(
     warn    = pf_ratio > 100 / 0.21
   )
 
-  ## check for consistency between fio2 values and other respiratory support
+  # check for consistency between fio2 values and other respiratory support
   new_test(
     test = "(fio2 > 0.21) == other_respiratory_support",
     skip = all(is.na(fio2)) | all(is.na(other_respiratory_support)),
     pass = is.na(fio2) | is.na(other_respiratory_support) | (as.integer(fio2 > 0.21) == other_respiratory_support)
   )
 
-  ## check for the condition that sf_ratio is only used when spo2 is <= 97
+  # check for the condition that sf_ratio is only used when spo2 is <= 97
   new_test(
     test    = "(spo2 <= 97) | (spo2 > 97 & is.na(sf_ratio))",
     warn_if = "spo2 > 97",
@@ -265,14 +265,22 @@ check_data <- function(
     warn    = spo2 > 97
   )
 
-  ## check if the provided sf_ratio is equal to a calculated sf_ratio
+  # additionally, we need to check that SpO2 is <= 97 when only the sf_ratio and
+  # the FiO2 are provied
+  new_test(
+    test    = "sf_ratio * fio2 <= 97",
+    skip    = all(is.na(sf_ratio)) & all(is.na(fio2)),
+    pass    = is.na(sf_ratio) | is.na(fio2) | (sf_ratio * fio2 <= 97 + sqrt(.Machine$double.eps))
+  )
+
+  # check if the provided sf_ratio is equal to a calculated sf_ratio
   new_test(
     test = "spo2/fio2 == sf_ratio",
     skip = all(is.na(sf_ratio)) | all(is.na(spo2)) | all(is.na(fio2)),
     pass = is.na(spo2) | is.na(fio2) | is.na(sf_ratio) | ( (spo2 / fio2) > (sf_ratio - sqrt(.Machine$double.eps)) & (spo2 / fio2) < (sf_ratio + sqrt(.Machine$double.eps)))
   )
 
-  ## check if the provided pf_ratio is equal to the calculated pf_ratio
+  # check if the provided pf_ratio is equal to the calculated pf_ratio
   new_test(
     test = "pao2/fio2 == pf_ratio",
     skip = all(is.na(pf_ratio)) | all(is.na(pao2)) | all(is.na(fio2)),
