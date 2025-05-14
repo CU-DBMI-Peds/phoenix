@@ -24,11 +24,7 @@ the scoring.  The phoenix R package and Python module, along with the example
 SQL code assumes the data has been prepared as expected and returns scores
 accordingly.
 
-<!-- NOTES:
-D_dimer mg/l feu <= 500
-GCS Total - gcs_total >= 3 and <= 15 (i.e. GCS should be between 3 and 15)
-Glucose - Glucose mg/dl >= 5 and Glucose mg/dl <= 2000
--->
+<hr>
 
 # General Data Formatting Notes
 
@@ -36,6 +32,8 @@ Glucose - Glucose mg/dl >= 5 and Glucose mg/dl <= 2000
 * Values outside ranges mentioned below are treated as `NULL`
 * Before sending data to the package, verify data. Some values may provide warnings, others may throw errors. Verify your processing can handle warnings and errors.
 * Ideally input values will be known along with a time of the measurement so that last observation carried forward logic can be implemented with limits and conditions for age of inputs for calculated variables can be verified.
+
+<hr>
 
 # Suspected Infection
 
@@ -79,6 +77,8 @@ specifically the files:
 and
 [clean_up_routes.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql).
 
+<hr>
+
 # Respiratory
 
 Respiratory dysfunction scoring is based on PaO~2~/FiO~2~ (PFR), SpO~2~/FiO~2~
@@ -90,20 +90,20 @@ can be performed before the score is determined.
 
 ### PaO~2~: Partial pressure of oxygen in arterial blood
 * Units: mmHg
-* Values: [0, Inf)
+* Expected Values: [0, Inf)
 * Caveats:
 * Look Back: 6 hours
 
 ### SpO~2~: Peripheral oxygen saturation (pulse ox)
 * Units: percentage
-* Values: [0, 100]
+* Expected Values: [0, 100]
   * Expect integer values 0, 1, 2, ..., 100
 * Caveats: values greater than 97 should _not_ be used for SFR
 * Look back: 6 hours
 
 ### FiO~2~: Percent inspired oxygen
 * Units: not applicable
-* Values: [0.21, 1.00]
+* Expected Values: [0.21, 1.00]
   * expected floating point
   * 0.21 is room air
   * 1.00 is pure oxygen
@@ -112,7 +112,7 @@ can be performed before the score is determined.
 
 ### PFR: PaO~2~/FiO~2~
 * Units: mmHg
-* Values [0, Inf)
+* Expected Values [0, Inf)
   * Expect floating point
 * Caveats:
   * PFR is only valid if the time of FiO~2~ value is the same as, or before,
@@ -141,7 +141,7 @@ can be performed before the score is determined.
 
 ### SFR: SpO~2~ / FiO~2~
 * Units: none
-* Values: [0, 97/0.21]
+* Expected Values: [0, 97/0.21]
   * Floating point
   * The upper limit includes the limitation on SpO~2~ ≤ 97
 * Caveats:
@@ -173,7 +173,7 @@ can be performed before the score is determined.
 
 ### ORS: Other Respiratory Support
 * Units: not applicable
-* Values:
+* Expected Values:
   * 0: No other respiratory support
   * 1: some form of respiratory support
     * may or may not include supplemental oxygen
@@ -187,7 +187,7 @@ can be performed before the score is determined.
 
 ### IMV: Invasive Mechanical ventilation
 * Units: not applicable
-* Values:
+* Expected Values:
   * 0: patient is not currently intubated
   * 1: patient currently has invasive mechanical ventilation
 * Caveats:
@@ -206,6 +206,8 @@ SpO~2~/FiO~2~ (SFR) with consideration for IMV and ORS.
 # R code: booleans are implicitly coerced to integers
 cat(tail(as.character(body(phoenix::phoenix_respiratory)), 1), sep = "\n")
 ```
+
+<hr>
 
 # Cardiovascular
 
@@ -244,20 +246,20 @@ and
 The overall meta data for vasoactives:
 
 * Units: none
-* Values: 0, 1, 2, 3, 4, 5, 6
+* Expected Values: 0, 1, 2, 3, 4, 5, 6
 * Caveats: see above
 * Look back: 12 hours
 
 
 ### Lactate
 * Units: mmol/L
-* Values: [0, 50]
+* Expected Values: [0, 50]
 * Caveats:
 * Look back: 6 hours
 
 ### Age
 * Units: Months
-* Values: [0, 216)
+* Expected Values: [0, 216)
 * Caveats:
 * Look back:
 
@@ -277,14 +279,14 @@ Expected metadata:
 
 * MAP:
   * Units: mmHg
-  * Values: [0, 300]
+  * Expected Values: [0, 300]
   * Caveats:
     * If MAP is provided along with SBP and DBP it is worth verifying that DBP ≤ MAP ≤ SBP
   * Look back: 6 hours
 
 * SBP:
   * Units: mmHg
-  * Values: [0, 300]
+  * Expected Values: [0, 300]
   * Caveats:
     * It is worth verifying that DBP ≤ SBP, we used a slightly more
       conservative check of (SBP - DBP) ≥ 1
@@ -292,7 +294,7 @@ Expected metadata:
 
 * DBP:
   * Units: mmHg
-  * Values: [0, 200]
+  * Expected Values: [0, 200]
   * Caveats:
     * It is worth verifying that DBP ≤ SBP, we used a slightly more
       conservative check of (SBP - DBP) ≥ 1
@@ -312,12 +314,46 @@ MAP.
 cat(tail(as.character(body(phoenix::phoenix_cardiovascular)), 4), sep = "\n")
 ```
 
+<hr>
+
 # Coagulation
 
-## Platelets
-## INR
-## D-dimer
-## Fibrinogen
+## Inputs
+
+### Platelets
+* Units: 1000/μL
+* Expected Values:
+* Caveats:
+* Look back: 24 hours
+
+### INR
+* Units: none
+* Expected Values:
+* Caveats:
+* Look back: 24 hours
+
+### D-dimer
+* Units: mg/L FEU
+* Expected Values:
+* Caveats:
+* Look back: 24 hours
+
+### Fibrinogen
+* Units: mg/dL
+* Expected Values:
+* Caveats:
+* Look back: 24 hours
+
+## Scoring
+
+While there are four inputs and a patient could get a point for each one, the
+final score is capped at two points.
+
+```{r}
+cat(tail(as.character(body(phoenix::phoenix_coagulation)), 2), sep = "\n")
+```
+
+<hr>
 
 # Neurologic
 
@@ -328,7 +364,7 @@ cat(tail(as.character(body(phoenix::phoenix_cardiovascular)), 4), sep = "\n")
 Phoenix is based on the total GCS score
 * GCS (total):
   * Units: none
-  * Values: integer values 3, 4, 5, ..., 15
+  * Expected Values: integer values 3, 4, 5, ..., 15
   * Caveats:
     * The total GCS is the sum of three component scores, eye, motor, and verable:
     * We assumed that if we had an updated score for any one of the three componets
@@ -340,25 +376,25 @@ Phoenix is based on the total GCS score
 
 * GCS (eye):
   * Units: none
-  * Values: integer values 1, 2, 3, 4
+  * Expected Values: integer values 1, 2, 3, 4
   * Caveats:
   * Look back: 12 hours
 
 * GCS (motor):
   * Units: none
-  * Values: integer values 1, 2, 3, 4, 5, 6
+  * Expected Values: integer values 1, 2, 3, 4, 5, 6
   * Caveats:
   * Look back: 12 hours
 
 * GCS (verbal):
   * Units: none
-  * Values: integer values 1, 2, 3, 4, 5
+  * Expected Values: integer values 1, 2, 3, 4, 5
   * Caveats:
   * Look back: 12 hours
 
 ### Pupils
 * Units: none
-* Values:
+* Expected Values:
   * 1: bilaterally fixed pupils
   * 0: one or zero fixed pupils
 * Caveats:
@@ -377,12 +413,15 @@ A patient with a GCS ≤ 10 and bilaterally fixed pupils will have a score of 2.
 cat(tail(as.character(body(phoenix::phoenix_neurologic)), 1), sep = "\n")
 ```
 
+<hr>
+
 # Endocrine
 
 ## Inputs
+
 ### Glucose
 * Units: mg/dL
-* Values: [0, Inf)
+* Expected Values: [5, 2000]
   * floating point
 * Caveats:
 * Look back: 12 hours
@@ -395,19 +434,77 @@ cat(tail(as.character(body(phoenix::phoenix_endocrine)), 1), sep = "\n")
 ```
 
 # Immunologic
-## ANC
-## ALC
+
+## Inputs
+
+### ANC
+* Units: 1000 cells / mm³
+* Expected Values: [0, Inf)
+* Caveats:
+  * Be careful with the units.  The R package, Python module, and example SQL
+    code expect units in 1000 cells / mm³.  Tables and other references might
+    use cells / mm³
+* Look back: 24 hours
+
+### ALC
+* Units: 1000 cells / mm³
+* Expected Values: [0, Inf)
+* Caveats:
+  * Be careful with the units.  The R package, Python module, and example SQL
+    code expect units in 1000 cells / mm³.  Tables and other references might
+    use cells / mm³
+* Look back: 24 hours
+
+## Scoring
+At most one point
+
+```{r}
+cat(tail(as.character(body(phoenix::phoenix_immunologic)), 1), sep = "\n")
+```
+
+<hr>
 
 # Renal
-## Age (see notes in cardiovascular)
-## Creatinine
+
+## Inputs
+### Age (see notes in cardiovascular)
+### Creatinine
+* Units: mg/dL
+* Expected Values: [0, Inf)
+* Caveats:
+* Look back: 24 hours
+
+## Scoring
+Age adjusted creatinine
+
+```{r}
+cat(tail(as.character(body(phoenix::phoenix_renal)), 1), sep = "\n")
+```
+
+<hr>
 
 # Hepatic
+## Inputs
+### Total Bilirubin
+* Units: mg/dL
+* Expected Values: [0, 100]
+  * floating point
+* Caveats:
+* Look back: 24 hours
 
-## Total Bilirubin
+### ALT
+* Units: IU/L
+* Expected Values:
+* Caveats:
+* Look back: 24 hours
 
-Units should be in mg/dL, or converted to mg/dL and range from 0 - 100.
+## Scoring
+0 or 1 points
 
-## ALT
+```{r}
+cat(tail(as.character(body(phoenix::phoenix_hepatic)), 1), sep = "\n")
+```
+
+<hr>
 
 # References
