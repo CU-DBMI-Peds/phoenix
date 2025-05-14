@@ -61,6 +61,8 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Phoenix Sepsis EHR Implementation Notes</h1>
+            <h3 data-toc-skip class="subtitle"><strong>THIS IS A WORK IN
+PROGRESS</strong></h3>
             
       
       <small class="dont-index">Source: <a href="https://github.com/CU-DBMI-Peds/phoenix/blob/main/vignettes/articles/ehr_implementation_notes.Rmd" class="external-link"><code>vignettes/articles/ehr_implementation_notes.Rmd</code></a></small>
@@ -69,13 +71,25 @@
 
     
     
-<p>D_dimer mg/l feu &lt;= 500 GCS Total - gcs_total &gt;= 3 and &lt;= 15
-(i.e. GCS should be between 3 and 15) Lactate mmol/l &lt;= 50 DBP - DBP
-&gt;= 1 and DBP &lt;= 200 SBP - SBP &gt;= 1 and SBP &lt;= 300 MAP (mean
-arterial pressure) - MAP &gt;= 1 and MAP &lt;= 300 Glucose - Glucose
-mg/dl &gt;= 5 and Glucose mg/dl &lt;= 2000</p>
+<p>The Phoenix criteria for pediatric sepsis and septic shock was
+developed using an international data set of pediatric hospitalizations.
+Note that birth-hospitalizations and patients with a gestational age
+less than 37 weeks were omitted <span class="citation">(Sanchez-Pinto et
+al. 2024; Schlapbach et al. 2024)</span>. The Phoenix criteria were
+developed based on modeling hospital mortality based on suspected
+infection and organ dysfunction within the first twenty-four hours of a
+hospital encounter.</p>
+<p>The purpose of this document is to provide details on the expected
+inputs for the scoring. The phoenix R package and Python module, along
+with the example SQL code assumes the data has been prepared as expected
+and returns scores accordingly.</p>
+<!-- NOTES:
+D_dimer mg/l feu <= 500
+GCS Total - gcs_total >= 3 and <= 15 (i.e. GCS should be between 3 and 15)
+Glucose - Glucose mg/dl >= 5 and Glucose mg/dl <= 2000
+-->
 <div class="section level2">
-<h2 id="general-notes">General notes<a class="anchor" aria-label="anchor" href="#general-notes"></a>
+<h2 id="general-data-formatting-notes">General Data Formatting Notes<a class="anchor" aria-label="anchor" href="#general-data-formatting-notes"></a>
 </h2>
 <ul>
 <li>
@@ -88,80 +102,573 @@ estimates or outdated information.</li>
 <li>Before sending data to the package, verify data. Some values may
 provide warnings, others may throw errors. Verify your processing can
 handle warnings and errors.</li>
+<li>Ideally input values will be known along with a time of the
+measurement so that last observation carried forward logic can be
+implemented with limits and conditions for age of inputs for calculated
+variables can be verified.</li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="suspected-infection">Suspected Infection<a class="anchor" aria-label="anchor" href="#suspected-infection"></a>
+</h2>
+<p>For a patient to have sepsis or septic shock based on the Phoenix
+criteria, they must have a suspected infection. A patient is considered
+to have a suspected infection if they have:</p>
+<ol style="list-style-type: decimal">
+<li>an infective test <em>ordered</em>, and</li>
+<li>at least two doses of systemic antimicrobial medication(s).</li>
+</ol>
+<p>Note that the test, e.g., a blood culture, need only be ordered.
+Positive/negative test status is not needed.</p>
+<p>Systemic antimicrobial medications are any antibiotic, antiviral, or
+antifungal medication which had any of the following routes:</p>
+<ul>
+<li>ASSUMED SYSTEMIC</li>
+<li>ENTERAL</li>
+<li>HEMODIALYSIS</li>
+<li>INTRA-ARTERIAL</li>
+<li>INTRACARDIAC</li>
+<li>INTRADUODENAL</li>
+<li>INTRAGASTRIC</li>
+<li>INTRAILEAL</li>
+<li>INTRAMUSCULAR</li>
+<li>INTRAVASCULAR</li>
+<li>INTRAVENOUS</li>
+<li>INTRAVENOUS BOLUS</li>
+<li>INTRAVENOUS DRIP</li>
+<li>NASOGASTRIC</li>
+<li>ORAL</li>
+<li>OROPHARYNGEAL</li>
+<li>PARENTERAL</li>
+<li>RECTAL</li>
+<li>SUBCUTANEOUS</li>
+</ul>
+<p>Example SQL code used for mapping medication routes when developing
+Phoenix can be found in a <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
+archive</a> specifically the files: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql" class="external-link">med_route_mapping.sql</a>
+and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql" class="external-link">clean_up_routes.sql</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
 </h2>
-<p>Provide <strong>one</strong> of the following for the Respiratory
-score:</p>
+<p>Respiratory dysfunction scoring is based on
+PaO<sub>2</sub>/FiO<sub>2</sub> (PFR), SpO<sub>2</sub>/FiO<sub>2</sub>
+(SFR) and respiratory support. While the scoring is based on SFR and
+PFR, it is preferable to get the SpO<sub>2</sub>, PaO<sub>2</sub>, and
+FiO<sub>2</sub> values so certain data checks can be performed before
+the score is determined.</p>
+<div class="section level3">
+<h3 id="inputs">Inputs<a class="anchor" aria-label="anchor" href="#inputs"></a>
+</h3>
+<div class="section level4">
+<h4 id="pao2-partial-pressure-of-oxygen-in-arterial-blood">PaO<sub>2</sub>: Partial pressure of oxygen in arterial blood<a class="anchor" aria-label="anchor" href="#pao2-partial-pressure-of-oxygen-in-arterial-blood"></a>
+</h4>
 <ul>
-<li>PaO<sub>2</sub> to FiO<sub>2</sub> ratio</li>
-<li>SpO<sub>2</sub> to FiO<sub>2</sub> ratio</li>
-<li>PaO<sub>2</sub> and FiO<sub>2</sub>
+<li>Units: mmHg</li>
+<li>Values: [0, Inf)</li>
+<li>Caveats:</li>
+<li>Look Back: 6 hours</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="spo2-peripheral-oxygen-saturation-pulse-ox">SpO<sub>2</sub>: Peripheral oxygen saturation (pulse ox)<a class="anchor" aria-label="anchor" href="#spo2-peripheral-oxygen-saturation-pulse-ox"></a>
+</h4>
+<ul>
+<li>Units: percentage</li>
+<li>Values: [0, 100]
+<ul>
+<li>Expect integer values 0, 1, 2, …, 100</li>
+</ul>
 </li>
-<li>SpO<sub>2</sub> and FiO<sub>2</sub>
+<li>Caveats: values greater than 97 should <em>not</em> be used for
+SFR</li>
+<li>Look back: 6 hours</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="fio2-percent-inspired-oxygen">FiO<sub>2</sub>: Percent inspired oxygen<a class="anchor" aria-label="anchor" href="#fio2-percent-inspired-oxygen"></a>
+</h4>
+<ul>
+<li>Units: not applicable</li>
+<li>Values: [0.21, 1.00]
+<ul>
+<li>expected floating point</li>
+<li>0.21 is room air</li>
+<li>1.00 is pure oxygen</li>
+</ul>
+</li>
+<li>Caveats:</li>
+<li>Look back: 6 hours</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="pfr-pao2fio2">PFR: PaO<sub>2</sub>/FiO<sub>2</sub><a class="anchor" aria-label="anchor" href="#pfr-pao2fio2"></a>
+</h4>
+<ul>
+<li>Units: mmHg</li>
+<li>Values [0, Inf)
+<ul>
+<li>Expect floating point</li>
+</ul>
+</li>
+<li>Caveats:
+<ul>
+<li>
+<p>PFR is only valid if the time of FiO<sub>2</sub> value is the
+same as, or before, the time of PaO<sub>2</sub> value. For example, if
+FiO<sub>2</sub> was reported at 11:31 and PaO<sub>2</sub> was reported
+at 11:45 then the PFR would be valid to use. If the FiO<sub>2</sub> is
+then updated at 11:59, the PaO<sub>2</sub> value from 11:45 would not be
+valid to use in the calculation of the PFR</p>
+<table class="table">
+<caption>* New value <br><sup>c</sup> value carried forward</caption>
+<colgroup>
+<col width="13%">
+<col width="18%">
+<col width="18%">
+<col width="18%">
+<col width="31%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">time</th>
+<th align="right">FiO<sub>2</sub>
+</th>
+<th align="right">PaO<sub>2</sub>
+</th>
+<th align="right">PFR</th>
+<th align="right">Note:</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">11:31</td>
+<td align="right">0.30*</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">11:45</td>
+<td align="right">0.30<sup>c</sup>
+</td>
+<td align="right">118*</td>
+<td align="right">393.33</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="right">11:47</td>
+<td align="right">0.30<sup>c</sup>
+</td>
+<td align="right">118<sup>c</sup>
+</td>
+<td align="right">393.33</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">11:59</td>
+<td align="right">0.40*</td>
+<td align="right">118<sup>c</sup>
+</td>
+<td align="right"></td>
+<td align="right">No PFR, FiO<sub>2</sub> is younger than
+PaO<sub>2</sub>
+</td>
+</tr>
+<tr class="odd">
+<td align="right">12:10</td>
+<td align="right">0.40<sup>c</sup>
+</td>
+<td align="right">152*</td>
+<td align="right">380</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">12:15</td>
+<td align="right">0.40<sup>c</sup>
+</td>
+<td align="right">152<sup>c</sup>
+</td>
+<td align="right">380</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="right">17:45</td>
+<td align="right">0.40<sup>c</sup>
+</td>
+<td align="right">152<sup>c</sup>
+</td>
+<td align="right">380</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">18:00</td>
+<td align="right"></td>
+<td align="right">152<sup>c</sup>
+</td>
+<td align="right"></td>
+<td align="right">No PFR, FiO<sub>2</sub> carry forward window
+expired</td>
+</tr>
+<tr class="odd">
+<td align="right">18:30</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">No PFR, FiO<sub>2</sub> and PaO<sub>2</sub> carry
+forward windows have expired</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
-<p>If multiple options are available, select the first one available
-based on order above.</p>
-<div class="section level3">
-<h3 id="fio2">FiO<sub>2</sub><a class="anchor" aria-label="anchor" href="#fio2"></a>
-</h3>
-<p>Float value with range from 0.21 to 1.00</p>
-</div>
-<div class="section level3">
-<h3 id="pao2">PaO<sub>2</sub><a class="anchor" aria-label="anchor" href="#pao2"></a>
-</h3>
-<p>Float value greater than 0</p>
-</div>
-<div class="section level3">
-<h3 id="spo2">SpO<sub>2</sub><a class="anchor" aria-label="anchor" href="#spo2"></a>
-</h3>
-<p>Integer value with range from 0 to 100; &gt; 97% should not be used
-for S/F ratio. If SpO<sub>2</sub> and FiO<sub>2</sub> is passed, package
-will discard values if SpO<sub>2</sub> is &gt;= 97%.</p>
-</div>
-<div class="section level3">
-<h3 id="respiratory-support">Respiratory Support<a class="anchor" aria-label="anchor" href="#respiratory-support"></a>
-</h3>
-<ul>
-<li>The respiratory dysfunction of 1 point can be assessed in any
-patient receiving oxygen support of any kind, including high-flow,
-noninvasive positive pressure, or invasive mechanical ventalation (IMV)
-respiratory support.</li>
-<li>The respiratory dysfunction of 2 point can only be assessed in the
-presence of invasive mechanical ventalation (IMV) respiratory
-support.</li>
+</li>
+<li>Look back: implied by the look back on PaO<sub>2</sub> and
+FiO<sub>2</sub> and the condition that FiO<sub>2</sub> value is the same
+age or older than the PaO<sub>2</sub> value.</li>
 </ul>
+</div>
+<div class="section level4">
+<h4 id="sfr-spo2-fio2">SFR: SpO<sub>2</sub> / FiO<sub>2</sub><a class="anchor" aria-label="anchor" href="#sfr-spo2-fio2"></a>
+</h4>
+<ul>
+<li>Units: none</li>
+<li>Values: [0, 97/0.21]
+<ul>
+<li>Floating point</li>
+<li>The upper limit includes the limitation on SpO<sub>2</sub> ≤ 97</li>
+</ul>
+</li>
+<li>Caveats:
+<ul>
+<li>
+<p>SFR is only valid if the time of FiO<sub>2</sub> value is the
+same as, or before, the time of SpO<sub>2</sub> value. For example, if
+FiO<sub>2</sub> was reported at 11:31 and SpO<sub>2</sub> was reported
+at 11:45 then the SFR would be valid to use. If the FiO<sub>2</sub> is
+then updated at 11:59, the SpO<sub>2</sub> value from 11:45 would not be
+valid to use in the calculation of the SFR</p>
+<table class="table">
+<caption>* New value <br><sup>c</sup> value carried forward</caption>
+<colgroup>
+<col width="13%">
+<col width="18%">
+<col width="18%">
+<col width="18%">
+<col width="31%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">time</th>
+<th align="right">FiO<sub>2</sub>
+</th>
+<th align="right">SpO<sub>2</sub>
+</th>
+<th align="right">SFR</th>
+<th align="right">Note:</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">10:15</td>
+<td align="right">0.25*</td>
+<td align="right">92*</td>
+<td align="right">368</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">10:20</td>
+<td align="right">0.25<sup>c</sup>
+</td>
+<td align="right">98*</td>
+<td align="right"></td>
+<td align="right">No SFR, SpO<sub>2</sub> &gt; 97</td>
+</tr>
+<tr class="odd">
+<td align="right">11:31</td>
+<td align="right">0.30*</td>
+<td align="right">98<sup>c</sup>
+</td>
+<td align="right"></td>
+<td align="right">No SFR, SpO<sub>2</sub> &gt; 97 and FiO<sub>2</sub>
+younger than SpO<sub>2</sub>
+</td>
+</tr>
+<tr class="even">
+<td align="right">11:45</td>
+<td align="right">0.30<sup>c</sup>
+</td>
+<td align="right">87*</td>
+<td align="right">290</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="right">11:47</td>
+<td align="right">0.30<sup>c</sup>
+</td>
+<td align="right">87<sup>c</sup>
+</td>
+<td align="right">290</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">11:59</td>
+<td align="right">0.40*</td>
+<td align="right">87<sup>c</sup>
+</td>
+<td align="right"></td>
+<td align="right">No SFR, FiO<sub>2</sub> is younger than
+SpO<sub>2</sub>
+</td>
+</tr>
+<tr class="odd">
+<td align="right">12:10</td>
+<td align="right">0.40<sup>c</sup>
+</td>
+<td align="right">85*</td>
+<td align="right">212.5</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">12:15</td>
+<td align="right">0.40<sup>c</sup>
+</td>
+<td align="right">85<sup>c</sup>
+</td>
+<td align="right">212.5</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="right">17:45</td>
+<td align="right">0.40<sup>c</sup>
+</td>
+<td align="right">85<sup>c</sup>
+</td>
+<td align="right">212.5</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="right">18:00</td>
+<td align="right"></td>
+<td align="right">85<sup>c</sup>
+</td>
+<td align="right"></td>
+<td align="right">No SFR, FiO<sub>2</sub> carry forward window
+expired</td>
+</tr>
+<tr class="odd">
+<td align="right">18:30</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">No SFR, FiO<sub>2</sub> and SpO<sub>2</sub> carry
+forward windows have expired</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>Look back: implied by the look back on SpO<sub>2</sub> and
+FiO<sub>2</sub> and the condition that FiO<sub>2</sub> value is the same
+age or older than the SpO<sub>2</sub> value.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="ors-other-respiratory-support">ORS: Other Respiratory Support<a class="anchor" aria-label="anchor" href="#ors-other-respiratory-support"></a>
+</h4>
+<ul>
+<li>Units: not applicable</li>
+<li>Values:
+<ul>
+<li>0: No other respiratory support</li>
+<li>1: some form of respiratory support
+<ul>
+<li>may or may not include supplemental oxygen</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Caveats:
+<ul>
+<li>A backstop: if FiO<sub>2</sub> &gt; 0.21 then that indicates oxygen
+support and thus ORS</li>
+</ul>
+</li>
+<li>Look Back: 6 hours
+<ul>
+<li>If it has been more than six hours since last known data point
+indicating the patient has respiratory support then consider the patient
+to no longer have respiratory support.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="imv-invasive-mechanical-ventilation">IMV: Invasive Mechanical ventilation<a class="anchor" aria-label="anchor" href="#imv-invasive-mechanical-ventilation"></a>
+</h4>
+<ul>
+<li>Units: not applicable</li>
+<li>Values:
+<ul>
+<li>0: patient is not currently intubated</li>
+<li>1: patient currently has invasive mechanical ventilation</li>
+</ul>
+</li>
+<li>Caveats:
+<ul>
+<li>IMV due to surgery should not be used to assess organ
+dysfunction</li>
+</ul>
+</li>
+<li>Look back: 6 hours
+<ul>
+<li>If it has been more than 6 hours since the last known data point
+indicating the patient has IMV, then consider the patient to no longer
+have IMV</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="scoring">Scoring<a class="anchor" aria-label="anchor" href="#scoring"></a>
+</h3>
+<p>Scoring is based on the worse case based on available
+PaO<sub>2</sub>/FiO<sub>2</sub> (PFR) and
+SpO<sub>2</sub>/FiO<sub>2</sub> (SFR) with consideration for IMV and
+ORS.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># R code: booleans are implicitly coerced to integers</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_respiratory.html">phoenix_respiratory</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; imv * (((pfr &lt; 100) | (sfr &lt; 148)) + ((pfr &lt; 200) | (sfr &lt; 220))) + ors * ((pfr &lt; 400) | (sfr &lt; 292))</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="cardiovascular">Cardiovascular<a class="anchor" aria-label="anchor" href="#cardiovascular"></a>
 </h2>
+<p>Cardiovascular dysfunction is based on three conceptual sets:</p>
+<ol style="list-style-type: decimal">
+<li>Systemic Vasoactive mediations</li>
+<li>Lactate</li>
+<li>Age adjusted mean arterial pressure</li>
+</ol>
 <div class="section level3">
-<h3 id="systemic-vasoactive-medications">Systemic Vasoactive Medications<a class="anchor" aria-label="anchor" href="#systemic-vasoactive-medications"></a>
+<h3 id="inputs-1">Inputs<a class="anchor" aria-label="anchor" href="#inputs-1"></a>
 </h3>
+<div class="section level4">
+<h4 id="systemic-vasoactive-medications">Systemic Vasoactive Medications<a class="anchor" aria-label="anchor" href="#systemic-vasoactive-medications"></a>
+</h4>
+<p>There are six systemic vasoactive medications to consider: 1.
+dobutamine 2. dopamine 3. epinephrine 4. norepinephrine 5. milrinone 6.
+vasopressin</p>
 <p>Vasoactive medications (dobutamine, dopamine, etc.) should only count
 if they are systemic. In our older dataset, epinephrine had some
-non-systemic medication administrations. e.g. “epinephrine hcl 2.25 %
-inh neb soln” should not count towards the systemic vasoactive
-medication count towards cardiovascular system disfunction points. The
-Phoenix python package documentation does mention this requirement, but
-the package doesn’t enforce it.</p>
+non-systemic medication administrations. For example: “epinephrine hcl
+2.25 % inh neb soln” should not count towards the systemic vasoactive
+medication count towards cardiovascular system dysfunction points.</p>
+<p>The routes for administration of the vasoactive medications are at
+Example SQL code used for mapping routes when developing Phoenix can be
+found in a <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
+archive</a> specifically the files: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql" class="external-link">med_route_mapping.sql</a>
+and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql" class="external-link">clean_up_routes.sql</a>.</p>
+<p>The overall meta data for vasoactives:</p>
+<ul>
+<li>Units: none</li>
+<li>Values: 0, 1, 2, 3, 4, 5, 6</li>
+<li>Caveats: see above</li>
+<li>Look back: 12 hours</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="lactate">Lactate<a class="anchor" aria-label="anchor" href="#lactate"></a>
+</h4>
+<ul>
+<li>Units: mmol/L</li>
+<li>Values: [0, 50]</li>
+<li>Caveats:</li>
+<li>Look back: 6 hours</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="age">Age<a class="anchor" aria-label="anchor" href="#age"></a>
+</h4>
+<ul>
+<li>Units: Months</li>
+<li>Values: [0, 216)</li>
+<li>Caveats:</li>
+<li>Look back:</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="mean-arterial-pressure-map">Mean Arterial Pressure (MAP)<a class="anchor" aria-label="anchor" href="#mean-arterial-pressure-map"></a>
+</h4>
+<p>There can be many sources of blood pressure. We used the following
+hierarchy for which value to use in the scoring.</p>
+<ol style="list-style-type: decimal">
+<li>Arterial MAP (direct measurement)</li>
+<li>Estimated MAP from arterial systolic (SBP) and arterial diastolic
+(DBP) pressures</li>
+<li>Cuff MAP (from a machine)</li>
+<li>Estimated MAP from cuff SBP and cuff DBP</li>
+</ol>
+<p>MAP was estimated as (2/3) * DBP + (1/3) * SBP</p>
+<p>Expected metadata:</p>
+<ul>
+<li>MAP:
+<ul>
+<li>Units: mmHg</li>
+<li>Values: [0, 300]</li>
+<li>Caveats:
+<ul>
+<li>If MAP is provided along with SBP and DBP it is worth verifying that
+DBP ≤ MAP ≤ SBP</li>
+</ul>
+</li>
+<li>Look back: 6 hours</li>
+</ul>
+</li>
+<li>SBP:
+<ul>
+<li>Units: mmHg</li>
+<li>Values: [0, 300]</li>
+<li>Caveats:
+<ul>
+<li>It is worth verifying that DBP ≤ SBP, we used a slightly more
+conservative check of (SBP - DBP) ≥ 1</li>
+</ul>
+</li>
+<li>Look back: 6 hours</li>
+</ul>
+</li>
+<li>DBP:
+<ul>
+<li>Units: mmHg</li>
+<li>Values: [0, 200]</li>
+<li>Caveats:
+<ul>
+<li>It is worth verifying that DBP ≤ SBP, we used a slightly more
+conservative check of (SBP - DBP) ≥ 1</li>
+</ul>
+</li>
+<li>Look back: 6 hours</li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div class="section level3">
-<h3 id="lactate">Lactate<a class="anchor" aria-label="anchor" href="#lactate"></a>
+<h3 id="scoring-1">Scoring<a class="anchor" aria-label="anchor" href="#scoring-1"></a>
 </h3>
-</div>
-<div class="section level3">
-<h3 id="age">Age<a class="anchor" aria-label="anchor" href="#age"></a>
-</h3>
-</div>
-<div class="section level3">
-<h3 id="blood-pressure">Blood Pressure<a class="anchor" aria-label="anchor" href="#blood-pressure"></a>
-</h3>
-<p>for BP, prefer arterial over cuff…</p>
+<p>Up to six points can be earned from cardiovascular dysfunction. Up to
+two points for vasoactives, up to two points for lactate, and up to two
+points for MAP.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># vas: number of vasoactives meds</span></span>
+<span><span class="co"># lct: lactate in mmol/L</span></span>
+<span><span class="co"># age: age in months</span></span>
+<span><span class="co"># map: mean arterial pressure in mmHg</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_cardiovascular.html">phoenix_cardiovascular</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; vas_score &lt;- (vas &gt; 1) + (vas &gt; 0)</span></span>
+<span><span class="co">#&gt; lct_score &lt;- (lct &gt;= 11) + (lct &gt;= 5)</span></span>
+<span><span class="co">#&gt; map_score &lt;- ((age &gt;= 0 &amp; age &lt; 1) * ((map &lt; 17) + (map &lt; 31)) + (age &gt;= 1 &amp; age &lt; 12) * ((map &lt; 25) + (map &lt; 39)) + (age &gt;= 12 &amp; age &lt; 24) * ((map &lt; 31) + (map &lt; 44)) + (age &gt;= 24 &amp; age &lt; 60) * ((map &lt; 32) + (map &lt; 45)) + (age &gt;= 60 &amp; age &lt; 144) * ((map &lt; 36) + (map &lt; 49)) + (age &gt;= 144 &amp; age &lt;= 216) * ((map &lt; 38) + (map &lt; 52)))</span></span>
+<span><span class="co">#&gt; vas_score + lct_score + map_score</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -249,6 +756,26 @@ subcomponents <code>eye + motor + verbal</code></p>
 <div class="section level3">
 <h3 id="alt">ALT<a class="anchor" aria-label="anchor" href="#alt"></a>
 </h3>
+</div>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-sanchezpinto_2024_development" class="csl-entry">
+Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, Seth
+Russell, Margaret N. Rebull, Blake Martin, Samuel Akech, et al. 2024.
+<span>“<span class="nocase">Development and Validation of the Phoenix
+Criteria for Pediatric Sepsis and Septic Shock</span>.”</span>
+<em>JAMA</em>, January. <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link">https://doi.org/10.1001/jama.2024.0196</a>.
+</div>
+<div id="ref-schlapbach_2024_international" class="csl-entry">
+Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, Andrew C.
+Argent, Kusum Menon, Mark W. Hall, Samuel Akech, et al. 2024.
+<span>“<span class="nocase">International Consensus Criteria for
+Pediatric Sepsis and Septic Shock</span>.”</span> <em>JAMA</em>,
+January. <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link">https://doi.org/10.1001/jama.2024.0179</a>.
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
