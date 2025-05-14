@@ -379,7 +379,20 @@ cat(tail(as.character(body(phoenix::phoenix_neurologic)), 1), sep = "\n")
 
 # Endocrine
 
-## Glucose
+## Inputs
+### Glucose
+* Units: mg/dL
+* Values: [0, Inf)
+  * floating point
+* Caveats:
+* Look back: 12 hours
+
+## Scoring
+Scoring for Phoenix-8 only.  1 point if glucose < 50 or > 150
+
+```{r}
+cat(tail(as.character(body(phoenix::phoenix_endocrine)), 1), sep = "\n")
+```
 
 # Immunologic
 ## ANC
