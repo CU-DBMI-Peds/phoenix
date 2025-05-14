@@ -1,5 +1,7 @@
 ---
 title: "Phoenix Sepsis EHR Implementation Notes"
+subtitle: "__THIS IS A WORK IN PROGRESS__"
+bibliography: ../references.bib
 ---
 
 ```{r, include = FALSE}
@@ -9,62 +11,306 @@ knitr::opts_chunk$set(
 )
 ```
 
+The Phoenix criteria for pediatric sepsis and septic shock was developed using
+an international data set of pediatric hospitalizations.  Note that
+birth-hospitalizations and patients with a gestational age less than 37 weeks
+were omitted [@sanchezpinto_2024_development;@schlapbach_2024_international].
+The Phoenix criteria were developed based on modeling hospital mortality based
+on suspected infection and organ dysfunction within the first twenty-four hours
+of a hospital encounter.
 
+The purpose of this document is to provide details on the expected inputs for
+the scoring.  The phoenix R package and Python module, along with the example
+SQL code assumes the data has been prepared as expected and returns scores
+accordingly.
+
+<!-- NOTES:
 D_dimer mg/l feu <= 500
 GCS Total - gcs_total >= 3 and <= 15 (i.e. GCS should be between 3 and 15)
-Lactate mmol/l <= 50
-DBP - DBP >= 1 and DBP <= 200
-SBP - SBP >= 1 and SBP <= 300
-MAP (mean arterial pressure) - MAP >= 1 and MAP <= 300
 Glucose - Glucose mg/dl >= 5 and Glucose mg/dl <= 2000
+-->
 
-# General notes
+# General Data Formatting Notes
 
 * `NULL` values are treated as non-score generating criteria. Do not populate null/unknown/not applicable values with estimates or outdated information.
 * Values outside ranges mentioned below are treated as `NULL`
 * Before sending data to the package, verify data. Some values may provide warnings, others may throw errors. Verify your processing can handle warnings and errors.
+* Ideally input values will be known along with a time of the measurement so that last observation carried forward logic can be implemented with limits and conditions for age of inputs for calculated variables can be verified.
+
+# Suspected Infection
+
+For a patient to have sepsis or septic shock based on the Phoenix criteria, they
+must have a suspected infection.  A patient is considered to have a suspected
+infection if they have:
+
+1. an infective test _ordered_, and
+2. at least two doses of systemic antimicrobial medication(s).
+
+Note that the test, e.g., a blood culture, need only be ordered.
+Positive/negative test status is not needed.
+
+Systemic antimicrobial medications are any antibiotic, antiviral, or antifungal
+medication which had any of the following routes:
+
+* ASSUMED SYSTEMIC
+* ENTERAL
+* HEMODIALYSIS
+* INTRA-ARTERIAL
+* INTRACARDIAC
+* INTRADUODENAL
+* INTRAGASTRIC
+* INTRAILEAL
+* INTRAMUSCULAR
+* INTRAVASCULAR
+* INTRAVENOUS
+* INTRAVENOUS BOLUS
+* INTRAVENOUS DRIP
+* NASOGASTRIC
+* ORAL
+* OROPHARYNGEAL
+* PARENTERAL
+* RECTAL
+* SUBCUTANEOUS
+
+Example SQL code used for mapping medication routes when developing Phoenix can be found in
+a [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings)
+specifically the files:
+[med_route_mapping.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql)
+and
+[clean_up_routes.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql).
 
 # Respiratory
 
-Provide **one** of the following for the Respiratory score:
+Respiratory dysfunction scoring is based on PaO~2~/FiO~2~ (PFR), SpO~2~/FiO~2~
+(SFR) and respiratory support.  While the scoring is based on SFR and PFR, it is
+preferable to get the SpO~2~, PaO~2~, and FiO~2~ values so certain data checks
+can be performed before the score is determined.
 
-* PaO~2~ to FiO~2~ ratio
-* SpO~2~ to FiO~2~ ratio
-* PaO~2~ and FiO~2~
-* SpO~2~ and FiO~2~
+## Inputs
 
-If multiple options are available, select the first one available based on order above.
+### PaO~2~: Partial pressure of oxygen in arterial blood
+* Units: mmHg
+* Values: [0, Inf)
+* Caveats:
+* Look Back: 6 hours
 
-## FiO~2~
+### SpO~2~: Peripheral oxygen saturation (pulse ox)
+* Units: percentage
+* Values: [0, 100]
+  * Expect integer values 0, 1, 2, ..., 100
+* Caveats: values greater than 97 should _not_ be used for SFR
+* Look back: 6 hours
 
-Float value with range from 0.21 to 1.00
+### FiO~2~: Percent inspired oxygen
+* Units: not applicable
+* Values: [0.21, 1.00]
+  * expected floating point
+  * 0.21 is room air
+  * 1.00 is pure oxygen
+* Caveats:
+* Look back: 6 hours
 
-## PaO~2~
+### PFR: PaO~2~/FiO~2~
+* Units: mmHg
+* Values [0, Inf)
+  * Expect floating point
+* Caveats:
+  * PFR is only valid if the time of FiO~2~ value is the same as, or before,
+    the time of PaO~2~ value.  For example, if FiO~2~ was reported at 11:31 and
+    PaO~2~ was reported at 11:45 then the PFR would be valid to use.  If the
+    FiO~2~ is then updated at 11:59, the PaO~2~ value from 11:45 would not be
+    valid to use in the calculation of the PFR
 
-Float value greater than 0
+    | time  | FiO~2~           | PaO~2~          | PFR    | Note:                                                        |
+    |   --: | ---:             | ---:            | ---:   | ------:                                                      |
+    | 11:31 | 0.30*            |                 |        |                                                              |
+    | 11:45 | 0.30<sup>c</sup> | 118*            | 393.33 |                                                              |
+    | 11:47 | 0.30<sup>c</sup> | 118<sup>c</sup> | 393.33 |                                                              |
+    | 11:59 | 0.40*            | 118<sup>c</sup> |        | No PFR, FiO~2~ is younger than PaO~2~                        |
+    | 12:10 | 0.40<sup>c</sup> | 152*            | 380    |                                                              |
+    | 12:15 | 0.40<sup>c</sup> | 152<sup>c</sup> | 380    |                                                              |
+    | 17:45 | 0.40<sup>c</sup> | 152<sup>c</sup> | 380    |                                                              |
+    | 18:00 |                  | 152<sup>c</sup> |        | No PFR, FiO~2~ carry forward window expired                  |
+    | 18:30 |                  |                 |        | No PFR, FiO~2~ and PaO~2~ carry forward windows have expired |
 
-## SpO~2~
+      : * New value <br>
+      <sup>c</sup> value carried forward
 
-Integer value with range from 0 to 100; > 97% should not be used for S/F ratio. If SpO~2~ and FiO~2~ is passed, package will discard values if SpO~2~ is >= 97%.
+* Look back: implied by the look back on PaO~2~ and FiO~2~ and the condition
+  that FiO~2~ value is the same age or older than the PaO~2~ value.
 
-## Respiratory Support
+### SFR: SpO~2~ / FiO~2~
+* Units: none
+* Values: [0, 97/0.21]
+  * Floating point
+  * The upper limit includes the limitation on SpO~2~ ≤ 97
+* Caveats:
+  * SFR is only valid if the time of FiO~2~ value is the same as, or before,
+    the time of SpO~2~ value.  For example, if FiO~2~ was reported at 11:31 and
+    SpO~2~ was reported at 11:45 then the SFR would be valid to use.  If the
+    FiO~2~ is then updated at 11:59, the SpO~2~ value from 11:45 would not be
+    valid to use in the calculation of the SFR
 
-* The respiratory dysfunction of 1 point can be assessed in any patient receiving oxygen support of any kind, including high-flow, noninvasive positive pressure, or invasive mechanical ventalation (IMV) respiratory support.
-* The respiratory dysfunction of 2 point can only be assessed in the presence of invasive mechanical ventalation (IMV) respiratory support.
+     | time  | FiO~2~           | SpO~2~         | SFR   | Note:                                                        |
+     | --:   | ---:             | ---:           | ---:  | ------:                                                      |
+     | 10:15 | 0.25*            | 92*            | 368   |                                                              |
+     | 10:20 | 0.25<sup>c</sup> | 98*            |       | No SFR, SpO~2~ > 97                                          |
+     | 11:31 | 0.30*            | 98<sup>c</sup> |       | No SFR, SpO~2~ > 97 and FiO~2~ younger than SpO~2~           |
+     | 11:45 | 0.30<sup>c</sup> | 87*            | 290   |                                                              |
+     | 11:47 | 0.30<sup>c</sup> | 87<sup>c</sup> | 290   |                                                              |
+     | 11:59 | 0.40*            | 87<sup>c</sup> |       | No SFR, FiO~2~ is younger than SpO~2~                        |
+     | 12:10 | 0.40<sup>c</sup> | 85*            | 212.5 |                                                              |
+     | 12:15 | 0.40<sup>c</sup> | 85<sup>c</sup> | 212.5 |                                                              |
+     | 17:45 | 0.40<sup>c</sup> | 85<sup>c</sup> | 212.5 |                                                              |
+     | 18:00 |                  | 85<sup>c</sup> |       | No SFR, FiO~2~ carry forward window expired                  |
+     | 18:30 |                  |                |       | No SFR, FiO~2~ and SpO~2~ carry forward windows have expired |
+
+      : * New value <br>
+      <sup>c</sup> value carried forward
+
+* Look back: implied by the look back on SpO~2~ and FiO~2~ and the condition
+  that FiO~2~ value is the same age or older than the SpO~2~ value.
+
+### ORS: Other Respiratory Support
+* Units: not applicable
+* Values:
+  * 0: No other respiratory support
+  * 1: some form of respiratory support
+    * may or may not include supplemental oxygen
+* Caveats:
+  * A backstop: if FiO~2~ > 0.21 then that indicates oxygen support and thus
+    ORS
+* Look Back: 6 hours
+  * If it has been more than six hours since last known data point indicating
+    the patient has respiratory support then consider the patient to no longer
+    have respiratory support.
+
+### IMV: Invasive Mechanical ventilation
+* Units: not applicable
+* Values:
+  * 0: patient is not currently intubated
+  * 1: patient currently has invasive mechanical ventilation
+* Caveats:
+  * IMV due to surgery should not be used to assess organ dysfunction
+* Look back: 6 hours
+  * If it has been more than 6 hours since the last known data point
+    indicating the patient has IMV, then consider the patient to no longer
+    have IMV
+
+
+## Scoring
+Scoring is based on the worse case based on available PaO~2~/FiO~2~ (PFR) and
+SpO~2~/FiO~2~ (SFR) with consideration for IMV and ORS.
+
+```{r}
+# R code: booleans are implicitly coerced to integers
+cat(tail(as.character(body(phoenix::phoenix_respiratory)), 1), sep = "\n")
+```
 
 # Cardiovascular
 
-## Systemic Vasoactive Medications
+Cardiovascular dysfunction is based on three conceptual sets:
 
-Vasoactive medications (dobutamine, dopamine, etc.) should only count if they are systemic. In our older dataset, epinephrine had some non-systemic medication administrations. e.g. "epinephrine hcl 2.25 % inh neb soln" should not count towards the systemic vasoactive medication count towards cardiovascular system disfunction points. The Phoenix python package documentation does mention this requirement, but the package doesn't enforce it.
+1. Systemic Vasoactive mediations
+2. Lactate
+3. Age adjusted mean arterial pressure
 
-## Lactate
+## Inputs
 
-## Age
-## Blood Pressure
+### Systemic Vasoactive Medications
+
+There are six systemic vasoactive medications to consider:
+1. dobutamine
+2. dopamine
+3. epinephrine
+4. norepinephrine
+5. milrinone
+6. vasopressin
+
+Vasoactive medications (dobutamine, dopamine, etc.) should only count if they
+are systemic. In our older dataset, epinephrine had some non-systemic medication
+administrations. For example: "epinephrine hcl 2.25 % inh neb soln" should not
+count towards the systemic vasoactive medication count towards cardiovascular
+system dysfunction points.
+
+The routes for administration of the vasoactive medications are at
+Example SQL code used for mapping routes when developing Phoenix can be found in
+a [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings)
+specifically the files:
+[med_route_mapping.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql)
+and
+[clean_up_routes.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql).
+
+The overall meta data for vasoactives:
+
+* Units: none
+* Values: 0, 1, 2, 3, 4, 5, 6
+* Caveats: see above
+* Look back: 12 hours
 
 
-for BP, prefer arterial over cuff...
+### Lactate
+* Units: mmol/L
+* Values: [0, 50]
+* Caveats:
+* Look back: 6 hours
+
+### Age
+* Units: Months
+* Values: [0, 216)
+* Caveats:
+* Look back:
+
+### Mean Arterial Pressure (MAP)
+
+There can be many sources of blood pressure.  We used the following hierarchy for
+which value to use in the scoring.  
+
+1. Arterial MAP (direct measurement)
+2. Estimated MAP from arterial systolic (SBP) and arterial diastolic (DBP) pressures
+3. Cuff MAP (from a machine)
+4. Estimated MAP from cuff SBP and cuff DBP
+
+MAP was estimated as (2/3) * DBP + (1/3) * SBP
+
+Expected metadata:
+
+* MAP:
+  * Units: mmHg
+  * Values: [0, 300]
+  * Caveats:
+    * If MAP is provided along with SBP and DBP it is worth verifying that DBP ≤ MAP ≤ SBP
+  * Look back: 6 hours
+
+* SBP:
+  * Units: mmHg
+  * Values: [0, 300]
+  * Caveats:
+    * It is worth verifying that DBP ≤ SBP, we used a slightly more
+      conservative check of (SBP - DBP) ≥ 1
+  * Look back: 6 hours
+
+* DBP:
+  * Units: mmHg
+  * Values: [0, 200]
+  * Caveats:
+    * It is worth verifying that DBP ≤ SBP, we used a slightly more
+      conservative check of (SBP - DBP) ≥ 1
+  * Look back: 6 hours
+
+## Scoring
+
+Up to six points can be earned from cardiovascular dysfunction.  Up to two
+points for vasoactives, up to two points for lactate, and up to two points for
+MAP.
+
+```{r}
+# vas: number of vasoactives meds
+# lct: lactate in mmol/L
+# age: age in months
+# map: mean arterial pressure in mmHg
+cat(tail(as.character(body(phoenix::phoenix_cardiovascular)), 4), sep = "\n")
+```
 
 # Coagulation
 
@@ -105,3 +351,4 @@ Units should be in mg/dL, or converted to mg/dL and range from 0 - 100.
 
 ## ALT
 
+# References
