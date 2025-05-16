@@ -96,7 +96,9 @@ and
 
 # General notes for all subscores
 
-Reasonable values for observations and labs used during development of the Phoenix Sepsis Score are documented here: https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv
+Reasonable values for observations and labs used during development of the Phoenix Sepsis Score are documented in
+file [standard_names_and_units.csv](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv)
+within the project [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria).
 
 # Respiratory
 
@@ -239,6 +241,7 @@ Cardiovascular dysfunction is based on three conceptual sets:
 ### Systemic Vasoactive Medications
 
 There are six systemic vasoactive medications to consider:
+
 1. dobutamine
 2. dopamine
 3. epinephrine
@@ -268,7 +271,8 @@ and
 The overall meta data for vasoactives:
 
 * Units: none
-* Expected Values: 0, 1, 2, 3, etc. (maximum vasoactive points is reached with 2)
+* Expected Values: integer values 0, 1, 2, 3, 4, 5, 6
+  * (maximum vasoactive points is reached with 2)
 * Caveats: see above
 * Look back: 12 hours
 
