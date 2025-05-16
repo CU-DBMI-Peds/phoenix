@@ -26,6 +26,24 @@ accordingly.
 
 <hr>
 
+## Table of Contents
+
+- [General Data Formatting Notes](#general-data-formatting-notes)
+- [Inclusion/Exclusion criteria](#inclusionexclusion-criteria)
+- [Suspected Infection](#suspected-infection)
+- [General notes for all subscores](#general-notes-for-all-subscores)
+- [Respiratory](#respiratory)
+- [Cardiovascular](#cardiovascular)
+- [Coagulation](#coagulation)
+- [Neurologic](#neurologic)
+- [Endocrine](#endocrine)
+- [Immunologic](#immunologic)
+- [Renal](#renal)
+- [Hepatic](#hepatic)
+- [References](#references)
+
+<hr>
+
 # General Data Formatting Notes
 
 * `NULL` values are treated as non-score generating criteria. Do not populate null/unknown/not applicable values with estimates or outdated information.
@@ -34,6 +52,19 @@ accordingly.
 * Ideally input values will be known along with a time of the measurement so that last observation carried forward logic can be implemented with limits and conditions for age of inputs for calculated variables can be verified.
 
 <hr>
+
+# Inclusion/Exclusion criteria
+
+Inclusion Criteria
+
+* Pediatric patient
+* Suspected infection
+
+Exclusion Criteria
+
+* Patients still in their original birth hospitalization
+* Patients with a gestational age less than 37 weeks at the time of admission
+* Patients older than 18 years of age (216 months)
 
 # Suspected Infection
 
@@ -70,14 +101,20 @@ medication which had any of the following routes:
 * RECTAL
 * SUBCUTANEOUS
 
+Other non-systemic routes such as intraocular, nasal, otic, etc. should be excluded.
+
 Example SQL code used for mapping medication routes when developing Phoenix can be found in
-a [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings)
+the project [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings)
 specifically the files:
 [med_route_mapping.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql)
 and
 [clean_up_routes.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql).
 
 <hr>
+
+# General notes for all subscores
+
+Reasonable values for observations and labs used during development of the Phoenix Sepsis Score are documented here: https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv
 
 # Respiratory
 
@@ -175,11 +212,9 @@ can be performed before the score is determined.
 * Units: not applicable
 * Expected Values:
   * 0: No other respiratory support
-  * 1: some form of respiratory support
-    * may or may not include supplemental oxygen
+  * 1: some form of respiratory support; may or may not include supplemental oxygen
 * Caveats:
-  * A backstop: if FiO~2~ > 0.21 then that indicates oxygen support and thus
-    ORS
+  * If FiO~2~ > 0.21 then that indicates oxygen support and thus ORS
 * Look Back: 6 hours
   * If it has been more than six hours since last known data point indicating
     the patient has respiratory support then consider the patient to no longer
@@ -188,7 +223,7 @@ can be performed before the score is determined.
 ### IMV: Invasive Mechanical ventilation
 * Units: not applicable
 * Expected Values:
-  * 0: patient is not currently intubated
+  * 0: patient does not currently have invasive mechanical ventilation
   * 1: patient currently has invasive mechanical ventilation
 * Caveats:
   * IMV due to surgery should not be used to assess organ dysfunction
@@ -199,7 +234,7 @@ can be performed before the score is determined.
 
 
 ## Scoring
-Scoring is based on the worse case based on available PaO~2~/FiO~2~ (PFR) and
+Scoring is based on the lowest available PaO~2~/FiO~2~ (PFR) and
 SpO~2~/FiO~2~ (SFR) with consideration for IMV and ORS.
 
 ```{r}
@@ -213,7 +248,7 @@ cat(tail(as.character(body(phoenix::phoenix_respiratory)), 1), sep = "\n")
 
 Cardiovascular dysfunction is based on three conceptual sets:
 
-1. Systemic Vasoactive mediations
+1. Systemic Vasoactive medications
 2. Lactate
 3. Age adjusted mean arterial pressure
 
@@ -230,14 +265,19 @@ There are six systemic vasoactive medications to consider:
 6. vasopressin
 
 Vasoactive medications (dobutamine, dopamine, etc.) should only count if they
-are systemic. In our older dataset, epinephrine had some non-systemic medication
-administrations. For example: "epinephrine hcl 2.25 % inh neb soln" should not
-count towards the systemic vasoactive medication count towards cardiovascular
-system dysfunction points.
+are systemic. Ideally one would identify flowsheet or medication rows where the
+dose is documented every hour for each infusion. In our dataset, epinephrine had
+some non-systemic medication administrations that needed to be excluded.
+Here are some *non-systemic* examples to exclude:
+
+* epinephrine 0.3 mg/0.3ml inj soln prefilled syringe
+* epinephrine hcl (nasal) 0.1 % nasal solution
+* epinephrine hcl 2.25 % inh neb soln
+* epinephrine powder
 
 The routes for administration of the vasoactive medications are at
 Example SQL code used for mapping routes when developing Phoenix can be found in
-a [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings)
+the project [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings)
 specifically the files:
 [med_route_mapping.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql)
 and
@@ -246,10 +286,9 @@ and
 The overall meta data for vasoactives:
 
 * Units: none
-* Expected Values: 0, 1, 2, 3, 4, 5, 6
+* Expected Values: 0, 1, 2, 3, etc. (maximum vasoactive points is reached with 2)
 * Caveats: see above
 * Look back: 12 hours
-
 
 ### Lactate
 * Units: mmol/L
@@ -273,20 +312,20 @@ which value to use in the scoring.
 3. Cuff MAP (from a machine)
 4. Estimated MAP from cuff SBP and cuff DBP
 
-MAP was estimated as (2/3) * DBP + (1/3) * SBP
+MAP can be calculated as `(2/3) * DBP + (1/3) * SBP`
 
 Expected metadata:
 
 * MAP:
   * Units: mmHg
-  * Expected Values: [0, 300]
+  * Expected Values: [1, 300]
   * Caveats:
     * If MAP is provided along with SBP and DBP it is worth verifying that DBP ≤ MAP ≤ SBP
   * Look back: 6 hours
 
 * SBP:
   * Units: mmHg
-  * Expected Values: [0, 300]
+  * Expected Values: [1, 300]
   * Caveats:
     * It is worth verifying that DBP ≤ SBP, we used a slightly more
       conservative check of (SBP - DBP) ≥ 1
@@ -294,7 +333,7 @@ Expected metadata:
 
 * DBP:
   * Units: mmHg
-  * Expected Values: [0, 200]
+  * Expected Values: [1, 200]
   * Caveats:
     * It is worth verifying that DBP ≤ SBP, we used a slightly more
       conservative check of (SBP - DBP) ≥ 1
@@ -322,25 +361,25 @@ cat(tail(as.character(body(phoenix::phoenix_cardiovascular)), 4), sep = "\n")
 
 ### Platelets
 * Units: 1000/μL
-* Expected Values:
+* Expected Values: [0, Inf)
 * Caveats:
 * Look back: 24 hours
 
 ### INR
 * Units: none
-* Expected Values:
+* Expected Values: [0, Inf)
 * Caveats:
 * Look back: 24 hours
 
 ### D-dimer
 * Units: mg/L FEU
-* Expected Values:
+* Expected Values: [0, 500]
 * Caveats:
 * Look back: 24 hours
 
 ### Fibrinogen
 * Units: mg/dL
-* Expected Values:
+* Expected Values: [0, Inf)
 * Caveats:
 * Look back: 24 hours
 
@@ -366,12 +405,12 @@ Phoenix is based on the total GCS score
   * Units: none
   * Expected Values: integer values 3, 4, 5, ..., 15
   * Caveats:
-    * The total GCS is the sum of three component scores, eye, motor, and verable:
-    * We assumed that if we had an updated score for any one of the three componets
-      but not all, then the non-updated componets were assumed to have not
-      changed and did not warrant data entry.  We, therefore, updated the time
-      of the GCS total and all its compoents to the youngest update time for any
-      of the compoents.
+    * The total GCS is the sum of three component scores: eye, motor, and verbal.
+    * We assumed that if we had an updated score for any one of the three components
+      but not all, then the non-updated components were assumed to have not
+      changed and did not warrant data entry. We, therefore, updated the time
+      of the GCS total and all its components to the most recent update time for any
+      of the components.
   * Look back: 12 hours
 
 * GCS (eye):
@@ -470,7 +509,7 @@ cat(tail(as.character(body(phoenix::phoenix_immunologic)), 1), sep = "\n")
 ### Age (see notes in cardiovascular)
 ### Creatinine
 * Units: mg/dL
-* Expected Values: [0, Inf)
+* Expected Values: [0, 50]
 * Caveats:
 * Look back: 24 hours
 
@@ -494,7 +533,7 @@ cat(tail(as.character(body(phoenix::phoenix_renal)), 1), sep = "\n")
 
 ### ALT
 * Units: IU/L
-* Expected Values:
+* Expected Values: [0, Inf)
 * Caveats:
 * Look back: 24 hours
 
