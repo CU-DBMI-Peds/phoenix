@@ -168,7 +168,9 @@ and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/h
 <h2 id="general-notes-for-all-subscores">General notes for all subscores<a class="anchor" aria-label="anchor" href="#general-notes-for-all-subscores"></a>
 </h2>
 <p>Reasonable values for observations and labs used during development
-of the Phoenix Sepsis Score are documented here: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv" class="external-link uri">https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv</a></p>
+of the Phoenix Sepsis Score are documented in file <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv" class="external-link">standard_names_and_units.csv</a>
+within the project <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria" class="external-link">GitHub
+archive</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
@@ -576,9 +578,15 @@ ORS.</p>
 <div class="section level4">
 <h4 id="systemic-vasoactive-medications">Systemic Vasoactive Medications<a class="anchor" aria-label="anchor" href="#systemic-vasoactive-medications"></a>
 </h4>
-<p>There are six systemic vasoactive medications to consider: 1.
-dobutamine 2. dopamine 3. epinephrine 4. norepinephrine 5. milrinone 6.
-vasopressin</p>
+<p>There are six systemic vasoactive medications to consider:</p>
+<ol style="list-style-type: decimal">
+<li>dobutamine</li>
+<li>dopamine</li>
+<li>epinephrine</li>
+<li>norepinephrine</li>
+<li>milrinone</li>
+<li>vasopressin</li>
+</ol>
 <p>Vasoactive medications (dobutamine, dopamine, etc.) should only count
 if they are systemic. Ideally one would identify flowsheet or medication
 rows where the dose is documented every hour for each infusion. In our
@@ -599,8 +607,11 @@ and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/h
 <p>The overall meta data for vasoactives:</p>
 <ul>
 <li>Units: none</li>
-<li>Expected Values: 0, 1, 2, 3, etc. (maximum vasoactive points is
-reached with 2)</li>
+<li>Expected Values: integer values 0, 1, 2, 3, 4, 5, 6
+<ul>
+<li>(maximum vasoactive points is reached with 2)</li>
+</ul>
+</li>
 <li>Caveats: see above</li>
 <li>Look back: 12 hours</li>
 </ul>
