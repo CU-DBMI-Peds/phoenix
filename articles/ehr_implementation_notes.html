@@ -84,6 +84,29 @@ inputs for the scoring. The phoenix R package and Python module, along
 with the example SQL code assumes the data has been prepared as expected
 and returns scores accordingly.</p>
 <hr>
+<div class="section level3">
+<h3 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
+</h3>
+<ul>
+<li><a href="#general-data-formatting-notes">General Data Formatting
+Notes</a></li>
+<li><a href="#inclusionexclusion-criteria">Inclusion/Exclusion
+criteria</a></li>
+<li><a href="#suspected-infection">Suspected Infection</a></li>
+<li><a href="#general-notes-for-all-subscores">General notes for all
+subscores</a></li>
+<li><a href="#respiratory">Respiratory</a></li>
+<li><a href="#cardiovascular">Cardiovascular</a></li>
+<li><a href="#coagulation">Coagulation</a></li>
+<li><a href="#neurologic">Neurologic</a></li>
+<li><a href="#endocrine">Endocrine</a></li>
+<li><a href="#immunologic">Immunologic</a></li>
+<li><a href="#renal">Renal</a></li>
+<li><a href="#hepatic">Hepatic</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+<hr>
+</div>
 <div class="section level2">
 <h2 id="general-data-formatting-notes">General Data Formatting Notes<a class="anchor" aria-label="anchor" href="#general-data-formatting-notes"></a>
 </h2>
@@ -104,6 +127,22 @@ implemented with limits and conditions for age of inputs for calculated
 variables can be verified.</li>
 </ul>
 <hr>
+</div>
+<div class="section level2">
+<h2 id="inclusionexclusion-criteria">Inclusion/Exclusion criteria<a class="anchor" aria-label="anchor" href="#inclusionexclusion-criteria"></a>
+</h2>
+<p>Inclusion Criteria</p>
+<ul>
+<li>Pediatric patient</li>
+<li>Suspected infection</li>
+</ul>
+<p>Exclusion Criteria</p>
+<ul>
+<li>Patients still in their original birth hospitalization</li>
+<li>Patients with a gestational age less than 37 weeks at the time of
+admission</li>
+<li>Patients older than 18 years of age (216 months)</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="suspected-infection">Suspected Infection<a class="anchor" aria-label="anchor" href="#suspected-infection"></a>
@@ -140,11 +179,19 @@ antifungal medication which had any of the following routes:</p>
 <li>RECTAL</li>
 <li>SUBCUTANEOUS</li>
 </ul>
+<p>Other non-systemic routes such as intraocular, nasal, otic, etc.
+should be excluded.</p>
 <p>Example SQL code used for mapping medication routes when developing
-Phoenix can be found in a <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
+Phoenix can be found in the project <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
 archive</a> specifically the files: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql" class="external-link">med_route_mapping.sql</a>
 and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql" class="external-link">clean_up_routes.sql</a>.</p>
 <hr>
+</div>
+<div class="section level2">
+<h2 id="general-notes-for-all-subscores">General notes for all subscores<a class="anchor" aria-label="anchor" href="#general-notes-for-all-subscores"></a>
+</h2>
+<p>Reasonable values for observations and labs used during development
+of the Phoenix Sepsis Score are documented here: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv" class="external-link uri">https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv</a></p>
 </div>
 <div class="section level2">
 <h2 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
@@ -476,17 +523,14 @@ age or older than the SpO<sub>2</sub> value.</li>
 <li>Expected Values:
 <ul>
 <li>0: No other respiratory support</li>
-<li>1: some form of respiratory support
-<ul>
-<li>may or may not include supplemental oxygen</li>
-</ul>
-</li>
+<li>1: some form of respiratory support; may or may not include
+supplemental oxygen</li>
 </ul>
 </li>
 <li>Caveats:
 <ul>
-<li>A backstop: if FiO<sub>2</sub> &gt; 0.21 then that indicates oxygen
-support and thus ORS</li>
+<li>If FiO<sub>2</sub> &gt; 0.21 then that indicates oxygen support and
+thus ORS</li>
 </ul>
 </li>
 <li>Look Back: 6 hours
@@ -505,7 +549,8 @@ to no longer have respiratory support.</li>
 <li>Units: not applicable</li>
 <li>Expected Values:
 <ul>
-<li>0: patient is not currently intubated</li>
+<li>0: patient does not currently have invasive mechanical
+ventilation</li>
 <li>1: patient currently has invasive mechanical ventilation</li>
 </ul>
 </li>
@@ -528,7 +573,7 @@ have IMV</li>
 <div class="section level3">
 <h3 id="scoring">Scoring<a class="anchor" aria-label="anchor" href="#scoring"></a>
 </h3>
-<p>Scoring is based on the worse case based on available
+<p>Scoring is based on the lowest available
 PaO<sub>2</sub>/FiO<sub>2</sub> (PFR) and
 SpO<sub>2</sub>/FiO<sub>2</sub> (SFR) with consideration for IMV and
 ORS.</p>
@@ -544,7 +589,7 @@ ORS.</p>
 </h2>
 <p>Cardiovascular dysfunction is based on three conceptual sets:</p>
 <ol style="list-style-type: decimal">
-<li>Systemic Vasoactive mediations</li>
+<li>Systemic Vasoactive medications</li>
 <li>Lactate</li>
 <li>Age adjusted mean arterial pressure</li>
 </ol>
@@ -558,19 +603,27 @@ ORS.</p>
 dobutamine 2. dopamine 3. epinephrine 4. norepinephrine 5. milrinone 6.
 vasopressin</p>
 <p>Vasoactive medications (dobutamine, dopamine, etc.) should only count
-if they are systemic. In our older dataset, epinephrine had some
-non-systemic medication administrations. For example: “epinephrine hcl
-2.25 % inh neb soln” should not count towards the systemic vasoactive
-medication count towards cardiovascular system dysfunction points.</p>
+if they are systemic. Ideally one would identify flowsheet or medication
+rows where the dose is documented every hour for each infusion. In our
+dataset, epinephrine had some non-systemic medication administrations
+that needed to be excluded. Here are some <em>non-systemic</em> examples
+to exclude:</p>
+<ul>
+<li>epinephrine 0.3 mg/0.3ml inj soln prefilled syringe</li>
+<li>epinephrine hcl (nasal) 0.1 % nasal solution</li>
+<li>epinephrine hcl 2.25 % inh neb soln</li>
+<li>epinephrine powder</li>
+</ul>
 <p>The routes for administration of the vasoactive medications are at
 Example SQL code used for mapping routes when developing Phoenix can be
-found in a <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
+found in the project <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
 archive</a> specifically the files: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql" class="external-link">med_route_mapping.sql</a>
 and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql" class="external-link">clean_up_routes.sql</a>.</p>
 <p>The overall meta data for vasoactives:</p>
 <ul>
 <li>Units: none</li>
-<li>Expected Values: 0, 1, 2, 3, 4, 5, 6</li>
+<li>Expected Values: 0, 1, 2, 3, etc. (maximum vasoactive points is
+reached with 2)</li>
 <li>Caveats: see above</li>
 <li>Look back: 12 hours</li>
 </ul>
@@ -607,13 +660,13 @@ hierarchy for which value to use in the scoring.</p>
 <li>Cuff MAP (from a machine)</li>
 <li>Estimated MAP from cuff SBP and cuff DBP</li>
 </ol>
-<p>MAP was estimated as (2/3) * DBP + (1/3) * SBP</p>
+<p>MAP can be calculated as <code>(2/3) * DBP + (1/3) * SBP</code></p>
 <p>Expected metadata:</p>
 <ul>
 <li>MAP:
 <ul>
 <li>Units: mmHg</li>
-<li>Expected Values: [0, 300]</li>
+<li>Expected Values: [1, 300]</li>
 <li>Caveats:
 <ul>
 <li>If MAP is provided along with SBP and DBP it is worth verifying that
@@ -626,7 +679,7 @@ DBP ≤ MAP ≤ SBP</li>
 <li>SBP:
 <ul>
 <li>Units: mmHg</li>
-<li>Expected Values: [0, 300]</li>
+<li>Expected Values: [1, 300]</li>
 <li>Caveats:
 <ul>
 <li>It is worth verifying that DBP ≤ SBP, we used a slightly more
@@ -639,7 +692,7 @@ conservative check of (SBP - DBP) ≥ 1</li>
 <li>DBP:
 <ul>
 <li>Units: mmHg</li>
-<li>Expected Values: [0, 200]</li>
+<li>Expected Values: [1, 200]</li>
 <li>Caveats:
 <ul>
 <li>It is worth verifying that DBP ≤ SBP, we used a slightly more
@@ -682,7 +735,7 @@ points for MAP.</p>
 </h4>
 <ul>
 <li>Units: 1000/μL</li>
-<li>Expected Values:</li>
+<li>Expected Values: [0, Inf)</li>
 <li>Caveats:</li>
 <li>Look back: 24 hours</li>
 </ul>
@@ -692,7 +745,7 @@ points for MAP.</p>
 </h4>
 <ul>
 <li>Units: none</li>
-<li>Expected Values:</li>
+<li>Expected Values: [0, Inf)</li>
 <li>Caveats:</li>
 <li>Look back: 24 hours</li>
 </ul>
@@ -702,7 +755,7 @@ points for MAP.</p>
 </h4>
 <ul>
 <li>Units: mg/L FEU</li>
-<li>Expected Values:</li>
+<li>Expected Values: [0, 500]</li>
 <li>Caveats:</li>
 <li>Look back: 24 hours</li>
 </ul>
@@ -712,7 +765,7 @@ points for MAP.</p>
 </h4>
 <ul>
 <li>Units: mg/dL</li>
-<li>Expected Values:</li>
+<li>Expected Values: [0, Inf)</li>
 <li>Caveats:</li>
 <li>Look back: 24 hours</li>
 </ul>
@@ -741,12 +794,12 @@ one, the final score is capped at two points.</p>
 </h4>
 <p>Phoenix is based on the total GCS score * GCS (total): * Units: none
 * Expected Values: integer values 3, 4, 5, …, 15 * Caveats: * The total
-GCS is the sum of three component scores, eye, motor, and verable: * We
+GCS is the sum of three component scores: eye, motor, and verbal. * We
 assumed that if we had an updated score for any one of the three
-componets but not all, then the non-updated componets were assumed to
+components but not all, then the non-updated components were assumed to
 have not changed and did not warrant data entry. We, therefore, updated
-the time of the GCS total and all its compoents to the youngest update
-time for any of the compoents. * Look back: 12 hours</p>
+the time of the GCS total and all its components to the most recent
+update time for any of the components. * Look back: 12 hours</p>
 <ul>
 <li>GCS (eye):
 <ul>
@@ -902,7 +955,7 @@ might use cells / mm³</li>
 </h4>
 <ul>
 <li>Units: mg/dL</li>
-<li>Expected Values: [0, Inf)</li>
+<li>Expected Values: [0, 50]</li>
 <li>Caveats:</li>
 <li>Look back: 24 hours</li>
 </ul>
@@ -943,7 +996,7 @@ might use cells / mm³</li>
 </h4>
 <ul>
 <li>Units: IU/L</li>
-<li>Expected Values:</li>
+<li>Expected Values: [0, Inf)</li>
 <li>Caveats:</li>
 <li>Look back: 24 hours</li>
 </ul>
