@@ -26,24 +26,6 @@ accordingly.
 
 <hr>
 
-## Table of Contents
-
-- [General Data Formatting Notes](#general-data-formatting-notes)
-- [Inclusion/Exclusion criteria](#inclusionexclusion-criteria)
-- [Suspected Infection](#suspected-infection)
-- [General notes for all subscores](#general-notes-for-all-subscores)
-- [Respiratory](#respiratory)
-- [Cardiovascular](#cardiovascular)
-- [Coagulation](#coagulation)
-- [Neurologic](#neurologic)
-- [Endocrine](#endocrine)
-- [Immunologic](#immunologic)
-- [Renal](#renal)
-- [Hepatic](#hepatic)
-- [References](#references)
-
-<hr>
-
 # General Data Formatting Notes
 
 * `NULL` values are treated as non-score generating criteria. Do not populate null/unknown/not applicable values with estimates or outdated information.
