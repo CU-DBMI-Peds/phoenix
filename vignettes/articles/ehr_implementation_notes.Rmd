@@ -11,17 +11,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-The Phoenix criteria for pediatric sepsis and septic shock was developed using
-an international data set of pediatric hospitalizations.  Note that
-birth-hospitalizations and patients with a gestational age less than 37 weeks
-were omitted [@sanchezpinto_2024_development;@schlapbach_2024_international].
-The Phoenix criteria were developed based on modeling hospital mortality based
-on suspected infection and organ dysfunction within the first twenty-four hours
-of a hospital encounter.
+The Phoenix criteria for pediatric sepsis and septic shock were developed using
+an international data set of pediatric emergency department and hospital encounters. Birth hospitalizations and patients with a gestational age less than 37 weeks
+were excluded, please see below [@sanchezpinto_2024_development;@schlapbach_2024_international].
+The Phoenix criteria were developed based on predicting encounter mortality among
+those with suspected infection using organ dysfunction-based data from the first 24 hours
+of the encounter. Please see the original manuscripts for details.
 
-The purpose of this document is to provide details on the expected inputs for
-the scoring.  The phoenix R package and Python module, along with the example
-SQL code assumes the data has been prepared as expected and returns scores
+The purpose of this document is to provide details about the expected inputs for
+the scoring in order to assist EHR implementation. The phoenix R package and Python module, along with the example
+SQL code assumes that the data have been prepared as expected and returns scores
 accordingly.
 
 <hr>
@@ -30,8 +29,8 @@ accordingly.
 
 * `NULL` values are treated as non-score generating criteria. Do not populate null/unknown/not applicable values with estimates or outdated information.
 * Values outside ranges mentioned below are treated as `NULL`
-* Before sending data to the package, verify data. Some values may provide warnings, others may throw errors. Verify your processing can handle warnings and errors.
-* Ideally input values will be known along with a time of the measurement so that last observation carried forward logic can be implemented with limits and conditions for age of inputs for calculated variables can be verified.
+* Before sending data to the package, verify the data. Some values may provide warnings, others may generate errors. Verify that your code can handle warnings and errors.
+* Ideally, both input values and time of the measurement so that last observation carried forward logic can be implemented with limits and conditions for age of inputs for calculated variables can be verified.
 
 <hr>
 
