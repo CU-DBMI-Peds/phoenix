@@ -94,16 +94,15 @@ accordingly.</p>
 <code>NULL</code> values are treated as non-score generating
 criteria. Do not populate null/unknown/not applicable values with
 estimates or outdated information.</li>
-<li>Values outside ranges mentioned below are treated as
+<li>Values outside the ranges mentioned below are treated as
 <code>NULL</code>
 </li>
-<li>Before sending data to the package, verify the data. Some values may
-provide warnings, others may generate errors. Verify that your code can
-handle warnings and errors.</li>
-<li>Ideally, both input values and time of the measurement so that last
-observation carried forward logic can be implemented with limits and
-conditions for age of inputs for calculated variables can be
-verified.</li>
+<li>Before sending data to the package, please verify the data. Some
+values may provide warnings, others may generate errors. Verify that
+your code can handle warnings and errors.</li>
+<li>Ideally, both input values and time of the measurement are available
+so that last observation carried forward logic can be implemented with
+limits and conditions for age of inputs.</li>
 </ul>
 <hr>
 </div>
@@ -112,15 +111,15 @@ verified.</li>
 </h2>
 <p>Inclusion Criteria</p>
 <ul>
-<li>Pediatric patient</li>
+<li>Child &lt; 18 years old</li>
 <li>Suspected infection</li>
 </ul>
 <p>Exclusion Criteria</p>
 <ul>
 <li>Patients still in their original birth hospitalization</li>
-<li>Patients with a gestational age less than 37 weeks at the time of
-admission</li>
-<li>Patients older than 18 years of age (216 months)</li>
+<li>Gestational age less than 37 weeks at encounter start</li>
+<li>Age greater than or equal to 18 years (216 months) at encounter
+start</li>
 </ul>
 </div>
 <div class="section level2">
@@ -130,7 +129,7 @@ admission</li>
 criteria, they must have a suspected infection. A patient is considered
 to have a suspected infection if they have:</p>
 <ol style="list-style-type: decimal">
-<li>an infective test <em>ordered</em>, and</li>
+<li>a test for infection <em>ordered</em>, and</li>
 <li>at least two doses of systemic antimicrobial medication(s).</li>
 </ol>
 <p>Note that the test, e.g., a blood culture, need only be ordered.
@@ -173,16 +172,18 @@ and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/h
 of the Phoenix Sepsis Score are documented in file <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv" class="external-link">standard_names_and_units.csv</a>
 within the project <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria" class="external-link">GitHub
 archive</a>.</p>
+<p>“Look Back” for each input below indicates the length of time a last
+value should be carried forward.</p>
 </div>
 <div class="section level2">
 <h2 id="respiratory">Respiratory<a class="anchor" aria-label="anchor" href="#respiratory"></a>
 </h2>
 <p>Respiratory dysfunction scoring is based on
 PaO<sub>2</sub>/FiO<sub>2</sub> (PFR), SpO<sub>2</sub>/FiO<sub>2</sub>
-(SFR) and respiratory support. While the scoring is based on SFR and
-PFR, it is preferable to get the SpO<sub>2</sub>, PaO<sub>2</sub>, and
-FiO<sub>2</sub> values so certain data checks can be performed before
-the score is determined.</p>
+(SFR), and respiratory support. While the scoring is based on SFR and
+PFR, it is preferable to use separate SpO<sub>2</sub>, PaO<sub>2</sub>,
+and FiO<sub>2</sub> values so data checks can be performed before the
+score is determined.</p>
 <div class="section level3">
 <h3 id="inputs">Inputs<a class="anchor" aria-label="anchor" href="#inputs"></a>
 </h3>
@@ -295,7 +296,7 @@ valid to use in the calculation of the PFR</p>
 <td align="right">118<sup>c</sup>
 </td>
 <td align="right"></td>
-<td align="right">No PFR, FiO<sub>2</sub> is younger than
+<td align="right">No PFR, FiO<sub>2</sub> is newer than
 PaO<sub>2</sub>
 </td>
 </tr>
@@ -357,7 +358,7 @@ age or older than the PaO<sub>2</sub> value.</li>
 </h4>
 <ul>
 <li>Units: none</li>
-<li>Expected Values: [0, 97/0.21]
+<li>Expected Values: [0, 97]/0.21
 <ul>
 <li>Floating point</li>
 <li>The upper limit includes the limitation on SpO<sub>2</sub> ≤ 97</li>
@@ -413,7 +414,7 @@ valid to use in the calculation of the SFR</p>
 </td>
 <td align="right"></td>
 <td align="right">No SFR, SpO<sub>2</sub> &gt; 97 and FiO<sub>2</sub>
-younger than SpO<sub>2</sub>
+newer than SpO<sub>2</sub>
 </td>
 </tr>
 <tr class="even">
@@ -439,7 +440,7 @@ younger than SpO<sub>2</sub>
 <td align="right">87<sup>c</sup>
 </td>
 <td align="right"></td>
-<td align="right">No SFR, FiO<sub>2</sub> is younger than
+<td align="right">No SFR, FiO<sub>2</sub> is newer than
 SpO<sub>2</sub>
 </td>
 </tr>
@@ -599,14 +600,13 @@ to exclude:</p>
 <li>epinephrine 0.3 mg/0.3ml inj soln prefilled syringe</li>
 <li>epinephrine hcl (nasal) 0.1 % nasal solution</li>
 <li>epinephrine hcl 2.25 % inh neb soln</li>
-<li>epinephrine powder</li>
 </ul>
 <p>The routes for administration of the vasoactive medications are at
 Example SQL code used for mapping routes when developing Phoenix can be
 found in the project <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
 archive</a> specifically the files: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql" class="external-link">med_route_mapping.sql</a>
 and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql" class="external-link">clean_up_routes.sql</a>.</p>
-<p>The overall meta data for vasoactives:</p>
+<p>The overall metadata for vasoactives:</p>
 <ul>
 <li>Units: none</li>
 <li>Expected Values: integer values 0, 1, 2, 3, 4, 5, 6
@@ -644,13 +644,13 @@ and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/h
 <p>There can be many sources of blood pressure. We used the following
 hierarchy for which value to use in the scoring.</p>
 <ol style="list-style-type: decimal">
-<li>Arterial MAP (direct measurement)</li>
+<li>Arterial MAP (invasive measurement)</li>
 <li>Estimated MAP from arterial systolic (SBP) and arterial diastolic
 (DBP) pressures</li>
-<li>Cuff MAP (from a machine)</li>
+<li>Cuff MAP</li>
 <li>Estimated MAP from cuff SBP and cuff DBP</li>
 </ol>
-<p>MAP can be calculated as <code>(2/3) * DBP + (1/3) * SBP</code></p>
+<p>MAP can be estimated as <code>(2/3) * DBP + (1/3) * SBP</code></p>
 <p>Expected metadata:</p>
 <ul>
 <li>MAP:
@@ -659,8 +659,8 @@ hierarchy for which value to use in the scoring.</p>
 <li>Expected Values: [1, 300]</li>
 <li>Caveats:
 <ul>
-<li>If MAP is provided along with SBP and DBP it is worth verifying that
-DBP ≤ MAP ≤ SBP</li>
+<li>If MAP is provided along with SBP and DBP then verify that DBP ≤ MAP
+≤ SBP</li>
 </ul>
 </li>
 <li>Look back: 6 hours</li>
@@ -672,8 +672,8 @@ DBP ≤ MAP ≤ SBP</li>
 <li>Expected Values: [1, 300]</li>
 <li>Caveats:
 <ul>
-<li>It is worth verifying that DBP ≤ SBP, we used a slightly more
-conservative check of (SBP - DBP) ≥ 1</li>
+<li>Verify that DBP ≤ SBP, we used a slightly more conservative check of
+(SBP - DBP) ≥ 1</li>
 </ul>
 </li>
 <li>Look back: 6 hours</li>
@@ -685,8 +685,8 @@ conservative check of (SBP - DBP) ≥ 1</li>
 <li>Expected Values: [1, 200]</li>
 <li>Caveats:
 <ul>
-<li>It is worth verifying that DBP ≤ SBP, we used a slightly more
-conservative check of (SBP - DBP) ≥ 1</li>
+<li>Verify that DBP ≤ SBP, we used a slightly more conservative check of
+(SBP - DBP) ≥ 1</li>
 </ul>
 </li>
 <li>Look back: 6 hours</li>
@@ -782,15 +782,26 @@ one, the final score is capped at two points.</p>
 <div class="section level4">
 <h4 id="glasgow-coma-scale-gcs">Glasgow Coma Scale (GCS)<a class="anchor" aria-label="anchor" href="#glasgow-coma-scale-gcs"></a>
 </h4>
-<p>Phoenix is based on the total GCS score * GCS (total): * Units: none
-* Expected Values: integer values 3, 4, 5, …, 15 * Caveats: * The total
-GCS is the sum of three component scores: eye, motor, and verbal. * We
-assumed that if we had an updated score for any one of the three
-components but not all, then the non-updated components were assumed to
-have not changed and did not warrant data entry. We, therefore, updated
-the time of the GCS total and all its components to the most recent
-update time for any of the components. * Look back: 12 hours</p>
+<p>Phoenix is based on the total GCS score.</p>
 <ul>
+<li>GCS (total):
+<ul>
+<li>Units: none</li>
+<li>Expected Values: integer values 3, 4, 5, …, 15</li>
+<li>Caveats:
+<ul>
+<li>The total GCS is the sum of three component scores: eye, motor, and
+verbal.</li>
+<li>We assumed that if we had an updated score for any one of the three
+components but not all, then the non-updated components were assumed to
+have not changed. In that case, we updated the time of the GCS total and
+all its components to the most recent update time for any of the
+components.</li>
+</ul>
+</li>
+<li>Look back: 12 hours</li>
+</ul>
+</li>
 <li>GCS (eye):
 <ul>
 <li>Units: none</li>
@@ -849,6 +860,10 @@ score of 2.</p>
 <span><span class="co">#&gt; pmin(fpl * 2 + as.integer(gcs &lt;= 10), 2)</span></span></code></pre></div>
 <hr>
 </div>
+</div>
+<div class="section level2">
+<h2 id="additional-inputs-to-phoenix-8-score">Additional inputs to Phoenix-8 score<a class="anchor" aria-label="anchor" href="#additional-inputs-to-phoenix-8-score"></a>
+</h2>
 </div>
 <div class="section level2">
 <h2 id="endocrine">Endocrine<a class="anchor" aria-label="anchor" href="#endocrine"></a>
@@ -954,7 +969,7 @@ might use cells / mm³</li>
 <div class="section level3">
 <h3 id="scoring-6">Scoring<a class="anchor" aria-label="anchor" href="#scoring-6"></a>
 </h3>
-<p>Age adjusted creatinine</p>
+<p>Age-adjusted creatinine</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_renal.html">phoenix_renal</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; (age &gt;= 0 &amp; age &lt; 1) * (crt &gt;= 0.8) + (age &gt;= 1 &amp; age &lt; 12) * (crt &gt;= 0.3) + (age &gt;= 12 &amp; age &lt; 24) * (crt &gt;= 0.4) + (age &gt;= 24 &amp; age &lt; 60) * (crt &gt;= 0.6) + (age &gt;= 60 &amp; age &lt; 144) * (crt &gt;= 0.7) + (age &gt;= 144 &amp; age &lt;= 216) * (crt &gt;= 1)</span></span></code></pre></div>
