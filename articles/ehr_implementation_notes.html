@@ -71,18 +71,20 @@ PROGRESS</strong></h3>
 
     
     
-<p>The Phoenix criteria for pediatric sepsis and septic shock was
-developed using an international data set of pediatric hospitalizations.
-Note that birth-hospitalizations and patients with a gestational age
-less than 37 weeks were omitted <span class="citation">(Sanchez-Pinto et
-al. 2024; Schlapbach et al. 2024)</span>. The Phoenix criteria were
-developed based on modeling hospital mortality based on suspected
-infection and organ dysfunction within the first twenty-four hours of a
-hospital encounter.</p>
-<p>The purpose of this document is to provide details on the expected
-inputs for the scoring. The phoenix R package and Python module, along
-with the example SQL code assumes the data has been prepared as expected
-and returns scores accordingly.</p>
+<p>The Phoenix criteria for pediatric sepsis and septic shock were
+developed using an international data set of pediatric emergency
+department and hospital encounters. Birth hospitalizations and patients
+with a gestational age less than 37 weeks were excluded, please see
+below <span class="citation">(Sanchez-Pinto et al. 2024; Schlapbach et
+al. 2024)</span>. The Phoenix criteria were developed based on
+predicting encounter mortality among those with suspected infection
+using organ dysfunction-based data from the first 24 hours of the
+encounter. Please see the original manuscripts for details.</p>
+<p>The purpose of this document is to provide details about the expected
+inputs for the scoring in order to assist EHR implementation. The
+phoenix R package and Python module, along with the example SQL code
+assumes that the data have been prepared as expected and returns scores
+accordingly.</p>
 <hr>
 <div class="section level2">
 <h2 id="general-data-formatting-notes">General Data Formatting Notes<a class="anchor" aria-label="anchor" href="#general-data-formatting-notes"></a>
@@ -95,13 +97,13 @@ estimates or outdated information.</li>
 <li>Values outside ranges mentioned below are treated as
 <code>NULL</code>
 </li>
-<li>Before sending data to the package, verify data. Some values may
-provide warnings, others may throw errors. Verify your processing can
+<li>Before sending data to the package, verify the data. Some values may
+provide warnings, others may generate errors. Verify that your code can
 handle warnings and errors.</li>
-<li>Ideally input values will be known along with a time of the
-measurement so that last observation carried forward logic can be
-implemented with limits and conditions for age of inputs for calculated
-variables can be verified.</li>
+<li>Ideally, both input values and time of the measurement so that last
+observation carried forward logic can be implemented with limits and
+conditions for age of inputs for calculated variables can be
+verified.</li>
 </ul>
 <hr>
 </div>
