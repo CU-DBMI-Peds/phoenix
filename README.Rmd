@@ -46,7 +46,7 @@ The Phoenix Criteria have been implemented in
 * example SQL queries
   * [article](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
 
-* Notes for implimenting in Electronic Health Records (EHRs)
+* Notes for implementing in Electronic Health Records (EHRs)
   * [article](https://cu-dbmi-peds.github.io/phoenix/articles/ehr_implementation_notes.html)
 
 ## Citation
