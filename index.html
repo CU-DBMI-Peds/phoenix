@@ -76,11 +76,29 @@
 <p>or you can read it online <a href="https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html">here</a></p>
 <p>The Phoenix Criteria have been implemented in</p>
 <ul>
-<li>an R package,</li>
-<li>a Python module, and</li>
-<li>example SQL queries.</li>
+<li>an R package
+<ul>
+<li><a href="https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html">article</a></li>
+<li><a href="https://cran.r-project.org/package=phoenix" class="external-link">CRAN</a></li>
 </ul>
-<p>The repository has been built with R as the primary and default language.</p>
+</li>
+<li>a Python module
+<ul>
+<li><a href="https://cu-dbmi-peds.github.io/phoenix/articles/python.html">article</a></li>
+<li><a href="https://pypi.org/project/phoenix-sepsis/" class="external-link">PyPi</a></li>
+</ul>
+</li>
+<li>example SQL queries
+<ul>
+<li><a href="https://cu-dbmi-peds.github.io/phoenix/articles/sql.html">article</a></li>
+</ul>
+</li>
+<li>Notes for implimenting in Electronic Health Records (EHRs)
+<ul>
+<li><a href="https://cu-dbmi-peds.github.io/phoenix/articles/ehr_implementation_notes.html">article</a></li>
+</ul>
+</li>
+</ul>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
@@ -148,6 +166,11 @@
 </h2>
 <p>Read <a href="https://cu-dbmi-peds.github.io/phoenix/articles/sql.html">The Phoenix Sepsis Criteria in SQL</a> article for details and examples of implementing the scoring rubrics in SQL. These examples are done in SQLite but will be easily translated into other SQL dialects.</p>
 </div>
+<div class="section level2">
+<h2 id="electronic-health-record-ehr">Electronic Health Record (EHR)<a class="anchor" aria-label="anchor" href="#electronic-health-record-ehr"></a>
+</h2>
+<p>Read <a href="https://cu-dbmi-peds.github.io/phoenix/articles/ehr_implementation_notes.html">Phoenix Sepsis EHR Implementation Notes</a> for details about the expected inputs for the scoring in order to assist EHR implementation. The phoenix R package and Python module, along with the example SQL code assumes that the data have been prepared as expected and returns scores accordingly.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
@@ -194,7 +217,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

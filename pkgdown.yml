@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   articles/ehr_implementation_notes: ehr_implementation_notes.html
@@ -7,7 +7,7 @@ articles:
   phoenix: phoenix.html
   articles/python: python.html
   articles/sql: sql.html
-last_built: 2025-05-21T19:13Z
+last_built: 2025-08-07T16:04Z
 urls:
   reference: https://cu-dbmi-peds.github.io/phoenix/reference
   article: https://cu-dbmi-peds.github.io/phoenix/articles
