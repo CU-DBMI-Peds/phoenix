@@ -35,11 +35,19 @@ or you can read it online
 
 The Phoenix Criteria have been implemented in
 
-* an R package,
-* a Python module, and
-* example SQL queries.
+* an R package
+  * [article](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
+  * [CRAN](https://cran.r-project.org/package=phoenix)
 
-The repository has been built with R as the primary and default language.
+* a Python module
+  * [article](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
+  * [PyPi](https://pypi.org/project/phoenix-sepsis/)
+
+* example SQL queries
+  * [article](https://cu-dbmi-peds.github.io/phoenix/articles/sql.html)
+
+* Notes for implimenting in Electronic Health Records (EHRs)
+  * [article](https://cu-dbmi-peds.github.io/phoenix/articles/ehr_implementation_notes.html)
 
 ## Citation
 If you use this package in your work, please cite the Phoenix criteria by citing
@@ -119,3 +127,10 @@ article for details and examples of implementing the scoring rubrics in SQL.
 These examples are done in SQLite but will be easily translated into other SQL
 dialects.
 
+## Electronic Health Record (EHR)
+
+Read [Phoenix Sepsis EHR Implementation Notes](https://cu-dbmi-peds.github.io/phoenix/articles/ehr_implementation_notes.html)
+for details about the expected inputs for the scoring in order to assist EHR
+implementation. The phoenix R package and Python module, along with the example
+SQL code assumes that the data have been prepared as expected and returns scores
+accordingly.
