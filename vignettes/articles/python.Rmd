@@ -74,7 +74,7 @@ for details on the Phoenix criteria
 The python module can be installed via
 
 ```{python, eval = FALSE}
-pip install pheonix-sepsis
+pip install phoenix-sepsis
 ```
 
 ## Importing the module
@@ -112,7 +112,7 @@ print(sepsis.head())
  | inr            | international normalized ratio                              |
  | d_dimer        | D-dimer; units of mg/L FEU                                  |
  | fibrinogen     | units of mg/dL                                              |
- | dbp            | diagnostic blood pressure (mmHg)                            |
+ | dbp            | diastolic blood pressure (mmHg)                             |
  | sbp            | systolic blood pressure (mmHg)                              |
  | lactate        | units of mmol/L                                             |
  | dobutamine     | indicator for receiving systemic dobutamine                 |
@@ -508,4 +508,3 @@ stopifnot(
             check.attributes = FALSE)
 )
 ```
-
