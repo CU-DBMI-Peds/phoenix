@@ -20,9 +20,9 @@ Methods:
     returns a DataFrame with columns for the four component scores (respiratory,
     cardiovascular, coagulation, and neurologic), a total score (the sum of the
     components), an indicator column for sepsis (total score of at least two
-    points), and an indicator column for septic shock (spesis with at least one
-    cardiovascular point).  phoenix8 return the same as phoenix but with
-    additional columns for the other four organ systems and a phoenix8 total
+    points), and an indicator column for septic shock (sepsis with at least one
+    cardiovascular point).  phoenix8 returns the same as phoenix but with
+    additional columns for the other four organ systems and a phoenix8 sepsis
     score.
 
         1. phoenix
