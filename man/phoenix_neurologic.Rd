@@ -12,7 +12,7 @@ phoenix_neurologic(
 )
 }
 \arguments{
-\item{gcs}{integer vector; total Glasgow Comma Score}
+\item{gcs}{integer vector; total Glasgow Coma Score}
 
 \item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 = otherwise}
 

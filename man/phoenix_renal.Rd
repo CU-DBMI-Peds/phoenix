@@ -21,7 +21,7 @@ phoenix_renal(
 \item{...}{pass through}
 }
 \value{
-a integer vector with values 0, 1, or 2
+an integer vector with values 0 or 1
 
 As with all other Phoenix organ system scores, missing values in the data
 set will map to a score of zero - this is consistent with the development of
@@ -67,7 +67,7 @@ renal_example <- sepsis[c("creatinine", "age")]
 renal_example$score <- phoenix_renal(creatinine, age, sepsis)
 renal_example
 
-# build an example data set with all possible neurologic scores
+# build an example data set with representative renal scores
 DF <- expand.grid(age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
                   creatinine = c(NA, seq(0.0, 1.1, by = 0.1)))
 DF$card <- phoenix_renal(age = age, creatinine = creatinine, data = DF)

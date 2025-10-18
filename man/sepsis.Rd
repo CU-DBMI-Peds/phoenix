@@ -20,7 +20,7 @@ a data.frame with 20 rows and 27 columns
 [, 10] \tab inr            \tab international normalized ratio                              \cr
 [, 11] \tab d_dimer        \tab D-dimer; units of mg/L FEU                                  \cr
 [, 12] \tab fibrinogen     \tab units of mg/dL                                              \cr
-[, 13] \tab dbp            \tab diagnostic blood pressure (mmHg)                            \cr
+[, 13] \tab dbp            \tab diastolic blood pressure (mmHg)                             \cr
 [, 14] \tab sbp            \tab systolic blood pressure (mmHg)                              \cr
 [, 15] \tab lactate        \tab units of mmol/L                                             \cr
 [, 16] \tab dobutamine     \tab indicator for receiving systemic dobutamine                 \cr
@@ -41,7 +41,7 @@ a data.frame with 20 rows and 27 columns
 sepsis
 }
 \description{
-A fully synthetic data set with variables need for examples and documentation
+A fully synthetic data set with variables needed for examples and documentation
 of the Phoenix Sepsis Criteria.
 }
 \keyword{datasets}
