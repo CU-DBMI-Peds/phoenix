@@ -4,7 +4,7 @@
 #' scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 #' 2 or more indicates sepsis.
 #'
-#' The details of each of the four component scores are found in there
+#' The details of each of the four component scores are found in their
 #' respective help files.
 #'
 #' @inheritParams phoenix8
