@@ -4,9 +4,9 @@
 #' intended mostly for research as an extension of the Phoenix Sepsis Criteria
 #' which is based on four organ systems.
 #'
-#' The Phoenix Sepsis Criteria is based on the score form
-#' respiratory, cardiovascular, coagulation, and neurologic.  Phoenix 8 uses
-#' these four an endocrine, immunologic, renal, and hepatic.  Details on the
+#' The Phoenix Sepsis Criteria is based on the scores from
+#' respiratory, cardiovascular, coagulation, and neurologic systems.  Phoenix 8 uses
+#' these four plus endocrine, immunologic, renal, and hepatic.  Details on the
 #' scoring for each of the eight component organ systems are found in the
 #' respective manual files.
 #'
@@ -22,7 +22,7 @@
 #' @param inr numeric vector for the international normalised ratio blood test
 #' @param d_dimer numeric vector for D-Dimer, units of mg/L FEU
 #' @param fibrinogen numeric vector units of mg/dL
-#' @param gcs integer vector; total Glasgow Comma Score
+#' @param gcs integer vector; total Glasgow Coma Score
 #' @param fixed_pupils integer vector; 1 = bilaterally fixed pupil, 0 = otherwise
 #' @param glucose numeric vector; blood glucose measured in mg/dL
 #' @param anc absolute neutrophil count; a numeric vector; units of 1,000 cells per cubic millimeter
