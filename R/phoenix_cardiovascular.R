@@ -3,7 +3,7 @@
 #' Generate the cardiovascular organ system dysfunction score as part of the
 #' diagnostic Phoenix Sepsis Criteria.
 #'
-#' There where six systemic vasoactive medications considered when the Phoenix
+#' There were six systemic vasoactive medications considered when the Phoenix
 #' criteria was developed: dobutamine, dopamine, epinephrine, milrinone,
 #' norepinephrine, and vasopressin.
 #'
@@ -15,7 +15,7 @@
 #'
 #' @section Phoenix Cardiovascular Scoring:
 #' The Phoenix Cardiovascular score ranges from 0 to 6 points; 0, 1, or 2 points
-#' for each of systolic vasoactive medications, lactate, and MAP.
+#' for each of systemic vasoactive medications, lactate, and MAP.
 #'
 #' \emph{Systemic Vasoactive Medications}
 #' \tabular{ll}{
