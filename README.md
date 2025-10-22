@@ -4,11 +4,15 @@
 
 # phoenix: Phoenix Sepsis and Phoenix-8 Sepsis Criteria <img src="man/figures/hexsticker.png" width="150px" align="right" alt = "Phoenix Hex Sticker Logo"/>
 
+
+<!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CU-DBMI-Peds/phoenix/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/CU-DBMI-Peds/phoenix/graph/badge.svg?token=PKLXJ9SQOD)](https://app.codecov.io/gh/CU-DBMI-Peds/phoenix)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/phoenix)](https://cran.r-project.org/package=phoenix)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version-last-release/phoenix)](https://cran.r-project.org/package=phoenix)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/phoenix)](https://www.r-pkg.org/pkg/phoenix)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/phoenix)](https://www.r-pkg.org/pkg/phoenix)
+<!-- badges: end -->
 
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 described in:
