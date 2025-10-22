@@ -8,8 +8,8 @@ citHeader(
   "2) the result of evaluating citation('phoenix', auto = TRUE)."
 )
 
-citEntry(
-  entry = "Article",
+bibentry(
+  bibtype = "Article",
   title = "Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock",
   author = as.person("Sanchez-Pinto, L. Nelson and Bennett, Tellen D. and DeWitt, Peter E. and Russell, Seth and Rebull, Margaret N. and Martin, Blake and Akech, Samuel and Albers, David J. and Alpern, Elizabeth R. and Balamuth, Fran and Bembea, Melania and Chisti, Mohammod Jobayer and Evans, Idris and Horvat, Christopher M. and Jaramillo-Bustamante, Juan Camilo and Kissoon, Niranjan and Menon, Kusum and Scott, Halden F. and Weiss, Scott L. and Wiens, Matthew O. and Zimmerman, Jerry J. and Argent, Andrew C. and Sorce, Lauren R. and Schlapbach, Luregn J. and Watson, R. Scott and Society of Critical Care Medicine Pediatric Sepsis Definition Task Force"),
   journal = "JAMA",
@@ -23,8 +23,8 @@ citEntry(
   textVersion = "Sanchez-Pinto, L. N., Bennett, T. D., DeWitt, P. E., Russell, S., Rebull, M. N., et al. (2024). Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock. JAMA, 331(8), 675-686. https://doi.org/10.1001/jama.2024.0196"
 )
 
-citEntry(
-  entry = "Article",
+bibentry(
+  bibtype = "Article",
   title = "International Consensus Criteria for Pediatric Sepsis and Septic Shock",
   author = as.person("Schlapbach, Luregn J. and Watson, R. Scott and Sorce, Lauren R. and Argent, Andrew C. and Menon, Kusum and Hall, Mark W. and Akech, Samuel and Albers, David J. and Alpern, Elizabeth R. and Balamuth, Fran and Bembea, Melania and Biban, Paolo and Carrol, Enitan D. and Chiotos, Kathleen and Chisti, Mohammod Jobayer and DeWitt, Peter E. and Evans, Idris and Flauzino de Oliveira, Cláudio and Horvat, Christopher M. and Inwald, David and Ishimine, Paul and Jaramillo-Bustamante, Juan Camilo and Levin, Michael and Lodha, Rakesh and Martin, Blake and Nadel, Simon and Nakagawa, Satoshi and Peters, Mark J. and Randolph, Adrienne G. and Ranjit, Suchitra and Rebull, Margaret N. and Russell, Seth and Scott, Halden F. and de Souza, Daniela Carla and Tissieres, Pierre and Weiss, Scott L. and Wiens, Matthew O. and Wynn, James L. and Kissoon, Niranjan and Zimmerman, Jerry J. and Sanchez-Pinto, L. Nelson and Bennett, Tellen D. and Society of Critical Care Medicine Pediatric Sepsis Definition Task Force"),
   journal = "JAMA",
@@ -38,8 +38,8 @@ citEntry(
   textVersion = "Schlapbach, L. J., Watson, R. S., Sorce, L. R., Argent, A. C., Menon, K., et al. (2024). International Consensus Criteria for Pediatric Sepsis and Septic Shock. JAMA, 331(8), 665-674. https://doi.org/10.1001/jama.2024.0179"
 )
 
-citEntry(
-  entry = "Article",
+bibentry(
+  bibtype = "Article",
   title = "phoenix: an R package and Python module for calculating the Phoenix pediatric sepsis score and criteria",
   author = as.person("DeWitt, Peter E and Russell, Seth and Rebull, Margaret N and Sanchez-Pinto, L Nelson and Bennett, Tellen D"),
   journal = "JAMIA Open",
