@@ -1,3 +1,23 @@
+# Version 1.1.3
+- Initial submission 22 Oct 2025
+- Documentation improvements
+
+## R CMD check results
+
+* Local R 4.5.1 - Status OK
+
+* Github Actions:
+  * macOS R-4.5.1
+    - Status OK
+  * windows R-4.5.1
+    - Status OK
+  * ubuntu R-4.5.1
+    - Status OK
+  * ubuntu R-devel
+    - Status OK
+  * ubuntu R-oldrel-1
+    - Status OK
+
 # Version 1.1.2
 - Initial submission 2 May 2025
 - Fix a bug in the immunologic scoring
