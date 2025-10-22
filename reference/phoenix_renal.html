@@ -9,7 +9,7 @@ creatinine levels."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@ creatinine levels.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a integer vector with values 0, 1, or 2</p>
+    <p>an integer vector with values 0 or 1</p>
 <p>As with all other Phoenix organ system scores, missing values in the data
 set will map to a score of zero - this is consistent with the development of
 the criteria.</p>
@@ -147,7 +147,7 @@ the criteria.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19      1.200   0.17     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20      0.418  71.90     0</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># build an example data set with all possible neurologic scores</span></span></span>
+<span class="r-in"><span><span class="co"># build an example data set with representative renal scores</span></span></span>
 <span class="r-in"><span><span class="va">DF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.4</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">12</span>, <span class="fl">18</span>, <span class="fl">24</span>, <span class="fl">45</span>, <span class="fl">60</span>, <span class="fl">61</span>, <span class="fl">144</span>, <span class="fl">145</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                  creatinine <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.0</span>, <span class="fl">1.1</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">DF</span><span class="op">$</span><span class="va">card</span> <span class="op">&lt;-</span> <span class="fu">phoenix_renal</span><span class="op">(</span>age <span class="op">=</span> <span class="va">age</span>, creatinine <span class="op">=</span> <span class="va">creatinine</span>, data <span class="op">=</span> <span class="va">DF</span><span class="op">)</span></span></span>

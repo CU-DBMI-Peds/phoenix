@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@ started</a> article for details on the Phoenix criteria</p>
 <h3 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h3>
 <p>The python module can be installed via</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>pip install pheonix<span class="op">-</span>sepsis</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>pip install phoenix<span class="op">-</span>sepsis</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="importing-the-module">Importing the module<a class="anchor" aria-label="anchor" href="#importing-the-module"></a>
@@ -173,7 +173,7 @@ fixed.</td>
 </tr>
 <tr class="odd">
 <td align="left">dbp</td>
-<td align="left">diagnostic blood pressure (mmHg)</td>
+<td align="left">diastolic blood pressure (mmHg)</td>
 </tr>
 <tr class="even">
 <td align="left">sbp</td>
@@ -881,17 +881,17 @@ renal, and 8. hepatic.</p>
 <span id="cb13-37"><a href="#cb13-37" tabindex="-1"></a><span class="co">##  8   phoenix_immunologic_score     20 non-null     int64</span></span>
 <span id="cb13-38"><a href="#cb13-38" tabindex="-1"></a><span class="co">##  9   phoenix_renal_score           20 non-null     int64</span></span>
 <span id="cb13-39"><a href="#cb13-39" tabindex="-1"></a><span class="co">##  10  phoenix_hepatic_score         20 non-null     int64</span></span>
-<span id="cb13-40"><a href="#cb13-40" tabindex="-1"></a><span class="co">##  11  phoenix8_score                20 non-null     int64</span></span>
+<span id="cb13-40"><a href="#cb13-40" tabindex="-1"></a><span class="co">##  11  phoenix8_sepsis_score         20 non-null     int64</span></span>
 <span id="cb13-41"><a href="#cb13-41" tabindex="-1"></a><span class="co">## dtypes: int64(12)</span></span>
 <span id="cb13-42"><a href="#cb13-42" tabindex="-1"></a><span class="co">## memory usage: 2.0 KB</span></span>
 <span id="cb13-43"><a href="#cb13-43" tabindex="-1"></a><span class="co">## None</span></span>
 <span id="cb13-44"><a href="#cb13-44" tabindex="-1"></a><span class="bu">print</span>(py_phoenix8_scores.head())</span>
-<span id="cb13-45"><a href="#cb13-45" tabindex="-1"></a><span class="co">##    phoenix_respiratory_score  ...  phoenix8_score</span></span>
-<span id="cb13-46"><a href="#cb13-46" tabindex="-1"></a><span class="co">## 0                          0  ...               4</span></span>
-<span id="cb13-47"><a href="#cb13-47" tabindex="-1"></a><span class="co">## 1                          3  ...               7</span></span>
-<span id="cb13-48"><a href="#cb13-48" tabindex="-1"></a><span class="co">## 2                          3  ...               8</span></span>
-<span id="cb13-49"><a href="#cb13-49" tabindex="-1"></a><span class="co">## 3                          0  ...               3</span></span>
-<span id="cb13-50"><a href="#cb13-50" tabindex="-1"></a><span class="co">## 4                          0  ...               0</span></span>
+<span id="cb13-45"><a href="#cb13-45" tabindex="-1"></a><span class="co">##    phoenix_respiratory_score  ...  phoenix8_sepsis_score</span></span>
+<span id="cb13-46"><a href="#cb13-46" tabindex="-1"></a><span class="co">## 0                          0  ...                      4</span></span>
+<span id="cb13-47"><a href="#cb13-47" tabindex="-1"></a><span class="co">## 1                          3  ...                      7</span></span>
+<span id="cb13-48"><a href="#cb13-48" tabindex="-1"></a><span class="co">## 2                          3  ...                      8</span></span>
+<span id="cb13-49"><a href="#cb13-49" tabindex="-1"></a><span class="co">## 3                          0  ...                      3</span></span>
+<span id="cb13-50"><a href="#cb13-50" tabindex="-1"></a><span class="co">## 4                          0  ...                      0</span></span>
 <span id="cb13-51"><a href="#cb13-51" tabindex="-1"></a><span class="co">## </span></span>
 <span id="cb13-52"><a href="#cb13-52" tabindex="-1"></a><span class="co">## [5 rows x 12 columns]</span></span></code></pre></div>
 </div>
