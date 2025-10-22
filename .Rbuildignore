@@ -16,3 +16,12 @@
 ^vignettes/articles$
 ^docs$
 ^pkgdown$
+examples.R
+^man/figures/hand-drawn-phoenix\.pdf$
+^man/figures/hex\.R$
+^man/figures/phoenix\.png$
+^man/figures/phoenix\.svg$
+^man/figures/phoenix\.xcf$
+^man/figures/phoenix_1200x1200\.png$
+^man/figures/phoenix_600x600\.png$
+^man/figures/phoenix_hex\.png$
