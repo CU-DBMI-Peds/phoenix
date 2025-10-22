@@ -62,8 +62,8 @@ def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan,
     Parameters:
         vasoactives : an integer vector, the number of systemic vasoactive
                       medications being administered to the patient.  Six
-                      vasocative medications are considered: dobutamine,
-                      dopamine, epinepherine, milrinone, norepinephrine,
+                      vasoactive medications are considered: dobutamine,
+                      dopamine, epinephrine, milrinone, norepinephrine,
                       vasopressin.
 
         lactate : numeric vector with the lactate value in mmol/L
@@ -132,7 +132,7 @@ def phoenix_neurologic(gcs = np.nan, fixed_pupils = np.nan):
     Phoenix Neurologic Scoring
 
     Parameters:
-        gcs : integer vector; total Glasgow Comma Score
+        gcs : integer vector; total Glasgow Coma Score
 
         fixed_pupils : integer vector; 1 = bilaterally fixed pupil, 0 =
                        otherwise
@@ -163,7 +163,7 @@ def phoenix_endocrine(glucose = np.nan):
 
 def phoenix_immunologic(anc = np.nan, alc = np.nan):
     """
-    Phoenix Immunolgic Scoring
+    Phoenix Immunologic Scoring
 
     Parameters:
         anc : absolute neutrophil count; a numeric vector; units of 1,000 cells
@@ -241,8 +241,8 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirator
 
         vasoactives : an integer vector, the number of systemic vasoactive
                       medications being administered to the patient.  Six
-                      vasocative medications are considered: dobutamine,
-                      dopamine, epinepherine, milrinone, norepinephrine,
+                      vasoactive medications are considered: dobutamine,
+                      dopamine, epinephrine, milrinone, norepinephrine,
                       vasopressin.
 
         lactate : numeric vector with the lactate value in mmol/L
@@ -260,7 +260,7 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirator
 
         fibrinogen : numeric vector units of mg/dL
 
-        gcs : integer vector; total Glasgow Comma Score
+        gcs : integer vector; total Glasgow Coma Score
 
         fixed_pupils : integer vector; 1 = bilaterally fixed pupil, 0 =
                        otherwise
@@ -271,7 +271,7 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirator
         scores, the Phoenix score (sum of respiratory, cardiovascular,
         coagulation, and neurologic), indicator for sepsis
         (Phoenix score of at least two points), and indicator for septic shock
-        (spesis with at least one cardiovascular point).
+        (sepsis with at least one cardiovascular point).
     """
     resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)
     card = phoenix_cardiovascular(vasoactives, lactate, age, map)
@@ -306,8 +306,8 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirato
 
         vasoactives : an integer vector, the number of systemic vasoactive
                       medications being administered to the patient.  Six
-                      vasocative medications are considered: dobutamine,
-                      dopamine, epinepherine, milrinone, norepinephrine,
+                      vasoactive medications are considered: dobutamine,
+                      dopamine, epinephrine, milrinone, norepinephrine,
                       vasopressin.
 
         lactate : numeric vector with the lactate value in mmol/L
@@ -325,7 +325,7 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirato
 
         fibrinogen : numeric vector units of mg/dL
 
-        gcs : integer vector; total Glasgow Comma Score
+        gcs : integer vector; total Glasgow Coma Score
 
         fixed_pupils : integer vector; 1 = bilaterally fixed pupil, 0 =
                        otherwise
@@ -349,7 +349,7 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirato
         scores, the Phoenix score (sum of respiratory, cardiovascular,
         coagulation, and neurologic), the Phoenix-8 score, indicator for sepsis
         (Phoenix score of at least two points), and indicator for septic shock
-        (spesis with at least one cardiovascular point).
+        (sepsis with at least one cardiovascular point).
     """
     resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)
     card = phoenix_cardiovascular(vasoactives, lactate, age, map)
@@ -364,7 +364,7 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirato
     hepatic = phoenix_hepatic(bilirubin, alt)
     total8 = total + endo + immu + renal + hepatic
     rtn = pd.DataFrame(data = np.column_stack((resp, card, coag, neur, total, sepsis, septic_shock, endo, immu, renal, hepatic, total8)))
-    rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock", "phoenix_endocrine_score", "phoenix_immunologic_score", "phoenix_renal_score", "phoenix_hepatic_score", "phoenix8_score"]
+    rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock", "phoenix_endocrine_score", "phoenix_immunologic_score", "phoenix_renal_score", "phoenix_hepatic_score", "phoenix8_sepsis_score"]
     return(rtn)
 
 

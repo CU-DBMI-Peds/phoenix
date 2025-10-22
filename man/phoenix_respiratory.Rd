@@ -46,7 +46,7 @@ Phoenix 8 Sepsis criteria.
 oximetry (SpO2) instead of invasive PaO2.
 
 Important Note: when the Phoenix Sepsis criteria was developed there is
-a requirement that SpO2 < 97 in order for the \code{sf_ratio} to be valid.
+a requirement that SpO2 <= 97 in order for the \code{sf_ratio} to be valid.
 That assumption is not checked in this code and it is left to the end user to
 account for this when building the \code{sf_ratio} vector.
 

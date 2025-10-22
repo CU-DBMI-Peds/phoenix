@@ -52,7 +52,7 @@ phoenix8(
 
 \item{fibrinogen}{numeric vector units of mg/dL}
 
-\item{gcs}{integer vector; total Glasgow Comma Score}
+\item{gcs}{integer vector; total Glasgow Coma Score}
 
 \item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 = otherwise}
 
@@ -101,9 +101,9 @@ intended mostly for research as an extension of the Phoenix Sepsis Criteria
 which is based on four organ systems.
 }
 \details{
-The Phoenix Sepsis Criteria is based on the score form
-respiratory, cardiovascular, coagulation, and neurologic.  Phoenix 8 uses
-these four an endocrine, immunologic, renal, and hepatic.  Details on the
+The Phoenix Sepsis Criteria is based on the scores from
+respiratory, cardiovascular, coagulation, and neurologic systems.  Phoenix 8 uses
+these four plus endocrine, immunologic, renal, and hepatic.  Details on the
 scoring for each of the eight component organ systems are found in the
 respective manual files.
 }

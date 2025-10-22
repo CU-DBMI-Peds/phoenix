@@ -37,7 +37,7 @@
 #' Matthew O. Wiens, PharmD, PhD;
 #' Jerry J. Zimmerman, MD, PhD;
 #' Andrew C. Argent, MD, MBBCh, MMed***;
-#' Lauren R. Sorce, PhD, RN, CPNP-AC/PC23***;
+#' Lauren R. Sorce, PhD, RN, CPNP-AC/PC***;
 #' Luregn J. Schlapbach, MD, PhD***;
 #' R. Scott Watson, MD, MPH***;
 #' and the Society of Critical Care Medicine Pediatric Sepsis Definition Task Force
@@ -74,7 +74,7 @@
 #' Cláudio  Flauzino de Oliveira, MD, PhD;
 #' Christopher M. Horvat, MD, MHA;
 #' David Inwald, MB, PhD;
-#' Paul Ishimine, MD31;
+#' Paul Ishimine, MD;
 #' Juan Camilo Jaramillo-Bustamante, MD;
 #' Michael Levin, MD, PhD;
 #' Rakesh Lodha, MD;

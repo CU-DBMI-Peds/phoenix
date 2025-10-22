@@ -1,6 +1,6 @@
 Package: phoenix
 Title: The Phoenix Pediatric Sepsis and Septic Shock Criteria
-Version: 1.1.2
+Version: 1.1.2.9000
 Authors@R:
     c(
       person(given = "Peter", family = "DeWitt",  email = "peter.dewitt@cuanschutz.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6391-0795")),
@@ -37,5 +37,5 @@ Suggests:
   reticulate,
   rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/Needs/website: rmarkdown

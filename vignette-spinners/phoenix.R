@@ -479,7 +479,7 @@ knitr::kable(coag_example)
 #'
 #' *
 {{ backtick(gcs) }}
-#' an integer vector for the (total) Glasgow Comma Score.  The total score is
+#' an integer vector for the (total) Glasgow Coma Score.  The total score is
 #' the sum of the eye, verbal, and motor scores.
 #'
 #' *

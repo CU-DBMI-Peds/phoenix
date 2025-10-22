@@ -462,8 +462,8 @@ stopifnot(identical(phoenix_scores$phoenix_septic_shock, phoenix_scores_from_r$p
 
 # Phoenix 8
 
-For Phoenix 8 you need only to four more organ dysfunction scores.  The result
-of the following query is saved as and R `data.frame` called `phoenix8_scores`
+For Phoenix 8 you need only four more organ dysfunction scores.  The result
+of the following query is saved as an R `data.frame` called `phoenix8_scores`
 
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "phoenix8_scores"}
 SELECT
@@ -548,5 +548,4 @@ identical(phoenix8_scores[, -1], phoenix8_scores_r)
 ```{r}
 dbDisconnect(con)
 ```
-
 
