@@ -18,6 +18,10 @@
   * ubuntu R-oldrel-1
     - Status OK
 
+* win-builder-devel - Status OK
+
+* Rhub - Status OK on 20+ checks
+
 # Version 1.1.2
 - Initial submission 2 May 2025
 - Fix a bug in the immunologic scoring
