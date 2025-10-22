@@ -13,11 +13,11 @@
 Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
 described in:
 
-* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0196) by Sanchez-Pinto&ast;, Bennett&ast;, DeWitt&ast;&ast;, Russell&ast;&ast; et al. (2024)
+* ["Development and Validation of the Phoenix Criteria for Pediatric Sepsis and Septic Shock"](https://doi.org/10.1001/jama.2024.0196) by Sanchez-Pinto&ast;, Bennett&ast;, DeWitt&ast;&ast;, Russell&ast;&ast; et al. (2024)
 
   * <small> &ast; Drs Sanchez-Pinto and Bennett contributed equally; &ast;&ast; Dr DeWitt and Mr Russell contributed equally.</small>
 
-* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](doi:10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
+* ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](https://doi.org/10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
 The best overview for this package is the R vignette which you can view locally
 after installing the R package via
@@ -51,7 +51,7 @@ and if using the R package, cite it explicitly as well.
     Peter E DeWitt, Seth Russell, Margaret N Rebull, L Nelson Sanchez-Pinto, Tellen
     D Bennett, phoenix: an R package and Python module for calculating the Phoenix
     pediatric sepsis score and criteria, JAMIA Open, Volume 7, Issue 3, October
-    2024, ooae066, [doi:10.1093/jamiaopen/ooae066](doi:10.1093/jamiaopen/ooae066)
+    2024, ooae066, [doi:10.1093/jamiaopen/ooae066](https://doi.org/10.1093/jamiaopen/ooae066)
 
 Bibtex formatted citations can be retrieved within R via
 

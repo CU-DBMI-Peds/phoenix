@@ -1,12 +1,7 @@
 # Version 1.1.2.9000:
 
-## Bug Fixes:
-
-## Other Changes:
-
-* Many spelling and grammar fixes in the documentation for the R, python, and
+* Spelling and grammar fixes in the documentation for the R, python, and
   sql.
-
 
 # Version 1.1.2:
 
