@@ -183,7 +183,7 @@ cat(
 ```
 
 As with the R package, the Python module has a function `map` to simplify the
-estimation of mean arterial pressure based on systolic and diagnostic pressures.
+estimation of mean arterial pressure based on systolic and diastolic pressures.
 MAP is approximated as (2/3)*DBP + (1/3)*SBP.
 
 ```{python}
