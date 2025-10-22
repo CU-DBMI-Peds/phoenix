@@ -1,4 +1,4 @@
-# Version 1.1.2.9000:
+# Version 1.1.3:
 
 * Spelling and grammar fixes in the documentation for the R, python, and
   sql.
