@@ -151,7 +151,7 @@ JAMA.
 \code{vignette('phoenix')} for more details and examples.
 }
 \author{
-\strong{Maintainer}: Peter DeWitt \email{peter.dewitt@cuanschutz.edu} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID})
+\strong{Maintainer}: Peter DeWitt \email{peter.dewitt@cuanschutz.edu} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID}) [cover designer]
 
 Other contributors:
 \itemize{
@@ -159,6 +159,7 @@ Other contributors:
   \item Meg Rebull \email{meg.rebull@cuanschutz.edu} (\href{https://orcid.org/0000-0003-0334-4223}{ORCID}) [contributor]
   \item Tell Bennett \email{tell.bennett@cuanschutz.edu} (\href{https://orcid.org/0000-0003-1483-4236}{ORCID}) [contributor]
   \item L. Nelson Sanchez-Pinto \email{lsanchezpinto@luriechildrens.org} (\href{https://orcid.org/0000-0002-7434-6747}{ORCID}) [contributor]
+  \item Vincent Rubinetti \email{vincent.rubinetti@cuanschutz.edu} (\href{https://orcid.org/0000-0002-4655-3773}{ORCID}) [cover designer]
 }
 
 }
