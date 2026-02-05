@@ -53,14 +53,14 @@ Example: Say we know FiO~2~ at time T~0~ and we know lactate at time T~0~ as
 well.
 
 | time | FiO~2~ | Lactate |
-|:--:  | ---:   | ---:    |
+|:--:  | :---   | :---    |
 | T~0~ | 0.40   | 6.8     |
 
 Later, at times T~2~ > T~1~ > T~0~ the lactate value is updated.  As such we
 might see data like this:
 
 | time | FiO~2~ | Lactate |
-|:--:  | ---:   | ---:    |
+|:--:  | :---   | :---    |
 | T~0~ | 0.40   | 6.8     |
 | T~1~ |        | 7.3     |
 | T~2~ |        | 7.1     |
@@ -71,10 +71,19 @@ value within the lookback window needs to be used.  That is: the data would look
 like:
 
 | time | FiO~2~                                                | Lactate |
-| :--: | ---:                                                  | ---:    |
+| :--: | :---                                                  | :---    |
 | T~0~ | 0.40                                                  | 6.8     |
 | T~1~ | 0.40 (Assuming T~1~ - T~0~ < 6 hours; NULL Otherwise) | 7.3     |
 | T~2~ | 0.40 (Assuming T~2~ - T~0~ < 6 hours; NULL Otherwise) | 7.1     |
+
+If at time T~3~ FiO~2~ is updated:
+
+ | time | FiO~2~                                                | Lactate                                              |
+ | :--: | :---                                                  | :---                                                 |
+ | T~0~ | 0.40                                                  | 6.8                                                  |
+ | T~1~ | 0.40 (Assuming T~1~ - T~0~ < 6 hours; NULL Otherwise) | 7.3                                                  |
+ | T~2~ | 0.40 (Assuming T~2~ - T~0~ < 6 hours; NULL Otherwise) | 7.1                                                  |
+ | T~3~ | 0.80 (good new value)                                 | 7.1 (Assuming T~3~ - T~2~ < 6 hours; NULL Otherwise) |
 
 <hr>
 
