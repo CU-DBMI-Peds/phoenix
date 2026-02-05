@@ -25,6 +25,36 @@ prepared as expected and returns scores accordingly.
 
 <hr>
 
+# Overview
+
+Here is a quick checklist to summarize how the Phoenix package should be integrated within an EHR. This is to aid understanding and verification; users still need to review all guidance from this full document.
+
+## Scoring Requirement
+
+* Phoenix score is only valid in the case of suspected infection
+
+## Exclusion Criteria
+
+* Patients still in their original birth hospitalization
+* Gestational age less than 37 weeks at encounter start
+* Age greater than or equal to 18 years (216 months) at encounter start
+
+## Data cleaning and preparation
+
+* Verify all variables in expected unit; convert as necessary. E.g. age in months; lactate in mmol/L, etc.
+* As appropriate replace invalid values with NULL; e.g. if age in months > 216 need to consider if should be scoring patient at all.
+* No imputation for NULL/invalid values
+* Last observation carry forward within appropriate window for each variable - max carry forward is from prior 24 hours.
+* Variables not present or not known should be passed in as NULL
+
+## Gotchas
+
+* Phoenix package doesn't calculate mean arterial pressure (MAP); Calculate MAP from SBP and DBP if not directly available; if both cuff and arterial values present, arterial MAP should be used.
+* Carefully review requirements of each input value. For example, only calculate SF ratio and pass into Phoenix package when SpO2 <= 97; only calculate and pass in PF ratio when FiO2 value is from the same time as or before the time of PaO2 lab.
+* Use last known good value to when calling Phoenix functions.
+
+<hr>
+
 # General Data Formatting Notes
 
 * `NULL` values are treated as non-score generating criteria. Do not populate null/unknown/not applicable values with estimates or outdated information.
