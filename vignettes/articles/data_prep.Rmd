@@ -15,35 +15,34 @@ Expected general structure of the data.
   admission to the facility, and increments by minutes.  The value `eclock = 5`
   is five minutes after admission.  `eclock = 1440` is 24 hours after admission.
 
-# Respiratory Scoring
+* Not all inputs are reported at the same time.
+  Last-observation-carried-forward will be used.
 
-## Input variables
-
-+----------+-------------+-------+-----------------+---------+-----------+
-| Variable | Description | Units | Expected Values | Caveats | Look Back |
-+:=========+:============+:=====:+:================+:========+:==========+
-| PaO~2~   | Partial pressure of oxygen in arterial blood | mmHg | [0, Inf) || 6 hours |
-+----------+-------------+-------+-----------------+---------+-----------+
+For this example we have the following data:
 
 
-* PaO~2~: Partial pressure of oxygen in arterial blood
-  * Units: mmHg
-  * Expected Values: [0, Inf)
-  * Caveats:
-  * Look Back: 6 hours
+**TODO: Make the example data easy for end users to access**
+
+```{r}
+egdata <- data.table::fread("phx.csv")
+str(egdata)
+```
+
+The data set contains the following variables.  Details on the expected value
+ranges and use will follow as will the details on the caveats.
+
+```{r, echo = FALSE, results = "asis"}
+inputvars <- data.table::fread("inputvars.md")
+kableExtra::kbl(inputvars) |>
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped")
+  )
+```
 
 * SpO~2~: Peripheral oxygen saturation (pulse ox)
   * Units: percentage
-  * Expected Values: [0, 100], 
+  * Expected Values: [0, 100],
     * Expect integer values 0, 1, 2, ..., 100
   * Caveats: values greater than 97 should _not_ be used for SFR
   * Look back: 6 hours
 
-* FiO~2~: Percent inspired oxygen
-  * Units: not applicable
-  * Expected Values: [0.21, 1.00]
-    * Expected floating point
-    * 0.21 is room air
-    * 1.00 is pure oxygen
-  * Caveats:
-  * Look back: 6 hours
