@@ -471,7 +471,9 @@ print(py_phoenix8_scores.info())
 print(py_phoenix8_scores.head())
 ```
 
-```{r, include = FALSE}
+```{r, include = FALSE, eval = FALSE}
+# this block currently doesn't evaluate due to error:
+# cannot coerce class 'c("pandas.DataFrame", "pandas.core.generic.NDFrame", "pandas.core.base.PandasObject", ' to a data.frame
 r_phoenix8_scores <-
   phoenix8(
     # respiratory
