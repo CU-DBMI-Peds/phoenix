@@ -1,0 +1,49 @@
+---
+title: "Example Data Preperation and Scoring"
+subtitle: "__THIS IS A WORK IN PROGRESS__"
+bibliography: ../references.bib
+---
+
+In this document we will illustrate the steps, in sequence, used to prepare data
+retrospective data for analysis.
+
+Expected general structure of the data.
+
+* There is a patient and/or encounter id
+* Some element for timing is available.  In our work we used a variable called
+  `eclock` for encounter-clock.  The values of `eclcok` start at 0, the time of
+  admission to the facility, and increments by minutes.  The value `eclock = 5`
+  is five minutes after admission.  `eclock = 1440` is 24 hours after admission.
+
+# Respiratory Scoring
+
+## Input variables
+
++----------+-------------+-------+-----------------+---------+-----------+
+| Variable | Description | Units | Expected Values | Caveats | Look Back |
++:=========+:============+:=====:+:================+:========+:==========+
+| PaO~2~   | Partial pressure of oxygen in arterial blood | mmHg | [0, Inf) || 6 hours |
++----------+-------------+-------+-----------------+---------+-----------+
+
+
+* PaO~2~: Partial pressure of oxygen in arterial blood
+  * Units: mmHg
+  * Expected Values: [0, Inf)
+  * Caveats:
+  * Look Back: 6 hours
+
+* SpO~2~: Peripheral oxygen saturation (pulse ox)
+  * Units: percentage
+  * Expected Values: [0, 100], 
+    * Expect integer values 0, 1, 2, ..., 100
+  * Caveats: values greater than 97 should _not_ be used for SFR
+  * Look back: 6 hours
+
+* FiO~2~: Percent inspired oxygen
+  * Units: not applicable
+  * Expected Values: [0.21, 1.00]
+    * Expected floating point
+    * 0.21 is room air
+    * 1.00 is pure oxygen
+  * Caveats:
+  * Look back: 6 hours
