@@ -32,6 +32,50 @@ prepared as expected and returns scores accordingly.
 * Before sending data to the package, please verify the data. Some values may provide warnings, others may generate errors. Verify that your code can handle warnings and errors.
 * Ideally, both input values and time of the measurement are available so that last observation carried forward logic can be implemented with limits and conditions for age of inputs.
 
+## Special Considerations for EHR Data
+
+Phoenix was developed on a retrospective data set which provided the luxery of
+easily looking backwards in the time within an encounter.  When apply the
+Phoenix criteria to an active enounter there are several things to consider.
+
+### Missing values
+Missing values at a specific moment in time need to delt with in two steps:
+
+1. Is there a prior known value?  If so, and the prior known value is within the
+   lookback window, use the last known value.  That is,
+   last-observation-carried-forward with a lookback window.
+
+2. Consider the missing value to indicate a "healthy" value.  If using the R
+   package or the Python module you need not do anything as the functions
+   therein will return zero points in the score for the missing value.
+
+Example: Say we know FiO~2~ at time T~0~ and we know lactate at time T~0~ as
+well.
+
+| time | FiO~2~ | Lactate |
+|:--:  | ---:   | ---:    |
+| T~0~ | 0.40   | 6.8     |
+
+Later, at times T~2~ > T~1~ > T~0~ the lactate value is updated.  As such we
+might see data like this:
+
+| time | FiO~2~ | Lactate |
+|:--:  | ---:   | ---:    |
+| T~0~ | 0.40   | 6.8     |
+| T~1~ |        | 7.3     |
+| T~2~ |        | 7.1     |
+
+It is crtically important that when calculating the Phoenix score that the
+missing value for FiO~2~ at time T~1~ is handeled correctly:  The last known
+value within the lookback window needs to be used.  That is: the data would look
+like:
+
+| time | FiO~2~                                                | Lactate |
+| :--: | ---:                                                  | ---:    |
+| T~0~ | 0.40                                                  | 6.8     |
+| T~1~ | 0.40 (Assuming T~1~ - T~0~ < 6 hours; NULL Otherwise) | 7.3     |
+| T~2~ | 0.40 (Assuming T~2~ - T~0~ < 6 hours; NULL Otherwise) | 7.1     |
+
 <hr>
 
 # Inclusion/Exclusion criteria
