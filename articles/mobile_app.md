@@ -1,0 +1,49 @@
+# Phoenix Sepsis Calculator Mobile Application
+
+The Phoenix Sepsis Calculator Mobile Application has been developed for
+iOS and Android.
+
+Release on the app store is coming soon. Additional details about the
+mobile application will be posted here shortly.
+
+## Privacy Policy
+
+This policy applies to all information collected within the Phoenix
+Sepsis Calculator app for iOS and Android.
+
+### Information saved
+
+Settings of the Phoenix Sepsis Calculator app are stored locally on your
+mobile device. These settings consist of the default units to use for
+each variable that has multiple possible units.
+
+The user entered assessment data can be saved to a file on your device
+by pressing Save on the Export page of the app. You can then press the
+Share button to share this file via another app, such as through email,
+or saved as a file on your device in a location you specify.
+
+This application is fully functional with no network connectivity. At no
+time other than the two cases above is data saved, shared, or
+transmitted to another party in this application.
+
+### Information usage
+
+We have no access to any data you collect and we do not collect
+information on nor track your usage of this application.
+
+### Your Consent
+
+By using the Phoenix Sepsis Calculator app, you consent to this privacy
+policy.
+
+### Contacting Us
+
+If you have questions regarding this privacy policy, you may email
+<phoenixsepsis@gmail.com>.
+
+### Changes to this policy
+
+If we decide to change our privacy policy, we will post those changes on
+this page. Summary of changes so far:
+
+- Jan 7, 2025: First published.

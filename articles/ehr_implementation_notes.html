@@ -73,19 +73,72 @@ PROGRESS</strong></h3>
     
 <p>The Phoenix criteria for pediatric sepsis and septic shock were
 developed using an international data set of pediatric emergency
-department and hospital encounters. Birth hospitalizations and patients
-with a gestational age less than 37 weeks were excluded, please see
-below <span class="citation">(Sanchez-Pinto et al. 2024; Schlapbach et
-al. 2024)</span>. The Phoenix criteria were developed based on
-predicting encounter mortality among those with suspected infection
-using organ dysfunction-based data from the first 24 hours of the
-encounter. Please see the original manuscripts for details.</p>
+department and hospital encounters by predicting encounter mortality
+among those with suspected infection using organ dysfunction-based data
+from the first 24 hours of the encounter. Please see the original
+manuscripts for details. <span class="citation">(Sanchez-Pinto et al.
+2024; Schlapbach et al. 2024)</span>.</p>
 <p>The purpose of this document is to provide details about the expected
 inputs for the scoring in order to assist EHR implementation. The
 phoenix R package and Python module, along with the example SQL code
 assumes that the data have been prepared as expected and returns scores
 accordingly.</p>
 <hr>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>Here is a quick checklist to summarize how the Phoenix package should
+be integrated within an EHR. This is to aid understanding and
+verification; users still need to review all guidance from this full
+document.</p>
+<div class="section level3">
+<h3 id="scoring-requirement">Scoring Requirement<a class="anchor" aria-label="anchor" href="#scoring-requirement"></a>
+</h3>
+<ul>
+<li>Phoenix score is only valid in the case of suspected infection</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="exclusion-criteria">Exclusion Criteria<a class="anchor" aria-label="anchor" href="#exclusion-criteria"></a>
+</h3>
+<ul>
+<li>Patients still in their original birth hospitalization</li>
+<li>Gestational age less than 37 weeks at encounter start</li>
+<li>Age greater than or equal to 18 years (216 months) at encounter
+start</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="data-cleaning-and-preparation">Data cleaning and preparation<a class="anchor" aria-label="anchor" href="#data-cleaning-and-preparation"></a>
+</h3>
+<ul>
+<li>Verify all variables in expected unit; convert as necessary. E.g.
+age in months; lactate in mmol/L, etc.</li>
+<li>As appropriate replace invalid values with NULL; e.g. if age in
+months &gt; 216 need to consider if should be scoring patient at
+all.</li>
+<li>No imputation for NULL/invalid values</li>
+<li>Last observation carry forward within appropriate window for each
+variable - max carry forward is from prior 24 hours.</li>
+<li>Variables not present or not known should be passed in as NULL</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="gotchas">Gotchas<a class="anchor" aria-label="anchor" href="#gotchas"></a>
+</h3>
+<ul>
+<li>Phoenix package doesn’t calculate mean arterial pressure (MAP);
+Calculate MAP from SBP and DBP if not directly available; if both cuff
+and arterial values present, arterial MAP should be used.</li>
+<li>Carefully review requirements of each input value. For example, only
+calculate SF ratio and pass into Phoenix package when SpO2 &lt;= 97;
+only calculate and pass in PF ratio when FiO2 value is from the same
+time as or before the time of PaO2 lab.</li>
+<li>Use last known good value to when calling Phoenix functions.</li>
+</ul>
+<hr>
+</div>
+</div>
 <div class="section level2">
 <h2 id="general-data-formatting-notes">General Data Formatting Notes<a class="anchor" aria-label="anchor" href="#general-data-formatting-notes"></a>
 </h2>
@@ -104,7 +157,158 @@ your code can handle warnings and errors.</li>
 so that last observation carried forward logic can be implemented with
 limits and conditions for age of inputs.</li>
 </ul>
+<div class="section level3">
+<h3 id="special-considerations-for-ehr-data">Special Considerations for EHR Data<a class="anchor" aria-label="anchor" href="#special-considerations-for-ehr-data"></a>
+</h3>
+<p>Phoenix was developed on a retrospective data set which provided the
+luxery of easily looking backwards in the time within an encounter. When
+apply the Phoenix criteria to an active enounter there are several
+things to consider.</p>
+<div class="section level4">
+<h4 id="missing-values">Missing values<a class="anchor" aria-label="anchor" href="#missing-values"></a>
+</h4>
+<p>Missing values at a specific moment in time need to delt with in two
+steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Is there a prior known value? If so, and the prior known value is
+within the lookback window, use the last known value. That is,
+last-observation-carried-forward with a lookback window.</p></li>
+<li><p>Consider the missing value to indicate a “healthy” value. If
+using the R package or the Python module you need not do anything as the
+functions therein will return zero points in the score for the missing
+value.</p></li>
+</ol>
+<p>Example: Say we know FiO<sub>2</sub> at time T<sub>0</sub> and we
+know lactate at time T<sub>0</sub> as well.</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">time</th>
+<th align="left">FiO<sub>2</sub>
+</th>
+<th align="left">Lactate</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="center">T<sub>0</sub>
+</td>
+<td align="left">0.40</td>
+<td align="left">6.8</td>
+</tr></tbody>
+</table>
+<p>Later, at times T<sub>2</sub> &gt; T<sub>1</sub> &gt; T<sub>0</sub>
+the lactate value is updated. As such we might see data like this:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">time</th>
+<th align="left">FiO<sub>2</sub>
+</th>
+<th align="left">Lactate</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">T<sub>0</sub>
+</td>
+<td align="left">0.40</td>
+<td align="left">6.8</td>
+</tr>
+<tr class="even">
+<td align="center">T<sub>1</sub>
+</td>
+<td align="left"></td>
+<td align="left">7.3</td>
+</tr>
+<tr class="odd">
+<td align="center">T<sub>2</sub>
+</td>
+<td align="left"></td>
+<td align="left">7.1</td>
+</tr>
+</tbody>
+</table>
+<p>It is crtically important that when calculating the Phoenix score
+that the missing value for FiO<sub>2</sub> at time T<sub>1</sub> is
+handeled correctly: The last known value within the lookback window
+needs to be used. That is: the data would look like:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">time</th>
+<th align="left">FiO<sub>2</sub>
+</th>
+<th align="left">Lactate</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">T<sub>0</sub>
+</td>
+<td align="left">0.40</td>
+<td align="left">6.8</td>
+</tr>
+<tr class="even">
+<td align="center">T<sub>1</sub>
+</td>
+<td align="left">0.40 (Assuming T<sub>1</sub> - T<sub>0</sub> &lt; 6
+hours; NULL Otherwise)</td>
+<td align="left">7.3</td>
+</tr>
+<tr class="odd">
+<td align="center">T<sub>2</sub>
+</td>
+<td align="left">0.40 (Assuming T<sub>2</sub> - T<sub>0</sub> &lt; 6
+hours; NULL Otherwise)</td>
+<td align="left">7.1</td>
+</tr>
+</tbody>
+</table>
+<p>If at time T<sub>3</sub> FiO<sub>2</sub> is updated:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">time</th>
+<th align="left">FiO<sub>2</sub>
+</th>
+<th align="left">Lactate</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">T<sub>0</sub>
+</td>
+<td align="left">0.40</td>
+<td align="left">6.8</td>
+</tr>
+<tr class="even">
+<td align="center">T<sub>1</sub>
+</td>
+<td align="left">0.40 (Assuming T<sub>1</sub> - T<sub>0</sub> &lt; 6
+hours; NULL Otherwise)</td>
+<td align="left">7.3</td>
+</tr>
+<tr class="odd">
+<td align="center">T<sub>2</sub>
+</td>
+<td align="left">0.40 (Assuming T<sub>2</sub> - T<sub>0</sub> &lt; 6
+hours; NULL Otherwise)</td>
+<td align="left">7.1</td>
+</tr>
+<tr class="even">
+<td align="center">T<sub>3</sub>
+</td>
+<td align="left">0.80 (good new value)</td>
+<td align="left">7.1 (Assuming T<sub>3</sub> - T<sub>2</sub> &lt; 6
+hours; NULL Otherwise)</td>
+</tr>
+</tbody>
+</table>
 <hr>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="inclusionexclusion-criteria">Inclusion/Exclusion criteria<a class="anchor" aria-label="anchor" href="#inclusionexclusion-criteria"></a>
@@ -1048,7 +1252,7 @@ January. <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link">
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

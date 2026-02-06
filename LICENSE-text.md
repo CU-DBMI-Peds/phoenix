@@ -1,0 +1,4 @@
+# License
+
+    YEAR: 2024
+    COPYRIGHT HOLDER: Peter E. DeWitt, Seth Russell, Marget N. Rebull, L. Nelson Sanchez-Pinto, Tellen D. Bennett
