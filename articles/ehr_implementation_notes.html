@@ -161,14 +161,14 @@ limits and conditions for age of inputs.</li>
 <h3 id="special-considerations-for-ehr-data">Special Considerations for EHR Data<a class="anchor" aria-label="anchor" href="#special-considerations-for-ehr-data"></a>
 </h3>
 <p>Phoenix was developed on a retrospective data set which provided the
-luxery of easily looking backwards in the time within an encounter. When
-apply the Phoenix criteria to an active enounter there are several
+luxury of easily looking backwards in the time within an encounter. When
+applying the Phoenix criteria to an active encounter there are several
 things to consider.</p>
 <div class="section level4">
 <h4 id="missing-values">Missing values<a class="anchor" aria-label="anchor" href="#missing-values"></a>
 </h4>
-<p>Missing values at a specific moment in time need to delt with in two
-steps:</p>
+<p>Missing values at a specific moment in time need to be dealt with in
+two steps:</p>
 <ol style="list-style-type: decimal">
 <li><p>Is there a prior known value? If so, and the prior known value is
 within the lookback window, use the last known value. That is,
@@ -224,10 +224,10 @@ the lactate value is updated. As such we might see data like this:</p>
 </tr>
 </tbody>
 </table>
-<p>It is crtically important that when calculating the Phoenix score
-that the missing value for FiO<sub>2</sub> at time T<sub>1</sub> is
-handeled correctly: The last known value within the lookback window
-needs to be used. That is: the data would look like:</p>
+<p>It is important that when calculating the Phoenix score that the
+missing value for FiO<sub>2</sub> at time T<sub>1</sub> is handled
+correctly: The last known value within the lookback window needs to be
+used. That is: the data would look like:</p>
 <table class="table">
 <colgroup>
 <col width="33%">
@@ -311,7 +311,8 @@ hours; NULL Otherwise)</td>
 </div>
 </div>
 <div class="section level2">
-<h2 id="inclusionexclusion-criteria">Inclusion/Exclusion criteria<a class="anchor" aria-label="anchor" href="#inclusionexclusion-criteria"></a>
+<h2 id="inclusionexclusion-criteria-for-the-phoenix-criteria-development-study">Inclusion/Exclusion criteria for the Phoenix criteria development
+study<a class="anchor" aria-label="anchor" href="#inclusionexclusion-criteria-for-the-phoenix-criteria-development-study"></a>
 </h2>
 <p>Inclusion Criteria</p>
 <ul>
@@ -339,7 +340,7 @@ to have a suspected infection if they have:</p>
 <p>Note that the test, e.g., a blood culture, need only be ordered.
 Positive/negative test status is not needed.</p>
 <p>Systemic antimicrobial medications are any antibiotic, antiviral, or
-antifungal medication which had any of the following routes:</p>
+antifungal medication by any of the following routes:</p>
 <ul>
 <li>ASSUMED SYSTEMIC</li>
 <li>ENTERAL</li>
@@ -773,7 +774,7 @@ ORS.</p>
 <div class="section level2">
 <h2 id="cardiovascular">Cardiovascular<a class="anchor" aria-label="anchor" href="#cardiovascular"></a>
 </h2>
-<p>Cardiovascular dysfunction is based on three conceptual sets:</p>
+<p>Cardiovascular dysfunction is based on three types of data:</p>
 <ol style="list-style-type: decimal">
 <li>Systemic Vasoactive medications</li>
 <li>Lactate</li>
@@ -795,19 +796,18 @@ ORS.</p>
 <li>vasopressin</li>
 </ol>
 <p>Vasoactive medications (dobutamine, dopamine, etc.) should only count
-if they are systemic. Ideally one would identify flowsheet or medication
-rows where the dose is documented every hour for each infusion. In our
-dataset, epinephrine had some non-systemic medication administrations
-that needed to be excluded. Here are some <em>non-systemic</em> examples
-to exclude:</p>
+if they are continuous and systemic. Ideally, one would identify
+flowsheet or medication rows where the dose (rate) is documented at
+least every hour for each infusion. In our dataset, epinephrine had some
+non-systemic medication administrations that needed to be excluded. Here
+are some <em>non-systemic</em> examples to exclude:</p>
 <ul>
 <li>epinephrine 0.3 mg/0.3ml inj soln prefilled syringe</li>
 <li>epinephrine hcl (nasal) 0.1 % nasal solution</li>
 <li>epinephrine hcl 2.25 % inh neb soln</li>
 </ul>
-<p>The routes for administration of the vasoactive medications are at
-Example SQL code used for mapping routes when developing Phoenix can be
-found in the project <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
+<p>Example SQL code used for mapping administration routes when
+developing Phoenix can be found in the project <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings" class="external-link">GitHub
 archive</a> specifically the files: <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql" class="external-link">med_route_mapping.sql</a>
 and <a href="https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/clean_up_routes.sql" class="external-link">clean_up_routes.sql</a>.</p>
 <p>The overall metadata for vasoactives:</p>
@@ -906,7 +906,7 @@ hierarchy for which value to use in the scoring.</p>
 two points for vasoactives, up to two points for lactate, and up to two
 points for MAP.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># vas: number of vasoactives meds</span></span>
+<code class="sourceCode R"><span><span class="co"># vas: number of vasoactive meds</span></span>
 <span><span class="co"># lct: lactate in mmol/L</span></span>
 <span><span class="co"># age: age in months</span></span>
 <span><span class="co"># map: mean arterial pressure in mmHg</span></span>
@@ -1026,7 +1026,8 @@ components.</li>
 <ul>
 <li>Units: none</li>
 <li>Expected Values: integer values 1, 2, 3, 4, 5</li>
-<li>Caveats:</li>
+<li>Caveats: We did not use the T value for intubation - just use the
+recorded GCS-V, i.e. 1 for 1T</li>
 <li>Look back: 12 hours</li>
 </ul>
 </li>

@@ -72,13 +72,13 @@ users still need to review all guidance from this full document.
 ### Special Considerations for EHR Data
 
 Phoenix was developed on a retrospective data set which provided the
-luxery of easily looking backwards in the time within an encounter. When
-apply the Phoenix criteria to an active enounter there are several
+luxury of easily looking backwards in the time within an encounter. When
+applying the Phoenix criteria to an active encounter there are several
 things to consider.
 
 #### Missing values
 
-Missing values at a specific moment in time need to delt with in two
+Missing values at a specific moment in time need to be dealt with in two
 steps:
 
 1.  Is there a prior known value? If so, and the prior known value is
@@ -106,10 +106,10 @@ might see data like this:
 |  T₁  |      | 7.3     |
 |  T₂  |      | 7.1     |
 
-It is crtically important that when calculating the Phoenix score that
-the missing value for FiO₂ at time T₁ is handeled correctly: The last
-known value within the lookback window needs to be used. That is: the
-data would look like:
+It is important that when calculating the Phoenix score that the missing
+value for FiO₂ at time T₁ is handled correctly: The last known value
+within the lookback window needs to be used. That is: the data would
+look like:
 
 | time | FiO₂                                               | Lactate |
 |:----:|:---------------------------------------------------|:--------|
@@ -128,7 +128,7 @@ If at time T₃ FiO₂ is updated:
 
 ------------------------------------------------------------------------
 
-## Inclusion/Exclusion criteria
+## Inclusion/Exclusion criteria for the Phoenix criteria development study
 
 Inclusion Criteria
 
@@ -154,7 +154,7 @@ Note that the test, e.g., a blood culture, need only be ordered.
 Positive/negative test status is not needed.
 
 Systemic antimicrobial medications are any antibiotic, antiviral, or
-antifungal medication which had any of the following routes:
+antifungal medication by any of the following routes:
 
 - ASSUMED SYSTEMIC
 - ENTERAL
@@ -337,7 +337,7 @@ cat(tail(as.character(body(phoenix::phoenix_respiratory)), 1), sep = "\n")
 
 ## Cardiovascular
 
-Cardiovascular dysfunction is based on three conceptual sets:
+Cardiovascular dysfunction is based on three types of data:
 
 1.  Systemic Vasoactive medications
 2.  Lactate
@@ -357,19 +357,18 @@ There are six systemic vasoactive medications to consider:
 6.  vasopressin
 
 Vasoactive medications (dobutamine, dopamine, etc.) should only count if
-they are systemic. Ideally one would identify flowsheet or medication
-rows where the dose is documented every hour for each infusion. In our
-dataset, epinephrine had some non-systemic medication administrations
-that needed to be excluded. Here are some *non-systemic* examples to
-exclude:
+they are continuous and systemic. Ideally, one would identify flowsheet
+or medication rows where the dose (rate) is documented at least every
+hour for each infusion. In our dataset, epinephrine had some
+non-systemic medication administrations that needed to be excluded. Here
+are some *non-systemic* examples to exclude:
 
 - epinephrine 0.3 mg/0.3ml inj soln prefilled syringe
 - epinephrine hcl (nasal) 0.1 % nasal solution
 - epinephrine hcl 2.25 % inh neb soln
 
-The routes for administration of the vasoactive medications are at
-Example SQL code used for mapping routes when developing Phoenix can be
-found in the project [GitHub
+Example SQL code used for mapping administration routes when developing
+Phoenix can be found in the project [GitHub
 archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/tree/main/harmonization/medication_mappings)
 specifically the files:
 [med_route_mapping.sql](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/medication_mappings/med_route_mapping.sql)
@@ -442,7 +441,7 @@ two points for vasoactives, up to two points for lactate, and up to two
 points for MAP.
 
 ``` r
-# vas: number of vasoactives meds
+# vas: number of vasoactive meds
 # lct: lactate in mmol/L
 # age: age in months
 # map: mean arterial pressure in mmHg
@@ -533,7 +532,8 @@ Phoenix is based on the total GCS score.
 - GCS (verbal):
   - Units: none
   - Expected Values: integer values 1, 2, 3, 4, 5
-  - Caveats:
+  - Caveats: We did not use the T value for intubation - just use the
+    recorded GCS-V, i.e. 1 for 1T
   - Look back: 12 hours
 
 #### Pupils
