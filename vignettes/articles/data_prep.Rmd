@@ -39,10 +39,89 @@ kableExtra::kbl(inputvars) |>
   )
 ```
 
-* SpO~2~: Peripheral oxygen saturation (pulse ox)
-  * Units: percentage
-  * Expected Values: [0, 100],
-    * Expect integer values 0, 1, 2, ..., 100
-  * Caveats: values greater than 97 should _not_ be used for SFR
-  * Look back: 6 hours
+# Data Range Checks
 
+These checks are for obviously impossible values.  You may concider more
+conservative checks in your own work.
+
+## FiO~2~
+
+All value should be within [0.21, 1.00], ignoring missing values.  There are no
+units to check here.
+```{r}
+stopifnot(
+  all(egdata[["fio2"]] >= 0.21, na.rm = TRUE),
+  all(egdata[["fio2"]] <= 1.00, na.rm = TRUE)
+)
+```
+
+## SpO~2~
+All values should be within [0, 100].  Generally, we should expect
+integer values, but that may not be needed.  Ignore missing values.  We do have
+a caveat on the use of SpO~2~ for values > 97 which will be address later in
+this work.  There are no units to check here.
+
+```{r}
+stopifnot(
+  all(egdata[["spo2"]] >=   0, na.rm = TRUE),
+  all(egdata[["spo2"]] <= 100, na.rm = TRUE)
+)
+```
+
+## PaO~2~
+All values should be non-negative.  Expected units of measure of mmHg.  Units
+are not in the example data set and not shown in this example.
+
+```{r}
+stopifnot(
+  all(egdata[["pao2"]] >= 0, na.rm = TRUE)
+)
+```
+
+## Invasive Mechanical Vent
+We expect that the variable used to report invasive mechanical ventilation (IMV)
+is an indicator variable: 1 if on IMV, 0 otherwise.  We check here for 0s and 1s
+and will consider the duration of IMV later.
+
+```{r}
+stopifnot(
+  all(egdata[["vent"]] >= 0, na.rm = TRUE)
+)
+```
+
+## Vasoactive Medications
+We expect that the six vasoactive medications are reported as indicators for
+system use.  For the checks here we expect all the values to be missing, 0, or
+1.
+
+```{r, error = TRUE}
+stopifnot(
+  all(egdata[["dobutamine"]]     %in% c(NA, 0, 1)),
+  all(egdata[["dopamine"]]       %in% c(NA, 0, 1)),
+  all(egdata[["epinephrine"]]    %in% c(NA, 0, 1)),
+  all(egdata[["milrinone"]]      %in% c(NA, 0, 1)),
+  all(egdata[["norepinephrine"]] %in% c(NA, 0, 1)),
+  all(egdata[["vasopressin"]]    %in% c(NA, 0, 1))
+)
+```
+## dobutamine
+## dopamine
+## epinephrine
+## milrinone
+## norepinephrine
+## vasopressin
+## lactate
+## sbp_art
+## dbp_art
+## map_art
+## sbp_cuff
+## dbp_cuff
+## map_cuff
+## platelets
+## inr
+## fibrinogen
+## d_dimer
+## gcs_motor
+## gcs_verbal
+## gcs_eye
+## pupil
