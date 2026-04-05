@@ -22,7 +22,7 @@ Description: Implementation of the Phoenix and Phoenix-8 Sepsis Criteria as
     "phoenix: an R package and Python module for calculating the Phoenix
     pediatric sepsis score and criteria" by DeWitt, Russell, Rebull,
     Sanchez-Pinto, and Bennett (2024) <doi:10.1093/jamiaopen/ooae066>.
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 URL: https://cu-dbmi-peds.github.io/phoenix/, https://github.com/CU-DBMI-Peds/phoenix/
@@ -32,6 +32,8 @@ LazyData: true
 Imports:
 LinkingTo:
 Suggests:
+  data.table,
+  dplyr,
   knitr,
   ggplot2,
   qwraps2 (>= 0.6.0),

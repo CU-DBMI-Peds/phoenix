@@ -1,3 +1,14 @@
+# Version 1.1.3.9000
+
+## New Featues
+
+* Operationalize Phoenix
+
+## Other changes
+
+* Package now depends on R >= 4.0.0 due to the use of `deparse1()`
+* Add data.table and dplyr to suggested packages
+
 # Version 1.1.3:
 
 * Spelling and grammar fixes in the documentation for the R, python, and
