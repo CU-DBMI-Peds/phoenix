@@ -1,26 +1,76 @@
-#' Functions for operationalizing Phoenix
+#' Prepare Observation, Interventions, Event, Medications, Tests for Phoenix
+#' Scoring
 #'
-#' All
+#' Functions for checking the basic structure and values for the input data for
+#' Assessing Phoenix.
 #'
-#' @param x a data.frame, or object that inherits from a data.frame
-#' @param variable
-#' @param
+#' The input data is expected to be in a "long" format with \code{id.vars}
+#' (examples: hospital id, patient id, encounter id). A column for reporting the
+#' amount of time from admission, \code{eclock} ('encounter clock'; generally
+#' expected to be in minutes with 0 being the encounter start).
+#' \code{value.var} denotes the reported values for the input of interest.
+#' \code{valid.range} and \code{valid.values} are used for simple checks for
+#' valid values.  Only one of the two can be specified.  The checks are
+#' \code{x[[value.var]] >= min(valid.range) & x[[value.var]] <=
+#' max(valid.range)} or \code{x[[value.var]] %in% valid.values}.
+#'
+#' There is an expectation when going to Phoenix scoring that the
+#' \code{x[[c(id.vars, eclock)]]} are unique for each input.  These functions
+#' check this assumption and will aggregate, if needed, using the
+#' \code{tie.breaker} method.
+#'
+#' Default values are based on the values used when building the Phoenix
+#' criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024).
+#'
+#' @references See reference details in \code{\link{phoenix-package}} or by calling
+#' \code{citation('phoenix')}.
+#'
+#' @param x a data.frame, or object that inherits from a data.frame such as
+#' data.table or tibble.
+#'
+#' @param id.vars a character vector, expected to be a at least length 1, of the
+#' names of the columns of \code{x} to be used to identifiers, e.g., hospital
+#' id, patient id, encounter id.
+#'
+#' @param eclock A character vector of length 1, the name of the column in
+#' \code{x} denoting the time, in minutes, from admission start.
+#'
+#' @param value.var A character vector of length 1, the name of the column in
+#' \code{x} containing the value for the observation, intervention, event,
+#' medicaiton, or test.
+#'
+#' @param valid.range A numeric vector of length two defining an interval of
+#' valid values for \code{x[[value.var]]}. The defaults are set to be
+#' considerably wider than clinically possible in some cases, e.g., infinite
+#' upper limit for blood pressures.  Only one of \code{valid.range} and
+#' \code{valid.values} is allowed to be non-NULL.
+#'
+#' @param valid.values A set of values which \code{x[[value.var]]} can take on,
+#' example, indicators are checked againt \code{c(0, 1)} and GCS Total is
+#' checked against 3:15. Only one of \code{valid.range} and \code{valid.values}
+#' is allowed to be non-NULL.
+#'
+#' @param tie.breaker When \code{x[c(id.vars, eclock)]} is not unique this
+#' function is uses to aggregate \code{x[[value.var]]} into one value.
+#'
+#' @param verbose when \code{TRUE} print messages showing the progress
+#'
 #' @export
 prepare_fio2 <-
   function(
     x,
     id.vars,
+    eclock,
     value.var,
-    variable.name = "FIO2",
     valid.range = c(0.21, 1.00),
     valid.values = NULL,
-    eclock = "eclock",
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", TRUE)
   ) {
 
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "FIO2"
   rtn <- eval(cl)
   class(rtn) <- c("phoenix_prepared_fio2", class(rtn))
   rtn
@@ -31,17 +81,17 @@ prepare_spo2 <-
   function(
     x,
     id.vars,
+    eclock,
     value.var,
-    variable.name = "SPO2",
     valid.range = c(0, 100),
     valid.values = NULL,
-    eclock = "eclock",
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", TRUE)
   ) {
 
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "SPO2"
   rtn <- eval(cl)
   class(rtn) <- c("phoenix_prepared_spo2", class(rtn))
   rtn
@@ -52,28 +102,48 @@ prepare_pao2 <-
   function(
     x,
     id.vars,
+    eclock,
     value.var,
-    variable.name = "PAO2",
     valid.range = c(0, Inf),
     valid.values = NULL,
-    eclock = "eclock",
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "FIO2"
   rtn <- eval(cl)
   class(rtn) <- c("phoenix_prepared_pao2", class(rtn))
   rtn
 }
 
+
+#' Prepare Phoenix Data
+#'
+#' Take the outputs from the \code{prepare_*()} and create the longitudinal data
+#' set needed for assessing Phoenix Sepsis.
+#'
+#' @param fio2 an object returned from \code{prepare_fio2}
+#' @param spo2 an object returned from \code{prepare_spo2}
+#' @param pao2 an object returned from \code{prepare_pao2}
+#'
+#' @param resp_lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
+#' @param vaso_lookback The number of minutes to look back in an encounter for carry-forward vasocactive medication status
+#' @param map_lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
+#' @param lac_lookback The number of minutes to look back in an encounter for carry-forward of lactate values
+#' @param gcs_lookback The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).
+#' @param pupil_lookback The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)
+#' @param coag_lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.
+#'
+#' @param verbose when \code{TRUE} print messages showing the progress
+#'
 #' @export
-prepare_data <-
+prepare_phonix_data <-
   function(
-    FIO2 = NULL,
-    SPO2 = NULL,
-    PAO2 = NULL,
+    fio2 = NULL,
+    spo2 = NULL,
+    pao2 = NULL,
     resp_lookback  = 360,
     vaso_lookback  = 720,
     map_lookback   = 360,
@@ -84,16 +154,23 @@ prepare_data <-
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
+  stopifnot(is.numeric(resp_lookback)  && length(resp_lookback)  == 1 && resp_lookback >= 0)
+  stopifnot(is.numeric(vaso_lookback)  && length(vaso_lookback)  == 1 && vaso_lookback >= 0)
+  stopifnot(is.numeric(map_lookback)   && length(map_lookback)   == 1 && map_lookback >= 0)
+  stopifnot(is.numeric(gcs_lookback)   && length(gcs_lookback)   == 1 && gcs_lookback >= 0)
+  stopifnot(is.numeric(pupil_lookback) && length(pupil_lookback) == 1 && pupil_lookback >= 0)
+  stopifnot(is.numeric(coag_lookback)  && length(coag_lookback)  == 1 && coag_lookback >= 0)
+
   phxdata <-
     list(
-      FIO2 = FIO2,
-      SPO2 = SPO2,
-      PAO2 = PAO2
+      fio2 = fio2,
+      spo2 = spo2,
+      pao2 = pao2
     )
   phxdata <- Filter(f = Negate(is.null), phxdata)
 
   # verify that all the input data sets are either null or phoenix_prepared
-  check <- 
+  check <-
     Map(f = function(obj, cls) { is.null(obj) || inherits(obj, cls) },
       obj = phxdata,
       cls = paste0("phoenix_prepared_", tolower(names(phxdata)))
@@ -101,7 +178,7 @@ prepare_data <-
   check <- unlist(check)
 
   if (!all(check)) {
-    msg <- paste0("The input to ", names(check)[!check], " needs to be processed through prepare_", tolower(names(check)[!check]), "().  ") 
+    msg <- paste0("The input to ", names(check)[!check], " needs to be processed through prepare_", tolower(names(check)[!check]), "().  ")
     stop(msg)
   }
 
@@ -190,7 +267,6 @@ verify_elcock <- function(x, eclock) {
   }
   invisible(TRUE)
 }
-
 
 match.call.with.defaults <- expression({
   cl <- as.list(match.call())
