@@ -5,7 +5,6 @@
 #' @param x a data.frame, or object that inherits from a data.frame
 #' @param variable
 #' @param
-#'
 #' @export
 prepare_fio2 <-
   function(
@@ -22,7 +21,9 @@ prepare_fio2 <-
 
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
-  eval(cl)
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_fio2", class(rtn))
+  rtn
 }
 
 #' @export
@@ -41,7 +42,9 @@ prepare_spo2 <-
 
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
-  eval(cl)
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_spo2", class(rtn))
+  rtn
 }
 
 #' @export
@@ -60,7 +63,9 @@ prepare_pao2 <-
 
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
-  eval(cl)
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_pao2", class(rtn))
+  rtn
 }
 
 #' @export
@@ -69,7 +74,13 @@ prepare_data <-
     FIO2 = NULL,
     SPO2 = NULL,
     PAO2 = NULL,
-    respiratory_lookback = 360,
+    resp_lookback  = 360,
+    vaso_lookback  = 720,
+    map_lookback   = 360,
+    lac_lookback   = 360,
+    gcs_lookbook   = 360,
+    pupil_lookback = 720,
+    coag_lookback  = 1440,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
@@ -79,21 +90,19 @@ prepare_data <-
       SPO2 = SPO2,
       PAO2 = PAO2
     )
+  phxdata <- Filter(f = Negate(is.null), phxdata)
 
   # verify that all the input data sets are either null or phoenix_prepared
-  check <- sapply(phxdata, function(x) {is.null(x) || inherits(x, "phoenix_prepared")})
+  check <- 
+    Map(f = function(obj, cls) { is.null(obj) || inherits(obj, cls) },
+      obj = phxdata,
+      cls = paste0("phoenix_prepared_", tolower(names(phxdata)))
+    )
+  check <- unlist(check)
+
   if (!all(check)) {
-    issues <- names(check)[!check]
-    if (length(issues) == 2L) {
-      msg <- sprintf("%s and %s", issues[1], issues[2])
-    } else if (length(issues) > 2L) {
-      msg <- sprintf("%s, and %s", paste(issues[-length(issues)], collapse = ", "), issues[length(issues)])
-    } else {
-      msg <- issues
-    }
-    msg <-
-      sprintf("All input data sets need to be phoenix_prepared objects. Please run the input to %s through phoenix::prepare_variable().", msg)
-    stop(msg, call. = FALSE)
+    msg <- paste0("The input to ", names(check)[!check], " needs to be processed through prepare_", tolower(names(check)[!check]), "().  ") 
+    stop(msg)
   }
 
   # check that all the inputs have the same id.vars and eclocks
@@ -102,6 +111,7 @@ prepare_data <-
     stop("All input data sets need to have the same id.vars")
   }
   id.vars <- unlist(id.vars)
+
   eclock <- unique(lapply(phxdata, attr, "eclock"))
   if (length(eclock) > 1L) {
     stop("All input data sets need to have the same eclock")
@@ -125,42 +135,31 @@ prepare_data <-
   id <- do.call(paste, c(id, sep = "\r\r"))
 
   for (j in c("FIO2", "SPO2", "PAO2")) {
-    if (verbose) message(sprintf("   %s...", j))
-    obs <- !is.na(phxdata[[j]])
-    last_obs <- cummax(ifelse(obs, row, 0L))
-    ok <- last_obs > 0L
-    ok[ok] <- id[last_obs[ok]] == id[ok]
-    out <- phxdata[[j]]
-    out[ok] <- out[last_obs[ok]]
+    if (j %in% names(phxdata)) {
+      if (verbose) message(sprintf("   %s...", j))
+      obs <- !is.na(phxdata[[j]])
+      last_obs <- cummax(ifelse(obs, row, 0L))
+      ok <- last_obs > 0L
+      ok[ok] <- id[last_obs[ok]] == id[ok]
+      out <- phxdata[[j]]
+      out[ok] <- out[last_obs[ok]]
 
-    outeclock <- NA
-    outeclock[ok] <- phxdata[[eclock]][last_obs[ok]]
+      outeclock <- NA
+      outeclock[ok] <- phxdata[[eclock]][last_obs[ok]]
 
-    phxdata <- phxdft_set(phxdata, j = paste0(j, "_locf"), value = out)
-    phxdata <- phxdft_set(phxdata, j = paste0(j, "_eclock"), value = outeclock)
+      phxdata <- phxdft_set(phxdata, j = j, value = out)
+      phxdata <- phxdft_set(phxdata, j = paste0(j, "_eclock"), value = outeclock)
 
-    if (j %in% c("FIO2", "SPO2", "PAO2")) {
-      idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > respiratory_lookback)
-      phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_locf"), value = NA)
-      phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
+      if (j %in% c("FIO2", "SPO2", "PAO2")) {
+        idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > resp_lookback)
+        phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
+        phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
+      }
+
     }
   }
 
-  #obs <- !is.na(phxdata[["FIO2"]])
-  #last_obs <- cummax(ifelse(obs, row, 0L))
-  #ok <- last_obs > 0L
-  #ok[ok] <- id[last_obs[ok]] == id[ok]
-  #out <- phxdata[["FIO2"]]
-  #out[ok] <- out[last_obs[ok]]
-
-  #outeclock <- NA
-  #outeclock[ok] <- phxdata[[eclock]][last_obs[ok]]
-
-  #phxdata <- phxdft_set(phxdata, j = "FIO2_locf", value = out)
-  #phxdata <- phxdft_set(phxdata, j = "FIO2_eclock", value = outeclock)
-
   phxdata
-
 }
 
 
