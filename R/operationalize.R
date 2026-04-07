@@ -352,12 +352,18 @@ prepare_variable <-
       xs[["TRUE"]] <-
         stats::aggregate.data.frame(
           x   = phxdft_select(xs[["TRUE"]], value.var),
-          by  = phxdft_select(xs[["TRUE"]], by),
+          by  = phxdft_select(xs[["TRUE"]], c(id.vars, eclock)),
           FUN = tie.breaker
         )
       x <- do.call(rbind, xs)
+      rownames(x) <- NULL
     } else {
-      x <- stats::aggregate.data.frame(x = phxdft_select(x, value.var), by = phxdft_select(x, by), FUN = tie.breaker)
+      x <-
+        stats::aggregate.data.frame(
+          x = phxdft_select(x, value.var),
+          by = phxdft_select(x, c(id.vars, eclock)),
+          FUN = tie.breaker
+        )
     }
   } else {
     if (verbose) {
