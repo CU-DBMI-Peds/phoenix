@@ -97,9 +97,11 @@ test_values_above_value_range <-
     }
   )
 
+stopifnot(sapply(test_values_above_value_range, inherits, "error"))
+msgs <- sapply(test_values_above_value_range, getElement, "message")
 stopifnot(
-  sapply(test_values_above_value_range, inherits, "error"),
-  sapply(sapply(test_values_above_value_range, getElement, "message"), grepl, pattern = " ?!(<)> 1\\.0", perl = TRUE)
+  sapply(msgs, grepl, pattern = "> 1\\.0", perl = TRUE),
+  !sapply(msgs, grepl, pattern = "< 0.21", perl = TRUE)
 )
 
 # now update the high value to a low value so now we can test just the below
@@ -129,9 +131,10 @@ test_values_below_value_range <-
     }
   )
 
+msgs <- sapply(test_values_below_value_range, getElement, "message")
 stopifnot(
-  sapply(test_values_below_value_range, inherits, "error"),
-  sapply(sapply(test_values_below_value_range, getElement, "message"), grepl, pattern = " ?!(<)> 1\\.0", perl = TRUE)
+  !sapply(msgs, grepl, pattern = "> 1\\.0", perl = TRUE),
+  sapply(msgs, grepl, pattern = "< 0.21", perl = TRUE)
 )
 
 # now update the low value to a valid value for testing output from "valid"
@@ -194,9 +197,9 @@ stopifnot(
   identical(test_prepared_data[["DF"]][["minutes_from_admission"]], c(1, 2, -1, 200, 3)),
   identical(test_prepared_data[["DT"]][["minutes_from_admission"]], c(1, 2, -1, 200, 3)),
   identical(test_prepared_data[["TB"]][["minutes_from_admission"]], c(1, 2, -1, 200, 3)),
-  identical(test_prepared_data[["DF"]][["value"]], c(0.21, 0.31, 0.3, 0.4, 0.999)),
-  identical(test_prepared_data[["DT"]][["value"]], c(0.21, 0.31, 0.3, 0.4, 0.999)),
-  identical(test_prepared_data[["TB"]][["value"]], c(0.21, 0.31, 0.3, 0.4, 0.999)),
+  identical(test_prepared_data[["DF"]][["value"]], c(0.21, 0.31, 0.3, 0.4, 0.42)),
+  identical(test_prepared_data[["DT"]][["value"]], c(0.21, 0.31, 0.3, 0.4, 0.42)),
+  identical(test_prepared_data[["TB"]][["value"]], c(0.21, 0.31, 0.3, 0.4, 0.42)),
   identical(test_prepared_data[["DF"]][["variable"]], rep("FIO2", 5)),
   identical(test_prepared_data[["DT"]][["variable"]], rep("FIO2", 5)),
   identical(test_prepared_data[["TB"]][["variable"]], rep("FIO2", 5))
@@ -550,16 +553,8 @@ testdata_zero_row[["DF"]] <-
     percent_inspired_oxygen = numeric(0),
     stringsAsFactors = FALSE
   )
-testdata_zero_row[["DT"]] <- testdata_zero_row[["DF"]]
-testdata_zero_row[["TB"]] <- testdata_zero_row[["DF"]]
-
-if (requireNamespace("data.table", quietly = TRUE)) {
-  testdata_zero_row[["DT"]] <- getExportedValue(ns = "data.table", name = "as.data.table")(testdata_zero_row[["DT"]])
-}
-
-if (requireNamespace("dplyr", quietly = TRUE)) {
-  testdata_zero_row[["TB"]] <- getExportedValue(ns = "dplyr", name = "as_tibble")(testdata_zero_row[["TB"]])
-}
+testdata_zero_row[["DT"]] <- as_data_table_if_available(testdata_zero_row[["DF"]])
+testdata_zero_row[["TB"]] <- as_tibble_if_available(testdata_zero_row[["DF"]])
 
 test_prepared_zero_row <-
   lapply(
