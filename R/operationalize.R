@@ -324,7 +324,7 @@ prepare_variable <-
   } else if (!is.null(valid.values)) {
     out <- !all(x[[value.var]] %in% valid.values)
     if (out) {
-      stop(sprintf("There are %s not in the valid.range.", xv), call. = FALSE)
+      stop(sprintf("There are %s not in `valid.values`.", xv), call. = FALSE)
     }
   } else {
     msg <- sprintf("%s values not validated.", xv)
