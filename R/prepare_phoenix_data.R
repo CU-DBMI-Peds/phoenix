@@ -7,13 +7,17 @@
 #' @param spo2 an object returned from \code{prepare_spo2()}
 #' @param pao2 an object returned from \code{prepare_pao2()}
 #'
-#' @param resp_lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
-#' @param vaso_lookback The number of minutes to look back in an encounter for carry-forward vasocactive medication status
-#' @param map_lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
-#' @param lac_lookback The number of minutes to look back in an encounter for carry-forward of lactate values
-#' @param gcs_lookback The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).
-#' @param pupil_lookback The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)
-#' @param coag_lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.
+#' @param resp.lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
+#' @param vaso.lookback The number of minutes to look back in an encounter for carry-forward vasocactive medication status
+#' @param map.lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
+#' @param lac.lookback The number of minutes to look back in an encounter for carry-forward of lactate values
+#' @param gcs.lookback The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).
+#' @param pupil.lookback The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)
+#' @param coag.lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.
+#' @param endocrine.lookback The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose
+#' @param immunolgic.lookback The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC
+#' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT
+#' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatine
 #'
 #' @param verbose when \code{TRUE} print messages showing the progress
 #'
@@ -23,22 +27,30 @@ prepare_phoenix_data <-
     fio2 = NULL,
     spo2 = NULL,
     pao2 = NULL,
-    resp_lookback  = 360,
-    vaso_lookback  = 720,
-    map_lookback   = 360,
-    lac_lookback   = 360,
-    gcs_lookback   = 360,
-    pupil_lookback = 720,
-    coag_lookback  = 1440,
+    resp.lookback        =  360,
+    vaso.lookback        =  720,
+    map.lookback         =  360,
+    lac.lookback         =  360,
+    gcs.lookback         =  360,
+    pupil.lookback       =  720,
+    coag.lookback        = 1440,
+    endocrine.lookback   =  720,
+    immunologic.lookback = 1440,
+    hepatic.lookback     = 1440,
+    renal.lookback       = 1440,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
-  stopifnot(is.numeric(resp_lookback)  && length(resp_lookback)  == 1 && resp_lookback >= 0)
-  stopifnot(is.numeric(vaso_lookback)  && length(vaso_lookback)  == 1 && vaso_lookback >= 0)
-  stopifnot(is.numeric(map_lookback)   && length(map_lookback)   == 1 && map_lookback >= 0)
-  stopifnot(is.numeric(gcs_lookback)   && length(gcs_lookback)   == 1 && gcs_lookback >= 0)
-  stopifnot(is.numeric(pupil_lookback) && length(pupil_lookback) == 1 && pupil_lookback >= 0)
-  stopifnot(is.numeric(coag_lookback)  && length(coag_lookback)  == 1 && coag_lookback >= 0)
+  stopifnot(is.numeric(resp.lookback)        && length(resp.lookback) == 1        && resp.lookback >= 0)
+  stopifnot(is.numeric(vaso.lookback)        && length(vaso.lookback) == 1        && vaso.lookback >= 0)
+  stopifnot(is.numeric(map.lookback)         && length(map.lookback) == 1         && map.lookback >= 0)
+  stopifnot(is.numeric(gcs.lookback)         && length(gcs.lookback) == 1         && gcs.lookback >= 0)
+  stopifnot(is.numeric(pupil.lookback)       && length(pupil.lookback) == 1       && pupil.lookback >= 0)
+  stopifnot(is.numeric(coag.lookback)        && length(coag.lookback) == 1        && coag.lookback >= 0)
+  stopifnot(is.numeric(endocrine.lookback)   && length(endocrine.lookback) == 1   && endocrine.lookback >= 0)
+  stopifnot(is.numeric(immunologic.lookback) && length(immunologic.lookback) == 1 && immunologic.lookback >= 0)
+  stopifnot(is.numeric(hepatic.lookback)     && length(hepatic.lookback) == 1     && hepatic.lookback >= 0)
+  stopifnot(is.numeric(renal.lookback)       && length(renal.lookback) == 1       && renal.lookback >= 0)
 
   phxdata <-
     list(
@@ -107,7 +119,7 @@ prepare_phoenix_data <-
       phxdata <- phxdft_set(phxdata, j = paste0(j, "_eclock"), value = outeclock)
 
       if (j %in% c("FIO2", "SPO2", "PAO2")) {
-        idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > resp_lookback)
+        idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > resp.lookback)
         phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
         phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
       }

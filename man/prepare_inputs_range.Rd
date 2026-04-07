@@ -19,6 +19,12 @@
 \alias{prepare_inr}
 \alias{prepare_ddimer}
 \alias{prepare_fibrinogen}
+\alias{prepare_glucose}
+\alias{prepare_anc}
+\alias{prepare_alc}
+\alias{prepare_creatinine}
+\alias{prepare_bilirubin}
+\alias{prepare_alt}
 \title{Prepare Continuous Observation, Intervention, Medication, and Test Inputs for
 Phoenix Scoring}
 \usage{
@@ -183,6 +189,66 @@ prepare_ddimer(
 )
 
 prepare_fibrinogen(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_glucose(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_anc(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  tie.breaker = min,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_alc(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  tie.breaker = min,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_creatinine(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_bilirubin(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_alt(
   x,
   id.vars,
   eclock,

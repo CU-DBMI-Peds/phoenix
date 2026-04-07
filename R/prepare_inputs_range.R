@@ -392,3 +392,123 @@ prepare_fibrinogen <-
   class(rtn) <- c("phoenix_prepared_fibrinogen", class(rtn))
   rtn
 }
+
+#' @rdname prepare_inputs_range
+#' @export
+prepare_glucose <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    valid.range = c(0, Inf),
+    tie.breaker = max,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "GLUCOSE"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_glucose", class(rtn))
+  rtn
+}
+
+#' @rdname prepare_inputs_range
+#' @export
+prepare_anc <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    valid.range = c(0, Inf),
+    tie.breaker = min,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "ANC"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_anc", class(rtn))
+  rtn
+}
+
+#' @rdname prepare_inputs_range
+#' @export
+prepare_alc <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    valid.range = c(0, Inf),
+    tie.breaker = min,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "ALC"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_alc", class(rtn))
+  rtn
+}
+
+#' @rdname prepare_inputs_range
+#' @export
+prepare_creatinine <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    valid.range = c(0, Inf),
+    tie.breaker = max,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "CREATININE"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_creatinine", class(rtn))
+  rtn
+}
+
+#' @rdname prepare_inputs_range
+#' @export
+prepare_bilirubin <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    valid.range = c(0, Inf),
+    tie.breaker = max,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "BILIRUBIN"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_bilirubin", class(rtn))
+  rtn
+}
+
+#' @rdname prepare_inputs_range
+#' @export
+prepare_alt <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    valid.range = c(0, Inf),
+    tie.breaker = max,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "ALT"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_alt", class(rtn))
+  rtn
+}

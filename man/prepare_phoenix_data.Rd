@@ -8,13 +8,17 @@ prepare_phoenix_data(
   fio2 = NULL,
   spo2 = NULL,
   pao2 = NULL,
-  resp_lookback = 360,
-  vaso_lookback = 720,
-  map_lookback = 360,
-  lac_lookback = 360,
-  gcs_lookback = 360,
-  pupil_lookback = 720,
-  coag_lookback = 1440,
+  resp.lookback = 360,
+  vaso.lookback = 720,
+  map.lookback = 360,
+  lac.lookback = 360,
+  gcs.lookback = 360,
+  pupil.lookback = 720,
+  coag.lookback = 1440,
+  endocrine.lookback = 720,
+  immunologic.lookback = 1440,
+  hepatic.lookback = 1440,
+  renal.lookback = 1440,
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -25,21 +29,29 @@ prepare_phoenix_data(
 
 \item{pao2}{an object returned from \code{prepare_pao2()}}
 
-\item{resp_lookback}{The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...}
+\item{resp.lookback}{The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...}
 
-\item{vaso_lookback}{The number of minutes to look back in an encounter for carry-forward vasocactive medication status}
+\item{vaso.lookback}{The number of minutes to look back in an encounter for carry-forward vasocactive medication status}
 
-\item{map_lookback}{The number of minutes to look back in an encounter for carry-forward blood pressure values}
+\item{map.lookback}{The number of minutes to look back in an encounter for carry-forward blood pressure values}
 
-\item{lac_lookback}{The number of minutes to look back in an encounter for carry-forward of lactate values}
+\item{lac.lookback}{The number of minutes to look back in an encounter for carry-forward of lactate values}
 
-\item{gcs_lookback}{The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).}
+\item{gcs.lookback}{The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).}
 
-\item{pupil_lookback}{The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)}
+\item{pupil.lookback}{The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)}
 
-\item{coag_lookback}{The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.}
+\item{coag.lookback}{The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.}
+
+\item{endocrine.lookback}{The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose}
+
+\item{hepatic.lookback}{The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT}
+
+\item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatine}
 
 \item{verbose}{when \code{TRUE} print messages showing the progress}
+
+\item{immunolgic.lookback}{The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC}
 }
 \description{
 Take the outputs from the \code{prepare_*()} and create the longitudinal data
