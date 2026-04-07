@@ -195,13 +195,12 @@ prepare_imv <-
     id.vars,
     eclock,
     value.var,
-    valid.range = NULL,
-    valid.values = c(0, 1),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
+  cl[["valid.values"]] <- c(0, 1)
   cl[["variable.name"]] <- "IMV"
   rtn <- eval(cl)
   class(rtn) <- c("phoenix_prepared_imv", class(rtn))
@@ -907,6 +906,17 @@ prepare_variable <-
 
   xv <- sprintf("%s[['%s']]", deparse1(substitute(x)), value.var)
 
+  if (!is.numeric(x[[value.var]])) {
+    stop(
+      sprintf(
+        "All values in %s are expected to be numeric or integer, not %s.",
+        xv,
+        paste(class(x[[value.var]]), collapse = "/")
+      ),
+      call. = FALSE
+    )
+  }
+
   if (any(is.na(x[[value.var]]))) {
     msg <- sprintf("All values in %s are expected to be non-missing.", xv)
     stop(msg, call. = FALSE)
@@ -991,11 +1001,16 @@ prepare_variable <-
     x <- phxdft_setnames(x, old = value.var, new = "value")
   }
 
+  if (!is.null(valid.values) && isTRUE(all.equal(as.integer(valid.values), as.numeric(valid.values)))) {
+    x <- phxdft_set(x, j = "value", value = as.integer(x[["value"]]))
+  }
+
   if (nrow(x) == 0L) {
     x <- phxdft_set(x, j = "variable", value = character(0))
   } else {
     x <- phxdft_set(x, j = "variable", value = variable.name)
   }
+
 
   attr(x, "id.vars") <- id.vars
   attr(x, "eclock") <- eclock

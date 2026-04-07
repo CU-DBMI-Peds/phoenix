@@ -108,8 +108,6 @@ prepare_imv(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
