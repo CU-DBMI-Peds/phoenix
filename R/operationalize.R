@@ -112,7 +112,7 @@ prepare_pao2 <-
 
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "FIO2"
+  cl[["variable.name"]] <- "PAO2"
   rtn <- eval(cl)
   class(rtn) <- c("phoenix_prepared_pao2", class(rtn))
   rtn
@@ -139,7 +139,7 @@ prepare_pao2 <-
 #' @param verbose when \code{TRUE} print messages showing the progress
 #'
 #' @export
-prepare_phonix_data <-
+prepare_phoenix_data <-
   function(
     fio2 = NULL,
     spo2 = NULL,
@@ -148,7 +148,7 @@ prepare_phonix_data <-
     vaso_lookback  = 720,
     map_lookback   = 360,
     lac_lookback   = 360,
-    gcs_lookbook   = 360,
+    gcs_lookback   = 360,
     pupil_lookback = 720,
     coag_lookback  = 1440,
     verbose = getOption("phoenix_verbose", interactive())
@@ -249,9 +249,7 @@ verify_id_vars <- function(names, id.vars) {
   not_in_names <- id.vars[!(id.vars %in% names)]
 
   if (length(not_in_names)) {
-    stop(sprintf("There are id.vars not in the names of the input data.frame. Value(s) not found: %",
-        paste(not_in_names, collapse = ", ")
-        ))
+    stop(sprintf("There are id.vars not in the names of the input data.frame. Value(s) not found: %s", paste(not_in_names, collapse = ", ")))
   }
   invisible(TRUE)
 }
@@ -342,15 +340,25 @@ prepare_variable <-
           deparse1(substitute(x)),
           paste(paste0("'", c(id.vars, eclock), "'"), collapse = ", ")))
     }
-    xs <- split(x, f = dups)
-    xs[["FALSE"]] <- phxdft_select(xs[["FALSE"]], c(id.vars, eclock, value.var))
-    xs[["TRUE"]] <- phxdft_aggregate(value.var, by = c(id.vars, eclock), data = xs[["TRUE"]], FUN = tie.breaker)
-    x <- do.call(rbind, xs)
+    if (!all(dups)) {
+      xs <- split(x, f = dups)
+      xs[["FALSE"]] <- phxdft_select(xs[["FALSE"]], c(id.vars, eclock, value.var))
+      xs[["TRUE"]] <- phxdft_aggregate(value.var, by = c(id.vars, eclock), data = xs[["TRUE"]], FUN = tie.breaker)
+      x <- do.call(rbind, xs)
+    } else {
+      x <- phxdft_aggregate(value.var, by = c(id.vars, eclock), data = x, FUN = tie.breaker)
+    }
   } else {
     if (verbose) {
       message(sprintf("No duplicate rows in %s based on c(%s).",
           deparse1(substitute(x)),
           paste0("'", paste(c(id.vars, eclock), collapse = ", "), "'")))
+    }
+    # in if(any(dups), if x is a data.table then the splits and the aggregations
+    # will result in a "new" data.table.  If no dups, then the data.table needs
+    # to be copied before changing names and mutating the object
+    if (inherits(x, "data.table") && requireNamespace("data.table", quietly = TRUE)) {
+      x <- getExportedValue(ns = "data.table", name = "copy")(x)
     }
   }
 
