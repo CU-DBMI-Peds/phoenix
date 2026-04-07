@@ -5,6 +5,35 @@
 \alias{prepare_fio2}
 \alias{prepare_spo2}
 \alias{prepare_pao2}
+\alias{prepare_vent}
+\alias{prepare_hfov}
+\alias{prepare_peep}
+\alias{prepare_imv}
+\alias{prepare_o2support}
+\alias{prepare_dobutamine}
+\alias{prepare_dopamine}
+\alias{prepare_epinephrine}
+\alias{prepare_milrinone}
+\alias{prepare_norepinephrine}
+\alias{prepare_vasopressin}
+\alias{prepare_lactate}
+\alias{prepare_sbpc}
+\alias{prepare_sbpa}
+\alias{prepare_dbpc}
+\alias{prepare_dbpa}
+\alias{prepare_mapc}
+\alias{prepare_mapa}
+\alias{prepare_gcseye}
+\alias{prepare_gcsmotor}
+\alias{prepare_gcsverbal}
+\alias{prepare_gcstotal}
+\alias{prepare_pupill}
+\alias{prepare_pupilr}
+\alias{prepare_pupils}
+\alias{prepare_platelets}
+\alias{prepare_inr}
+\alias{prepare_ddimer}
+\alias{prepare_fibrinogen}
 \title{Prepare Observation, Interventions, Event, Medications, Tests for Phoenix
 Scoring}
 \usage{
@@ -38,6 +67,325 @@ prepare_pao2(
   valid.range = c(0, Inf),
   valid.values = NULL,
   tie.breaker = min,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_vent(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_hfov(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_peep(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_imv(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_o2support(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_dobutamine(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_dopamine(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_epinephrine(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_milrinone(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_norepinephrine(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_vasopressin(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_lactate(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_sbpc(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_sbpa(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_dbpc(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_dbpa(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_mapc(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_mapa(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_gcseye(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(1, 2, 3, 4),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_gcsmotor(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(1, 2, 3, 4, 5, 6),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_gcsverbal(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(1, 2, 3, 4, 5),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_gcstotal(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_pupill(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_pupilr(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_pupils(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = NULL,
+  valid.values = c(0, 1),
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_platelets(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_inr(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_ddimer(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_fibrinogen(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  valid.range = c(0, Inf),
+  valid.values = NULL,
+  tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
