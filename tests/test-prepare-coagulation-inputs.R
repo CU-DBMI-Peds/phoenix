@@ -1,0 +1,116 @@
+library(phoenix)
+source("utilities.R")
+
+################################################################################
+# file: tests/test-prepare-coagulation-inputs.R
+#
+# This script groups the coagulation preparation tests for Phoenix:
+#   - platelets
+#   - INR
+#   - D-dimer
+#   - fibrinogen
+#
+# All of these are continuous/range-based wrappers.  The family-wise checks
+# therefore focus on:
+#   - range validation
+#   - duplicate reduction at the same encounter clock
+#   - support for a custom valid.range
+#   - rejection of missing values
+#   - standardized output labeling
+################################################################################
+
+# Build the supported backends from one fixture.
+make_backends <- function(x) {
+  list(
+    DF = x,
+    DT = as_data_table_if_available(x),
+    TB = as_tibble_if_available(x)
+  )
+}
+
+# Sort by encounter clock so reduced values can be asserted in a stable order.
+sort_prepared <- function(x) {
+  x[order(x[["minutes_from_admission"]]), ]
+}
+
+# Generic test driver for coagulation wrappers that use valid.range.
+run_range_case <- function(fun_name,
+                           variable_label,
+                           value.var,
+                           values,
+                           expected_default,
+                           expected_custom,
+                           custom_valid_range) {
+  id.vars <- c("hospital", "patient", "encounter")
+  eclock <- "minutes_from_admission"
+  FUN <- get(fun_name, mode = "function")
+
+  df <- data.frame(
+    hospital = c("H1", "H1", "H1", "H1"),
+    patient = c("P1", "P1", "P1", "P1"),
+    encounter = c("E1", "E1", "E1", "E1"),
+    minutes_from_admission = c(0, 0, 60, 120),
+    value = values,
+    stringsAsFactors = FALSE
+  )
+  names(df)[names(df) == "value"] <- value.var
+  testdata <- make_backends(df)
+
+  prepared_default <- lapply(
+    X = testdata,
+    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, verbose = FALSE))
+  )
+  prepared_default <- lapply(prepared_default, sort_prepared)
+  stopifnot(
+    identical(prepared_default[["DF"]][["value"]], expected_default),
+    identical(prepared_default[["DT"]][["value"]], expected_default),
+    identical(prepared_default[["TB"]][["value"]], expected_default),
+    identical(prepared_default[["DF"]][["variable"]], rep(variable_label, 3)),
+    identical(prepared_default[["DT"]][["variable"]], rep(variable_label, 3)),
+    identical(prepared_default[["TB"]][["variable"]], rep(variable_label, 3))
+  )
+
+  prepared_custom <- lapply(
+    X = testdata,
+    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, tie.breaker = min, verbose = FALSE))
+  )
+  prepared_custom <- lapply(prepared_custom, sort_prepared)
+  stopifnot(
+    identical(prepared_custom[["DF"]][["value"]], expected_custom),
+    identical(prepared_custom[["DT"]][["value"]], expected_custom),
+    identical(prepared_custom[["TB"]][["value"]], expected_custom)
+  )
+
+  prepared_custom_range <- lapply(
+    X = testdata,
+    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, valid.range = custom_valid_range, verbose = FALSE))
+  )
+  prepared_custom_range <- lapply(prepared_custom_range, sort_prepared)
+  stopifnot(
+    identical(prepared_custom_range[["DF"]][["value"]], expected_default),
+    identical(prepared_custom_range[["DT"]][["value"]], expected_default),
+    identical(prepared_custom_range[["TB"]][["value"]], expected_default)
+  )
+
+  test_missing <- lapply(
+    X = make_backends(phoenix:::phxdft_set(df, i = 1L, j = value.var, value = NA_real_)),
+    FUN = function(x) tryCatch(do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, verbose = FALSE)), error = function(e) e)
+  )
+  stopifnot(
+    sapply(test_missing, inherits, "error"),
+    sapply(sapply(test_missing, getElement, "message"), grepl, pattern = "non-missing")
+  )
+}
+
+################################################################################
+# Family-Wise Coagulation Coverage
+################################################################################
+
+run_range_case("prepare_platelets", "PLATELETS", "platelet_count", c(200, 250, 180, 150), c(250, 180, 150), c(200, 180, 150), c(0, 1000))
+run_range_case("prepare_inr", "INR", "international_normalized_ratio", c(1.1, 1.3, 1.5, 1.7), c(1.3, 1.5, 1.7), c(1.1, 1.5, 1.7), c(0, 5))
+run_range_case("prepare_ddimer", "DDIMER", "d_dimer_value", c(0.5, 0.8, 1.1, 1.4), c(0.8, 1.1, 1.4), c(0.5, 1.1, 1.4), c(0, 5))
+run_range_case("prepare_fibrinogen", "FIBRINOGEN", "fibrinogen_value", c(100, 150, 125, 175), c(150, 125, 175), c(100, 125, 175), c(0, 500))
+
+################################################################################
+#                                 End of File                                  #
+################################################################################
