@@ -6,13 +6,13 @@
 #'
 #' The input data is expected to be in a "long" format with \code{id.vars}
 #' (examples: hospital id, patient id, encounter id). A column for reporting the
-#' amount of time from admission, \code{eclock} ('encounter clock'; generally
-#' expected to be in minutes with 0 being the encounter start).
+#' amount of time from admission, \code{eclock}
+#' ('encounter clock'; generally expected to be in minutes with 0 being the encounter start).
 #' \code{value.var} denotes the reported values for the input of interest.
 #' \code{valid.range} and \code{valid.values} are used for simple checks for
 #' valid values.  Only one of the two can be specified.  The checks are
-#' \code{x[[value.var]] >= min(valid.range) & x[[value.var]] <=
-#' max(valid.range)} or \code{x[[value.var]] %in% valid.values}.
+#' \code{x[[value.var]] >= min(valid.range) & x[[value.var]] <= max(valid.range)}
+#' or \code{x[[value.var]] \%in\% valid.values}.
 #'
 #' There is an expectation when going to Phoenix scoring that the
 #' \code{x[[c(id.vars, eclock)]]} are unique for each input.  These functions
@@ -55,6 +55,10 @@
 #'
 #' @param verbose when \code{TRUE} print messages showing the progress
 #'
+#' @name prepare_inputs
+NULL
+
+#' @rdname prepare_inputs
 #' @export
 prepare_fio2 <-
   function(
@@ -76,6 +80,7 @@ prepare_fio2 <-
   rtn
 }
 
+#' @rdname prepare_inputs
 #' @export
 prepare_spo2 <-
   function(
@@ -97,6 +102,7 @@ prepare_spo2 <-
   rtn
 }
 
+#' @rdname prepare_inputs
 #' @export
 prepare_pao2 <-
   function(
@@ -124,9 +130,9 @@ prepare_pao2 <-
 #' Take the outputs from the \code{prepare_*()} and create the longitudinal data
 #' set needed for assessing Phoenix Sepsis.
 #'
-#' @param fio2 an object returned from \code{prepare_fio2}
-#' @param spo2 an object returned from \code{prepare_spo2}
-#' @param pao2 an object returned from \code{prepare_pao2}
+#' @param fio2 an object returned from \code{prepare_fio2()}
+#' @param spo2 an object returned from \code{prepare_spo2()}
+#' @param pao2 an object returned from \code{prepare_pao2()}
 #'
 #' @param resp_lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
 #' @param vaso_lookback The number of minutes to look back in an encounter for carry-forward vasocactive medication status

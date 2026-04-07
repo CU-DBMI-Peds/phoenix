@@ -371,12 +371,12 @@ phxdft_aggregate <- function(y, by, data, FUN) {
   stopifnot(inherits(data, "data.frame"))
   if (inherits(data, "data.table") && requireNamespace("data.table", quietly = TRUE)) {
     .datatable.aware <- TRUE
-    rtn <- data[, lapply(.SD, FUN), .SDcols = y, by = mget(by)]
+    rtn <- data[, lapply(get(y), FUN), by = mget(by)]
   } else if (inherits(data, "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
     stop("not yet built")
   } else {
-    f <- as.formula(sprintf("%s ~ %s", value.var, paste(c(id.vars, eclock), collapse = "+")))
-    rtn <- aggregate(x = f, data = data, FUN = FUN, ...)
+    f <- stats::as.formula(sprintf("%s ~ %s", value.var, paste(c(id.vars, eclock), collapse = "+")))
+    rtn <- stats::aggregate(x = f, data = data, FUN = FUN, ...)
   }
   rtn
 }
