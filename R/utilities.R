@@ -1,4 +1,4 @@
-' Tools for working with data.frames.
+#' Tools for working with data.frames.
 #'
 #' To have zero namespaces in Imports but still have the performance and utility
 #' of data.table and/or dplyr, the following functions are provided for working
