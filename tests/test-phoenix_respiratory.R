@@ -57,30 +57,82 @@ stopifnot(
   identical(test_empty_result[["TB"]], 0L)
 )
 
-test_empty_result <-
+test_zero_row_data_result <-
   lapply(
     X = test_empty_data,
     FUN = function(x) phoenix_respiratory(data = x[0, ])
   )
 
-data <- test_empty_data[[1]][0, ]
-
 stopifnot(
-  identical(test_empty_result[["DF"]], integer(0L)),
-  identical(test_empty_result[["DT"]], integer(0L)),
-  identical(test_empty_result[["TB"]], integer(0L))
+  identical(test_zero_row_data_result[["DF"]], integer(0L)),
+  identical(test_zero_row_data_result[["DT"]], integer(0L)),
+  identical(test_zero_row_data_result[["TB"]], integer(0L))
 )
 
-test_zero_row_df_result <-
+test_zero_row_expr_result <-
   lapply(
     X = test_empty_data,
     FUN = function(x) phoenix_respiratory(pf_ratio = pao2/fio2, sf_ratio = spo2/fio2, data = x[0, ])
   )
 
 stopifnot(
-  identical(test_empty_result[["DF"]], integer(0L)),
-  identical(test_empty_result[["DT"]], integer(0L)),
-  identical(test_empty_result[["TB"]], integer(0L))
+  identical(test_zero_row_expr_result[["DF"]], integer(0L)),
+  identical(test_zero_row_expr_result[["DT"]], integer(0L)),
+  identical(test_zero_row_expr_result[["TB"]], integer(0L))
+)
+
+################################################################################
+# verify list and environment data paths
+test_list_data <- as.list(sepsis)
+test_env_data <- list2env(test_list_data, parent = baseenv())
+
+test_list_result <-
+  phoenix_respiratory(
+    pf_ratio = pao2 / fio2,
+    sf_ratio = spo2 / fio2,
+    imv = vent,
+    other_respiratory_support = as.integer(fio2 > 0.21),
+    data = test_list_data
+  )
+
+test_env_result <-
+  phoenix_respiratory(
+    pf_ratio = pao2 / fio2,
+    sf_ratio = spo2 / fio2,
+    imv = vent,
+    other_respiratory_support = as.integer(fio2 > 0.21),
+    data = test_env_data
+  )
+
+stopifnot(
+  identical(test_list_result, eg[["DF"]]),
+  identical(test_env_result, eg[["DF"]])
+)
+
+################################################################################
+# verify environments with parent emptyenv() error clearly
+test_bad_env_data <- list2env(as.list(sepsis), parent = emptyenv())
+test_bad_env_result <- tryCatch(
+  phoenix_respiratory(
+    pf_ratio = pao2 / fio2,
+    sf_ratio = spo2 / fio2,
+    imv = vent,
+    other_respiratory_support = as.integer(fio2 > 0.21),
+    data = test_bad_env_data
+  ),
+  error = function(e) e
+)
+
+stopifnot(
+  inherits(test_bad_env_result, "error"),
+  identical(
+    test_bad_env_result$message,
+    paste0(
+      "`data` is an environment with parent `emptyenv()`, so expressions ",
+      "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",
+      "for example `list2env(x, parent = baseenv())`."
+    )
+  )
 )
 
 ################################################################################

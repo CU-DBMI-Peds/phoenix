@@ -64,6 +64,13 @@
 #'
 #' @export
 phoenix_coagulation <- function(platelets = NA_real_, inr = NA_real_, d_dimer = NA_real_, fibrinogen = NA_real_, data = parent.frame(), ...) {
+  if (is.environment(data) && identical(parent.env(data), emptyenv())) {
+    stop(
+      "`data` is an environment with parent `emptyenv()`, so expressions ",
+      "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",
+      "for example `list2env(x, parent = baseenv())`."
+    )
+  }
 
   if (inherits(data, "data.frame") && nrow(data) == 0L) {
     return(integer(0L))

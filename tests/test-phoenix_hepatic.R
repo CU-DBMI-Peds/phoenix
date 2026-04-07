@@ -55,6 +55,39 @@ stopifnot(
 )
 
 ################################################################################
+# verify list and environment data paths
+test_list_data <- as.list(sepsis)
+test_env_data <- list2env(test_list_data, parent = baseenv())
+
+test_list_result <- phoenix_hepatic(bilirubin = bilirubin, alt = alt, data = test_list_data)
+test_env_result <- phoenix_hepatic(bilirubin = bilirubin, alt = alt, data = test_env_data)
+
+stopifnot(
+  identical(test_list_result, eg[["DF"]]),
+  identical(test_env_result, eg[["DF"]])
+)
+
+################################################################################
+# verify environments with parent emptyenv() error clearly
+test_bad_env_data <- list2env(as.list(sepsis), parent = emptyenv())
+test_bad_env_result <- tryCatch(
+  phoenix_hepatic(bilirubin = bilirubin, alt = alt, data = test_bad_env_data),
+  error = function(e) e
+)
+
+stopifnot(
+  inherits(test_bad_env_result, "error"),
+  identical(
+    test_bad_env_result$message,
+    paste0(
+      "`data` is an environment with parent `emptyenv()`, so expressions ",
+      "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",
+      "for example `list2env(x, parent = baseenv())`."
+    )
+  )
+)
+
+################################################################################
 # verify error if lengths differ
 x <- tryCatch(phoenix_hepatic(bilirubin = numeric(0)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))

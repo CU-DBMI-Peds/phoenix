@@ -104,6 +104,13 @@
 #'
 #' @export
 phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = NA_integer_, other_respiratory_support = NA_integer_, data = parent.frame(), ...) {
+  if (is.environment(data) && identical(parent.env(data), emptyenv())) {
+    stop(
+      "`data` is an environment with parent `emptyenv()`, so expressions ",
+      "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",
+      "for example `list2env(x, parent = baseenv())`."
+    )
+  }
 
   if (inherits(data, "data.frame") && nrow(data) == 0L) {
     return(integer(0L))
