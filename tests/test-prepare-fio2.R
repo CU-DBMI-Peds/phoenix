@@ -48,8 +48,9 @@ testdata <-
     value = 0.21
   )
 
-# Error due to the presence of a values outside the valid range
-test_missing_value <-
+# Error due to the presence of a values outside the valid range - there are
+# values too large and too small
+test_values_outside_value_range <-
   lapply(
     X = testdata,
     FUN = function(x) {
@@ -66,18 +67,82 @@ test_missing_value <-
   )
 
 stopifnot(
-  sapply(test_missing_value, inherits, "error"),
-  sapply(sapply(test_missing_value, getElement, "message"), grepl, pattern = " < 0\\.21.*1\\.0")
+  sapply(test_values_outside_value_range, inherits, "error"),
+  sapply(sapply(test_values_outside_value_range, getElement, "message"), grepl, pattern = " < 0\\.21.*1\\.0")
 )
 
-# now update the bad values to valid values
+# now update the low value to a valid one and test for the upper issue only
 testdata <-
   lapply(
     X = testdata,
     FUN = phoenix:::phxdft_set,
-    i = c(2L, 3L),
+    i = c(2L),
     j = "percent_inspired_oxygen",
-    value = c(0.31, 0.999)
+    value = c(0.31)
+  )
+
+test_values_above_value_range <-
+  lapply(
+    X = testdata,
+    FUN = function(x) {
+      tryCatch(
+        prepare_fio2(
+          x = x,
+          id.vars = c("hospital", "patient", "encounter"),
+          eclock = "minutes_from_admission",
+          value.var = "percent_inspired_oxygen"
+        ),
+        error = function(e) e
+      )
+    }
+  )
+
+stopifnot(
+  sapply(test_values_above_value_range, inherits, "error"),
+  sapply(sapply(test_values_above_value_range, getElement, "message"), grepl, pattern = " ?!(<)> 1\\.0", perl = TRUE)
+)
+
+# now update the high value to a low value so now we can test just the below
+# range value
+testdata <-
+  lapply(
+    X = testdata,
+    FUN = phoenix:::phxdft_set,
+    i = c(3L),
+    j = "percent_inspired_oxygen",
+    value = c(0.20)
+  )
+
+test_values_below_value_range <-
+  lapply(
+    X = testdata,
+    FUN = function(x) {
+      tryCatch(
+        prepare_fio2(
+          x = x,
+          id.vars = c("hospital", "patient", "encounter"),
+          eclock = "minutes_from_admission",
+          value.var = "percent_inspired_oxygen"
+        ),
+        error = function(e) e
+      )
+    }
+  )
+
+stopifnot(
+  sapply(test_values_below_value_range, inherits, "error"),
+  sapply(sapply(test_values_below_value_range, getElement, "message"), grepl, pattern = " ?!(<)> 1\\.0", perl = TRUE)
+)
+
+# now update the low value to a valid value for testing output from "valid"
+# data.
+testdata <-
+  lapply(
+    X = testdata,
+    FUN = phoenix:::phxdft_set,
+    i = c(3L),
+    j = "percent_inspired_oxygen",
+    value = c(0.42)
   )
 
 # because data.table can be used, we want to make sure we don't mutate the
