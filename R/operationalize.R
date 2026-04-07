@@ -991,7 +991,11 @@ prepare_variable <-
     x <- phxdft_setnames(x, old = value.var, new = "value")
   }
 
-  x <- phxdft_set(x, j = "variable", value = variable.name)
+  if (nrow(x) == 0L) {
+    x <- phxdft_set(x, j = "variable", value = character(0))
+  } else {
+    x <- phxdft_set(x, j = "variable", value = variable.name)
+  }
 
   attr(x, "id.vars") <- id.vars
   attr(x, "eclock") <- eclock
@@ -999,4 +1003,3 @@ prepare_variable <-
 
   x
 }
-
