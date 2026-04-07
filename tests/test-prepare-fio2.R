@@ -342,8 +342,8 @@ stopifnot(
 )
 
 ################################################################################
-# valid.values support
-test_valid_values <-
+# custom valid.range support
+test_custom_valid_range <-
   lapply(
     X = testdata_no_dups,
     FUN = function(x) {
@@ -352,43 +352,16 @@ test_valid_values <-
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
         value.var = "percent_inspired_oxygen",
-        valid.range = NULL,
-        valid.values = c(0.21, 0.30, 0.40),
+        valid.range = c(0.20, 0.50),
         verbose = FALSE
       )
     }
   )
 
 stopifnot(
-  identical(test_valid_values[["DF"]][["value"]], c(0.21, 0.30, 0.40)),
-  identical(test_valid_values[["DT"]][["value"]], c(0.21, 0.30, 0.40)),
-  identical(test_valid_values[["TB"]][["value"]], c(0.21, 0.30, 0.40))
-)
-
-################################################################################
-# valid.range and valid.values are mutually exclusive
-test_bad_validation_args <-
-  lapply(
-    X = testdata_no_dups,
-    FUN = function(x) {
-      tryCatch(
-        prepare_fio2(
-          x = x,
-          id.vars = c("hospital", "patient", "encounter"),
-          eclock = "minutes_from_admission",
-          value.var = "percent_inspired_oxygen",
-          valid.range = c(0.21, 1.00),
-          valid.values = c(0.21, 0.30, 0.40),
-          verbose = FALSE
-        ),
-        error = function(e) e
-      )
-    }
-  )
-
-stopifnot(
-  sapply(test_bad_validation_args, inherits, "error"),
-  sapply(sapply(test_bad_validation_args, getElement, "message"), grepl, pattern = "Only one of valid.range and valid.values")
+  identical(test_custom_valid_range[["DF"]][["value"]], c(0.21, 0.30, 0.40)),
+  identical(test_custom_valid_range[["DT"]][["value"]], c(0.21, 0.30, 0.40)),
+  identical(test_custom_valid_range[["TB"]][["value"]], c(0.21, 0.30, 0.40))
 )
 
 ################################################################################

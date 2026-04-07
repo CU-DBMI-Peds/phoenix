@@ -43,7 +43,6 @@ prepare_fio2(
   eclock,
   value.var,
   valid.range = c(0.21, 1),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", TRUE)
 )
@@ -54,7 +53,6 @@ prepare_spo2(
   eclock,
   value.var,
   valid.range = c(0, 100),
-  valid.values = NULL,
   tie.breaker = min,
   verbose = getOption("phoenix_verbose", TRUE)
 )
@@ -65,7 +63,6 @@ prepare_pao2(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -76,7 +73,6 @@ prepare_vent(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -87,7 +83,6 @@ prepare_hfov(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -98,7 +93,6 @@ prepare_peep(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -117,8 +111,6 @@ prepare_o2support(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -128,8 +120,6 @@ prepare_dobutamine(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -139,8 +129,6 @@ prepare_dopamine(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -150,8 +138,6 @@ prepare_epinephrine(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -161,8 +147,6 @@ prepare_milrinone(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -172,8 +156,6 @@ prepare_norepinephrine(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -183,8 +165,6 @@ prepare_vasopressin(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -195,7 +175,6 @@ prepare_lactate(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -206,7 +185,6 @@ prepare_sbpc(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -217,7 +195,6 @@ prepare_sbpa(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -228,7 +205,6 @@ prepare_dbpc(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -239,7 +215,6 @@ prepare_dbpa(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -250,7 +225,6 @@ prepare_mapc(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -261,7 +235,6 @@ prepare_mapa(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -271,8 +244,6 @@ prepare_gcseye(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(1, 2, 3, 4),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -282,8 +253,6 @@ prepare_gcsmotor(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(1, 2, 3, 4, 5, 6),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -293,8 +262,6 @@ prepare_gcsverbal(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(1, 2, 3, 4, 5),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -304,8 +271,6 @@ prepare_gcstotal(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -315,8 +280,6 @@ prepare_pupill(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -326,8 +289,6 @@ prepare_pupilr(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -337,8 +298,6 @@ prepare_pupils(
   id.vars,
   eclock,
   value.var,
-  valid.range = NULL,
-  valid.values = c(0, 1),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -349,7 +308,6 @@ prepare_platelets(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -360,7 +318,6 @@ prepare_inr(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -371,7 +328,6 @@ prepare_ddimer(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -382,7 +338,6 @@ prepare_fibrinogen(
   eclock,
   value.var,
   valid.range = c(0, Inf),
-  valid.values = NULL,
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -408,15 +363,15 @@ considerably wider than clinically possible in some cases, e.g., infinite
 upper limit for blood pressures.  Only one of \code{valid.range} and
 \code{valid.values} is allowed to be non-NULL.}
 
-\item{valid.values}{A set of values which \code{x[[value.var]]} can take on,
-example, indicators are checked againt \code{c(0, 1)} and GCS Total is
-checked against 3:15. Only one of \code{valid.range} and \code{valid.values}
-is allowed to be non-NULL.}
-
 \item{tie.breaker}{When \code{x[c(id.vars, eclock)]} is not unique this
 function is uses to aggregate \code{x[[value.var]]} into one value.}
 
 \item{verbose}{when \code{TRUE} print messages showing the progress}
+
+\item{valid.values}{A set of values which \code{x[[value.var]]} can take on,
+example, indicators are checked againt \code{c(0, 1)} and GCS Total is
+checked against 3:15. Only one of \code{valid.range} and \code{valid.values}
+is allowed to be non-NULL.}
 }
 \description{
 Functions for checking the basic structure and values for the input data for
