@@ -367,32 +367,13 @@ phxdft_cbind <- function(x, ...) {
 #' @family data.frame tools
 #' @noRd
 #' @keywords internal
-phxdft_aggregate <- function(y, by, data, FUN) {
-  stopifnot(inherits(data, "data.frame"))
-  if (inherits(data, "data.table") && requireNamespace("data.table", quietly = TRUE)) {
-    .datatable.aware <- TRUE
-    rtn <- data[, lapply(get(y), FUN), by = mget(by)]
-  } else if (inherits(data, "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
-    stop("not yet built")
-  } else {
-    f <- stats::as.formula(sprintf("%s ~ %s", value.var, paste(c(id.vars, eclock), collapse = "+")))
-    rtn <- stats::aggregate(x = f, data = data, FUN = FUN, ...)
-  }
-  rtn
-}
-
-#'
-#' @rdname phxdft_data_frame_tools
-#' @family data.frame tools
-#' @noRd
-#' @keywords internal
 phxdft_rbindlist <- function(x) {
   if (!(is.list(x) && all(sapply(x, inherits, "data.frame")))) {
     stop("input is expected to be a list of data.frames, data.tables, or tibbles")
   }
   if (inherits(x[[1]], "data.table") && requireNamespace("data.table", quietly = TRUE)) {
     rtn <- getExportedValue(name = "rbindlist", ns = "data.table")(x, use.names = TRUE, fill = TRUE)
-  } else if (inherits(data, "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
+  } else if (inherits(x, "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
     stop("not yet built")
   } else {
     stop("not yet built")

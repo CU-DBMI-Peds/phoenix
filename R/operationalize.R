@@ -349,10 +349,15 @@ prepare_variable <-
     if (!all(dups)) {
       xs <- split(x, f = dups)
       xs[["FALSE"]] <- phxdft_select(xs[["FALSE"]], c(id.vars, eclock, value.var))
-      xs[["TRUE"]] <- phxdft_aggregate(value.var, by = c(id.vars, eclock), data = xs[["TRUE"]], FUN = tie.breaker)
+      xs[["TRUE"]] <-
+        stats::aggregate.data.frame(
+          x   = phxdft_select(xs[["TRUE"]], value.var),
+          by  = phxdft_select(xs[["TRUE"]], by),
+          FUN = tie.breaker
+        )
       x <- do.call(rbind, xs)
     } else {
-      x <- phxdft_aggregate(value.var, by = c(id.vars, eclock), data = x, FUN = tie.breaker)
+      x <- stats::aggregate.data.frame(x = phxdft_select(x, value.var), by = phxdft_select(x, by), FUN = tie.breaker)
     }
   } else {
     if (verbose) {
