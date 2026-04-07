@@ -132,6 +132,10 @@
 #' @export
 phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_, age = NA_real_, map = NA_real_, data = parent.frame(), ...) {
 
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
+
   vas <- eval(expr = substitute(vasoactives), envir = data, enclos = parent.frame())
   lct <- eval(expr = substitute(lactate), envir = data, enclos = parent.frame())
   age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())

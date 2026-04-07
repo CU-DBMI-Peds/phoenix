@@ -56,6 +56,9 @@
 #'
 #' @export
 phoenix_hepatic <- function(bilirubin = NA_real_, alt = NA_real_, data = parent.frame(), ...) {
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
 
   bil <- eval(expr = substitute(bilirubin), envir = data, enclos = parent.frame())
   alt <- eval(expr = substitute(alt), envir = data, enclos = parent.frame())

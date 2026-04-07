@@ -57,6 +57,9 @@
 #'
 #' @export
 phoenix_immunologic <- function(anc = NA_real_, alc = NA_real_, data = parent.frame(), ...) {
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
 
   anc <- eval(expr = substitute(anc), envir = data, enclos = parent.frame())
   alc <- eval(expr = substitute(alc), envir = data, enclos = parent.frame())

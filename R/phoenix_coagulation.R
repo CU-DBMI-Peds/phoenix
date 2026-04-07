@@ -65,6 +65,10 @@
 #' @export
 phoenix_coagulation <- function(platelets = NA_real_, inr = NA_real_, d_dimer = NA_real_, fibrinogen = NA_real_, data = parent.frame(), ...) {
 
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
+
   plt <- eval(expr = substitute(platelets), envir = data, enclos = parent.frame())
   inr <- eval(expr = substitute(inr), envir = data, enclos = parent.frame())
   ddm <- eval(expr = substitute(d_dimer), envir = data, enclos = parent.frame())

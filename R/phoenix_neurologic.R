@@ -86,6 +86,9 @@
 #'
 #' @export
 phoenix_neurologic <- function(gcs = NA_integer_, fixed_pupils = NA_real_, data = parent.frame(), ...) {
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
 
   gcs <- eval(expr = substitute(gcs), envir = data, enclos = parent.frame())
   fpl <- eval(expr = substitute(fixed_pupils), envir = data, enclos = parent.frame())

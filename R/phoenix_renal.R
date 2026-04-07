@@ -79,6 +79,9 @@
 #'
 #' @export
 phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.frame(), ...) {
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
 
   crt <- eval(expr = substitute(creatinine), envir = data, enclos = parent.frame())
   age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())

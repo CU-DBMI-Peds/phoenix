@@ -105,6 +105,10 @@
 #' @export
 phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = NA_integer_, other_respiratory_support = NA_integer_, data = parent.frame(), ...) {
 
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
+
   pfr <- eval(expr = substitute(pf_ratio), envir = data, enclos = parent.frame())
   sfr <- eval(expr = substitute(sf_ratio), envir = data, enclos = parent.frame())
   imv <- eval(expr = substitute(imv),      envir = data, enclos = parent.frame())
@@ -132,7 +136,8 @@ phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = 
   stopifnot(all(ors %in% c(0L, 1L)))
   ors <- pmax(imv, ors)
 
-  imv * ( ((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220)) ) +
-  ors * ((pfr < 400) | (sfr < 292))
-
+  as.integer(
+    imv * ( ((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220)) ) +
+    ors * ((pfr < 400) | (sfr < 292))
+  )
 }

@@ -46,6 +46,9 @@
 #'
 #' @export
 phoenix_endocrine <- function(glucose = NA_real_, data = parent.frame(), ...) {
+  if (inherits(data, "data.frame") && nrow(data) == 0L) {
+    return(integer(0L))
+  }
 
   glc <- eval(expr = substitute(glucose), envir = data, enclos = parent.frame())
 
