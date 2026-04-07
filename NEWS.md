@@ -2,12 +2,23 @@
 
 ## New Featues
 
-* Operationalize Phoenix
+### Operationalize Phoenix
+
+* `prepare_<input>()` will run some simple checks for expected data ranges
+  (values) and return an object that is expected to be passed to
+  `prepare_phoenix_data()`.
+* `prepare_phoenix_data()` applies last-observation-carry-forward windowing and
+  data checks before applying a scoring method.
 
 ## Other changes
 
 * Package now depends on R >= 4.0.0 due to the use of `deparse1()`
-* Add data.table and dplyr to suggested packages
+* Add data.table and dplyr to suggested packages.  The phoenix package will use
+  the native data.table or dplyr data methods if the user passes a data.table or
+  a tibble to the operationalization methods and the needed namespaces are
+  avaialble.  If the namespaces are not availble then the code will default to
+  data.frame methods.
+* Add digest to suggested packages.  Used in testing.
 
 # Version 1.1.3:
 
