@@ -45,13 +45,13 @@ prepare_phoenix_data(
 
 \item{endocrine.lookback}{The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose}
 
+\item{immunologic.lookback}{The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC}
+
 \item{hepatic.lookback}{The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT}
 
 \item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatine}
 
 \item{verbose}{when \code{TRUE} print messages showing the progress}
-
-\item{immunolgic.lookback}{The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC}
 }
 \description{
 Take the outputs from the \code{prepare_*()} and create the longitudinal data

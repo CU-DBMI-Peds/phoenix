@@ -15,7 +15,7 @@
 #' @param pupil.lookback The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)
 #' @param coag.lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.
 #' @param endocrine.lookback The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose
-#' @param immunolgic.lookback The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC
+#' @param immunologic.lookback The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC
 #' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT
 #' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatine
 #'
