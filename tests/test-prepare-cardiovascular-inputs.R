@@ -17,21 +17,6 @@ source("utilities.R")
 #   - behave the same across supported input backends
 ################################################################################
 
-# Build the three supported backends from one test fixture.
-make_backends <- function(x) {
-  list(
-    DF = x,
-    DT = as_data_table_if_available(x),
-    TB = as_tibble_if_available(x)
-  )
-}
-
-# Sort prepared output by encounter clock so that backend-specific row ordering
-# does not create false failures in the value checks.
-sort_prepared <- function(x) {
-  x[order(x[["minutes_from_admission"]]), ]
-}
-
 # Generic test driver for continuous/range-based cardiovascular inputs.
 #
 # The synthetic data intentionally include one duplicated encounter time.  This

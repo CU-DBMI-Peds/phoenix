@@ -17,20 +17,6 @@ source("utilities.R")
 #   - zero-row inputs still return a valid prepared object
 ################################################################################
 
-# Build the supported backends from one fixture.
-make_backends <- function(x) {
-  list(
-    DF = x,
-    DT = as_data_table_if_available(x),
-    TB = as_tibble_if_available(x)
-  )
-}
-
-# Sort by encounter clock so value assertions use a stable row order.
-sort_prepared <- function(x) {
-  x[order(x[["minutes_from_admission"]]), ]
-}
-
 # Generic test driver for discrete neurologic wrappers.
 #
 # The data set is intentionally small but includes one duplicated encounter time

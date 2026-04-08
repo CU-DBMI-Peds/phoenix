@@ -10,18 +10,6 @@ source("utilities.R")
 # currently being routed through the longitudinal preparation pipeline.
 ################################################################################
 
-make_backends <- function(x) {
-  list(
-    DF = x,
-    DT = as_data_table_if_available(x),
-    TB = as_tibble_if_available(x)
-  )
-}
-
-sort_prepared <- function(x) {
-  x[order(x[["minutes_from_admission"]]), ]
-}
-
 run_range_case <- function(fun_name,
                            variable_label,
                            value.var,

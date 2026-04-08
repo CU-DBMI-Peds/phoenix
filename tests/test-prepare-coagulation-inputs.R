@@ -19,20 +19,6 @@ source("utilities.R")
 #   - standardized output labeling
 ################################################################################
 
-# Build the supported backends from one fixture.
-make_backends <- function(x) {
-  list(
-    DF = x,
-    DT = as_data_table_if_available(x),
-    TB = as_tibble_if_available(x)
-  )
-}
-
-# Sort by encounter clock so reduced values can be asserted in a stable order.
-sort_prepared <- function(x) {
-  x[order(x[["minutes_from_admission"]]), ]
-}
-
 # Generic test driver for coagulation wrappers that use valid.range.
 run_range_case <- function(fun_name,
                            variable_label,

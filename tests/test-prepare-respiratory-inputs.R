@@ -18,23 +18,6 @@ source("utilities.R")
 # regression coverage.
 ################################################################################
 
-# Build the three supported backends from one fixture.  The same logical data
-# are tested as a base data.frame, a data.table, and a tibble.
-make_backends <- function(x) {
-  list(
-    DF = x,
-    DT = as_data_table_if_available(x),
-    TB = as_tibble_if_available(x)
-  )
-}
-
-# Sort by encounter clock before comparing values.  Duplicate aggregation can
-# change row order, and we do not want harmless ordering differences to look
-# like behavioral differences.
-sort_prepared <- function(x) {
-  x[order(x[["minutes_from_admission"]]), ]
-}
-
 # Generic driver for range-based respiratory wrappers.
 #
 # The synthetic data include one duplicated encounter time and two unique later

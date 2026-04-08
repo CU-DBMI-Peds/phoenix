@@ -8,6 +8,8 @@
 #   functions:
 #     as_data_table_if_available()
 #     as_tibble_if_available()
+#     make_backends()
+#     sort_prepared()
 ################################################################################
 
 ################################################################################
@@ -31,6 +33,29 @@ as_tibble_if_available <- function(x) {
     x <- getExportedValue(ns = "dplyr", name = "as_tibble")(x)
   }
   x
+}
+
+################################################################################
+# make_backends returns the three backend variants used throughout the tests/:
+# a base data.frame, a data.table when available, and a tibble when available.
+# If a package namespace is not available then the original data.frame is
+# returned for that backend slot.
+make_backends <- function(x) {
+  stopifnot(inherits(x, "data.frame"))
+  list(
+    DF = x,
+    DT = as_data_table_if_available(x),
+    TB = as_tibble_if_available(x)
+  )
+}
+
+################################################################################
+# sort_prepared orders a prepared longitudinal object by the encounter clock.
+# The grouped preparation tests use this so value assertions are not affected by
+# harmless backend-specific row ordering differences after duplicate reduction.
+sort_prepared <- function(x, eclock = "minutes_from_admission") {
+  stopifnot(inherits(x, "data.frame"))
+  x[order(x[[eclock]]), ]
 }
 
 ################################################################################
