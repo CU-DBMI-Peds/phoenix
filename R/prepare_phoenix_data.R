@@ -13,7 +13,7 @@
 #' @param o2support an object returned from \code{\link{prepare_o2support}}
 #' @param dobutamine an object returned from \code{\link{prepare_dobutamine}}
 #' @param dopamine an object returned from \code{\link{prepare_dopamine}}
-#' @param epinepherine an object returned from \code{\link{prepare_epinephrine}}
+#' @param epinephrine an object returned from \code{\link{prepare_epinephrine}}
 #' @param milrinone an object returned from \code{\link{prepare_milrinone}}
 #' @param norepinephrine an object returned from \code{\link{prepare_norepinephrine}}
 #' @param vasopressin an object returned from \code{\link{prepare_vasopressin}}
@@ -71,7 +71,7 @@ prepare_phoenix_data <-
     o2support = NULL,
     dobutamine = NULL,
     dopamine = NULL,
-    epinepherine = NULL,
+    epinephrine = NULL,
     milrinone = NULL,
     norepinephrine = NULL,
     vasopressin = NULL,
@@ -131,7 +131,45 @@ prepare_phoenix_data <-
     list(
       fio2 = fio2,
       spo2 = spo2,
-      pao2 = pao2
+      pao2 = pao2,
+      vent = vent,
+      hfov = hfov,
+      peep = peep,
+      imv  = imv,
+      o2support = o2support,
+      dobutamine = dobutamine,
+      dopamine = dopamine,
+      epinephrine = epinephrine,
+      milrinone = milrinone,
+      norepinephrine = norepinephrine,
+      vasopressin = vasopressin,
+      lactate = lactate,
+      mapc = mapc,
+      mapa = mapa,
+      sbpc = sbpc,
+      sbpa = sbpa,
+      dbpa = dbpa,
+      dbpc = dbpc,
+      gcseye = gcseye,
+      gcsmotor = gcsmotor,
+      gcsverbal = gcsverbal,
+      gcstotal = gcstotal,
+      pupilleft = pupilleft,
+      pupilright = pupilright,
+      pupils = pupils,
+      platelets = platelets,
+      fibrinogen = fibrinogen,
+      inr = inr,
+      ddimer = ddimer,
+      glucose = glucose,
+      alc = alc,
+      anc = anc,
+      bilirubin = bilirubin,
+      alt = alt,
+      creatinine = creatinine,
+      age  = age,
+      antimicrobials = antimicrobials,
+      antiinfectioustests = antiinfectioustests
     )
   phxdata <- Filter(f = Negate(is.null), phxdata)
 
@@ -177,7 +215,10 @@ prepare_phoenix_data <-
   id <- phxdft_select(phxdata, cols = id.vars)
   id <- do.call(paste, c(id, sep = "\r\r"))
 
-  for (j in c("FIO2", "SPO2", "PAO2")) {
+  RESPVARS <- c("FIO2", "SPO2", "PAO2", "VENT", "HFOV", "PEEP", "IMV", "O2SUPPORT")
+  VASOVARS <- c("DOBUTAMINE", "DOPAMINE", "EPINEPHRINE", "MILRINONE", "NOREPINEPHRINE", "VASOPRESSIN")
+
+  for (j in c(RESPVARS, VASOVARS)) {
     if (j %in% names(phxdata)) {
       if (verbose) message(sprintf("   %s...", j))
       obs <- !is.na(phxdata[[j]])
@@ -193,12 +234,16 @@ prepare_phoenix_data <-
       phxdata <- phxdft_set(phxdata, j = j, value = out)
       phxdata <- phxdft_set(phxdata, j = paste0(j, "_eclock"), value = outeclock)
 
-      if (j %in% c("FIO2", "SPO2", "PAO2")) {
+      if (j %in% RESPVARS) {
         idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > resp.lookback)
         phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
         phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
       }
-
+      if (j %in% VASOVARS) {
+        idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > vaso.lookback)
+        phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
+        phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
+      }
     }
   }
 

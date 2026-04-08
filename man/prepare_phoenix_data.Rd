@@ -15,7 +15,7 @@ prepare_phoenix_data(
   o2support = NULL,
   dobutamine = NULL,
   dopamine = NULL,
-  epinepherine = NULL,
+  epinephrine = NULL,
   milrinone = NULL,
   norepinephrine = NULL,
   vasopressin = NULL,
@@ -81,7 +81,7 @@ prepare_phoenix_data(
 
 \item{dopamine}{an object returned from \code{\link{prepare_dopamine}}}
 
-\item{epinepherine}{an object returned from \code{\link{prepare_epinephrine}}}
+\item{epinephrine}{an object returned from \code{\link{prepare_epinephrine}}}
 
 \item{milrinone}{an object returned from \code{\link{prepare_milrinone}}}
 
