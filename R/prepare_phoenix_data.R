@@ -3,10 +3,47 @@
 #' Take the outputs from the \code{prepare_*()} and create the longitudinal data
 #' set needed for assessing Phoenix Sepsis.
 #'
-#' @param fio2 an object returned from \code{prepare_fio2()}
-#' @param spo2 an object returned from \code{prepare_spo2()}
-#' @param pao2 an object returned from \code{prepare_pao2()}
-#'
+#' @param fio2 an object returned from \code{\link{prepare_fio2}}
+#' @param spo2 an object returned from \code{\link{prepare_spo2}}
+#' @param pao2 an object returned from \code{\link{prepare_pao2}}
+#' @param vent an object returned from \code{\link{prepare_vent}}
+#' @param hfov an object returned from \code{\link{prepare_hfov}}
+#' @param peep an object returned from \code{\link{prepare_peep}}
+#' @param imv an object returned from \code{\link{prepare_imv}}
+#' @param o2support an object returned from \code{\link{prepare_o2support}}
+#' @param dobutamine an object returned from \code{\link{prepare_dobutamine}}
+#' @param dopamine an object returned from \code{\link{prepare_dopamine}}
+#' @param epinepherine an object returned from \code{\link{prepare_epinephrine}}
+#' @param milronine an object returned from \code{\link{prepare_milronine}}
+#' @param norepinephrine an object returned from \code{\link{prepare_norepinephrine}}
+#' @param vasopressin an object returned from \code{\link{prepare_vaospressin}}
+#' @param lactate an object returned from \code{\link{prepare_lactate}}
+#' @param mapc an object returned from \code{\link{prepare_mapc}}
+#' @param mapa an object returned from \code{\link{prepare_mapa}}
+#' @param sbpc an object returned from \code{\link{prepare_sbpc}}
+#' @param sbpa an object returned from \code{\link{prepare_sbpa}}
+#' @param dbpa an object returned from \code{\link{prepare_dbpa}}
+#' @param dbpc an object returned from \code{\link{prepare_dbpc}}
+#' @param gcse an object returned from \code{\link{prepare_gcse}}
+#' @param gcsm an object returned from \code{\link{prepare_gcsm}}
+#' @param gcsv an object returned from \code{\link{prepare_gcsv}}
+#' @param gcst an object returned from \code{\link{prepare_gcst}}
+#' @param pupill an object returned from \code{\link{prepare_pupilr}}
+#' @param pupilr an object returned from \code{\link{prepare_pupilr}}
+#' @param pupils an object returned from \code{\link{prepare_pupils}}
+#' @param platellets an object returned from \code{\link{prepare_platellets}}
+#' @param fibrinogen an object returned from \code{\link{prepare_fibrinogen}}
+#' @param inr an object returned from \code{\link{prepare_inr}}
+#' @param ddimer an object returned from \code{\link{prepare_ddimer}}
+#' @param glucose an object returned from \code{\link{prepare_glucose}}
+#' @param alc an object returned from \code{\link{prepare_alc}}
+#' @param anc an object returned from \code{\link{prepare_anc}}
+#' @param billirburin an object returned from \code{\link{prepare_billirubin}}
+#' @param alt an object returned from \code{\link{prepare_alt}}
+#' @param creatine an object returned from \code{\link{prepare_creatine}}
+#' @param age an object returned from \code{\link{prepare_age}}
+#' @param antimicrobials an object returned from \code{\link{prepare_antimicrobials}}.
+#' @param antiinfecioustests an object returned from \code{\link{prepare_antiinfecioustest}}.
 #' @param resp.lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
 #' @param vaso.lookback The number of minutes to look back in an encounter for carry-forward vasocactive medication status
 #' @param map.lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
@@ -27,6 +64,44 @@ prepare_phoenix_data <-
     fio2 = NULL,
     spo2 = NULL,
     pao2 = NULL,
+    vent = NULL,
+    hfov = NULL,
+    peep = NULL,
+    imv  = NULL,
+    o2support = NULL,
+    dobutamine = NULL,
+    dopamine = NULL,
+    epinepherine = NULL,
+    milronine = NULL,
+    norepinephrine = NULL,
+    vasopressin = NULL,
+    lactate = NULL,
+    mapc = NULL,
+    mapa = NULL,
+    sbpc = NULL,
+    sbpa = NULL,
+    dbpa = NULL,
+    dbpc = NULL,
+    gcse = NULL,
+    gcsm = NULL,
+    gcsv = NULL,
+    gcst = NULL,
+    pupill = NULL,
+    pupilr = NULL,
+    pupils = NULL,
+    platellets = NULL,
+    fibrinogen = NULL,
+    inr = NULL,
+    ddimer = NULL,
+    glucose = NULL,
+    alc = NULL,
+    anc = NULL,
+    billirburin = NULL,
+    alt = NULL,
+    creatine = NULL,
+    age  = NULL,
+    antimicrobials = NULL,
+    antiinfecioustests = NULL,
     resp.lookback        =  360,
     vaso.lookback        =  720,
     map.lookback         =  360,

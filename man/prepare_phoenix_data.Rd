@@ -8,6 +8,44 @@ prepare_phoenix_data(
   fio2 = NULL,
   spo2 = NULL,
   pao2 = NULL,
+  vent = NULL,
+  hfov = NULL,
+  peep = NULL,
+  imv = NULL,
+  o2support = NULL,
+  dobutamine = NULL,
+  dopamine = NULL,
+  epinepherine = NULL,
+  milronine = NULL,
+  norepinephrine = NULL,
+  vasopressin = NULL,
+  lactate = NULL,
+  mapc = NULL,
+  mapa = NULL,
+  sbpc = NULL,
+  sbpa = NULL,
+  dbpa = NULL,
+  dbpc = NULL,
+  gcse = NULL,
+  gcsm = NULL,
+  gcsv = NULL,
+  gcst = NULL,
+  pupill = NULL,
+  pupilr = NULL,
+  pupils = NULL,
+  platellets = NULL,
+  fibrinogen = NULL,
+  inr = NULL,
+  ddimer = NULL,
+  glucose = NULL,
+  alc = NULL,
+  anc = NULL,
+  billirburin = NULL,
+  alt = NULL,
+  creatine = NULL,
+  age = NULL,
+  antimicrobials = NULL,
+  antiinfecioustests = NULL,
   resp.lookback = 360,
   vaso.lookback = 720,
   map.lookback = 360,
@@ -23,11 +61,87 @@ prepare_phoenix_data(
 )
 }
 \arguments{
-\item{fio2}{an object returned from \code{prepare_fio2()}}
+\item{fio2}{an object returned from \code{\link{prepare_fio2}}}
 
-\item{spo2}{an object returned from \code{prepare_spo2()}}
+\item{spo2}{an object returned from \code{\link{prepare_spo2}}}
 
-\item{pao2}{an object returned from \code{prepare_pao2()}}
+\item{pao2}{an object returned from \code{\link{prepare_pao2}}}
+
+\item{vent}{an object returned from \code{\link{prepare_vent}}}
+
+\item{hfov}{an object returned from \code{\link{prepare_hfov}}}
+
+\item{peep}{an object returned from \code{\link{prepare_peep}}}
+
+\item{imv}{an object returned from \code{\link{prepare_imv}}}
+
+\item{o2support}{an object returned from \code{\link{prepare_o2support}}}
+
+\item{dobutamine}{an object returned from \code{\link{prepare_dobutamine}}}
+
+\item{dopamine}{an object returned from \code{\link{prepare_dopamine}}}
+
+\item{epinepherine}{an object returned from \code{\link{prepare_epinephrine}}}
+
+\item{milronine}{an object returned from \code{\link{prepare_milronine}}}
+
+\item{norepinephrine}{an object returned from \code{\link{prepare_norepinephrine}}}
+
+\item{vasopressin}{an object returned from \code{\link{prepare_vaospressin}}}
+
+\item{lactate}{an object returned from \code{\link{prepare_lactate}}}
+
+\item{mapc}{an object returned from \code{\link{prepare_mapc}}}
+
+\item{mapa}{an object returned from \code{\link{prepare_mapa}}}
+
+\item{sbpc}{an object returned from \code{\link{prepare_sbpc}}}
+
+\item{sbpa}{an object returned from \code{\link{prepare_sbpa}}}
+
+\item{dbpa}{an object returned from \code{\link{prepare_dbpa}}}
+
+\item{dbpc}{an object returned from \code{\link{prepare_dbpc}}}
+
+\item{gcse}{an object returned from \code{\link{prepare_gcse}}}
+
+\item{gcsm}{an object returned from \code{\link{prepare_gcsm}}}
+
+\item{gcsv}{an object returned from \code{\link{prepare_gcsv}}}
+
+\item{gcst}{an object returned from \code{\link{prepare_gcst}}}
+
+\item{pupill}{an object returned from \code{\link{prepare_pupilr}}}
+
+\item{pupilr}{an object returned from \code{\link{prepare_pupilr}}}
+
+\item{pupils}{an object returned from \code{\link{prepare_pupils}}}
+
+\item{platellets}{an object returned from \code{\link{prepare_platellets}}}
+
+\item{fibrinogen}{an object returned from \code{\link{prepare_fibrinogen}}}
+
+\item{inr}{an object returned from \code{\link{prepare_inr}}}
+
+\item{ddimer}{an object returned from \code{\link{prepare_ddimer}}}
+
+\item{glucose}{an object returned from \code{\link{prepare_glucose}}}
+
+\item{alc}{an object returned from \code{\link{prepare_alc}}}
+
+\item{anc}{an object returned from \code{\link{prepare_anc}}}
+
+\item{billirburin}{an object returned from \code{\link{prepare_billirubin}}}
+
+\item{alt}{an object returned from \code{\link{prepare_alt}}}
+
+\item{creatine}{an object returned from \code{\link{prepare_creatine}}}
+
+\item{age}{an object returned from \code{\link{prepare_age}}}
+
+\item{antimicrobials}{an object returned from \code{\link{prepare_antimicrobials}}.}
+
+\item{antiinfecioustests}{an object returned from \code{\link{prepare_antiinfecioustest}}.}
 
 \item{resp.lookback}{The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...}
 
