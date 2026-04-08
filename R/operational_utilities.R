@@ -43,7 +43,7 @@ prepare_variable <-
     variable.name,
     valid.range = NULL,
     valid.values = NULL,
-    eclock = "eclock",
+    eclock = NULL,
     tie.breaker = NULL,
     verbose = getOption("phoenix_verbose", TRUE)
   ) {
@@ -99,7 +99,14 @@ prepare_variable <-
 
   verify_id_vars(names(x), id.vars)
 
-  verify_elcock(x, eclock)
+  if (variable.name != "AGE") {
+    verify_elcock(x, eclock)
+  } else {
+    if (!is.null(eclock)) {
+      warning("Age is expected to be in months and static for the encounter.  `eclock` is ignored.", call. = FALSE)
+    }
+    eclock <- NULL
+  }
 
   # check for duplicated id vars
   dups <-
@@ -158,7 +165,6 @@ prepare_variable <-
   } else {
     x <- phxdft_set(x, j = "variable", value = variable.name)
   }
-
 
   attr(x, "id.vars") <- id.vars
   attr(x, "eclock") <- eclock

@@ -512,3 +512,22 @@ prepare_alt <-
   class(rtn) <- c("phoenix_prepared_alt", class(rtn))
   rtn
 }
+
+#' @rdname prepare_inputs_range
+#' @export
+prepare_age <-
+  function(
+    x,
+    id.vars,
+    value.var,
+    valid.range = c(0, 216),
+    tie.breaker = median,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["variable.name"]] <- "AGE"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_age", class(rtn))
+  rtn
+}
