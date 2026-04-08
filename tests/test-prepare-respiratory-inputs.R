@@ -671,7 +671,7 @@ stopifnot(
 
 # the output from test_prepared_data could be "prepared" again, with no
 # difference save the class attribute being longer in the reprocessed data.
-# NOTE: the `value.var` arguement does need to be updated for the call.
+# NOTE: the `value.var` argument does need to be updated for the call.
 test_prepared_data2 <-
   lapply(
     X = test_prepared_data,
@@ -1237,7 +1237,7 @@ stopifnot(
 
 # the output from test_prepared_data could be "prepared" again, with no
 # difference save the class attribute being longer in the reprocessed data.
-# NOTE: the `value.var` arguement does need to be updated for the call.
+# NOTE: the `value.var` argument does need to be updated for the call.
 test_prepared_data2 <-
   lapply(
     X = test_prepared_data,
@@ -1736,7 +1736,7 @@ stopifnot(
 
 # the output from test_prepared_data could be "prepared" again, with no
 # difference save the class attribute being longer in the reprocessed data.
-# NOTE: the `value.var` arguement does need to be updated for the call.
+# NOTE: the `value.var` argument does need to be updated for the call.
 test_prepared_data2 <-
   lapply(
     X = test_prepared_data,

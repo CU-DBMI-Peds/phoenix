@@ -281,7 +281,7 @@ id, patient id, encounter id.}
 
 \item{value.var}{A character vector of length 1, the name of the column in
 \code{x} containing the value for the observation, intervention, event,
-medicaiton, or test.}
+medication, or test.}
 
 \item{valid.range}{A numeric vector of length two defining an interval of
 valid values for \code{x[[value.var]]}. The defaults are set to be

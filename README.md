@@ -82,7 +82,7 @@ Within R call:
 install.packages("phoenix", repos = "https://cran.rstudio.com")
 ```
 
-#### Developmental
+#### Development Version
 Install the development version of `phoenix` directly from github via the
 [`remotes`](https://github.com/r-lib/remotes/) package:
 
@@ -119,7 +119,7 @@ pip install phoenix-sepsis
 
 ### Examples
 
-Read the article [The Phoenix Septic Criteria in Python](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
+Read the article [The Phoenix Sepsis Criteria in Python](https://cu-dbmi-peds.github.io/phoenix/articles/python.html)
 for details and examples of using the python code as is.
 
 ## SQL
@@ -134,5 +134,5 @@ dialects.
 Read [Phoenix Sepsis EHR Implementation Notes](https://cu-dbmi-peds.github.io/phoenix/articles/ehr_implementation_notes.html)
 for details about the expected inputs for the scoring in order to assist EHR
 implementation. The phoenix R package and Python module, along with the example
-SQL code assumes that the data have been prepared as expected and returns scores
+SQL code, assume that the data have been prepared as expected and return scores
 accordingly.

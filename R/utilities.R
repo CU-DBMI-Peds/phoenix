@@ -12,7 +12,7 @@
 #' @param i Optional. Indicates the rows on which the values must be updated. If
 #'   not `NULL`, implies all rows.
 #' @param j Column name (character).  For `phxdft_set` this is the column assigned
-#'   `value`, update values if it exits. If `x[[j]]` does note exist it will be
+#'   `value`, update values if it exists. If `x[[j]]` does not exist it will be
 #'   created.
 #' @param value replacement values
 #'

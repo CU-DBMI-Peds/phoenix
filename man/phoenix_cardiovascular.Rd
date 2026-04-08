@@ -117,7 +117,7 @@ DF$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF)
 head(DF)
 
 # what if lactate is unknown for all records? - set the value either in the
-# data object or the arguement value to NA
+# data object or the argument value to NA
 DF2 <-
   expand.grid(vasos = c(NA, 0:6),
               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145), # months

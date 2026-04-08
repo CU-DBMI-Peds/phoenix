@@ -30,7 +30,7 @@
 #'   col = hcl.colors(100, palette = "RdBu"),
 #'   xlab = "SBP (mmHg)",
 #'   ylab = "DBP (mmHg)",
-#'   main = "Estimated Mean Arterial Pressue"
+#'   main = "Estimated Mean Arterial Pressure"
 #' )
 #' contour(x = unique(DF$sbp), y = unique(DF$dbp), z = z, add = TRUE)
 #'

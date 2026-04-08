@@ -40,7 +40,7 @@ knitr::opts_chunk$set(collapse = TRUE)
 ```
 
 The following examples are provided to show how to apply the Phoenix Sepsis
-criteria within an SQLite data base.  We will use the same example data set
+criteria within an SQLite database.  We will use the same example data set
 `sepsis` from the R package for the following examples.  The examples
 are made possible by using the following R packages
 ```{r}
@@ -68,7 +68,7 @@ SELECT * FROM sepsis
 
 # Respiratory
 
-We need either create or code for the PF ratio, SF Ratio, invasive mechanical
+We need to either create or write code for the PF ratio, SF ratio, invasive mechanical
 ventilation, and other respiratory support.  In the construction of the PF ratio
 (pfr) and SF ratio (sfr) we replace missing values with value that will map to a
 score of zero.  If the percent of inspiratory oxygen is greater than 0.21, that
@@ -117,7 +117,7 @@ stopifnot(identical(DF$phoenix_respiratory_score, resp_r))
 # Cardiovascular
 
 Missing values correspond to zero points.  The combination of age and mean
-arterial pressure will require both values to be know for possible points to be
+arterial pressure will require both values to be known for possible points to be
 assessed.
 
 ```{sql class.source = 'sqlchunk', connection = con, output.var = "card"}
@@ -548,4 +548,3 @@ identical(phoenix8_scores[, -1], phoenix8_scores_r)
 ```{r}
 dbDisconnect(con)
 ```
-

@@ -56,7 +56,7 @@ packageVersion("phoenix")
 #' A pediatric patient is to be diagnosed as having sepsis if:
 #'
 #' 1. Suspected/Confirmed infection (receipt of systemic antimicrobials and
-#' microbiological testing with in first 24 hours of hospital presentation), and
+#' microbiological testing within the first 24 hours of hospital presentation), and
 #'
 #' 2. A total Phoenix Sepsis Score &geq; 2.  The score is the sum of the
 #'
@@ -104,7 +104,7 @@ cat(ftnt, sep = "\n\n")
 #'
 #' # Development of the Criteria
 #'
-#' Details on the developed of the criteria are described in
+#' Details on the development of the criteria are described in
 #' @sanchezpinto_2024_development and @schlapbach_2024_international and end users
 #' are encouraged to review these papers.  A couple quick notes about the data
 #' and use in general.  Some specific details will be provided in each of the
@@ -113,15 +113,15 @@ cat(ftnt, sep = "\n\n")
 #' **Missing data = 0 points:** During the development of the Phoenix criteria
 #' missing data was mapped to zero points. This was done as it was reasonable to
 #' assume that for some labs and metrics, missing data could indicate that there
-#' was no concern and the testing was not order.  Further, the Phoenix criteria
+#' was no concern and the testing was not ordered.  Further, the Phoenix criteria
 #' was developed to be useful in both high, medium, and low resource settings
 #' where some labs and values might be uncommon or impossible to get.  As such,
 #' we encourage end users of this package to do the same - missing values are
 #' missing and should not be imputed.
 #' **__The Phoenix Criteria is valid on "known data."__**
 #'
-#' **Worst in first 24 hours:** The score was developed on the worse measured
-#' value during the first 24 hours of an hospital encounter.
+#' **Worst in first 24 hours:** The score was developed on the worst measured
+#' value during the first 24 hours of a hospital encounter.
 #' For example, consider the following
 #' patient encounter and organ dysfunction scores:
 #'
@@ -135,7 +135,7 @@ cat(ftnt, sep = "\n\n")
 #' of the encounter.  However, if we took the max score for the four components
 #' and summed them for the total then the resulting score would be 3.
 #'
-#' The development of the Phoenix Criteria was based on the worse total score
+#' The development of the Phoenix Criteria was based on the worst total score
 #' observed during the first 24 hours of an encounter.  The correct signal score
 #' for the patient in the above example is 2, not 3.  Please keep this in mind
 #' when you are preparing your data sets.
@@ -181,7 +181,7 @@ cat(ftnt, sep = "\n\n")
 #' ### Inputs:
 #' *
 {{ backtick(pf_ratio) }}
-#' is the ratio of PaO<sub>2</sub> (partial pressure or oxygen in arterial
+#' is the ratio of PaO<sub>2</sub> (partial pressure of oxygen in arterial
 #' blood, units of mmHg) to FiO<sub>2</sub> (fraction of inspiratory oxygen,
 #' values expected to be between 0.21 for room air, to 1.00).  Gathering the
 #' PaO<sub>2</sub> is an invasive procedure.

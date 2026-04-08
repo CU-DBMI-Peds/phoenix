@@ -54,7 +54,7 @@ phoenix_coagulation(
   data = sepsis
 )
 
-# build a data.frame with values for all possible combationations of values
+# build a data.frame with values for all possible combinations of values
 # leading to all possible coagulation scores.
 DF <-
   expand.grid(plts = c(NA, 20, 100, 150),

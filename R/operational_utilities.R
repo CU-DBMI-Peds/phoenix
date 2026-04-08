@@ -15,7 +15,7 @@ verify_id_vars <- function(names, id.vars) {
   invisible(TRUE)
 }
 
-verify_elcock <- function(x, eclock) {
+verify_eclock <- function(x, eclock) {
   stopifnot(is.character(eclock))
   stopifnot(length(eclock) == 1L)
   if (is.null(x[[eclock]])) {
@@ -100,7 +100,7 @@ prepare_variable <-
   verify_id_vars(names(x), id.vars)
 
   if (variable.name != "AGE") {
-    verify_elcock(x, eclock)
+    verify_eclock(x, eclock)
   } else {
     if (!is.null(eclock)) {
       warning("Age is expected to be in months and static for the encounter.  `eclock` is ignored.", call. = FALSE)

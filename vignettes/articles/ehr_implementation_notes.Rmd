@@ -20,7 +20,7 @@ encounter. Please see the original manuscripts for details.
 
 The purpose of this document is to provide details about the expected inputs for
 the scoring in order to assist EHR implementation. The phoenix R package and
-Python module, along with the example SQL code assumes that the data have been
+Python module, along with the example SQL code, assume that the data have been
 prepared as expected and returns scores accordingly.
 
 <hr>
@@ -41,17 +41,17 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 ## Data cleaning and preparation
 
-* Verify all variables in expected unit; convert as necessary. E.g. age in months; lactate in mmol/L, etc.
+* Verify all variables are in the expected units; convert as necessary. E.g. age in months; lactate in mmol/L, etc.
 * As appropriate replace invalid values with NULL; e.g. if age in months > 216 need to consider if should be scoring patient at all.
 * No imputation for NULL/invalid values
-* Last observation carry forward within appropriate window for each variable - max carry forward is from prior 24 hours.
+* Last observation carry-forward within the appropriate window for each variable; the maximum carry-forward is 24 hours.
 * Variables not present or not known should be passed in as NULL
 
 ## Gotchas
 
 * Phoenix package doesn't calculate mean arterial pressure (MAP); Calculate MAP from SBP and DBP if not directly available; if both cuff and arterial values present, arterial MAP should be used.
 * Carefully review requirements of each input value. For example, only calculate SF ratio and pass into Phoenix package when SpO2 <= 97; only calculate and pass in PF ratio when FiO2 value is from the same time as or before the time of PaO2 lab.
-* Use last known good value to when calling Phoenix functions.
+* Use the last known good value when calling Phoenix functions.
 
 <hr>
 
@@ -65,7 +65,7 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 ## Special Considerations for EHR Data
 
 Phoenix was developed on a retrospective data set which provided the luxury of
-easily looking backwards in the time within an encounter.  When applying the
+easily looking backward in time within an encounter.  When applying the
 Phoenix criteria to an active encounter there are several things to consider.
 
 ### Missing values

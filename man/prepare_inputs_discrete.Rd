@@ -188,7 +188,7 @@ id, patient id, encounter id.}
 
 \item{value.var}{A character vector of length 1, the name of the column in
 \code{x} containing the value for the observation, intervention, event,
-medicaiton, or test.}
+medication, or test.}
 
 \item{tie.breaker}{When \code{x[c(id.vars, eclock)]} is not unique this
 function is uses to aggregate \code{x[[value.var]]} into one value.}

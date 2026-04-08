@@ -45,15 +45,15 @@
 #' @param antimicrobials an object returned from \code{\link{prepare_antimicrobials}}.
 #' @param antiinfectioustests an object returned from \code{\link{prepare_antiinfectioustests}}.
 #' @param resp.lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
-#' @param vaso.lookback The number of minutes to look back in an encounter for carry-forward vasocactive medication status
+#' @param vaso.lookback The number of minutes to look back in an encounter for carry-forward vasoactive medication status
 #' @param map.lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
 #' @param lac.lookback The number of minutes to look back in an encounter for carry-forward of lactate values
 #' @param gcs.lookback The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).
-#' @param pupil.lookback The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)
-#' @param coag.lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, plateles, INR, and D-Dimer.
+#' @param pupil.lookback The number of minutes to look back in an encounter for carry-forward of pupil status (fixed or unfixed)
+#' @param coag.lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platelets, INR, and D-Dimer.
 #' @param endocrine.lookback The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose
 #' @param immunologic.lookback The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC
-#' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT
+#' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: bilirubin (total), ALT
 #' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine
 #'
 #' @param verbose when \code{TRUE} print messages showing the progress

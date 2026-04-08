@@ -145,7 +145,7 @@ prepare_phoenix_data(
 
 \item{resp.lookback}{The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...}
 
-\item{vaso.lookback}{The number of minutes to look back in an encounter for carry-forward vasocactive medication status}
+\item{vaso.lookback}{The number of minutes to look back in an encounter for carry-forward vasoactive medication status}
 
 \item{map.lookback}{The number of minutes to look back in an encounter for carry-forward blood pressure values}
 
@@ -153,15 +153,15 @@ prepare_phoenix_data(
 
 \item{gcs.lookback}{The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).}
 
-\item{pupil.lookback}{The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)}
+\item{pupil.lookback}{The number of minutes to look back in an encounter for carry-forward of pupil status (fixed or unfixed)}
 
-\item{coag.lookback}{The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, plateles, INR, and D-Dimer.}
+\item{coag.lookback}{The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platelets, INR, and D-Dimer.}
 
 \item{endocrine.lookback}{The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose}
 
 \item{immunologic.lookback}{The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC}
 
-\item{hepatic.lookback}{The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT}
+\item{hepatic.lookback}{The number of minutes to look back in an encounter for carry-forward of hepatic variables: bilirubin (total), ALT}
 
 \item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine}
 
