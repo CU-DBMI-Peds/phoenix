@@ -217,8 +217,16 @@ prepare_phoenix_data <-
 
   RESPVARS <- c("FIO2", "SPO2", "PAO2", "VENT", "HFOV", "PEEP", "IMV", "O2SUPPORT")
   VASOVARS <- c("DOBUTAMINE", "DOPAMINE", "EPINEPHRINE", "MILRINONE", "NOREPINEPHRINE", "VASOPRESSIN")
+  MAPVARS  <- c("MAPC", "MAPA", "SBPA", "SPBC", "DBPA", "DBPC")
+  CARDVARS <- c(VASOVARS, MAPVARS, "LACTATE")
+  NEUROVARS <- c("GCSEYE", "GCSMOTOR", "GCSVERBAL", "GCSTOTAL", "PUPILLEFT", "PUPILRIGHT", "PUPILS")
+  COAGVARS <- c("PLATELETS", "FIBRINOGEN", "INR", "DDIMER")
+  ENDOVARS <- c("GLUCOSE")
+  IMMUNOVARS <- c("ANC", "ALC")
+  HEPATICVARS <- c("BILIRUBIN", "ALT")
+  RENALVARS <- c("CREATININE")
 
-  for (j in c(RESPVARS, VASOVARS)) {
+  for (j in c(RESPVARS, CARDVARS, NEUROVARS, COAGVARS, ENDOVARS, IMMUNOVARS, HEPATICVARS, RENALVARS)) {
     if (j %in% names(phxdata)) {
       if (verbose) message(sprintf("   %s...", j))
       obs <- !is.na(phxdata[[j]])
@@ -235,15 +243,19 @@ prepare_phoenix_data <-
       phxdata <- phxdft_set(phxdata, j = paste0(j, "_eclock"), value = outeclock)
 
       if (j %in% RESPVARS) {
-        idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > resp.lookback)
-        phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
-        phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
+        lookback <- resp.lookback
+      } else if (j %in% VASOVARS) {
+        lookback <- vaso.lookback
+      } else if (j %in% MAPVARS) {
+        lookback <- map.lookback
+      } else if (j == "LACTATE") {
+        lookback <- lac.lookback
+      } else {
+        stop(sprintf("lookback not defined for %s", j), call. = FALSE)
       }
-      if (j %in% VASOVARS) {
-        idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > vaso.lookback)
-        phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
-        phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
-      }
+      idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > lookback)
+      phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
+      phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
     }
   }
 
