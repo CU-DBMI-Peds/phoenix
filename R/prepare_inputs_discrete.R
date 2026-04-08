@@ -291,7 +291,7 @@ prepare_gcstotal <-
 
 #' @rdname prepare_inputs_discrete
 #' @export
-prepare_pupill <-
+prepare_pupilleft <-
   function(
     x,
     id.vars,
@@ -303,15 +303,15 @@ prepare_pupill <-
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
   cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "PUPILL"
+  cl[["variable.name"]] <- "PUPILLEFT"
   rtn <- eval(cl)
-  class(rtn) <- c("phoenix_prepared_pupill", class(rtn))
+  class(rtn) <- c("phoenix_prepared_pupilleft", class(rtn))
   rtn
 }
 
 #' @rdname prepare_inputs_discrete
 #' @export
-prepare_pupilr <-
+prepare_pupilright <-
   function(
     x,
     id.vars,
@@ -323,9 +323,9 @@ prepare_pupilr <-
   cl <- eval(match.call.with.defaults)
   cl[[1]] <- quote(prepare_variable)
   cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "PUPILR"
+  cl[["variable.name"]] <- "PUPILRIGHT"
   rtn <- eval(cl)
-  class(rtn) <- c("phoenix_prepared_pupilr", class(rtn))
+  class(rtn) <- c("phoenix_prepared_pupilright", class(rtn))
   rtn
 }
 
@@ -346,5 +346,45 @@ prepare_pupils <-
   cl[["variable.name"]] <- "PUPILS"
   rtn <- eval(cl)
   class(rtn) <- c("phoenix_prepared_pupils", class(rtn))
+  rtn
+}
+
+#' @rdname prepare_inputs_discrete
+#' @export
+prepare_antimicrobials <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    tie.breaker = max,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["valid.values"]] <- c(0, 1)
+  cl[["variable.name"]] <- "ANTIMICROBIALS"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_antimicrobials", class(rtn))
+  rtn
+}
+
+#' @rdname prepare_inputs_discrete
+#' @export
+prepare_antiinfectioustests <-
+  function(
+    x,
+    id.vars,
+    eclock,
+    value.var,
+    tie.breaker = max,
+    verbose = getOption("phoenix_verbose", interactive())
+  ) {
+  cl <- eval(match.call.with.defaults)
+  cl[[1]] <- quote(prepare_variable)
+  cl[["valid.values"]] <- c(0, 1)
+  cl[["variable.name"]] <- "ANTIINFECTIOUSTESTS"
+  rtn <- eval(cl)
+  class(rtn) <- c("phoenix_prepared_antiinfectioustests", class(rtn))
   rtn
 }

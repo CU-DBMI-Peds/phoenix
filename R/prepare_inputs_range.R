@@ -521,7 +521,7 @@ prepare_age <-
     id.vars,
     value.var,
     valid.range = c(0, 216),
-    tie.breaker = median,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   cl <- eval(match.call.with.defaults)

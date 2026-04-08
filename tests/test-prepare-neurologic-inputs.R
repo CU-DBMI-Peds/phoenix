@@ -112,8 +112,8 @@ run_discrete_case("prepare_gcseye", "GCSEYE", "gcs_eye_score", c(1, 2, 3, 4), c(
 run_discrete_case("prepare_gcsmotor", "GCSMOTOR", "gcs_motor_score", c(1, 2, 3, 4, 5, 6), c(2L, 5L, 6L), c(1L, 5L, 6L))
 run_discrete_case("prepare_gcsverbal", "GCSVERBAL", "gcs_verbal_score", c(1, 2, 3, 4, 5), c(2L, 4L, 5L), c(1L, 4L, 5L))
 run_discrete_case("prepare_gcstotal", "GCSTOTAL", "gcs_total_score", c(3:15), c(4L, 14L, 15L), c(3L, 14L, 15L))
-run_discrete_case("prepare_pupill", "PUPILL", "left_pupil_fixed", c(0, 1), c(1L, 0L, 1L), c(0L, 0L, 1L))
-run_discrete_case("prepare_pupilr", "PUPILR", "right_pupil_fixed", c(0, 1), c(1L, 0L, 1L), c(0L, 0L, 1L))
+run_discrete_case("prepare_pupilleft", "PUPILLEFT", "left_pupil_fixed", c(0, 1), c(1L, 0L, 1L), c(0L, 0L, 1L))
+run_discrete_case("prepare_pupilright", "PUPILRIGHT", "right_pupil_fixed", c(0, 1), c(1L, 0L, 1L), c(0L, 0L, 1L))
 run_discrete_case("prepare_pupils", "PUPILS", "any_pupil_fixed", c(0, 1), c(1L, 0L, 1L), c(0L, 0L, 1L))
 
 ################################################################################

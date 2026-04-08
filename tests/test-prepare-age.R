@@ -146,8 +146,8 @@ stopifnot(
 
 ###############################################################################
 # Successful preparation should aggregate by id.vars only.  The default
-# tie.breaker is median, so patient P1 / encounter E1 should reduce from
-# c(72, 60) to 66.
+# tie.breaker is min, so patient P1 / encounter E1 should reduce from
+# c(72, 60) to 60.
 test_prepared_age <-
   lapply(
     X = testdata,
@@ -167,9 +167,9 @@ stopifnot(
   identical(sapply(test_prepared_age, inherits, "data.frame"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
   identical(sapply(test_prepared_age, inherits, "phoenix_prepared"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
   identical(sapply(test_prepared_age, inherits, "phoenix_prepared_age"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
-  identical(test_prepared_age[["DF"]][["value"]], c(66, 24)),
-  identical(test_prepared_age[["DT"]][["value"]], c(66, 24)),
-  identical(test_prepared_age[["TB"]][["value"]], c(66, 24)),
+  identical(test_prepared_age[["DF"]][["value"]], c(60, 24)),
+  identical(test_prepared_age[["DT"]][["value"]], c(60, 24)),
+  identical(test_prepared_age[["TB"]][["value"]], c(60, 24)),
   identical(test_prepared_age[["DF"]][["variable"]], c("AGE", "AGE")),
   identical(test_prepared_age[["DT"]][["variable"]], c("AGE", "AGE")),
   identical(test_prepared_age[["TB"]][["variable"]], c("AGE", "AGE")),
@@ -225,9 +225,9 @@ test_prepared_age_custom_range <-
 test_prepared_age_custom_range <- lapply(test_prepared_age_custom_range, sort_prepared, eclock = "hospital")
 
 stopifnot(
-  identical(test_prepared_age_custom_range[["DF"]][["value"]], c(66, 24)),
-  identical(test_prepared_age_custom_range[["DT"]][["value"]], c(66, 24)),
-  identical(test_prepared_age_custom_range[["TB"]][["value"]], c(66, 24))
+  identical(test_prepared_age_custom_range[["DF"]][["value"]], c(60, 24)),
+  identical(test_prepared_age_custom_range[["DT"]][["value"]], c(60, 24)),
+  identical(test_prepared_age_custom_range[["TB"]][["value"]], c(60, 24))
 )
 
 ###############################################################################
@@ -316,9 +316,9 @@ test_prepared_value_col <-
 test_prepared_value_col <- lapply(test_prepared_value_col, sort_prepared, eclock = "hospital")
 
 stopifnot(
-  identical(test_prepared_value_col[["DF"]][["value"]], c(66, 24)),
-  identical(test_prepared_value_col[["DT"]][["value"]], c(66, 24)),
-  identical(test_prepared_value_col[["TB"]][["value"]], c(66, 24))
+  identical(test_prepared_value_col[["DF"]][["value"]], c(60, 24)),
+  identical(test_prepared_value_col[["DT"]][["value"]], c(60, 24)),
+  identical(test_prepared_value_col[["TB"]][["value"]], c(60, 24))
 )
 
 ###############################################################################

@@ -25,6 +25,7 @@
 \alias{prepare_creatinine}
 \alias{prepare_bilirubin}
 \alias{prepare_alt}
+\alias{prepare_age}
 \title{Prepare Continuous Observation, Intervention, Medication, and Test Inputs for
 Phoenix Scoring}
 \usage{
@@ -255,6 +256,15 @@ prepare_alt(
   value.var,
   valid.range = c(0, Inf),
   tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_age(
+  x,
+  id.vars,
+  value.var,
+  valid.range = c(0, 216),
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 }

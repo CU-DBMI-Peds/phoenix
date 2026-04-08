@@ -14,9 +14,11 @@
 \alias{prepare_gcsmotor}
 \alias{prepare_gcsverbal}
 \alias{prepare_gcstotal}
-\alias{prepare_pupill}
-\alias{prepare_pupilr}
+\alias{prepare_pupilleft}
+\alias{prepare_pupilright}
 \alias{prepare_pupils}
+\alias{prepare_antimicrobials}
+\alias{prepare_antiinfectioustests}
 \title{Prepare Discrete Observation, Intervention, Event, and Test Inputs for
 Phoenix Scoring}
 \usage{
@@ -128,7 +130,7 @@ prepare_gcstotal(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_pupill(
+prepare_pupilleft(
   x,
   id.vars,
   eclock,
@@ -137,7 +139,7 @@ prepare_pupill(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_pupilr(
+prepare_pupilright(
   x,
   id.vars,
   eclock,
@@ -147,6 +149,24 @@ prepare_pupilr(
 )
 
 prepare_pupils(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_antimicrobials(
+  x,
+  id.vars,
+  eclock,
+  value.var,
+  tie.breaker = max,
+  verbose = getOption("phoenix_verbose", interactive())
+)
+
+prepare_antiinfectioustests(
   x,
   id.vars,
   eclock,

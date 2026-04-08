@@ -14,9 +14,9 @@
 #' @param dobutamine an object returned from \code{\link{prepare_dobutamine}}
 #' @param dopamine an object returned from \code{\link{prepare_dopamine}}
 #' @param epinepherine an object returned from \code{\link{prepare_epinephrine}}
-#' @param milronine an object returned from \code{\link{prepare_milronine}}
+#' @param milrinone an object returned from \code{\link{prepare_milrinone}}
 #' @param norepinephrine an object returned from \code{\link{prepare_norepinephrine}}
-#' @param vasopressin an object returned from \code{\link{prepare_vaospressin}}
+#' @param vasopressin an object returned from \code{\link{prepare_vasopressin}}
 #' @param lactate an object returned from \code{\link{prepare_lactate}}
 #' @param mapc an object returned from \code{\link{prepare_mapc}}
 #' @param mapa an object returned from \code{\link{prepare_mapa}}
@@ -24,37 +24,37 @@
 #' @param sbpa an object returned from \code{\link{prepare_sbpa}}
 #' @param dbpa an object returned from \code{\link{prepare_dbpa}}
 #' @param dbpc an object returned from \code{\link{prepare_dbpc}}
-#' @param gcse an object returned from \code{\link{prepare_gcse}}
-#' @param gcsm an object returned from \code{\link{prepare_gcsm}}
-#' @param gcsv an object returned from \code{\link{prepare_gcsv}}
-#' @param gcst an object returned from \code{\link{prepare_gcst}}
-#' @param pupill an object returned from \code{\link{prepare_pupilr}}
-#' @param pupilr an object returned from \code{\link{prepare_pupilr}}
+#' @param gcseye an object returned from \code{\link{prepare_gcseye}}
+#' @param gcsmotor an object returned from \code{\link{prepare_gcsmotor}}
+#' @param gcsverbal an object returned from \code{\link{prepare_gcsverbal}}
+#' @param gcstotal an object returned from \code{\link{prepare_gcstotal}}
+#' @param pupilleft an object returned from \code{\link{prepare_pupilleft}}
+#' @param pupilright an object returned from \code{\link{prepare_pupilright}}
 #' @param pupils an object returned from \code{\link{prepare_pupils}}
-#' @param platellets an object returned from \code{\link{prepare_platellets}}
+#' @param platelets an object returned from \code{\link{prepare_platelets}}
 #' @param fibrinogen an object returned from \code{\link{prepare_fibrinogen}}
 #' @param inr an object returned from \code{\link{prepare_inr}}
 #' @param ddimer an object returned from \code{\link{prepare_ddimer}}
 #' @param glucose an object returned from \code{\link{prepare_glucose}}
 #' @param alc an object returned from \code{\link{prepare_alc}}
 #' @param anc an object returned from \code{\link{prepare_anc}}
-#' @param billirburin an object returned from \code{\link{prepare_billirubin}}
+#' @param bilirubin an object returned from \code{\link{prepare_bilirubin}}
 #' @param alt an object returned from \code{\link{prepare_alt}}
-#' @param creatine an object returned from \code{\link{prepare_creatine}}
+#' @param creatinine an object returned from \code{\link{prepare_creatinine}}
 #' @param age an object returned from \code{\link{prepare_age}}
 #' @param antimicrobials an object returned from \code{\link{prepare_antimicrobials}}.
-#' @param antiinfecioustests an object returned from \code{\link{prepare_antiinfecioustest}}.
+#' @param antiinfectioustests an object returned from \code{\link{prepare_antiinfectioustests}}.
 #' @param resp.lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
 #' @param vaso.lookback The number of minutes to look back in an encounter for carry-forward vasocactive medication status
 #' @param map.lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
 #' @param lac.lookback The number of minutes to look back in an encounter for carry-forward of lactate values
 #' @param gcs.lookback The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).
 #' @param pupil.lookback The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)
-#' @param coag.lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.
+#' @param coag.lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, plateles, INR, and D-Dimer.
 #' @param endocrine.lookback The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose
 #' @param immunologic.lookback The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC
 #' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT
-#' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatine
+#' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine
 #'
 #' @param verbose when \code{TRUE} print messages showing the progress
 #'
@@ -72,7 +72,7 @@ prepare_phoenix_data <-
     dobutamine = NULL,
     dopamine = NULL,
     epinepherine = NULL,
-    milronine = NULL,
+    milrinone = NULL,
     norepinephrine = NULL,
     vasopressin = NULL,
     lactate = NULL,
@@ -82,26 +82,26 @@ prepare_phoenix_data <-
     sbpa = NULL,
     dbpa = NULL,
     dbpc = NULL,
-    gcse = NULL,
-    gcsm = NULL,
-    gcsv = NULL,
-    gcst = NULL,
-    pupill = NULL,
-    pupilr = NULL,
+    gcseye = NULL,
+    gcsmotor = NULL,
+    gcsverbal = NULL,
+    gcstotal = NULL,
+    pupilleft = NULL,
+    pupilright = NULL,
     pupils = NULL,
-    platellets = NULL,
+    platelets = NULL,
     fibrinogen = NULL,
     inr = NULL,
     ddimer = NULL,
     glucose = NULL,
     alc = NULL,
     anc = NULL,
-    billirburin = NULL,
+    bilirubin = NULL,
     alt = NULL,
-    creatine = NULL,
+    creatinine = NULL,
     age  = NULL,
     antimicrobials = NULL,
-    antiinfecioustests = NULL,
+    antiinfectioustests = NULL,
     resp.lookback        =  360,
     vaso.lookback        =  720,
     map.lookback         =  360,

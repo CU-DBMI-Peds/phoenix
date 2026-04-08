@@ -16,7 +16,7 @@ prepare_phoenix_data(
   dobutamine = NULL,
   dopamine = NULL,
   epinepherine = NULL,
-  milronine = NULL,
+  milrinone = NULL,
   norepinephrine = NULL,
   vasopressin = NULL,
   lactate = NULL,
@@ -26,26 +26,26 @@ prepare_phoenix_data(
   sbpa = NULL,
   dbpa = NULL,
   dbpc = NULL,
-  gcse = NULL,
-  gcsm = NULL,
-  gcsv = NULL,
-  gcst = NULL,
-  pupill = NULL,
-  pupilr = NULL,
+  gcseye = NULL,
+  gcsmotor = NULL,
+  gcsverbal = NULL,
+  gcstotal = NULL,
+  pupilleft = NULL,
+  pupilright = NULL,
   pupils = NULL,
-  platellets = NULL,
+  platelets = NULL,
   fibrinogen = NULL,
   inr = NULL,
   ddimer = NULL,
   glucose = NULL,
   alc = NULL,
   anc = NULL,
-  billirburin = NULL,
+  bilirubin = NULL,
   alt = NULL,
-  creatine = NULL,
+  creatinine = NULL,
   age = NULL,
   antimicrobials = NULL,
-  antiinfecioustests = NULL,
+  antiinfectioustests = NULL,
   resp.lookback = 360,
   vaso.lookback = 720,
   map.lookback = 360,
@@ -83,11 +83,11 @@ prepare_phoenix_data(
 
 \item{epinepherine}{an object returned from \code{\link{prepare_epinephrine}}}
 
-\item{milronine}{an object returned from \code{\link{prepare_milronine}}}
+\item{milrinone}{an object returned from \code{\link{prepare_milrinone}}}
 
 \item{norepinephrine}{an object returned from \code{\link{prepare_norepinephrine}}}
 
-\item{vasopressin}{an object returned from \code{\link{prepare_vaospressin}}}
+\item{vasopressin}{an object returned from \code{\link{prepare_vasopressin}}}
 
 \item{lactate}{an object returned from \code{\link{prepare_lactate}}}
 
@@ -103,21 +103,21 @@ prepare_phoenix_data(
 
 \item{dbpc}{an object returned from \code{\link{prepare_dbpc}}}
 
-\item{gcse}{an object returned from \code{\link{prepare_gcse}}}
+\item{gcseye}{an object returned from \code{\link{prepare_gcseye}}}
 
-\item{gcsm}{an object returned from \code{\link{prepare_gcsm}}}
+\item{gcsmotor}{an object returned from \code{\link{prepare_gcsmotor}}}
 
-\item{gcsv}{an object returned from \code{\link{prepare_gcsv}}}
+\item{gcsverbal}{an object returned from \code{\link{prepare_gcsverbal}}}
 
-\item{gcst}{an object returned from \code{\link{prepare_gcst}}}
+\item{gcstotal}{an object returned from \code{\link{prepare_gcstotal}}}
 
-\item{pupill}{an object returned from \code{\link{prepare_pupilr}}}
+\item{pupilleft}{an object returned from \code{\link{prepare_pupilleft}}}
 
-\item{pupilr}{an object returned from \code{\link{prepare_pupilr}}}
+\item{pupilright}{an object returned from \code{\link{prepare_pupilright}}}
 
 \item{pupils}{an object returned from \code{\link{prepare_pupils}}}
 
-\item{platellets}{an object returned from \code{\link{prepare_platellets}}}
+\item{platelets}{an object returned from \code{\link{prepare_platelets}}}
 
 \item{fibrinogen}{an object returned from \code{\link{prepare_fibrinogen}}}
 
@@ -131,17 +131,17 @@ prepare_phoenix_data(
 
 \item{anc}{an object returned from \code{\link{prepare_anc}}}
 
-\item{billirburin}{an object returned from \code{\link{prepare_billirubin}}}
+\item{bilirubin}{an object returned from \code{\link{prepare_bilirubin}}}
 
 \item{alt}{an object returned from \code{\link{prepare_alt}}}
 
-\item{creatine}{an object returned from \code{\link{prepare_creatine}}}
+\item{creatinine}{an object returned from \code{\link{prepare_creatinine}}}
 
 \item{age}{an object returned from \code{\link{prepare_age}}}
 
 \item{antimicrobials}{an object returned from \code{\link{prepare_antimicrobials}}.}
 
-\item{antiinfecioustests}{an object returned from \code{\link{prepare_antiinfecioustest}}.}
+\item{antiinfectioustests}{an object returned from \code{\link{prepare_antiinfectioustests}}.}
 
 \item{resp.lookback}{The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...}
 
@@ -155,7 +155,7 @@ prepare_phoenix_data(
 
 \item{pupil.lookback}{The number of minutes to look back in an encounter for carry-forwared of pupil status (fixed or unfixed)}
 
-\item{coag.lookback}{The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platteles, INR, and D-Dimer.}
+\item{coag.lookback}{The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, plateles, INR, and D-Dimer.}
 
 \item{endocrine.lookback}{The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose}
 
@@ -163,7 +163,7 @@ prepare_phoenix_data(
 
 \item{hepatic.lookback}{The number of minutes to look back in an encounter for carry-forward of hepatic variables: billirubin (total), ALT}
 
-\item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatine}
+\item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine}
 
 \item{verbose}{when \code{TRUE} print messages showing the progress}
 }
