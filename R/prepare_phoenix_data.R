@@ -144,20 +144,20 @@ prepare_phoenix_data <-
   check <- unlist(check)
 
   if (!all(check)) {
-    msg <- paste0("The input to ", names(check)[!check], " needs to be processed through prepare_", tolower(names(check)[!check]), "().  ")
-    stop(msg)
+    msg <- paste0("The input to ", names(check)[!check], " needs to be processed through prepare_", names(check)[!check], "().  ")
+    stop(msg, call. = FALSE)
   }
 
   # check that all the inputs have the same id.vars and eclocks
   id.vars <- unique(lapply(phxdata, attr, "id.vars"))
   if (length(id.vars) > 1L) {
-    stop("All input data sets need to have the same id.vars")
+    stop("All input data sets need to have the same id.vars", call. = FALSE)
   }
   id.vars <- unlist(id.vars)
 
   eclock <- unique(lapply(phxdata, attr, "eclock"))
   if (length(eclock) > 1L) {
-    stop("All input data sets need to have the same eclock")
+    stop("All input data sets need to have the same eclock", call. = FALSE)
   }
   eclock <- unlist(eclock)
 
