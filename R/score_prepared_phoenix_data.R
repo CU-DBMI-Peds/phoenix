@@ -5,13 +5,18 @@
 #'   sepsis or septic shock.
 #' @param T1 The end of the observation window for assessing if the patient has
 #'   sepsis or septic shock.
+#' @param sigma numeric (integer) value, sepsis = sepsis_score >= sigma.
+#' @param kappa numeric (integer) value, minimum cardiovascular score required
+#' to flag septic shock.
 #' @param version The scoring version to apply to the data.  Default is
 #'   "jama2024" the scoring method used to develope the Phoenix Sepsis Criteria.
 #'   See Details.
+#' @param verbose when \code{TRUE}, display progress messages
 #'
 #' @export
 score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, version = c("jama2024", "alt1", "alt2"), verbose = getOption("phoenix_verbose", interactive())) {
   stopifnot(inherits(x, "prepared_phoenix_data"))
+  stopifnot(length(sigma) == 1, length(kappa) == 1, is.numeric(sigma), is.numeric(kappa))
   version <- match.arg(version, several.ok = FALSE)
 
   if (verbose) message("Scoring prepared_phoenix_data...")
@@ -163,7 +168,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "phoenix8_sepsis_score",
-      value = respscore + cardscore + neuroscore + coagscore + 
+      value = respscore + cardscore + neuroscore + coagscore +
               immunscore + endoscore + renalscore + hepaticscore
     )
 
@@ -205,7 +210,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 }
 
 alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # Overlly simplified, the score is 
+  # Overlly simplified, the score is
   # max(resp) + max(card) + max(neuro) + max(coag)
 
   if (verbose) message("    building organ system scores...")
@@ -304,7 +309,7 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "alt1_8_sepsis_score",
-      value = oss[["respscore"]]  + oss[["cardscore"]] + oss[["neuroscore"]] + oss[["coagscore"]] + 
+      value = oss[["respscore"]]  + oss[["cardscore"]] + oss[["neuroscore"]] + oss[["coagscore"]] +
               oss[["immunscore"]] + oss[["endoscore"]] + oss[["renalscore"]] + oss[["hepaticscore"]]
     )
 
@@ -332,4 +337,8 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
   oss
 
+}
+
+alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+  stop("not yet built")
 }
