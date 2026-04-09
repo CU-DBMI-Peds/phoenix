@@ -167,7 +167,6 @@ prepare_phoenix_data <-
       bilirubin = bilirubin,
       alt = alt,
       creatinine = creatinine,
-      age  = age,
       antimicrobials = antimicrobials,
       antiinfectioustests = antiinfectioustests
     )
@@ -176,8 +175,8 @@ prepare_phoenix_data <-
   # verify that all the input data sets are either null or phoenix_prepared
   check <-
     Map(f = function(obj, cls) { is.null(obj) || inherits(obj, cls) },
-      obj = phxdata,
-      cls = paste0("phoenix_prepared_", tolower(names(phxdata)))
+      obj = c(phxdata, list(age = age)),
+      cls = paste0("phoenix_prepared_", c(tolower(names(phxdata)), "age"))
     )
   check <- unlist(check)
 
@@ -187,9 +186,14 @@ prepare_phoenix_data <-
   }
 
   # check that all the inputs have the same id.vars and eclocks
-  id.vars <- unique(lapply(phxdata, attr, "id.vars"))
+  if (!is.null(age)) {
+    id.vars <- unique(lapply(c(phxdata, list(age = age)), attr, "id.vars"))
+  } else {
+    id.vars <- unique(lapply(phxdata, attr, "id.vars"))
+  }
+
   if (length(id.vars) > 1L) {
-    stop("All input data sets need to have the same id.vars", call. = FALSE)
+    stop("All input data sets need to have the same id.vars.  This check is aggressive, the order needs to be same too..  This check is aggressive, the order needs to be same too.", call. = FALSE)
   }
   id.vars <- unlist(id.vars)
 
@@ -219,16 +223,19 @@ prepare_phoenix_data <-
   VASOVARS <- c("DOBUTAMINE", "DOPAMINE", "EPINEPHRINE", "MILRINONE", "NOREPINEPHRINE", "VASOPRESSIN")
   MAPVARS  <- c("MAPC", "MAPA", "SBPA", "SPBC", "DBPA", "DBPC")
   CARDVARS <- c(VASOVARS, MAPVARS, "LACTATE")
-  NEUROVARS <- c("GCSEYE", "GCSMOTOR", "GCSVERBAL", "GCSTOTAL", "PUPILLEFT", "PUPILRIGHT", "PUPILS")
+  GCSVARS   <- c("GCSEYE", "GCSMOTOR", "GCSVERBAL", "GCSTOTAL")
+  PUPILVARS <- c("PUPILLEFT", "PUPILRIGHT", "PUPILS")
+  NEUROVARS <- c(GCSVARS, PUPILVARS)
   COAGVARS <- c("PLATELETS", "FIBRINOGEN", "INR", "DDIMER")
   ENDOVARS <- c("GLUCOSE")
   IMMUNOVARS <- c("ANC", "ALC")
   HEPATICVARS <- c("BILIRUBIN", "ALT")
   RENALVARS <- c("CREATININE")
+  SIVARS <- c("ANTIINFECTIOUSTESTS", "ANTIMICROBIALS")
 
-  for (j in c(RESPVARS, CARDVARS, NEUROVARS, COAGVARS, ENDOVARS, IMMUNOVARS, HEPATICVARS, RENALVARS)) {
+  for (j in c(RESPVARS, CARDVARS, NEUROVARS, COAGVARS, ENDOVARS, IMMUNOVARS, HEPATICVARS, RENALVARS, SIVARS)) {
+    if (verbose) message(sprintf("   %s...", j))
     if (j %in% names(phxdata)) {
-      if (verbose) message(sprintf("   %s...", j))
       obs <- !is.na(phxdata[[j]])
       last_obs <- cummax(ifelse(obs, row, 0L))
       ok <- last_obs > 0L
@@ -250,14 +257,153 @@ prepare_phoenix_data <-
         lookback <- map.lookback
       } else if (j == "LACTATE") {
         lookback <- lac.lookback
+      } else if (j %in% GCSVARS) {
+        # infinite lookback for GCS variables at the moment, a more nuanced use
+        # of the lookback follows when building the GCS varaible that will be
+        # used in the scoring.
+        lookback <- Inf
+      } else if (j %in% PUPILVARS) {
+        lookback <- pupil.lookback
+      } else if (j %in% COAGVARS) {
+        lookback <- coag.lookback
+      } else if (j %in% ENDOVARS) {
+        lookback <- endocrine.lookback
+      } else if (j %in% IMMUNOVARS) {
+        lookback <- immunologic.lookback
+      } else if (j %in% HEPATICVARS) {
+        lookback <- hepatic.lookback
+      } else if (j %in% RENALVARS) {
+        lookback <- renal.lookback
+      } else if (j %in% SIVARS) {
+        lookback <- Inf
       } else {
         stop(sprintf("lookback not defined for %s", j), call. = FALSE)
       }
       idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > lookback)
       phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
       phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
+    } else {
+      # the variable is not in the data set, create it and the _eclock column so
+      # that the logic for the constructed variables will be simplier as all the
+      # needed inputs will exist
+      phxdata <- phxdft_set(x = phxdata, j = j, value = NA_real_)
+      phxdata <- phxdft_set(x = phxdata, j = paste0(j, "_eclock"), value = NA_real_)
     }
   }
 
+  if (verbose) message("join age data to clinical data...")
+  if (!is.null(age)) {
+    phxdata <- phxdft_full_outer_join(phxdata, age, by = id.vars)
+  } else {
+    phxdata <- phxdft_set(phxdata, j = "AGE", value = NA_real_)
+  }
+
+  ##############################################################################
+  ### Constructed variables
+
+  # PFRatio: only valid if FIO2 is the same age, or older, than the PAO2 value
+  if (verbose) message("Constructing and combining variables...")
+
+  if (verbose) message("  PaO2/FiO2...")
+  idx <- which(phxdata[["FIO2_eclock"]] <= phxdata[["PAO2_eclock"]])
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      i = idx,
+      j = "PFR",
+      value = (phxdata[["PAO2"]] / phxdata[["FIO2"]])[idx]
+    )
+
+  # SFRatio: only valid if FIO2 is the same age or, or older, than the SPO2
+  # value and SPO2 <= 97
+  if (verbose) message("  SpO2/FiO2...")
+  idx <- which((phxdata[["FIO2_eclock"]] <= phxdata[["SPO2_eclock"]]) & phxdata[["SPO2"]] <= 97)
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      i = idx,
+      j = "SFR",
+      value = (phxdata[["SPO2"]] / phxdata[["FIO2"]])[idx]
+    )
+
+  # Invasive Mechancical Ventalation
+  # if the inputs are not in the data set set them to NA, this will simplify the
+  # logic for flagging IMV overall.
+  if (verbose) message("  Invasive Mechancical Ventalation...")
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "IMV",
+      value = as.integer((phxdata[["IMV"]]) | (phxdata[["VENT"]] > 0) | (phxdata[["HFOV"]] > 0) | (phxdata[["PEEP"]] > 3))
+    )
+
+  # Other Respiratory Support
+  if (verbose) message("  Other Respiratory Support...")
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "ORS",
+      value = as.integer((phxdata[["O2SUPPORT"]] > 0) | (phxdata[["FIO2"]] > 0.21))
+    )
+
+  # Mean Arterial Pressure
+  # if mapa exists, use it, if not, then estimate from the sbpa and dbpa.  If
+  # both of those are missing, the use mapc, and lastly use estiamte from sbpc
+  # and dbpc
+  if (verbose) message("  Mean Arterial Pressure...")
+  phxdata[["MAP"]] <-
+    Reduce(function(a, b) ifelse(is.na(a), b, a),
+      list(
+        m1 = phxdata[["MAPA"]],
+        m2 = 2/3 * phxdata[["DBPA"]] + 1/3 * phxdata[["SBPA"]],
+        m3 = phxdata[["MAPC"]],
+        m4 = 2/3 * phxdata[["DBPC"]] + 1/3 * phxdata[["SBPC"]]
+      )
+    )
+
+  # GCS
+  # if the GSCTOTAL_eclock > max compoent eclock, use GCSTOTAL
+  # if any of the components are younger than the total, use the sum of the
+  # compoents
+  if (verbose) message("  GCS....")
+  gcstotal2 <-
+    rowSums(phxdft_select(phxdata, c("GCSEYE", "GCSVERBAL", "GCSMOTOR")))
+  gcstotal2_deltas <-
+    phxdata[[eclock]] -
+    phxdft_select(phxdata, c("GCSEYE_eclock", "GCSVERBAL_eclock", "GCSMOTOR_eclock"))
+  gcstotal2_delta <- apply(gcstotal2_deltas, MARGIN = 1, FUN = min)
+
+  deltatotal <- phxdata[[eclock]] - phxdata[["GCSTOTAL_eclock"]]
+
+  # use gcstotal2
+  idx2 <- which(gcstotal2_delta <= pmin(deltatotal, gcs.lookback))
+  # use gcstotal
+  idx <- which((deltatotal < gcstotal2_delta) & (phxdata[[eclock]] <= gcs.lookback))
+
+  phxdata <- phxdft_set(phxdata, i = idx2, j = "GCS", value = gcstotal2[idx2])
+  phxdata <- phxdft_set(phxdata, i = idx,  j = "GCS", value = phxdata[["GCSTOTAL"]][idx])
+
+  # FIXEDPUPILS
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "FIXEDPUPILS",
+      value =
+        as.integer(
+          (phxdata[["PUPILS"]] > 0) | ((phxdata[["PUPILLEFT"]] + phxdata[["PUPILRIGHT"]]) == 2)
+        )
+    )
+
+  # Suspected infection
+  phxdata[["ANTIMICROBIALS"]]
+  phxdata[["ANTIINFECTIOUSTESTS"]]
+
+  ##############################################################################
+  ### return the data set
+  if (verbose) message("returning the prepared data...")
+  class(phxdata) <- c("prepared_phoenix_data", class(phxdata))
+  attr(phxdata, "id.vars") <- id.vars
+  attr(phxdata, "eclock") <- eclock
   phxdata
+
 }

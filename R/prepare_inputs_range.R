@@ -528,6 +528,8 @@ prepare_age <-
   cl[[1]] <- quote(prepare_variable)
   cl[["variable.name"]] <- "AGE"
   rtn <- eval(cl)
+  rtn <- phxdft_set(rtn, j = "variable", value = NULL)
+  rtn <- phxdft_setnames(rtn, old = "value", new = "AGE")
   class(rtn) <- c("phoenix_prepared_age", class(rtn))
   rtn
 }
