@@ -167,12 +167,12 @@ stopifnot(
   identical(sapply(test_prepared_age, inherits, "data.frame"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
   identical(sapply(test_prepared_age, inherits, "phoenix_prepared"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
   identical(sapply(test_prepared_age, inherits, "phoenix_prepared_age"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
-  identical(test_prepared_age[["DF"]][["value"]], c(60, 24)),
-  identical(test_prepared_age[["DT"]][["value"]], c(60, 24)),
-  identical(test_prepared_age[["TB"]][["value"]], c(60, 24)),
-  identical(test_prepared_age[["DF"]][["variable"]], c("AGE", "AGE")),
-  identical(test_prepared_age[["DT"]][["variable"]], c("AGE", "AGE")),
-  identical(test_prepared_age[["TB"]][["variable"]], c("AGE", "AGE")),
+  identical(test_prepared_age[["DF"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age[["DT"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age[["TB"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age[["DF"]][["variable"]], NULL),
+  identical(test_prepared_age[["DT"]][["variable"]], NULL),
+  identical(test_prepared_age[["TB"]][["variable"]], NULL),
   identical(attr(test_prepared_age[["DF"]], "id.vars"), id.vars),
   identical(attr(test_prepared_age[["DT"]], "id.vars"), id.vars),
   identical(attr(test_prepared_age[["TB"]], "id.vars"), id.vars),
@@ -201,9 +201,15 @@ test_prepared_age_min <-
 test_prepared_age_min <- lapply(test_prepared_age_min, sort_prepared, eclock = "hospital")
 
 stopifnot(
-  identical(test_prepared_age_min[["DF"]][["value"]], c(60, 24)),
-  identical(test_prepared_age_min[["DT"]][["value"]], c(60, 24)),
-  identical(test_prepared_age_min[["TB"]][["value"]], c(60, 24))
+  identical(test_prepared_age_min[["DF"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age_min[["DT"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age_min[["TB"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age_min[["DF"]][["value"]], NULL),
+  identical(test_prepared_age_min[["DT"]][["value"]], NULL),
+  identical(test_prepared_age_min[["TB"]][["value"]], NULL),
+  identical(test_prepared_age_min[["DF"]][["variable"]], NULL),
+  identical(test_prepared_age_min[["DT"]][["variable"]], NULL),
+  identical(test_prepared_age_min[["TB"]][["variable"]], NULL)
 )
 
 ###############################################################################
@@ -225,9 +231,9 @@ test_prepared_age_custom_range <-
 test_prepared_age_custom_range <- lapply(test_prepared_age_custom_range, sort_prepared, eclock = "hospital")
 
 stopifnot(
-  identical(test_prepared_age_custom_range[["DF"]][["value"]], c(60, 24)),
-  identical(test_prepared_age_custom_range[["DT"]][["value"]], c(60, 24)),
-  identical(test_prepared_age_custom_range[["TB"]][["value"]], c(60, 24))
+  identical(test_prepared_age_custom_range[["DF"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age_custom_range[["DT"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_age_custom_range[["TB"]][["AGE"]], c(60, 24))
 )
 
 ###############################################################################
@@ -316,9 +322,9 @@ test_prepared_value_col <-
 test_prepared_value_col <- lapply(test_prepared_value_col, sort_prepared, eclock = "hospital")
 
 stopifnot(
-  identical(test_prepared_value_col[["DF"]][["value"]], c(60, 24)),
-  identical(test_prepared_value_col[["DT"]][["value"]], c(60, 24)),
-  identical(test_prepared_value_col[["TB"]][["value"]], c(60, 24))
+  identical(test_prepared_value_col[["DF"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_value_col[["DT"]][["AGE"]], c(60, 24)),
+  identical(test_prepared_value_col[["TB"]][["AGE"]], c(60, 24))
 )
 
 ###############################################################################
@@ -340,9 +346,12 @@ stopifnot(
   identical(nrow(test_zero_row_age[["DF"]]), 0L),
   identical(nrow(test_zero_row_age[["DT"]]), 0L),
   identical(nrow(test_zero_row_age[["TB"]]), 0L),
-  identical(test_zero_row_age[["DF"]][["variable"]], character(0)),
-  identical(test_zero_row_age[["DT"]][["variable"]], character(0)),
-  identical(test_zero_row_age[["TB"]][["variable"]], character(0)),
+  identical(test_zero_row_age[["DF"]][["AGE"]], numeric(0)),
+  identical(test_zero_row_age[["DT"]][["AGE"]], numeric(0)),
+  identical(test_zero_row_age[["TB"]][["AGE"]], numeric(0)),
+  identical(test_zero_row_age[["DF"]][["variable"]], NULL),
+  identical(test_zero_row_age[["DT"]][["variable"]], NULL),
+  identical(test_zero_row_age[["TB"]][["variable"]], NULL),
   is.null(attr(test_zero_row_age[["DF"]], "eclock")),
   is.null(attr(test_zero_row_age[["DT"]], "eclock")),
   is.null(attr(test_zero_row_age[["TB"]], "eclock"))
