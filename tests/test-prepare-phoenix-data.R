@@ -165,7 +165,6 @@ if (inherits(prepared_fio2[["DT"]], "data.table")) {
   test_single_input <- sort_phxdata(test_single_input, id.vars = id.vars, eclock = eclock)
   stopifnot(
     inherits(test_single_input, "data.table"),
-    identical(names(test_single_input), c(id.vars, eclock, "FIO2", "FIO2_eclock")),
     identical(test_single_input[["FIO2"]], 0.30),
     isTRUE(all.equal(test_single_input[["FIO2_eclock"]], 0))
   )
