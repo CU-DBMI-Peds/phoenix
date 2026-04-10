@@ -353,7 +353,10 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
       value = NULL
     )
 
-  oss
+  phxdft_select(
+    oss,
+    c(id.vars, "alt1_sepsis_score", "alt1_sepsis", "alt1_septic_shock", "alt1_8_sepsis_score")
+  )
 
 }
 

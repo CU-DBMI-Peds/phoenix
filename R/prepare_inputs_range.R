@@ -63,10 +63,17 @@ prepare_fio2 <-
     verbose = getOption("phoenix_verbose", TRUE)
   ) {
 
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "FIO2"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "FIO2",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_fio2", class(rtn))
   rtn
 }
@@ -84,10 +91,17 @@ prepare_spo2 <-
     verbose = getOption("phoenix_verbose", TRUE)
   ) {
 
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "SPO2"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "SPO2",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_spo2", class(rtn))
   rtn
 }
@@ -105,10 +119,17 @@ prepare_pao2 <-
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "PAO2"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "PAO2",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_pao2", class(rtn))
   rtn
 }
@@ -125,10 +146,17 @@ prepare_vent <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "VENT"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "VENT",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_vent", class(rtn))
   rtn
 }
@@ -145,10 +173,17 @@ prepare_hfov <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "HFOV"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "HFOV",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_hfov", class(rtn))
   rtn
 }
@@ -165,10 +200,17 @@ prepare_peep <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "PEEP"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "PEEP",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_peep", class(rtn))
   rtn
 }
@@ -185,10 +227,17 @@ prepare_lactate <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "LACTATE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "LACTATE",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_lactate", class(rtn))
   rtn
 }
@@ -205,10 +254,17 @@ prepare_sbpc <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "SBPC"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "SBPC",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_sbpc", class(rtn))
   rtn
 }
@@ -225,10 +281,17 @@ prepare_sbpa <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "SBPA"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "SBPA",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_sbpa", class(rtn))
   rtn
 }
@@ -245,10 +308,17 @@ prepare_dbpc <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "DBPC"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "DBPC",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_dbpc", class(rtn))
   rtn
 }
@@ -265,10 +335,17 @@ prepare_dbpa <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "DBPA"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "DBPA",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_dbpa", class(rtn))
   rtn
 }
@@ -285,10 +362,17 @@ prepare_mapc <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "MAPC"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "MAPC",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_mapc", class(rtn))
   rtn
 }
@@ -305,10 +389,17 @@ prepare_mapa <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "MAPA"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "MAPA",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_mapa", class(rtn))
   rtn
 }
@@ -325,10 +416,17 @@ prepare_platelets <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "PLATELETS"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "PLATELETS",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_platelets", class(rtn))
   rtn
 }
@@ -345,10 +443,17 @@ prepare_inr <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "INR"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "INR",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_inr", class(rtn))
   rtn
 }
@@ -365,10 +470,17 @@ prepare_ddimer <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "DDIMER"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "DDIMER",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_ddimer", class(rtn))
   rtn
 }
@@ -385,10 +497,17 @@ prepare_fibrinogen <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "FIBRINOGEN"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "FIBRINOGEN",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_fibrinogen", class(rtn))
   rtn
 }
@@ -405,10 +524,17 @@ prepare_glucose <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "GLUCOSE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "GLUCOSE",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_glucose", class(rtn))
   rtn
 }
@@ -425,10 +551,17 @@ prepare_anc <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "ANC"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "ANC",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_anc", class(rtn))
   rtn
 }
@@ -445,10 +578,17 @@ prepare_alc <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "ALC"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "ALC",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_alc", class(rtn))
   rtn
 }
@@ -465,10 +605,17 @@ prepare_creatinine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "CREATININE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "CREATININE",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_creatinine", class(rtn))
   rtn
 }
@@ -485,10 +632,17 @@ prepare_bilirubin <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "BILIRUBIN"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "BILIRUBIN",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_bilirubin", class(rtn))
   rtn
 }
@@ -505,10 +659,17 @@ prepare_alt <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "ALT"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      eclock = eclock,
+      value.var = value.var,
+      variable.name = "ALT",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_alt", class(rtn))
   rtn
 }
@@ -524,10 +685,16 @@ prepare_age <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["variable.name"]] <- "AGE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "AGE",
+      valid.range = valid.range,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   rtn <- phxdft_set(rtn, j = "variable", value = NULL)
   rtn <- phxdft_setnames(rtn, old = "value", new = "AGE")
   class(rtn) <- c("phoenix_prepared_age", class(rtn))

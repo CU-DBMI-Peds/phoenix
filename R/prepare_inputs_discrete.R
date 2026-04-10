@@ -59,11 +59,17 @@ prepare_imv <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "IMV"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "IMV",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_imv", class(rtn))
   rtn
 }
@@ -79,11 +85,17 @@ prepare_o2support <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "O2SUPPORT"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "O2SUPPORT",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_o2support", class(rtn))
   rtn
 }
@@ -99,11 +111,17 @@ prepare_dobutamine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "DOBUTAMINE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "DOBUTAMINE",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_dobutamine", class(rtn))
   rtn
 }
@@ -119,11 +137,17 @@ prepare_dopamine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "DOPAMINE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "DOPAMINE",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_dopamine", class(rtn))
   rtn
 }
@@ -139,11 +163,17 @@ prepare_epinephrine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "EPINEPHRINE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "EPINEPHRINE",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_epinephrine", class(rtn))
   rtn
 }
@@ -159,11 +189,17 @@ prepare_milrinone <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "MILRINONE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "MILRINONE",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_milrinone", class(rtn))
   rtn
 }
@@ -179,11 +215,17 @@ prepare_norepinephrine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "NOREPINEPHRINE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "NOREPINEPHRINE",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_norepinephrine", class(rtn))
   rtn
 }
@@ -199,11 +241,17 @@ prepare_vasopressin <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "VASOPRESSIN"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "VASOPRESSIN",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_vasopressin", class(rtn))
   rtn
 }
@@ -220,11 +268,17 @@ prepare_gcseye <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(1, 2, 3, 4)
-  cl[["variable.name"]] <- "GCSEYE"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "GCSEYE",
+      valid.values = c(1, 2, 3, 4),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_gcseye", class(rtn))
   rtn
 }
@@ -240,11 +294,17 @@ prepare_gcsmotor <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(1, 2, 3, 4, 5, 6)
-  cl[["variable.name"]] <- "GCSMOTOR"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "GCSMOTOR",
+      valid.values = c(1, 2, 3, 4, 5, 6),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_gcsmotor", class(rtn))
   rtn
 }
@@ -260,11 +320,17 @@ prepare_gcsverbal <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(1, 2, 3, 4, 5)
-  cl[["variable.name"]] <- "GCSVERBAL"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "GCSVERBAL",
+      valid.values = c(1, 2, 3, 4, 5),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_gcsverbal", class(rtn))
   rtn
 }
@@ -280,11 +346,17 @@ prepare_gcstotal <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
-  cl[["variable.name"]] <- "GCSTOTAL"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "GCSTOTAL",
+      valid.values = c(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_gcstotal", class(rtn))
   rtn
 }
@@ -300,11 +372,17 @@ prepare_pupilleft <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "PUPILLEFT"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "PUPILLEFT",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_pupilleft", class(rtn))
   rtn
 }
@@ -320,11 +398,17 @@ prepare_pupilright <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "PUPILRIGHT"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "PUPILRIGHT",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_pupilright", class(rtn))
   rtn
 }
@@ -340,11 +424,17 @@ prepare_pupils <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "PUPILS"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "PUPILS",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_pupils", class(rtn))
   rtn
 }
@@ -360,11 +450,17 @@ prepare_antimicrobials <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "ANTIMICROBIALS"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "ANTIMICROBIALS",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_antimicrobials", class(rtn))
   rtn
 }
@@ -380,11 +476,17 @@ prepare_antiinfectioustests <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  cl <- eval(match.call.with.defaults)
-  cl[[1]] <- quote(prepare_variable)
-  cl[["valid.values"]] <- c(0, 1)
-  cl[["variable.name"]] <- "ANTIINFECTIOUSTESTS"
-  rtn <- eval(cl)
+  rtn <-
+    prepare_variable(
+      x = x,
+      id.vars = id.vars,
+      value.var = value.var,
+      variable.name = "ANTIINFECTIOUSTESTS",
+      valid.values = c(0, 1),
+      eclock = eclock,
+      tie.breaker = tie.breaker,
+      verbose = verbose
+    )
   class(rtn) <- c("phoenix_prepared_antiinfectioustests", class(rtn))
   rtn
 }
