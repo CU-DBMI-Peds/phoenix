@@ -55,7 +55,8 @@ make_backends <- function(x) {
 # harmless backend-specific row ordering differences after duplicate reduction.
 sort_prepared <- function(x, eclock = "minutes_from_admission") {
   stopifnot(inherits(x, "data.frame"))
-  x[order(x[[eclock]]), ]
+  #x[order(x[[eclock]]), ]
+  getFromNamespace(ns = "phoenix", x ="phxdft_setorder")(x, eclock)
 }
 
 ################################################################################

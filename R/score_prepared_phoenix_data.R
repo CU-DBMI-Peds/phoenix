@@ -43,10 +43,16 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
     )
 
   si <-
-    aggregate(
-      x  = phxdft_select(si, "suspected_infection"),
-      by = phxdft_select(si, attr(x, "id.vars")),
-      FUN = max
+    #aggregate(
+    #  x  = phxdft_select(si, "suspected_infection"),
+    #  by = phxdft_select(si, attr(x, "id.vars")),
+    #  FUN = max
+    #)
+    phxdft_aggregate(
+      data = si,
+      y    = "suspected_infection",
+      by   = attr(x, "id.vars"),
+      FUN  = max
     )
 
   if (verbose) message("  identifying records to score...")
@@ -175,10 +181,16 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   if (verbose) message("    aggregating....")
   # find the max value of the scores
   oss <-
-    aggregate(
-      x = phxdft_select(oss, c("phoenix_sepsis_score", "phoenix_septic_shock_score", "phoenix8_sepsis_score")),
-      by = phxdft_select(oss, id.vars),
-      FUN = max
+    #aggregate(
+    #  x = phxdft_select(oss, c("phoenix_sepsis_score", "phoenix_septic_shock_score", "phoenix8_sepsis_score")),
+    #  by = phxdft_select(oss, id.vars),
+    #  FUN = max
+    #)
+    phxdft_aggregate(
+      data = oss,
+      y    = c("phoenix_sepsis_score", "phoenix_septic_shock_score", "phoenix8_sepsis_score"),
+      by   = id.vars,
+      FUN  = max
     )
 
   if (verbose) message("    building indicators....")
@@ -281,10 +293,16 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
   if (verbose) message("    aggregating....")
   oss <-
-    aggregate(
-      x = phxdft_select(oss, c("respscore", "cardscore", "neuroscore", "coagscore", "endoscore", "immunscore", "hepaticscore", "renalscore")),
-      by = phxdft_select(oss, id.vars),
-      FUN = max
+    #aggregate(
+    #  x = phxdft_select(oss, c("respscore", "cardscore", "neuroscore", "coagscore", "endoscore", "immunscore", "hepaticscore", "renalscore")),
+    #  by = phxdft_select(oss, id.vars),
+    #  FUN = max
+    #)
+    phxdft_aggregate(
+      data = oss,
+      y    = c("respscore", "cardscore", "neuroscore", "coagscore", "endoscore", "immunscore", "hepaticscore", "renalscore"),
+      by   = id.vars,
+      FUN  = max
     )
 
   if (verbose) message("    building indicators....")

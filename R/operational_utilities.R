@@ -123,19 +123,21 @@ prepare_variable <-
       xs <- split(x, f = dups)
       xs[["FALSE"]] <- phxdft_select(xs[["FALSE"]], c(id.vars, eclock, value.var))
       xs[["TRUE"]] <-
-        stats::aggregate.data.frame(
-          x   = phxdft_select(xs[["TRUE"]], value.var),
-          by  = phxdft_select(xs[["TRUE"]], c(id.vars, eclock)),
-          FUN = tie.breaker
+        phxdft_aggregate(
+          data = xs[["TRUE"]],
+          y    = value.var,
+          by   = c(id.vars, eclock),
+          FUN  = tie.breaker
         )
       x <- do.call(rbind, xs)
       rownames(x) <- NULL
     } else {
       x <-
-        stats::aggregate.data.frame(
-          x = phxdft_select(x, value.var),
-          by = phxdft_select(x, c(id.vars, eclock)),
-          FUN = tie.breaker
+        phxdft_aggregate(
+          data = x,
+          y    = value.var,
+          by   = c(id.vars, eclock),
+          FUN  = tie.breaker
         )
     }
   } else {
@@ -168,7 +170,6 @@ prepare_variable <-
 
   attr(x, "id.vars") <- id.vars
   attr(x, "eclock") <- eclock
-  class(x) <- c("phoenix_prepared", class(x))
 
   x
 }

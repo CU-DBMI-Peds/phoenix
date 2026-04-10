@@ -165,7 +165,6 @@ test_prepared_age <- lapply(test_prepared_age, sort_prepared, eclock = "hospital
 
 stopifnot(
   identical(sapply(test_prepared_age, inherits, "data.frame"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
-  identical(sapply(test_prepared_age, inherits, "phoenix_prepared"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
   identical(sapply(test_prepared_age, inherits, "phoenix_prepared_age"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
   identical(test_prepared_age[["DF"]][["AGE"]], c(60, 24)),
   identical(test_prepared_age[["DT"]][["AGE"]], c(60, 24)),

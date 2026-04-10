@@ -1,3 +1,4 @@
+source('utilities.R')
 # No need to load and attach the namespace, everything in this test script is
 # non-exported
 
@@ -14,7 +15,8 @@ dataframetools <-
     "phxdft_left_join",
     "phxdft_cbind",
     "phxdft_dcast",
-    "phxdft_rbindlist"
+    "phxdft_rbindlist",
+    "phxdft_aggregate"
   )
 
 phxns <- getNamespace("phoenix")
@@ -32,18 +34,9 @@ stopifnot(
 
 ################################################################################
 # Set up data for testing
-DF <- data.frame(A = 1:10, C = NA_integer_, B = LETTERS[1:10], stringsAsFactors = FALSE)
-if (requireNamespace("dplyr", quietly = TRUE)) {
-  TBL <- getExportedValue(name = "as_tibble", ns = "dplyr")(DF)
-} else {
-  TBL <- DF
-}
-if (requireNamespace("data.table", quietly = TRUE)) {
-  DT <- getExportedValue(name = "copy", ns = "data.table")(DF)
-  getExportedValue(name = "setDT", ns = "data.table")(DT)
-} else {
-  DT <- DF
-}
+DF  <- data.frame(A = 1:10, C = NA_integer_, B = LETTERS[1:10], stringsAsFactors = FALSE)
+DT  <- as_data_table_if_available(DF)
+TBL <- as_tibble_if_available(DF)
 
 ################################################################################
 # set the value of column C in row 5
@@ -726,6 +719,82 @@ stopifnot(
 ################################################################################
 # testing phxdft_dcast
 
+################################################################################
+# testing phxdft_aggregate
+mtcarsDF <- mtcars
+mtcarsDT <- as_data_table_if_available(mtcars)
+mtcarsTB <- as_tibble_if_available(mtcars)
+
+expected_aggregation1 <-
+  stats::aggregate(x = mtcarsDF["mpg"], by = mtcarsDF["cyl"], FUN = mean)
+
+DF1 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsDF, y = "mpg", by = "cyl", FUN = mean)
+DT1 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsDT, y = "mpg", by = "cyl", FUN = mean)
+DT1 <- getFromNamespace(ns = "phoenix", x = "phxdft_setorder")(DT1, by = "cyl")
+TB1 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsTB, y = "mpg", by = "cyl", FUN = mean)
+TB1 <- getFromNamespace(ns = "phoenix", x = "phxdft_setorder")(TB1, by = "cyl")
+
+stopifnot(
+  identical(DF1, expected_aggregation1),
+  all.equal(DT1, expected_aggregation1, check.attributes = FALSE),
+  all.equal(TB1, expected_aggregation1, check.attributes = FALSE)
+)
+
+expected_aggregation2 <-
+  stats::aggregate(x = mtcarsDF["mpg"], by = mtcarsDF[c("cyl", "am")], FUN = mean)
+
+DF2 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsDF, y = "mpg", by = c("cyl", "am"), FUN = mean)
+DT2 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsDT, y = "mpg", by = c("cyl", "am"), FUN = mean)
+DT2 <- getFromNamespace(ns = "phoenix", x = "phxdft_setorder")(DT2, by = c("am", "cyl"))
+TB2 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsTB, y = "mpg", by = c("cyl", "am"), FUN = mean)
+TB2 <- getFromNamespace(ns = "phoenix", x = "phxdft_setorder")(TB2, by = c("am", "cyl"))
+
+stopifnot(
+  identical(DF2, expected_aggregation2),
+  all.equal(DT2, expected_aggregation2, check.attributes = FALSE),
+  all.equal(TB2, expected_aggregation2, check.attributes = FALSE)
+)
+
+expected_aggregation3 <-
+  stats::aggregate(x = mtcarsDF[c("mpg", "wt")], by = mtcarsDF[c("cyl", "am")], FUN = mean)
+
+DF3 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsDF, y = c("mpg", "wt"), by = c("cyl", "am"), FUN = mean)
+DT3 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsDT, y = c("mpg", "wt"), by = c("cyl", "am"), FUN = mean)
+DT3 <- getFromNamespace(ns = "phoenix", x = "phxdft_setorder")(DT3, by = c("am", "cyl"))
+TB3 <- getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(mtcarsTB, y = c("mpg", "wt"), by = c("cyl", "am"), FUN = mean)
+TB3 <- getFromNamespace(ns = "phoenix", x = "phxdft_setorder")(TB3, by = c("am", "cyl"))
+
+stopifnot(
+  identical(DF3, expected_aggregation3),
+  all.equal(DT3, expected_aggregation3, check.attributes = FALSE),
+  all.equal(TB3, expected_aggregation3, check.attributes = FALSE)
+)
+
+
+# A Simple Benchmark
+#
+# DF <-
+#   data.frame(
+#     id1 = sample(x = 1:10, size = 1e4, replace = TRUE),
+#     id2 = sample(x = 1:100000, size = 1e4, replace = TRUE),
+#     y   = rnorm(n = 1e4)
+#   )
+# DT <- as_data_table_if_available(DF)
+# TB <- as_tibble_if_available(DF)
+#
+# microbenchmark::microbenchmark(
+#   b = stats::aggregate(x = DF[c("y")], by = DF[c("id1", "id2")], FUN = mean),
+#   df = getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(DF, y = c("y"), by = c("id1", "id2"), FUN = mean),
+#   dt = getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(DT, y = c("y"), by = c("id1", "id2"), FUN = mean),
+#   tbl = getFromNamespace(ns = "phoenix", x = "phxdft_aggregate")(TB, y = c("y"), by = c("id1", "id2"), FUN = mean),
+#   times = 10L
+# )
+# Unit: milliseconds
+#  expr      min       lq      mean    median        uq       max neval cld
+#     b 94.66712 99.37763 104.30383 101.74741 105.10856 128.59362    10 a
+#    df 93.70719 98.21430 103.43370 102.67271 109.85403 113.23518    10 a
+#    dt 43.67122 44.73606  50.50151  50.20036  51.86410  67.37183    10  b
+#   tbl 68.06383 70.96510  75.80745  76.49000  78.07462  84.88664    10   c
 
 ################################################################################
 #                                 End of File                                  #

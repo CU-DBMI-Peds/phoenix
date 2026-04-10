@@ -398,3 +398,33 @@ phxdft_dcast <- function(data, formula, value.var) {
   }
   rtn
 }
+
+#'
+#' @rdname phxdft_data_frame_tools
+#' @family data.frame tools
+#' @noRd
+#' @keywords internal
+phxdft_aggregate <- function(data, y, by, FUN) {
+  stopifnot(inherits(data, "data.frame"))
+  if (inherits(data, "data.table") && requireNamespace(package = "data.table", quietly = TRUE)) {
+    .datatable.aware <- TRUE
+    e <- expression({data[, lapply(.SD, FUN), by = mget(by), .SDcols = y]})
+    eval(e)
+  } else if (inherits(data, "tbl_df") && requireNamespace(package = "dplyr", quietly = TRUE) && requireNamespace(package = "tidyselect", quietly = TRUE)) {
+    gb <- utils::getFromNamespace(x = "group_by", ns = "dplyr")
+    sm <- utils::getFromNamespace(x = "summarise", ns = "dplyr")
+    across <- utils::getFromNamespace(x = "across", ns = "dplyr")
+    allof <- utils::getFromNamespace(x = "all_of", ns = "tidyselect")
+    sm(
+      .data = data,
+      across(allof(y), FUN),
+      .by = allof(by)
+    )
+  } else {
+    stats::aggregate(
+      x = phxdft_select(data, y),
+      by = phxdft_select(data, by),
+      FUN = FUN
+      )
+  }
+}

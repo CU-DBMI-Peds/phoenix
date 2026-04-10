@@ -53,7 +53,6 @@ run_indicator_case <- function(fun_name, variable_label, prepared_class, value.v
 
   stopifnot(
     identical(sapply(prepared_default, inherits, "data.frame"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
-    identical(sapply(prepared_default, inherits, "phoenix_prepared"), c(DF = TRUE, DT = TRUE, TB = TRUE)),
     identical(sapply(prepared_default, inherits, prepared_class), c(DF = TRUE, DT = TRUE, TB = TRUE)),
     identical(prepared_default[["DF"]][["value"]], c(1L, 0L, 1L)),
     identical(prepared_default[["DT"]][["value"]], c(1L, 0L, 1L)),

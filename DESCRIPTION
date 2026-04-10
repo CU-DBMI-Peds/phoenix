@@ -39,7 +39,8 @@ Suggests:
   ggplot2,
   qwraps2 (>= 0.6.0),
   reticulate,
-  rmarkdown
+  rmarkdown,
+  tidyselect
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
 Config/Needs/website: rmarkdown

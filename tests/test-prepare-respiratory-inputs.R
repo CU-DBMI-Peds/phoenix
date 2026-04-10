@@ -692,10 +692,6 @@ stopifnot(
 # Explicit class and attribute checks for prepared outputs
 stopifnot(
   identical(
-    sapply(test_prepared_data, inherits, "phoenix_prepared"),
-    c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
-  ),
-  identical(
     sapply(test_prepared_data, inherits, "phoenix_prepared_fio2"),
     c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
   ),
@@ -1258,10 +1254,6 @@ stopifnot(
 # Explicit class and attribute checks for prepared outputs
 stopifnot(
   identical(
-    sapply(test_prepared_data, inherits, "phoenix_prepared"),
-    c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
-  ),
-  identical(
     sapply(test_prepared_data, inherits, "phoenix_prepared_spo2"),
     c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
   ),
@@ -1756,10 +1748,6 @@ stopifnot(
 ################################################################################
 # Explicit class and attribute checks for prepared outputs
 stopifnot(
-  identical(
-    sapply(test_prepared_data, inherits, "phoenix_prepared"),
-    c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
-  ),
   identical(
     sapply(test_prepared_data, inherits, "phoenix_prepared_imv"),
     c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
