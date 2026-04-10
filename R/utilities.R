@@ -374,9 +374,9 @@ phxdft_rbindlist <- function(x) {
   if (inherits(x[[1]], "data.table") && requireNamespace("data.table", quietly = TRUE)) {
     rtn <- getExportedValue(name = "rbindlist", ns = "data.table")(x, use.names = TRUE, fill = TRUE)
   } else if (inherits(x, "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
-    stop("not yet built")
+    rtn <- getExportedValue(name = "bind_rows", ns = "dplyr")(x)
   } else {
-    stop("not yet built")
+    rtn <- do.call(rbind, x)
   }
   rtn
 }

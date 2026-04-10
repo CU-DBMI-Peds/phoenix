@@ -720,6 +720,29 @@ stopifnot(
 # testing phxdft_dcast
 
 ################################################################################
+# testing phxdft_rbindlist
+DF0 <- data.frame(x = 0, y = LETTERS, z = rnorm(n = 26))
+DF1 <- data.frame(x = 1, y = letters, z = rpois(n = 26, lambda = 1))
+DF2 <- data.frame(x = 2, y = state.abb, z = rpois(n = 50, lambda = 3))
+DT0 <- as_data_table_if_available(DF0)
+DT1 <- as_data_table_if_available(DF1)
+DT2 <- as_data_table_if_available(DF2)
+TB0 <- as_tibble_if_available(DF0)
+TB1 <- as_tibble_if_available(DF1)
+TB2 <- as_tibble_if_available(DF2)
+
+expected <- rbind(DF0, DF1, DF2)
+DF <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(DF0, DF1, DF2))
+DT <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(DF0, DF1, DF2))
+TB <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(DF0, DF1, DF2))
+
+stopifnot(
+  identical(DF, expected),
+  all.equal(DT, expected, check.attributes = FALSE),
+  all.equal(TB, expected, check.attributes = FALSE)
+)
+
+################################################################################
 # testing phxdft_aggregate
 mtcarsDF <- mtcars
 mtcarsDT <- as_data_table_if_available(mtcars)
