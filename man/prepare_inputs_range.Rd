@@ -36,7 +36,7 @@ prepare_fio2(
   value.var,
   valid.range = c(0.21, 1),
   tie.breaker = max,
-  verbose = getOption("phoenix_verbose", TRUE)
+  verbose = getOption("phoenix_verbose", interactive())
 )
 
 prepare_spo2(
@@ -46,7 +46,7 @@ prepare_spo2(
   value.var,
   valid.range = c(0, 100),
   tie.breaker = min,
-  verbose = getOption("phoenix_verbose", TRUE)
+  verbose = getOption("phoenix_verbose", interactive())
 )
 
 prepare_pao2(
