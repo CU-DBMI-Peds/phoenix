@@ -60,7 +60,7 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   # suspected infection and within the window [T0, T1)
   score_this <-
     phxdft_inner_join(
-      x = x,
+      x = phxdft_subset(x, i = which((x[[attr(x, "eclock")]] >= T0) & (x[[attr(x, "eclock")]] < T1))),
       y = phxdft_subset(si, i = which(si[["suspected_infection"]] > 0), cols = attr(x, "id.vars")),
       by = attr(x, "id.vars")
     )
