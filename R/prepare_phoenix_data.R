@@ -409,7 +409,7 @@ prepare_phoenix_data <-
     phxdft_set(
       x = phxdata,
       j = "SUSPECTED_INFECTION",
-      value = as.integer(phxdata[["ANTIMICROBIALS"]] * phxdata[["ANTIINFECTIOUSTESTS"]]
+      value = as.integer(phxdata[["ANTIMICROBIALS"]] * phxdata[["ANTIINFECTIOUSTESTS"]])
     )
 
   ##############################################################################
