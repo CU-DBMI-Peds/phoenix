@@ -172,17 +172,36 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
   age <- replace(age, missing_age_map, 222)
   map <- replace(map, missing_age_map, 100)
 
-  vas_score <- (vas > 1) + (vas > 0)
-  lct_score <- (lct >= 11) + (lct >= 5)
-  map_score <-
-     (
-      (age >=   0 & age <    1) * ((map < 17) + (map < 31)) +
-      (age >=   1 & age <   12) * ((map < 25) + (map < 39)) +
-      (age >=  12 & age <   24) * ((map < 31) + (map < 44)) +
-      (age >=  24 & age <   60) * ((map < 32) + (map < 45)) +
-      (age >=  60 & age <  144) * ((map < 36) + (map < 49)) +
-      (age >= 144 & age <= 216) * ((map < 38) + (map < 52))
-    )
+  vas_score <- vasoactive_score(vas)
+  lct_score <- lactate_score(lct)
+  map_score <- map_score(map, age)
 
   vas_score + lct_score + map_score
+}
+
+# non-exported methods that are used in
+# phoenix_cardiovascular() and score_prepared_phoenix_data()
+vasoactive_score <- function(x) {
+  rtn <- as.integer(x > 1) + as.integer(x > 0)
+  rtn[is.na(rtn)] <- 0L
+  rtn
+}
+
+lactate_score <- function(x) {
+  rtn <- as.integer(x >= 11) + as.integer(x >= 5)
+  rtn[is.na(rtn)] <- 0L
+  rtn
+}
+
+map_score <- function(map, age) {
+  rtn <- (
+    (age >=   0 & age <    1) * ((map < 17) + (map < 31)) +
+    (age >=   1 & age <   12) * ((map < 25) + (map < 39)) +
+    (age >=  12 & age <   24) * ((map < 31) + (map < 44)) +
+    (age >=  24 & age <   60) * ((map < 32) + (map < 45)) +
+    (age >=  60 & age <  144) * ((map < 36) + (map < 49)) +
+    (age >= 144 & age <= 216) * ((map < 38) + (map < 52))
+  )
+  rtn[is.na(rtn)] <- 0L
+  rtn
 }

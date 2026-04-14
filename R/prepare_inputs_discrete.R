@@ -122,6 +122,8 @@ prepare_dobutamine <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["DOBUTAMINE"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "DOBUTAMINE", value = 0L)
   class(rtn) <- c("phoenix_prepared_dobutamine", class(rtn))
   rtn
 }
@@ -148,6 +150,9 @@ prepare_dopamine <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+
+  replace_na_with_zero <- which(is.na(rtn[["DOPAMINE"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "DOPAMINE", value = 0L)
   class(rtn) <- c("phoenix_prepared_dopamine", class(rtn))
   rtn
 }
@@ -174,6 +179,8 @@ prepare_epinephrine <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["EPINEPHRINE"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "EPINEPHRINE", value = 0L)
   class(rtn) <- c("phoenix_prepared_epinephrine", class(rtn))
   rtn
 }
@@ -200,6 +207,8 @@ prepare_milrinone <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["MILRINONE"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "MILRINONE", value = 0L)
   class(rtn) <- c("phoenix_prepared_milrinone", class(rtn))
   rtn
 }
@@ -226,6 +235,8 @@ prepare_norepinephrine <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["NOREPINEPHRINE"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "NOREPINEPHRINE", value = 0L)
   class(rtn) <- c("phoenix_prepared_norepinephrine", class(rtn))
   rtn
 }
@@ -252,6 +263,8 @@ prepare_vasopressin <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["VASOPRESSIN"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "VASOPRESSIN", value = 0L)
   class(rtn) <- c("phoenix_prepared_vasopressin", class(rtn))
   rtn
 }
