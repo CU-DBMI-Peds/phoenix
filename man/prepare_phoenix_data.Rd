@@ -57,6 +57,7 @@ prepare_phoenix_data(
   immunologic.lookback = 1440,
   hepatic.lookback = 1440,
   renal.lookback = 1440,
+  si.lookback = Inf,
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -164,6 +165,8 @@ prepare_phoenix_data(
 \item{hepatic.lookback}{The number of minutes to look back in an encounter for carry-forward of hepatic variables: bilirubin (total), ALT}
 
 \item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine}
+
+\item{si.lookback}{The number of minutes to look back in an encounter for carry-forward of suspected infection variables: antimicrobials medications, and anti-infectious tests.}
 
 \item{verbose}{when \code{TRUE} print messages showing the progress}
 }
