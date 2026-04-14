@@ -70,6 +70,8 @@ prepare_imv <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["IMV"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "IMV", value = 0L)
   class(rtn) <- c("phoenix_prepared_imv", class(rtn))
   rtn
 }
@@ -96,6 +98,8 @@ prepare_o2support <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["O2SUPPORT"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "O2SUPPORT", value = 0L)
   class(rtn) <- c("phoenix_prepared_o2support", class(rtn))
   rtn
 }
@@ -396,6 +400,8 @@ prepare_pupilleft <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["PUPILLEFT"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "PUPILLEFT", value = 0L)
   class(rtn) <- c("phoenix_prepared_pupilleft", class(rtn))
   rtn
 }
@@ -422,6 +428,8 @@ prepare_pupilright <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["PUPILRIGHT"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "PUPILRIGHT", value = 0L)
   class(rtn) <- c("phoenix_prepared_pupilright", class(rtn))
   rtn
 }
@@ -448,6 +456,8 @@ prepare_pupils <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["PUPILS"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "PUPILS", value = 0L)
   class(rtn) <- c("phoenix_prepared_pupils", class(rtn))
   rtn
 }
@@ -474,6 +484,8 @@ prepare_antimicrobials <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["ANTIMICROBIALS"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "ANTIMICROBIALS", value = 0L)
   class(rtn) <- c("phoenix_prepared_antimicrobials", class(rtn))
   rtn
 }
@@ -500,6 +512,8 @@ prepare_antiinfectioustests <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
+  replace_na_with_zero <- which(is.na(rtn[["ANTIINFECTIOUSTESTS"]]))
+  rtn <- phxdft_set(rtn, i = replace_na_with_zero, j = "ANTIINFECTIOUSTESTS", value = 0L)
   class(rtn) <- c("phoenix_prepared_antiinfectioustests", class(rtn))
   rtn
 }
