@@ -27,14 +27,6 @@ verify_eclock <- function(x, eclock) {
   invisible(TRUE)
 }
 
-match.call.with.defaults <- expression({
-  cl <- as.list(match.call())
-  f <- formals()
-  addtocl <- setdiff(names(f), names(cl))
-  cl[addtocl] <- f[addtocl]
-  cl <- as.call(cl)
-})
-
 prepare_variable <-
   function(
     x,
