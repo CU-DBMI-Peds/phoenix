@@ -55,6 +55,7 @@
 #' @param immunologic.lookback The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC
 #' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: bilirubin (total), ALT
 #' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine
+#' @param si.lookback The number of minutes to look back in an encounter for carry-forward of suspected infection variables: antimicrobials medications, and anti-infectious tests.
 #'
 #' @param verbose when \code{TRUE} print messages showing the progress
 #'
@@ -113,6 +114,7 @@ prepare_phoenix_data <-
     immunologic.lookback = 1440,
     hepatic.lookback     = 1440,
     renal.lookback       = 1440,
+    si.lookback          = Inf,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
@@ -126,6 +128,7 @@ prepare_phoenix_data <-
   stopifnot(is.numeric(immunologic.lookback) && length(immunologic.lookback) == 1 && immunologic.lookback >= 0)
   stopifnot(is.numeric(hepatic.lookback)     && length(hepatic.lookback) == 1     && hepatic.lookback >= 0)
   stopifnot(is.numeric(renal.lookback)       && length(renal.lookback) == 1       && renal.lookback >= 0)
+  stopifnot(is.numeric(si.lookback)          && length(si.lookback) == 1          && si.lookback >= 0)
 
   phxdata <-
     list(
@@ -275,7 +278,7 @@ prepare_phoenix_data <-
       } else if (j %in% RENALVARS) {
         lookback <- renal.lookback
       } else if (j %in% SIVARS) {
-        lookback <- Inf
+        lookback <- si.lookback
       } else {
         stop(sprintf("lookback not defined for %s", j), call. = FALSE)
       }
@@ -289,6 +292,13 @@ prepare_phoenix_data <-
       phxdata <- phxdft_set(x = phxdata, j = j, value = NA_real_)
       phxdata <- phxdft_set(x = phxdata, j = paste0(j, "_eclock"), value = NA_real_)
     }
+
+    # for indicator variables, we will replace NA values with 0s for simplicity
+    if (j %in% c(VASOVARS, PUPILVARS, SIVARS)) {
+      idx <- which(is.na(phxdata[[j]]))
+      phxdata <- phxdft_set(x = phxdata, i = idx, j = j, value = 0L)
+    }
+
   }
 
   if (verbose) message("join age data to clinical data...")
@@ -395,8 +405,12 @@ prepare_phoenix_data <-
     )
 
   # Suspected infection
-  phxdata[["ANTIMICROBIALS"]]
-  phxdata[["ANTIINFECTIOUSTESTS"]]
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "SUSPECTED_INFECTION",
+      value = as.integer(phxdata[["ANTIMICROBIALS"]] * phxdata[["ANTIINFECTIOUSTESTS"]]
+    )
 
   ##############################################################################
   ### return the data set
