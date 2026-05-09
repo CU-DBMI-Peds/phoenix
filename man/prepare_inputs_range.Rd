@@ -10,7 +10,7 @@
 \alias{prepare_peep}
 \alias{prepare_lactate}
 \alias{prepare_sbp_cuff}
-\alias{prepare_sbpa}
+\alias{prepare_sbp_arterial}
 \alias{prepare_dbp_cuff}
 \alias{prepare_dbpa}
 \alias{prepare_mapc}
@@ -109,7 +109,7 @@ prepare_sbp_cuff(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_sbpa(
+prepare_sbp_arterial(
   x,
   id.vars,
   eclock,

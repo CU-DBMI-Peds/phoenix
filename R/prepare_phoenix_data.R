@@ -21,7 +21,7 @@
 #' @param mapc an object returned from \code{\link{prepare_mapc}}
 #' @param mapa an object returned from \code{\link{prepare_mapa}}
 #' @param sbp_cuff an object returned from \code{\link{prepare_sbp_cuff}}
-#' @param sbpa an object returned from \code{\link{prepare_sbpa}}
+#' @param sbp_arterial an object returned from \code{\link{prepare_sbp_arterial}}
 #' @param dbpa an object returned from \code{\link{prepare_dbpa}}
 #' @param dbp_cuff an object returned from \code{\link{prepare_dbp_cuff}}
 #' @param gcseye an object returned from \code{\link{prepare_gcseye}}
@@ -80,7 +80,7 @@ prepare_phoenix_data <-
     mapc = NULL,
     mapa = NULL,
     sbp_cuff = NULL,
-    sbpa = NULL,
+    sbp_arterial = NULL,
     dbpa = NULL,
     dbp_cuff = NULL,
     gcseye = NULL,
@@ -150,7 +150,7 @@ prepare_phoenix_data <-
       mapc = mapc,
       mapa = mapa,
       sbp_cuff = sbp_cuff,
-      sbpa = sbpa,
+      sbp_arterial = sbp_arterial,
       dbpa = dbpa,
       dbp_cuff = dbp_cuff,
       gcseye = gcseye,
@@ -357,7 +357,7 @@ prepare_phoenix_data <-
     )
 
   # Mean Arterial Pressure
-  # if mapa exists, use it, if not, then estimate from the sbpa and dbpa.  If
+  # if mapa exists, use it, if not, then estimate from the sbp_arterial and dbpa.  If
   # both of those are missing, then use mapc, and lastly estimate from sbp_cuff
   # and dbp_cuff
   if (verbose) message("  Mean Arterial Pressure...")
