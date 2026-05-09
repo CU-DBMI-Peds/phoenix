@@ -33,6 +33,16 @@ reference:
   - sepsis
   - map
 
+- title: Curatated Data to Phoenix Sepsis Scores
+- subtitle: Prepare Data
+- contents:
+  - prepare_inputs_discrete
+  - prepare_inputs_range
+  - prepare_phoenix_data
+- subtitle: Scoring
+- contents:
+  - score_prepared_phoenix_data
+
 - title: Utilities
 - subtitle: Data sets
 - contents:
