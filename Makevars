@@ -1,0 +1,12 @@
+MAKEVARS_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+REPO_ROOT    ?= $(MAKEVARS_DIR)
+
+CRAN     ?= https://cran.rstudio.com
+REPOS    := "options(repos=c(CRAN='$(CRAN)'))"
+
+R         ?= R --vanilla --quiet
+RCMD      ?= R CMD
+RSCRIPT   ?= Rscript --vanilla --quiet
+RCMDBATCH ?= R CMD BATCH --vanilla
+
+.DELETE_ON_ERROR:

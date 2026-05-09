@@ -12,3 +12,4 @@ python/build/*
 python/*.egg-info/*
 python/dist/*
 docs
+.install_dev_deps.Rout

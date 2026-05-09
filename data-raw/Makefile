@@ -1,2 +1,4 @@
-../data/sepsis.rda : sepsis.R
-	Rscript --vanilla $<
+include ../Makevars
+
+$(REPO_ROOT)/data/sepsis.rda: sepsis.R
+	$(RSCRIPT) $<

@@ -42,5 +42,5 @@ Suggests:
   rmarkdown,
   tidyselect
 VignetteBuilder: knitr
-RoxygenNote: 7.3.3
-Config/Needs/website: rmarkdown
+Config/Needs/website: rmarkdown, reticulate
+Config/roxygen2/version: 8.0.0
