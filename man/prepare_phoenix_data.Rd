@@ -22,7 +22,7 @@ prepare_phoenix_data(
   lactate = NULL,
   mapc = NULL,
   mapa = NULL,
-  sbpc = NULL,
+  sbp_cuff = NULL,
   sbpa = NULL,
   dbpa = NULL,
   dbpc = NULL,
@@ -96,7 +96,7 @@ prepare_phoenix_data(
 
 \item{mapa}{an object returned from \code{\link{prepare_mapa}}}
 
-\item{sbpc}{an object returned from \code{\link{prepare_sbpc}}}
+\item{sbp_cuff}{an object returned from \code{\link{prepare_sbp_cuff}}}
 
 \item{sbpa}{an object returned from \code{\link{prepare_sbpa}}}
 

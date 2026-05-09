@@ -244,7 +244,7 @@ prepare_lactate <-
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_sbpc <-
+prepare_sbp_cuff <-
   function(
     x,
     id.vars,
@@ -265,7 +265,7 @@ prepare_sbpc <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_sbpc", class(rtn))
+  class(rtn) <- c("phoenix_prepared_sbp_cuff", class(rtn))
   rtn
 }
 

@@ -9,7 +9,7 @@
 \alias{prepare_hfov}
 \alias{prepare_peep}
 \alias{prepare_lactate}
-\alias{prepare_sbpc}
+\alias{prepare_sbp_cuff}
 \alias{prepare_sbpa}
 \alias{prepare_dbpc}
 \alias{prepare_dbpa}
@@ -99,7 +99,7 @@ prepare_lactate(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_sbpc(
+prepare_sbp_cuff(
   x,
   id.vars,
   eclock,

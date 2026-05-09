@@ -20,7 +20,7 @@
 #' @param lactate an object returned from \code{\link{prepare_lactate}}
 #' @param mapc an object returned from \code{\link{prepare_mapc}}
 #' @param mapa an object returned from \code{\link{prepare_mapa}}
-#' @param sbpc an object returned from \code{\link{prepare_sbpc}}
+#' @param sbp_cuff an object returned from \code{\link{prepare_sbp_cuff}}
 #' @param sbpa an object returned from \code{\link{prepare_sbpa}}
 #' @param dbpa an object returned from \code{\link{prepare_dbpa}}
 #' @param dbpc an object returned from \code{\link{prepare_dbpc}}
@@ -79,7 +79,7 @@ prepare_phoenix_data <-
     lactate = NULL,
     mapc = NULL,
     mapa = NULL,
-    sbpc = NULL,
+    sbp_cuff = NULL,
     sbpa = NULL,
     dbpa = NULL,
     dbpc = NULL,
@@ -149,7 +149,7 @@ prepare_phoenix_data <-
       lactate = lactate,
       mapc = mapc,
       mapa = mapa,
-      sbpc = sbpc,
+      sbp_cuff = sbp_cuff,
       sbpa = sbpa,
       dbpa = dbpa,
       dbpc = dbpc,
@@ -358,7 +358,7 @@ prepare_phoenix_data <-
 
   # Mean Arterial Pressure
   # if mapa exists, use it, if not, then estimate from the sbpa and dbpa.  If
-  # both of those are missing, the use mapc, and lastly use estiamte from sbpc
+  # both of those are missing, then use mapc, and lastly estimate from sbp_cuff
   # and dbpc
   if (verbose) message("  Mean Arterial Pressure...")
   phxdata[["MAP"]] <-

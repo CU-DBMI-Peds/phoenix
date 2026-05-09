@@ -161,7 +161,7 @@ run_indicator_case <- function(fun_name, variable_label, value.var) {
 ################################################################################
 
 run_range_case("prepare_lactate", "LACTATE", "lactate_value", c(5, 8, 6, 7), c(8, 6, 7), c(5, 6, 7), c(0, 20))
-run_range_case("prepare_sbpc", "SBPC", "systolic_blood_pressure_cuff", c(80, 90, 100, 110), c(90, 100, 110), c(80, 100, 110), c(50, 150))
+run_range_case("prepare_sbp_cuff", "SBPC", "systolic_blood_pressure_cuff", c(80, 90, 100, 110), c(90, 100, 110), c(80, 100, 110), c(50, 150))
 run_range_case("prepare_sbpa", "SBPA", "systolic_blood_pressure_arterial", c(85, 95, 105, 115), c(95, 105, 115), c(85, 105, 115), c(50, 150))
 run_range_case("prepare_dbpc", "DBPC", "diastolic_blood_pressure_cuff", c(40, 50, 55, 60), c(50, 55, 60), c(40, 55, 60), c(20, 100))
 run_range_case("prepare_dbpa", "DBPA", "diastolic_blood_pressure_arterial", c(45, 55, 60, 65), c(55, 60, 65), c(45, 60, 65), c(20, 100))
