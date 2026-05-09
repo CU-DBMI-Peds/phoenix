@@ -153,6 +153,11 @@ JAMA.
 \author{
 \strong{Maintainer}: Peter DeWitt \email{peter.dewitt@cuanschutz.edu} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID}) [cover designer]
 
+Authors:
+\itemize{
+  \item Peter DeWitt \email{peter.dewitt@cuanschutz.edu} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID}) [cover designer]
+}
+
 Other contributors:
 \itemize{
   \item Seth Russell \email{seth.russell@cuanschutz.edu} (\href{https://orcid.org/0000-0002-2436-1367}{ORCID}) [contributor]
