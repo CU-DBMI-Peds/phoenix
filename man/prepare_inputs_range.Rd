@@ -12,7 +12,7 @@
 \alias{prepare_sbp_cuff}
 \alias{prepare_sbp_arterial}
 \alias{prepare_dbp_cuff}
-\alias{prepare_dbpa}
+\alias{prepare_dbp_arterial}
 \alias{prepare_mapc}
 \alias{prepare_mapa}
 \alias{prepare_platelets}
@@ -129,7 +129,7 @@ prepare_dbp_cuff(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_dbpa(
+prepare_dbp_arterial(
   x,
   id.vars,
   eclock,

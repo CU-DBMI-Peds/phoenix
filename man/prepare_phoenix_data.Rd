@@ -24,7 +24,7 @@ prepare_phoenix_data(
   mapa = NULL,
   sbp_cuff = NULL,
   sbp_arterial = NULL,
-  dbpa = NULL,
+  dbp_arterial = NULL,
   dbp_cuff = NULL,
   gcseye = NULL,
   gcsmotor = NULL,
@@ -100,7 +100,7 @@ prepare_phoenix_data(
 
 \item{sbp_arterial}{an object returned from \code{\link{prepare_sbp_arterial}}}
 
-\item{dbpa}{an object returned from \code{\link{prepare_dbpa}}}
+\item{dbp_arterial}{an object returned from \code{\link{prepare_dbp_arterial}}}
 
 \item{dbp_cuff}{an object returned from \code{\link{prepare_dbp_cuff}}}
 

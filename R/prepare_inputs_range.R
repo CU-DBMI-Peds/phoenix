@@ -325,7 +325,7 @@ prepare_dbp_cuff <-
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_dbpa <-
+prepare_dbp_arterial <-
   function(
     x,
     id.vars,
@@ -346,7 +346,7 @@ prepare_dbpa <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_dbpa", class(rtn))
+  class(rtn) <- c("phoenix_prepared_dbp_arterial", class(rtn))
   rtn
 }
 
