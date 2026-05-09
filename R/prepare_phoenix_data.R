@@ -23,7 +23,7 @@
 #' @param sbp_cuff an object returned from \code{\link{prepare_sbp_cuff}}
 #' @param sbpa an object returned from \code{\link{prepare_sbpa}}
 #' @param dbpa an object returned from \code{\link{prepare_dbpa}}
-#' @param dbpc an object returned from \code{\link{prepare_dbpc}}
+#' @param dbp_cuff an object returned from \code{\link{prepare_dbp_cuff}}
 #' @param gcseye an object returned from \code{\link{prepare_gcseye}}
 #' @param gcsmotor an object returned from \code{\link{prepare_gcsmotor}}
 #' @param gcsverbal an object returned from \code{\link{prepare_gcsverbal}}
@@ -82,7 +82,7 @@ prepare_phoenix_data <-
     sbp_cuff = NULL,
     sbpa = NULL,
     dbpa = NULL,
-    dbpc = NULL,
+    dbp_cuff = NULL,
     gcseye = NULL,
     gcsmotor = NULL,
     gcsverbal = NULL,
@@ -152,7 +152,7 @@ prepare_phoenix_data <-
       sbp_cuff = sbp_cuff,
       sbpa = sbpa,
       dbpa = dbpa,
-      dbpc = dbpc,
+      dbp_cuff = dbp_cuff,
       gcseye = gcseye,
       gcsmotor = gcsmotor,
       gcsverbal = gcsverbal,
@@ -359,7 +359,7 @@ prepare_phoenix_data <-
   # Mean Arterial Pressure
   # if mapa exists, use it, if not, then estimate from the sbpa and dbpa.  If
   # both of those are missing, then use mapc, and lastly estimate from sbp_cuff
-  # and dbpc
+  # and dbp_cuff
   if (verbose) message("  Mean Arterial Pressure...")
   phxdata[["MAP"]] <-
     Reduce(function(a, b) ifelse(is.na(a), b, a),

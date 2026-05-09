@@ -11,7 +11,7 @@
 \alias{prepare_lactate}
 \alias{prepare_sbp_cuff}
 \alias{prepare_sbpa}
-\alias{prepare_dbpc}
+\alias{prepare_dbp_cuff}
 \alias{prepare_dbpa}
 \alias{prepare_mapc}
 \alias{prepare_mapa}
@@ -119,7 +119,7 @@ prepare_sbpa(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_dbpc(
+prepare_dbp_cuff(
   x,
   id.vars,
   eclock,

@@ -25,7 +25,7 @@ prepare_phoenix_data(
   sbp_cuff = NULL,
   sbpa = NULL,
   dbpa = NULL,
-  dbpc = NULL,
+  dbp_cuff = NULL,
   gcseye = NULL,
   gcsmotor = NULL,
   gcsverbal = NULL,
@@ -102,7 +102,7 @@ prepare_phoenix_data(
 
 \item{dbpa}{an object returned from \code{\link{prepare_dbpa}}}
 
-\item{dbpc}{an object returned from \code{\link{prepare_dbpc}}}
+\item{dbp_cuff}{an object returned from \code{\link{prepare_dbp_cuff}}}
 
 \item{gcseye}{an object returned from \code{\link{prepare_gcseye}}}
 

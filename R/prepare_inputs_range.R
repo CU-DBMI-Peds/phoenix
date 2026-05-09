@@ -298,7 +298,7 @@ prepare_sbpa <-
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_dbpc <-
+prepare_dbp_cuff <-
   function(
     x,
     id.vars,
@@ -319,7 +319,7 @@ prepare_dbpc <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_dbpc", class(rtn))
+  class(rtn) <- c("phoenix_prepared_dbp_cuff", class(rtn))
   rtn
 }
 
