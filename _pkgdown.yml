@@ -1,6 +1,6 @@
 template:
   bootstrap: 5
-  assests: python/phoenix/*.py
+  assets: python/phoenix/*.py
 
 url: https://cu-dbmi-peds.github.io/phoenix
 
