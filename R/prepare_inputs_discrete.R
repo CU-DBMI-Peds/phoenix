@@ -50,7 +50,7 @@ NULL
 
 #' @rdname prepare_inputs_discrete
 #' @export
-prepare_imv <-
+prepare_invasive_mechanical_ventilation <-
   function(
     x,
     id.vars,
@@ -70,7 +70,7 @@ prepare_imv <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_imv", class(rtn))
+  class(rtn) <- c("phoenix_prepared_invasive_mechanical_ventilation", class(rtn))
   rtn
 }
 

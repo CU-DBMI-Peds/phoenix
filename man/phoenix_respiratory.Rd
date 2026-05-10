@@ -7,10 +7,11 @@
 phoenix_respiratory(
   pf_ratio = NA_real_,
   sf_ratio = NA_real_,
-  imv = NA_integer_,
+  invasive_mechanical_ventilation = NA_integer_,
   other_respiratory_support = NA_integer_,
   data = parent.frame(),
-  ...
+  ...,
+  imv = NULL
 )
 }
 \arguments{
@@ -18,13 +19,15 @@ phoenix_respiratory(
 
 \item{sf_ratio}{numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92\% oxygen saturation on room air is 92/0.21 = 438.0952.}
 
-\item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
+\item{invasive_mechanical_ventilation}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
 
 \item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
 \item{...}{pass through}
+
+\item{imv}{soft-deprecated alias for \code{invasive_mechanical_ventilation}}
 }
 \value{
 a integer vector with values 0, 1, 2, or 3.
@@ -50,11 +53,12 @@ a requirement that SpO2 <= 97 in order for the \code{sf_ratio} to be valid.
 That assumption is not checked in this code and it is left to the end user to
 account for this when building the \code{sf_ratio} vector.
 
-\code{imv} Invasive mechanical ventilation - integer vector where 0 = not
-intubated and 1 = intubated.
+\code{invasive_mechanical_ventilation} Invasive mechanical ventilation -
+integer vector where 0 = not intubated and 1 = intubated. \code{imv} is
+supported as a soft-deprecated alias.
 
 \code{other_respiratory_support} other respiratory support such as receiving oxygen,
-high-flow, non-invasive positive pressure, or imv.
+high-flow, non-invasive positive pressure, or invasive mechanical ventilation.
 }
 \section{Phoenix Respiratory Scoring}{
 
@@ -62,8 +66,8 @@ high-flow, non-invasive positive pressure, or imv.
 0 points \tab 1 point \tab 2 points \tab 3 points \cr
 pf_ratio >= 400 and sf_ratio >= 292 \tab
 (pf_ratio < 400 or sf_ratio < 292) and any respiratory support \tab
-(pf_ratio < 200 or sf_ratio < 220) and imv \tab
-(pf_ratio < 100 or sf_ratio < 148) and imv \cr
+(pf_ratio < 200 or sf_ratio < 220) and invasive mechanical ventilation \tab
+(pf_ratio < 100 or sf_ratio < 148) and invasive mechanical ventilation \cr
 }
 }
 
@@ -77,13 +81,13 @@ pf_ratio >= 400 and sf_ratio >= 292 \tab
 #   sf_ratio: SpO2 / FiO2
 #     SpO2: percentage, 0 to 100
 #     FiO2: decimal between 0.21 (room air) to 1.00 (pure oxygen)
-#   imv: (invasive mechanical ventilation) 1 for yes, 0 for no
+#   invasive_mechanical_ventilation: 1 for yes, 0 for no
 #   other_respiratory_support: 1 for yes, 0 for no
 
 phoenix_respiratory(
   pf_ratio = pao2 / fio2,
   sf_ratio = spo2 / fio2,
-  imv      = vent,
+  invasive_mechanical_ventilation = vent,
   other_respiratory_support = as.integer(fio2 > 0.21),
   data = sepsis
 )
@@ -99,7 +103,7 @@ DF <- expand.grid(
 phoenix_respiratory(
   pf_ratio = pfr,
   sf_ratio = sfr,
-  imv = vent,
+  invasive_mechanical_ventilation = vent,
   other_respiratory_support = o2,
   data = DF
 )

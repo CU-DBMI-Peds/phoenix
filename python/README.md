@@ -149,7 +149,7 @@ Each of these functions return a numpy array of integers.
 resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    imv      = sepsis["vent"],
+    invasive_mechanical_ventilation = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy()
     )
 print(type(resp))
@@ -297,7 +297,7 @@ phoenix = phx.phoenix(
    # Respiratory
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = sepsis["spo2"] / sepsis["fio2"],
-    imv      = sepsis["vent"],
+    invasive_mechanical_ventilation = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
   # Cardiovascular
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
@@ -350,7 +350,7 @@ phoenix8_scores = phx.phoenix8(
    # Respiratory
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    imv      = sepsis["vent"],
+    invasive_mechanical_ventilation = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
 
   # Cardiovascular

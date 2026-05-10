@@ -98,7 +98,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phoenix_respiratory(
       pf_ratio = x[["PFR"]],
       sf_ratio = x[["SFR"]],
-      imv = x[["IMV"]],
+      invasive_mechanical_ventilation = x[["IMV"]],
       other_respiratory_support = x[["ORS"]]
     )
 
@@ -232,7 +232,7 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phoenix_respiratory(
       pf_ratio = x[["PFR"]],
       sf_ratio = x[["SFR"]],
-      imv = x[["IMV"]],
+      invasive_mechanical_ventilation = x[["IMV"]],
       other_respiratory_support = x[["ORS"]]
     )
 
@@ -371,7 +371,7 @@ alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phoenix_respiratory(
       pf_ratio = x[["PFR"]],
       sf_ratio = x[["SFR"]],
-      imv = x[["IMV"]],
+      invasive_mechanical_ventilation = x[["IMV"]],
       other_respiratory_support = x[["ORS"]]
     )
 

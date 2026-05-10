@@ -152,7 +152,7 @@ cat(
 py_resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    imv      = sepsis["vent"],
+    invasive_mechanical_ventilation = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy()
 )
 print(type(py_resp))
@@ -163,7 +163,7 @@ print(py_resp)
 r_resp <- phoenix_respiratory(
   pf_ratio = pao2 / fio2,
   sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-  imv = vent,
+  invasive_mechanical_ventilation = vent,
   other_respiratory_support = as.integer(fio2 > 0.21),
   data = sepsis
   )
@@ -387,7 +387,7 @@ Septic Shock is defined as sepsis with at least one cardiovascular point.
 py_phoenix_scores = phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    imv      = sepsis["vent"],
+    invasive_mechanical_ventilation = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
@@ -412,7 +412,7 @@ r_phoenix_scores <-
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
@@ -448,7 +448,7 @@ other four organ systems:
 py_phoenix8_scores = phx.phoenix8(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    imv      = sepsis["vent"],
+    invasive_mechanical_ventilation = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
@@ -479,7 +479,7 @@ r_phoenix8_scores <-
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,

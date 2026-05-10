@@ -12,7 +12,8 @@
 #'
 #' @param pf_ratio numeric vector for the PaO2/FiO2 ratio; PaO2 = arterial oxygen pressure; FiO2 = fraction of inspired oxygen;  PaO2 is measured in mmHg and FiO2 is from 0.21 (room air) to 1.00.
 #' @param sf_ratio numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92\% oxygen saturation on room air is 92/0.21 = 438.0952.
-#' @param imv invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)
+#' @param invasive_mechanical_ventilation invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)
+#' @param imv soft-deprecated alias for \code{invasive_mechanical_ventilation}
 #' @param other_respiratory_support other respiratory support; numeric or integer vector, (0 = no support; 1 = support)
 #' @param vasoactives an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasoactive medications are considered: dobutamine, dopamine, epinephrine, milrinone, norepinephrine, vasopressin.
 #' @param lactate numeric vector with the lactate value in mmol/L
@@ -87,7 +88,7 @@
 #'     # Respiratory
 #'       pf_ratio = pao2 / fio2,
 #'       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-#'       imv = vent,
+#'       invasive_mechanical_ventilation = vent,
 #'       other_respiratory_support = as.integer(fio2 > 0.21),
 #'     # Cardiovascular
 #'       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
@@ -120,7 +121,7 @@
 #'
 #' @export
 phoenix8 <- function(
-                    pf_ratio, sf_ratio, imv, other_respiratory_support,
+                    pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support,
                     vasoactives, lactate, map, #age
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
@@ -129,9 +130,17 @@ phoenix8 <- function(
                     creatinine,  #age
                     bilirubin, alt,
                     age,
-                    data = parent.frame(), ...) {
+                    data = parent.frame(), ..., imv = NULL) {
 
   cl <- as.list(match.call())
+  if ("imv" %in% names(cl) && "invasive_mechanical_ventilation" %in% names(cl)) {
+    stop("Use only one of `invasive_mechanical_ventilation` or its deprecated alias `imv`.", call. = FALSE)
+  }
+  if ("imv" %in% names(cl)) {
+    warning("`imv` is deprecated; use `invasive_mechanical_ventilation` instead.", call. = FALSE)
+    cl[["invasive_mechanical_ventilation"]] <- cl[["imv"]]
+    cl[["imv"]] <- NULL
+  }
   cl$data <- NULL
 
   cl[[1]] <- quote(phoenix)

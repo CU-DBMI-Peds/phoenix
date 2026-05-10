@@ -80,12 +80,12 @@ WITH respiratory AS (
     pid,
     COALESCE(pao2 / fio2, 500) AS pfr,
     COALESCE(IIF(spo2 <= 97, spo2 / fio2, 500), 500) AS sfr,
-    COALESCE(vent, 0)          AS imv,
+    COALESCE(vent, 0)          AS invasive_mechanical_ventilation,
     IIF(fio2 > 0.21 OR vent = 1, 1, 0) AS other_respiratory_support
   FROM sepsis
 )
 SELECT *,
-  imv * (IIF(pfr < 100 OR sfr < 148, 1, 0) + IIF(pfr < 200 OR sfr < 220, 1, 0) ) +
+  invasive_mechanical_ventilation * (IIF(pfr < 100 OR sfr < 148, 1, 0) + IIF(pfr < 200 OR sfr < 220, 1, 0) ) +
     other_respiratory_support * IIF(pfr < 400 OR sfr < 292, 1, 0) AS phoenix_respiratory_score
   FROM respiratory;
 ```
@@ -104,7 +104,7 @@ resp_r <-
   phoenix_respiratory(
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     data = sepsis
   )
@@ -427,7 +427,7 @@ phoenix_scores_from_r <-
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
@@ -510,7 +510,7 @@ phoenix8_scores_r <-
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,

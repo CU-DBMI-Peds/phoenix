@@ -388,7 +388,7 @@ run_range_case(
 )
 
 run_discrete_case(
-  fun_name = "prepare_imv",
+  fun_name = "prepare_invasive_mechanical_ventilation",
   variable_label = "IMV",
   value.var = "invasive_mechanical_ventilation",
   valid_values = c(0, 1),
@@ -1610,7 +1610,7 @@ test_missing_value <-
     X = testdata,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -1642,7 +1642,7 @@ test_values_outside_valid_values <-
     X = testdata,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -1671,7 +1671,7 @@ testdata <-
 
 # because data.table can be used, we want to make sure we don't mutate the
 # user's input.  Get the sha265 for the input data and verify that it has not
-# changed after applying prepare_imv
+# changed after applying prepare_invasive_mechanical_ventilation
 testdata_sha <- digest::digest(testdata, algo = "sha256")
 
 # and test for expected outputs
@@ -1679,7 +1679,7 @@ test_prepared_data <-
   lapply(
     X = testdata,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1733,7 +1733,7 @@ test_prepared_data2 <-
   lapply(
     X = test_prepared_data,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1749,7 +1749,7 @@ stopifnot(
 # Explicit class and attribute checks for prepared outputs
 stopifnot(
   identical(
-    sapply(test_prepared_data, inherits, "phoenix_prepared_imv"),
+    sapply(test_prepared_data, inherits, "phoenix_prepared_invasive_mechanical_ventilation"),
     c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
   ),
   identical(attr(test_prepared_data[["DF"]], "id.vars"), c("hospital", "patient", "encounter")),
@@ -1779,7 +1779,7 @@ test_prepared_no_dups <-
   lapply(
     X = testdata_no_dups,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1817,7 +1817,7 @@ test_prepared_all_dups_max <-
   lapply(
     X = testdata_all_dups,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1832,7 +1832,7 @@ test_prepared_all_dups_min <-
   lapply(
     X = testdata_all_dups,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1877,7 +1877,7 @@ test_numeric_values <-
   lapply(
     X = testdata_numeric_values,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1900,7 +1900,7 @@ test_bad_id_vars <-
     X = testdata_no_dups,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "missing_id"),
           eclock = "minutes_from_admission",
@@ -1924,7 +1924,7 @@ test_bad_eclock_missing <-
     X = testdata_no_dups,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "missing_eclock",
@@ -1959,7 +1959,7 @@ test_bad_eclock_type <-
     X = testdata_bad_eclock,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -1996,7 +1996,7 @@ test_bad_character_value <-
     X = testdata_character_value,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -2031,7 +2031,7 @@ test_bad_factor_value <-
     X = testdata_factor_value,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -2055,7 +2055,7 @@ test_bad_value_var <-
     X = testdata_no_dups,
     FUN = function(x) {
       tryCatch(
-        prepare_imv(
+        prepare_invasive_mechanical_ventilation(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -2096,7 +2096,7 @@ test_prepared_value_var <-
   lapply(
     X = testdata_value_var,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -2134,7 +2134,7 @@ test_prepared_zero_row <-
   lapply(
     X = testdata_zero_row,
     FUN = function(x) {
-      prepare_imv(
+      prepare_invasive_mechanical_ventilation(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",

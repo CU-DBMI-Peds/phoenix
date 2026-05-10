@@ -9,7 +9,7 @@
 #' @param vent an object returned from \code{\link{prepare_vent}}
 #' @param hfov an object returned from \code{\link{prepare_hfov}}
 #' @param peep an object returned from \code{\link{prepare_peep}}
-#' @param imv an object returned from \code{\link{prepare_imv}}
+#' @param invasive_mechanical_ventilation an object returned from \code{\link{prepare_invasive_mechanical_ventilation}}
 #' @param o2support an object returned from \code{\link{prepare_o2support}}
 #' @param dobutamine an object returned from \code{\link{prepare_dobutamine}}
 #' @param dopamine an object returned from \code{\link{prepare_dopamine}}
@@ -68,7 +68,7 @@ prepare_phoenix_data <-
     vent = NULL,
     hfov = NULL,
     peep = NULL,
-    imv  = NULL,
+    invasive_mechanical_ventilation = NULL,
     o2support = NULL,
     dobutamine = NULL,
     dopamine = NULL,
@@ -138,7 +138,7 @@ prepare_phoenix_data <-
       vent = vent,
       hfov = hfov,
       peep = peep,
-      imv  = imv,
+      invasive_mechanical_ventilation = invasive_mechanical_ventilation,
       o2support = o2support,
       dobutamine = dobutamine,
       dopamine = dopamine,

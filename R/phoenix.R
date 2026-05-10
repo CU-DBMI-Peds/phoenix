@@ -58,7 +58,7 @@
 #'     # Respiratory
 #'       pf_ratio = pao2 / fio2,
 #'       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-#'       imv = vent,
+#'       invasive_mechanical_ventilation = vent,
 #'       other_respiratory_support = as.integer(fio2 > 0.21),
 #'     # Cardiovascular
 #'       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
@@ -79,14 +79,22 @@
 #' str(phoenix_scores)
 #'
 #' @export
-phoenix <- function(pf_ratio, sf_ratio, imv, other_respiratory_support,
+phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support,
                     vasoactives, lactate, map, # age at the end to be consistent with phoenix8
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
                     age,
-                    data = parent.frame(), ...) {
+                    data = parent.frame(), ..., imv = NULL) {
 
   cl <- as.list(match.call())
+  if ("imv" %in% names(cl) && "invasive_mechanical_ventilation" %in% names(cl)) {
+    stop("Use only one of `invasive_mechanical_ventilation` or its deprecated alias `imv`.", call. = FALSE)
+  }
+  if ("imv" %in% names(cl)) {
+    warning("`imv` is deprecated; use `invasive_mechanical_ventilation` instead.", call. = FALSE)
+    cl[["invasive_mechanical_ventilation"]] <- cl[["imv"]]
+    cl[["imv"]] <- NULL
+  }
   cl[["data"]] <- NULL
 
   cl[[1]] <- quote(phoenix_respiratory)

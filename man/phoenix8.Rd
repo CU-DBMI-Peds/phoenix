@@ -7,7 +7,7 @@
 phoenix8(
   pf_ratio,
   sf_ratio,
-  imv,
+  invasive_mechanical_ventilation,
   other_respiratory_support,
   vasoactives,
   lactate,
@@ -26,7 +26,8 @@ phoenix8(
   alt,
   age,
   data = parent.frame(),
-  ...
+  ...,
+  imv = NULL
 )
 }
 \arguments{
@@ -34,7 +35,7 @@ phoenix8(
 
 \item{sf_ratio}{numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92\% oxygen saturation on room air is 92/0.21 = 438.0952.}
 
-\item{imv}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
+\item{invasive_mechanical_ventilation}{invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)}
 
 \item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
 
@@ -73,6 +74,8 @@ phoenix8(
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
 \item{...}{pass through}
+
+\item{imv}{soft-deprecated alias for \code{invasive_mechanical_ventilation}}
 }
 \value{
 a \code{data.frame} with 12 integer columns.
@@ -116,7 +119,7 @@ phoenix8_scores <-
     # Respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # Cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,

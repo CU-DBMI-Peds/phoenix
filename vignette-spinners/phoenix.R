@@ -194,7 +194,7 @@ cat(ftnt, sep = "\n\n")
 #' ratios were only valid to consider if the SpO<sub>2</sub> is &leq; 97.
 #'
 #' *
-{{ backtick(imv) }}
+{{ backtick(invasive_mechanical_ventilation) }}
 #' Invasive mechanical ventilation.  This is an integer valued indicator
 #' variable: 0 = not intubated; 1 = intubated.
 #'
@@ -220,14 +220,14 @@ cat(ftnt, sep = "\n\n")
 #|   The colors represent Phoenix Respiratory Scores of 0, 1, 2, and 3
 #|   respectively.
 resp_data <-
-  expand.grid(pfr = seq(0, 450, by = 10), sfr = seq(0, 450, by = 10), imv = c(0, 1), o2 = c(0, 1))
-resp_data$o2 <- pmax(resp_data$imv, resp_data$o2)
+  expand.grid(pfr = seq(0, 450, by = 10), sfr = seq(0, 450, by = 10), invasive_mechanical_ventilation = c(0, 1), o2 = c(0, 1))
+resp_data$o2 <- pmax(resp_data$invasive_mechanical_ventilation, resp_data$o2)
 resp_data <- unique(resp_data)
-resp_data$phoenix_respiratory_score <- factor(phoenix_respiratory(pfr, sfr, imv, o2, data = resp_data))
+resp_data$phoenix_respiratory_score <- factor(phoenix_respiratory(pfr, sfr, invasive_mechanical_ventilation, o2, data = resp_data))
 
 resp_data$oxygen_support <-
   factor(
-    interaction(resp_data$imv, resp_data$o2),
+    interaction(resp_data$invasive_mechanical_ventilation, resp_data$o2),
     levels = c("0.0", "0.1", "1.1"),
     labels = c("No Oxygen Support", "Non-invasive Oxygen Support", "Invasive Oxygen Support")
   )
@@ -259,7 +259,7 @@ phoenix_respiratory(
 #' Notice that the
 {{ backtick(pf_ratio) }}
 #' and
-{{ backtick(imv) }}
+{{ backtick(invasive_mechanical_ventilation) }}
 #' arguments have been omitted.  When an input is missing it is assumed to be
 {{paste0(backtick(NA), ".")}}
 
@@ -270,7 +270,7 @@ phoenix_respiratory(
 #+
 DF <- read.table(sep = "|", header = TRUE, text =
 "
-pfr | sfr | imv | o2
+pfr | sfr | invasive_mechanical_ventilation | o2
     | 438 |     |
     | 175 |     | 1
     | 175 |     | 1
@@ -279,7 +279,7 @@ pfr | sfr | imv | o2
     |     |     |
 ")
 
-DF$resp_score <- phoenix_respiratory(pfr, sfr, imv, o2, DF)
+DF$resp_score <- phoenix_respiratory(pfr, sfr, invasive_mechanical_ventilation, o2, DF)
 
 DF
 
@@ -300,7 +300,7 @@ resp_example$score <-
   phoenix_respiratory(
   pf_ratio = pao2 / fio2,
   sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-  imv = vent,
+  invasive_mechanical_ventilation = vent,
   other_respiratory_support = as.integer(fio2 > 0.21),
   data = sepsis
   )
@@ -620,7 +620,7 @@ phoenix_scores <-
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
@@ -672,7 +672,7 @@ phoenix8_scores <-
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      imv = vent,
+      invasive_mechanical_ventilation = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
@@ -790,7 +790,7 @@ phoenix(
 phoenix(
   gcs = 2 + 2 + 4, # eye + verbal + motor
   map = 52,
-  imv = 1,
+  invasive_mechanical_ventilation = 1,
   sf_ratio = 92 / 0.45,
   platelets = 120,
   lactate = 2.9,

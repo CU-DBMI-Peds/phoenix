@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import warnings
 
 def map(sbp, dbp):
     """
@@ -16,7 +17,19 @@ def map(sbp, dbp):
     """
     return(np.array(2/3 * dbp + 1/3 * sbp))
 
-def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respiratory_support = np.nan):
+def _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv):
+    if imv is not None:
+        if not np.isscalar(invasive_mechanical_ventilation) or not np.isnan(invasive_mechanical_ventilation):
+            raise ValueError("Use only one of `invasive_mechanical_ventilation` or its deprecated alias `imv`.")
+        warnings.warn(
+            "`imv` is deprecated; use `invasive_mechanical_ventilation` instead.",
+            FutureWarning,
+            stacklevel = 3
+        )
+        return imv
+    return invasive_mechanical_ventilation
+
+def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, *, imv = None):
     """
     Phoenix Respiratory Scoring
 
@@ -29,8 +42,11 @@ def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, othe
                    saturation, measured in a percent; ratio for 92% oxygen
                    saturation on room air is 92/0.21 = 438.0952.
 
-        imv : invasive mechanical ventilation; numeric or integer vector, (0 =
-              not intubated; 1 = intubated)
+        invasive_mechanical_ventilation : invasive mechanical ventilation;
+                                          numeric or integer vector, (0 = not
+                                          intubated; 1 = intubated)
+
+        imv : soft-deprecated alias for invasive_mechanical_ventilation
 
         other_respiratory_support : other respiratory support; numeric or
                                     integer vector, (0 = no support; 1 =
@@ -39,14 +55,15 @@ def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, othe
     Returns:
         A np.array of integer values
     """
+    invasive_mechanical_ventilation = _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv)
     pfr = np.nan_to_num(pf_ratio, nan = 500)
     sfr = np.nan_to_num(sf_ratio, nan = 500)
-    imv = np.nan_to_num(imv,      nan = 0)
+    invasive_mechanical_ventilation = np.nan_to_num(invasive_mechanical_ventilation, nan = 0)
     ors = np.nan_to_num(other_respiratory_support, nan = 0)
 
-    ors = ((imv == 1) | (other_respiratory_support == 1)).astype(int)
+    ors = ((invasive_mechanical_ventilation == 1) | (ors == 1)).astype(int)
 
-    rtn = imv.astype(int) * (
+    rtn = invasive_mechanical_ventilation.astype(int) * (
             ((pfr < 100) | (sfr < 148)).astype(int) +\
             ((pfr < 200) | (sfr < 220)).astype(int)
           ) + (
@@ -219,7 +236,7 @@ def phoenix_hepatic(bilirubin = np.nan, alt = np.nan):
     alt = np.nan_to_num(alt, nan = 0)
     return( np.array(((bil >= 4) | (alt > 102)).astype(int)))
 
-def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, age = np.nan):
+def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, age = np.nan, *, imv = None):
     """
     Phoenix Sepsis Scoring
 
@@ -232,8 +249,11 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirator
                    saturation, measured in a percent; ratio for 92% oxygen
                    saturation on room air is 92/0.21 = 438.0952.
 
-        imv : invasive mechanical ventilation; numeric or integer vector, (0 =
-              not intubated; 1 = intubated)
+        invasive_mechanical_ventilation : invasive mechanical ventilation;
+                                          numeric or integer vector, (0 = not
+                                          intubated; 1 = intubated)
+
+        imv : soft-deprecated alias for invasive_mechanical_ventilation
 
         other_respiratory_support : other respiratory support; numeric or
                                     integer vector, (0 = no support; 1 =
@@ -273,7 +293,8 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirator
         (Phoenix score of at least two points), and indicator for septic shock
         (sepsis with at least one cardiovascular point).
     """
-    resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)
+    invasive_mechanical_ventilation = _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv)
+    resp = phoenix_respiratory(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support)
     card = phoenix_cardiovascular(vasoactives, lactate, age, map)
     coag = phoenix_coagulation(platelets, inr, d_dimer, fibrinogen)
     neur = phoenix_neurologic(gcs, fixed_pupils)
@@ -284,7 +305,7 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirator
     rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock"]
     return(rtn)
 
-def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, glucose = np.nan, anc = np.nan, alc = np.nan, creatinine = np.nan, bilirubin = np.nan, alt = np.nan, age = np.nan):
+def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, glucose = np.nan, anc = np.nan, alc = np.nan, creatinine = np.nan, bilirubin = np.nan, alt = np.nan, age = np.nan, *, imv = None):
     """
     Phoenix-8 Scoring
 
@@ -297,8 +318,11 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirato
                    saturation, measured in a percent; ratio for 92% oxygen
                    saturation on room air is 92/0.21 = 438.0952.
 
-        imv : invasive mechanical ventilation; numeric or integer vector, (0 =
-              not intubated; 1 = intubated)
+        invasive_mechanical_ventilation : invasive mechanical ventilation;
+                                          numeric or integer vector, (0 = not
+                                          intubated; 1 = intubated)
+
+        imv : soft-deprecated alias for invasive_mechanical_ventilation
 
         other_respiratory_support : other respiratory support; numeric or
                                     integer vector, (0 = no support; 1 =
@@ -351,7 +375,8 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, imv = np.nan, other_respirato
         (Phoenix score of at least two points), and indicator for septic shock
         (sepsis with at least one cardiovascular point).
     """
-    resp = phoenix_respiratory(pf_ratio, sf_ratio, imv, other_respiratory_support)
+    invasive_mechanical_ventilation = _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv)
+    resp = phoenix_respiratory(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support)
     card = phoenix_cardiovascular(vasoactives, lactate, age, map)
     coag = phoenix_coagulation(platelets, inr, d_dimer, fibrinogen)
     neur = phoenix_neurologic(gcs, fixed_pupils)

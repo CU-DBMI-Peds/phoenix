@@ -11,7 +11,7 @@ prepare_phoenix_data(
   vent = NULL,
   hfov = NULL,
   peep = NULL,
-  imv = NULL,
+  invasive_mechanical_ventilation = NULL,
   o2support = NULL,
   dobutamine = NULL,
   dopamine = NULL,
@@ -74,7 +74,7 @@ prepare_phoenix_data(
 
 \item{peep}{an object returned from \code{\link{prepare_peep}}}
 
-\item{imv}{an object returned from \code{\link{prepare_imv}}}
+\item{invasive_mechanical_ventilation}{an object returned from \code{\link{prepare_invasive_mechanical_ventilation}}}
 
 \item{o2support}{an object returned from \code{\link{prepare_o2support}}}
 

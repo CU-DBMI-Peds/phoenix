@@ -95,7 +95,7 @@ cv2 <-
   phoenix(
     gcs = 2 + 2 + 4, # eye + verbal + motor
     map = 52,
-    imv = 1,
+    invasive_mechanical_ventilation = 1,
     sf_ratio = 92 / 0.45,
     platelets = 120,
     lactate = 2.9,

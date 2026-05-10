@@ -134,7 +134,7 @@ stopifnot(all(hepatic$expected_score %in% 0:1))
 ################################################################################
 # Verify each component score
 respiratory$phoenix_resp <-
-  phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, data = respiratory)
+  phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, data = respiratory)
 
 cardiovascular$phoenix_card <-
   phoenix_cardiovascular(vasoactives = vasos, lactate = lactate, age = age, map = map, data = cardiovascular)
@@ -214,7 +214,7 @@ expected_phoenix8 <-
 realized_phoenix <-
   phoenix(pf_ratio = pfr,
            sf_ratio = sfr,
-           imv = vent,
+           invasive_mechanical_ventilation = vent,
            other_respiratory_support = o2,
            vasoactives = vasos,
            lactate = lactate,
@@ -245,7 +245,7 @@ stopifnot(
 realized_phoenix8 <-
   phoenix8(pf_ratio = pfr,
            sf_ratio = sfr,
-           imv = vent,
+           invasive_mechanical_ventilation = vent,
            other_respiratory_support = o2,
            vasoactives = vasos,
            lactate = lactate,
@@ -283,19 +283,19 @@ stopifnot(
 )
 
 # verify that the result are the same when called differently
-resp_a <- phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, data = DF)
-resp_b <- with(DF, phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2))
+resp_a <- phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, data = DF)
+resp_b <- with(DF, phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2))
 x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
 resp_c <- phoenix_respiratory(x1, x2, x3, x4)
 stopifnot(identical(resp_a, resp_b))
 stopifnot(identical(resp_a, resp_c))
 
 # phoenix
-p_a <- phoenix(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
-p8_a <- phoenix8(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
+p_a <- phoenix(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
+p8_a <- phoenix8(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
 
-p_b <- with(DF, phoenix(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
-p8_b <- with(DF, phoenix8(pf_ratio = pfr, sf_ratio = sfr, imv = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
+p_b <- with(DF, phoenix(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
+p8_b <- with(DF, phoenix8(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
 
 x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
 x5 <- DF$vasos; x6 <- DF$lactate; x7 <- DF$map

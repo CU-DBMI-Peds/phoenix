@@ -11,7 +11,7 @@
       # respiratory
         pf_ratio = pao2 / fio2,
         sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-        imv = vent,
+        invasive_mechanical_ventilation = vent,
         other_respiratory_support = as.integer(fio2 > 0.21),
       # cardiovascular
         vasoactives = dobutamine + dopamine + epinephrine +
@@ -48,7 +48,7 @@
       # respiratory
         pf_ratio = pao2 / fio2,
         sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-        imv = vent,
+        invasive_mechanical_ventilation = vent,
         other_respiratory_support = as.integer(fio2 > 0.21),
       # cardiovascular
         vasoactives = dobutamine + dopamine + epinephrine +

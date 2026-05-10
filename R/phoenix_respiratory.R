@@ -15,19 +15,20 @@
 #' That assumption is not checked in this code and it is left to the end user to
 #' account for this when building the \code{sf_ratio} vector.
 #'
-#' \code{imv} Invasive mechanical ventilation - integer vector where 0 = not
-#' intubated and 1 = intubated.
+#' \code{invasive_mechanical_ventilation} Invasive mechanical ventilation -
+#' integer vector where 0 = not intubated and 1 = intubated. \code{imv} is
+#' supported as a soft-deprecated alias.
 #'
 #' \code{other_respiratory_support} other respiratory support such as receiving oxygen,
-#' high-flow, non-invasive positive pressure, or imv.
+#' high-flow, non-invasive positive pressure, or invasive mechanical ventilation.
 #'
 #' @section Phoenix Respiratory Scoring:
 #' \tabular{llll}{
 #' 0 points \tab 1 point \tab 2 points \tab 3 points \cr
 #' pf_ratio >= 400 and sf_ratio >= 292 \tab
 #' (pf_ratio < 400 or sf_ratio < 292) and any respiratory support \tab
-#' (pf_ratio < 200 or sf_ratio < 220) and imv \tab
-#' (pf_ratio < 100 or sf_ratio < 148) and imv \cr
+#' (pf_ratio < 200 or sf_ratio < 220) and invasive mechanical ventilation \tab
+#' (pf_ratio < 100 or sf_ratio < 148) and invasive mechanical ventilation \cr
 #' }
 #'
 #' @inheritParams phoenix8
@@ -74,13 +75,13 @@
 #' #   sf_ratio: SpO2 / FiO2
 #' #     SpO2: percentage, 0 to 100
 #' #     FiO2: decimal between 0.21 (room air) to 1.00 (pure oxygen)
-#' #   imv: (invasive mechanical ventilation) 1 for yes, 0 for no
+#' #   invasive_mechanical_ventilation: 1 for yes, 0 for no
 #' #   other_respiratory_support: 1 for yes, 0 for no
 #'
 #' phoenix_respiratory(
 #'   pf_ratio = pao2 / fio2,
 #'   sf_ratio = spo2 / fio2,
-#'   imv      = vent,
+#'   invasive_mechanical_ventilation = vent,
 #'   other_respiratory_support = as.integer(fio2 > 0.21),
 #'   data = sepsis
 #' )
@@ -96,14 +97,14 @@
 #' phoenix_respiratory(
 #'   pf_ratio = pfr,
 #'   sf_ratio = sfr,
-#'   imv = vent,
+#'   invasive_mechanical_ventilation = vent,
 #'   other_respiratory_support = o2,
 #'   data = DF
 #' )
 #'
 #'
 #' @export
-phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = NA_integer_, other_respiratory_support = NA_integer_, data = parent.frame(), ...) {
+phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, invasive_mechanical_ventilation = NA_integer_, other_respiratory_support = NA_integer_, data = parent.frame(), ..., imv = NULL) {
   if (is.environment(data) && identical(parent.env(data), emptyenv())) {
     stop(
       "`data` is an environment with parent `emptyenv()`, so expressions ",
@@ -116,19 +117,34 @@ phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = 
     return(integer(0L))
   }
 
+  cl <- match.call(expand.dots = FALSE)
+  has_imv <- "imv" %in% names(cl)
+  has_invasive_mechanical_ventilation <- "invasive_mechanical_ventilation" %in% names(cl)
+
+  if (has_imv && has_invasive_mechanical_ventilation) {
+    stop("Use only one of `invasive_mechanical_ventilation` or its deprecated alias `imv`.", call. = FALSE)
+  }
+
+  if (has_imv) {
+    warning("`imv` is deprecated; use `invasive_mechanical_ventilation` instead.", call. = FALSE)
+    invasive_mechanical_ventilation_expr <- substitute(imv)
+  } else {
+    invasive_mechanical_ventilation_expr <- substitute(invasive_mechanical_ventilation)
+  }
+
   pfr <- eval(expr = substitute(pf_ratio), envir = data, enclos = parent.frame())
   sfr <- eval(expr = substitute(sf_ratio), envir = data, enclos = parent.frame())
-  imv <- eval(expr = substitute(imv),      envir = data, enclos = parent.frame())
+  invasive_mechanical_ventilation <- eval(expr = invasive_mechanical_ventilation_expr, envir = data, enclos = parent.frame())
   ors <- eval(expr = substitute(other_respiratory_support), envir = data, enclos = parent.frame())
 
-  lngths <- c(length(pfr), length(sfr), length(imv), length(ors))
+  lngths <- c(length(pfr), length(sfr), length(invasive_mechanical_ventilation), length(ors))
   n <- max(lngths)
 
   if (!all(lngths %in% c(1L, n))) {
     fmt <- paste("All inputs need to either have the same length or have length 1.",
                  "Length of pf_ratio is %s;",
                  "Length of sf_ratio is %s;",
-                 "Length of imv is %s;",
+                 "Length of invasive_mechanical_ventilation is %s;",
                  "Length of other_respiratory_support is %s.")
     msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
     stop(msg)
@@ -137,14 +153,14 @@ phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, imv = 
   # set "healthy" value for missing data
   pfr <- replace(pfr, which(is.na(pfr)), 500)
   sfr <- replace(sfr, which(is.na(sfr)), 500)
-  imv <- as.integer(replace(imv, which(is.na(imv)), 0))
-  stopifnot(all(imv %in% c(0L, 1L)))
+  invasive_mechanical_ventilation <- as.integer(replace(invasive_mechanical_ventilation, which(is.na(invasive_mechanical_ventilation)), 0))
+  stopifnot(all(invasive_mechanical_ventilation %in% c(0L, 1L)))
   ors <- as.integer(replace(ors, which(is.na(ors)), 0))
   stopifnot(all(ors %in% c(0L, 1L)))
-  ors <- pmax(imv, ors)
+  ors <- pmax(invasive_mechanical_ventilation, ors)
 
   as.integer(
-    imv * ( ((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220)) ) +
+    invasive_mechanical_ventilation * ( ((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220)) ) +
     ors * ((pfr < 400) | (sfr < 292))
   )
 }
