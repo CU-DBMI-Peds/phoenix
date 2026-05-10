@@ -1,10 +1,9 @@
 import numpy as np
 import pandas as pd
 import phoenix as phx
-import importlib.resources
+from importlib.resources import files
 
-with importlib.resources.path('phoenix', 'data') as data_path:
-    sepsis = pd.read_csv(data_path / "sepsis.csv")
+sepsis = pd.read_csv(files("phoenix") / "data" / "sepsis.csv")
 
 sepsis
 
