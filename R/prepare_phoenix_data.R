@@ -8,7 +8,7 @@
 #' @param pao2 an object returned from \code{\link{prepare_pao2}}
 #' @param vent an object returned from \code{\link{prepare_vent}}
 #' @param hfov an object returned from \code{\link{prepare_hfov}}
-#' @param peep an object returned from \code{\link{prepare_peep}}
+#' @param peep an object returned from \code{\link{prepare_peep_vent}}
 #' @param invasive_mechanical_ventilation an object returned from \code{\link{prepare_invasive_mechanical_ventilation}}
 #' @param o2support an object returned from \code{\link{prepare_o2support}}
 #' @param dobutamine an object returned from \code{\link{prepare_dobutamine}}
@@ -18,8 +18,8 @@
 #' @param norepinephrine an object returned from \code{\link{prepare_norepinephrine}}
 #' @param vasopressin an object returned from \code{\link{prepare_vasopressin}}
 #' @param lactate an object returned from \code{\link{prepare_lactate}}
-#' @param mapc an object returned from \code{\link{prepare_mapc}}
-#' @param mapa an object returned from \code{\link{prepare_mapa}}
+#' @param mean_arterial_pressure_cuff an object returned from \code{\link{prepare_mean_arterial_pressure_cuff}}
+#' @param mean_arterial_pressure_arterial an object returned from \code{\link{prepare_mean_arterial_pressure_arterial}}
 #' @param sbp_cuff an object returned from \code{\link{prepare_sbp_cuff}}
 #' @param sbp_arterial an object returned from \code{\link{prepare_sbp_arterial}}
 #' @param dbp_arterial an object returned from \code{\link{prepare_dbp_arterial}}
@@ -46,7 +46,7 @@
 #' @param antiinfectioustests an object returned from \code{\link{prepare_antiinfectioustests}}.
 #' @param resp.lookback The number of minutes to look back in an encounter for carry-forward respiratory values, e.g., FIO2, SPO2, IMV, ...
 #' @param vaso.lookback The number of minutes to look back in an encounter for carry-forward vasoactive medication status
-#' @param map.lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
+#' @param bp.lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
 #' @param lac.lookback The number of minutes to look back in an encounter for carry-forward of lactate values
 #' @param gcs.lookback The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).
 #' @param pupil.lookback The number of minutes to look back in an encounter for carry-forward of pupil status (fixed or unfixed)
@@ -77,8 +77,8 @@ prepare_phoenix_data <-
     norepinephrine = NULL,
     vasopressin = NULL,
     lactate = NULL,
-    mapc = NULL,
-    mapa = NULL,
+    mean_arterial_pressure_cuff = NULL,
+    mean_arterial_pressure_arterial = NULL,
     sbp_cuff = NULL,
     sbp_arterial = NULL,
     dbp_arterial = NULL,
@@ -105,7 +105,7 @@ prepare_phoenix_data <-
     antiinfectioustests = NULL,
     resp.lookback        =  360,
     vaso.lookback        =  720,
-    map.lookback         =  360,
+    bp.lookback          =  360,
     lac.lookback         =  360,
     gcs.lookback         =  360,
     pupil.lookback       =  720,
@@ -120,7 +120,7 @@ prepare_phoenix_data <-
 
   stopifnot(is.numeric(resp.lookback)        && length(resp.lookback) == 1        && resp.lookback >= 0)
   stopifnot(is.numeric(vaso.lookback)        && length(vaso.lookback) == 1        && vaso.lookback >= 0)
-  stopifnot(is.numeric(map.lookback)         && length(map.lookback) == 1         && map.lookback >= 0)
+  stopifnot(is.numeric(bp.lookback)          && length(bp.lookback) == 1          && bp.lookback >= 0)
   stopifnot(is.numeric(gcs.lookback)         && length(gcs.lookback) == 1         && gcs.lookback >= 0)
   stopifnot(is.numeric(pupil.lookback)       && length(pupil.lookback) == 1       && pupil.lookback >= 0)
   stopifnot(is.numeric(coag.lookback)        && length(coag.lookback) == 1        && coag.lookback >= 0)
@@ -147,8 +147,8 @@ prepare_phoenix_data <-
       norepinephrine = norepinephrine,
       vasopressin = vasopressin,
       lactate = lactate,
-      mapc = mapc,
-      mapa = mapa,
+      mean_arterial_pressure_cuff = mean_arterial_pressure_cuff,
+      mean_arterial_pressure_arterial = mean_arterial_pressure_arterial,
       sbp_cuff = sbp_cuff,
       sbp_arterial = sbp_arterial,
       dbp_arterial = dbp_arterial,
@@ -257,7 +257,7 @@ prepare_phoenix_data <-
       } else if (j %in% VASOVARS) {
         lookback <- vaso.lookback
       } else if (j %in% MAPVARS) {
-        lookback <- map.lookback
+        lookback <- bp.lookback
       } else if (j == "LACTATE") {
         lookback <- lac.lookback
       } else if (j %in% GCSVARS) {
@@ -357,8 +357,8 @@ prepare_phoenix_data <-
     )
 
   # Mean Arterial Pressure
-  # if mapa exists, use it, if not, then estimate from the sbp_arterial and dbp_arterial.  If
-  # both of those are missing, then use mapc, and lastly estimate from sbp_cuff
+  # if MAPA exists, use it, if not, then estimate from the sbp_arterial and dbp_arterial.  If
+  # both of those are missing, then use MAPC, and lastly estimate from sbp_cuff
   # and dbp_cuff
   if (verbose) message("  Mean Arterial Pressure...")
   phxdata[["MAP"]] <-

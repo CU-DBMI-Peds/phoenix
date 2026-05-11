@@ -17,11 +17,11 @@
 #'         dbp = 20:100  # expected units of mmHg
 #'       )
 #'
-#' DF$map <- with(DF, map(sbp, dbp))
-#' with(DF, plot(sbp, dbp, col = map))
-#' DF$map[DF$sbp < DF$dbp] <- NA
+#' DF$mean_arterial_pressure <- with(DF, mean_arterial_pressure(sbp, dbp))
+#' with(DF, plot(sbp, dbp, col = mean_arterial_pressure))
+#' DF$mean_arterial_pressure[DF$sbp < DF$dbp] <- NA
 #'
-#' z <- matrix(DF$map, nrow = length(unique(DF$sbp)), ncol = length(unique(DF$dbp)))
+#' z <- matrix(DF$mean_arterial_pressure, nrow = length(unique(DF$sbp)), ncol = length(unique(DF$dbp)))
 #'
 #' image(
 #'   x = unique(DF$sbp),
@@ -35,6 +35,13 @@
 #' contour(x = unique(DF$sbp), y = unique(DF$dbp), z = z, add = TRUE)
 #'
 #' @export
-map <- function(sbp, dbp) {
+mean_arterial_pressure <- function(sbp, dbp) {
   ((2/3) * dbp) + (sbp / 3)
+}
+
+#' @rdname mean_arterial_pressure
+#' @export
+map <- function(sbp, dbp) {
+  warning("`map()` is deprecated; use `mean_arterial_pressure()` instead.", call. = FALSE)
+  mean_arterial_pressure(sbp, dbp)
 }

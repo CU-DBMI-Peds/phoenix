@@ -30,7 +30,7 @@ card = phx.phoenix_cardiovascular(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
+    mean_arterial_pressure = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
 )
 print(type(card))
 print(card)
@@ -63,7 +63,7 @@ phoenix = phx.phoenix(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    mean_arterial_pressure = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],

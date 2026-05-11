@@ -64,7 +64,7 @@
 #'       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
 #'       lactate = lactate,
 #'       age = age,
-#'       map = dbp + (sbp - dbp)/3,
+#'       mean_arterial_pressure = dbp + (sbp - dbp)/3,
 #'     # Coagulation
 #'       platelets = platelets,
 #'       inr = inr,
@@ -80,11 +80,11 @@
 #'
 #' @export
 phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support,
-                    vasoactives, lactate, map, # age at the end to be consistent with phoenix8
+                    vasoactives, lactate, mean_arterial_pressure, # age at the end to be consistent with phoenix8
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
                     age,
-                    data = parent.frame(), ..., imv = NULL) {
+                    data = parent.frame(), ..., imv = NULL, map = NULL) {
 
   cl <- as.list(match.call())
   if ("imv" %in% names(cl) && "invasive_mechanical_ventilation" %in% names(cl)) {
@@ -94,6 +94,14 @@ phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_r
     warning("`imv` is deprecated; use `invasive_mechanical_ventilation` instead.", call. = FALSE)
     cl[["invasive_mechanical_ventilation"]] <- cl[["imv"]]
     cl[["imv"]] <- NULL
+  }
+  if ("map" %in% names(cl) && "mean_arterial_pressure" %in% names(cl)) {
+    stop("Use only one of `mean_arterial_pressure` or its deprecated alias `map`.", call. = FALSE)
+  }
+  if ("map" %in% names(cl)) {
+    warning("`map` is deprecated; use `mean_arterial_pressure` instead.", call. = FALSE)
+    cl[["mean_arterial_pressure"]] <- cl[["map"]]
+    cl[["map"]] <- NULL
   }
   cl[["data"]] <- NULL
 

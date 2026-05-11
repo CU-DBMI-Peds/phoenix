@@ -334,12 +334,12 @@ knitr::kable(resp_example)
 #' in months
 #'
 #' *
-{{ backtick(map) }}
+{{ backtick(mean_arterial_pressure) }}
 #' mean arterial pressure (mmHg).  During development of the Phoenix criteria,
-#' map, and blood pressure values in general, obtained from arterial measures
+#' mean arterial pressure, and blood pressure values in general, obtained from arterial measures
 #' were used preferentially over values obtained from cuffs.  Reported values
 #' were used preferentially over calculated values.  If you need to calculate
-#' the map use DBP + (1/3) * (SBP - DBP) where DBP is diastolic blood pressure
+#' mean arterial pressure use DBP + (1/3) * (SBP - DBP) where DBP is diastolic blood pressure
 #' (mmHg) and SBP is systemic blood pressure (mmHg).
 #'
 #' ### Scores
@@ -379,7 +379,7 @@ ggplot2::ggplot(DF) +
 #'
 #' Note: the mean arterial pressure can be approximated by 2/3*DBP + 1/3*SBP.
 #' To simplify the work and help reduce potential errors, the function
-{{ backtick(map) }}
+{{ backtick(mean_arterial_pressure) }}
 #' has been provided to estimate the mean arterial pressure given sbp and dbp.
 #'
 #+ results = "hide"
@@ -391,7 +391,7 @@ card_example$score <-
     vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
     lactate = lactate,
     age = age,
-    map = map(sbp = sbp, dbp = dbp),
+    mean_arterial_pressure = mean_arterial_pressure(sbp = sbp, dbp = dbp),
     data = sepsis)
 
 card_example
@@ -626,7 +626,7 @@ phoenix_scores <-
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age,
-      map = map(sbp, dbp),
+      mean_arterial_pressure = mean_arterial_pressure(sbp, dbp),
     # coagulation
       platelets = platelets,
       inr = inr,
@@ -678,7 +678,7 @@ phoenix8_scores <-
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age, # Also used in the renal assessment.
-      map = map(sbp = sbp, dbp = dbp),
+      mean_arterial_pressure = mean_arterial_pressure(sbp = sbp, dbp = dbp),
     # coagulation
       platelets = platelets,
       inr = inr,
@@ -742,7 +742,7 @@ knitr::kable(phoenix8_scores, format = "html", align = "c")
 #'
 phoenix(
   vasoactives = 1,  # norepinephrine drip
-  map = 32 + (67 - 32) / 3, # 43.667 mmHg
+  mean_arterial_pressure = 32 + (67 - 32) / 3, # 43.667 mmHg
   platelets = 95,
   gcs = 14, # irritability
   age = 3 * 12 # expected input for age is in months
@@ -789,7 +789,7 @@ phoenix(
 #'
 phoenix(
   gcs = 2 + 2 + 4, # eye + verbal + motor
-  map = 52,
+  mean_arterial_pressure = 52,
   invasive_mechanical_ventilation = 1,
   sf_ratio = 92 / 0.45,
   platelets = 120,

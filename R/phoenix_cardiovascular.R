@@ -7,9 +7,9 @@
 #' criteria was developed: dobutamine, dopamine, epinephrine, milrinone,
 #' norepinephrine, and vasopressin.
 #'
-#' During development, the values used for \code{map} were taken preferentially
+#' During development, the values used for \code{mean_arterial_pressure} were taken preferentially
 #' from arterial measurement, then cuff measures, and provided values before
-#' approximating the map from blood pressure values via DBP + 1/3 (SBP - DBP),
+#' approximating mean arterial pressure from blood pressure values via DBP + 1/3 (SBP - DBP),
 #' where DBP is the diastolic blood pressure and SBP is the systolic blood
 #' pressure.
 #'
@@ -99,7 +99,7 @@
 #'    vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
 #'    lactate = lactate,
 #'    age = age,
-#'    map = dbp + (sbp - dbp)/3,
+#'    mean_arterial_pressure = dbp + (sbp - dbp)/3,
 #'    data = sepsis
 #' )
 #'
@@ -108,8 +108,8 @@
 #'   expand.grid(vasos = c(NA, 0:6),
 #'               lactate = c(NA, 3.2, 5, 7.8, 11, 14), # units of mmol/L
 #'               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145), # months
-#'               map = c(NA, 16:52)) # mmHg
-#' DF$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF)
+#'               mean_arterial_pressure = c(NA, 16:52)) # mmHg
+#' DF$card <- phoenix_cardiovascular(vasos, lactate, age, mean_arterial_pressure, DF)
 #' head(DF)
 #'
 #' # what if lactate is unknown for all records? - set the value either in the
@@ -117,20 +117,20 @@
 #' DF2 <-
 #'   expand.grid(vasos = c(NA, 0:6),
 #'               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145), # months
-#'               map = c(NA, 16:52)) # mmHg
-#' DF2$card <- phoenix_cardiovascular(vasos, lactate = NA, age, map, DF2)
+#'               mean_arterial_pressure = c(NA, 16:52)) # mmHg
+#' DF2$card <- phoenix_cardiovascular(vasos, lactate = NA, age, mean_arterial_pressure, DF2)
 #'
 #' DF3 <-
 #'   expand.grid(vasos = c(NA, 0:6),
 #'               lactate = NA, # mmol/L
 #'               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145), # months
-#'               map = c(NA, 16:52)) # mmHg
-#' DF3$card <- phoenix_cardiovascular(vasos, lactate, age, map, DF3)
+#'               mean_arterial_pressure = c(NA, 16:52)) # mmHg
+#' DF3$card <- phoenix_cardiovascular(vasos, lactate, age, mean_arterial_pressure, DF3)
 #'
 #' identical(DF2$card, DF3$card)
 #'
 #' @export
-phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_, age = NA_real_, map = NA_real_, data = parent.frame(), ...) {
+phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_, age = NA_real_, mean_arterial_pressure = NA_real_, data = parent.frame(), ..., map = NULL) {
   if (is.environment(data) && identical(parent.env(data), emptyenv())) {
     stop(
       "`data` is an environment with parent `emptyenv()`, so expressions ",
@@ -143,12 +143,27 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
     return(integer(0L))
   }
 
+  cl <- match.call(expand.dots = FALSE)
+  has_map <- "map" %in% names(cl)
+  has_mean_arterial_pressure <- "mean_arterial_pressure" %in% names(cl)
+
+  if (has_map && has_mean_arterial_pressure) {
+    stop("Use only one of `mean_arterial_pressure` or its deprecated alias `map`.", call. = FALSE)
+  }
+
+  if (has_map) {
+    warning("`map` is deprecated; use `mean_arterial_pressure` instead.", call. = FALSE)
+    mean_arterial_pressure_expr <- substitute(map)
+  } else {
+    mean_arterial_pressure_expr <- substitute(mean_arterial_pressure)
+  }
+
   vas <- eval(expr = substitute(vasoactives), envir = data, enclos = parent.frame())
   lct <- eval(expr = substitute(lactate), envir = data, enclos = parent.frame())
   age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
-  map <- eval(expr = substitute(map), envir = data, enclos = parent.frame())
+  mean_arterial_pressure <- eval(expr = mean_arterial_pressure_expr, envir = data, enclos = parent.frame())
 
-  lngths <- c(length(vas), length(lct), length(age), length(map))
+  lngths <- c(length(vas), length(lct), length(age), length(mean_arterial_pressure))
   n <- max(lngths)
 
   if (!all(lngths %in% c(1L, n))) {
@@ -156,7 +171,7 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
                  "Length of vasoactives is %s;",
                  "Length of lactate is %s;",
                  "Length of age is %s;",
-                 "Length of map is %s.")
+                 "Length of mean_arterial_pressure is %s.")
     msg <- do.call(sprintf, c(as.list(lngths), fmt = fmt))
     stop(msg)
   }
@@ -166,15 +181,15 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
   lct <- replace(lct, which(is.na(lct)), 0)
 
   # if age is missing then the MAP can not be assessed.  So, set the age value
-  # more than 18 years _and_ the map to a high value too such that zero points
+  # more than 18 years _and_ mean arterial pressure to a high value too such that zero points
   # will be scored
-  missing_age_map <- which(is.na(age) | is.na(map))
+  missing_age_map <- which(is.na(age) | is.na(mean_arterial_pressure))
   age <- replace(age, missing_age_map, 222)
-  map <- replace(map, missing_age_map, 100)
+  mean_arterial_pressure <- replace(mean_arterial_pressure, missing_age_map, 100)
 
   vas_score <- vasoactive_score(vas)
   lct_score <- lactate_score(lct)
-  map_score <- map_score(map, age)
+  map_score <- map_score(mean_arterial_pressure, age)
 
   vas_score + lct_score + map_score
 }

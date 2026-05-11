@@ -11,7 +11,7 @@ phoenix8(
   other_respiratory_support,
   vasoactives,
   lactate,
-  map,
+  mean_arterial_pressure,
   platelets,
   inr,
   d_dimer,
@@ -27,7 +27,8 @@ phoenix8(
   age,
   data = parent.frame(),
   ...,
-  imv = NULL
+  imv = NULL,
+  map = NULL
 )
 }
 \arguments{
@@ -43,7 +44,7 @@ phoenix8(
 
 \item{lactate}{numeric vector with the lactate value in mmol/L}
 
-\item{map}{numeric vector, mean arterial pressure in mmHg}
+\item{mean_arterial_pressure}{numeric vector, mean arterial pressure in mmHg}
 
 \item{platelets}{numeric vector for platelets counts in units of 1,000/uL (thousand per microliter)}
 
@@ -76,6 +77,8 @@ phoenix8(
 \item{...}{pass through}
 
 \item{imv}{soft-deprecated alias for \code{invasive_mechanical_ventilation}}
+
+\item{map}{soft-deprecated alias for \code{mean_arterial_pressure}}
 }
 \value{
 a \code{data.frame} with 12 integer columns.
@@ -125,7 +128,7 @@ phoenix8_scores <-
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age, # Also used in the renal assessment.
-      map = dbp + (sbp - dbp)/3,
+      mean_arterial_pressure = dbp + (sbp - dbp)/3,
     # Coagulation
       platelets = platelets,
       inr = inr,

@@ -182,7 +182,7 @@ cat(
     ftnt[grepl("\\^(d|e|f)\\^", ftnt)], sep = "\n")
 ```
 
-As with the R package, the Python module has a function `map` to simplify the
+As with the R package, the Python module has a function `mean_arterial_pressure` to simplify the
 estimation of mean arterial pressure based on systolic and diastolic pressures.
 MAP is approximated as (2/3)*DBP + (1/3)*SBP.
 
@@ -192,7 +192,7 @@ py_card = phx.phoenix_cardiovascular(
                   sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = phx.map(sepsis["sbp"], sepsis["dbp"])
+    mean_arterial_pressure = phx.mean_arterial_pressure(sepsis["sbp"], sepsis["dbp"])
 )
 print(type(py_card))
 print(py_card)
@@ -203,7 +203,7 @@ r_card <- phoenix_cardiovascular(
   vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
   lactate = lactate,
   age = age,
-  map = map(sbp, dbp),
+  mean_arterial_pressure = mean_arterial_pressure(sbp, dbp),
   data = sepsis
 )
 stopifnot(identical(r_card, as.integer(py$py_card)))
@@ -392,7 +392,7 @@ py_phoenix_scores = phx.phoenix(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = phx.map(sepsis["sbp"], sepsis["dbp"]),
+    mean_arterial_pressure = phx.mean_arterial_pressure(sepsis["sbp"], sepsis["dbp"]),
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
@@ -418,7 +418,7 @@ r_phoenix_scores <-
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age,
-      map = dbp + (sbp - dbp)/3,
+      mean_arterial_pressure = dbp + (sbp - dbp)/3,
     # coagulation
       platelets = platelets,
       inr = inr,
@@ -452,7 +452,7 @@ py_phoenix8_scores = phx.phoenix8(
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
-    map = phx.map(sepsis["sbp"], sepsis["dbp"]),
+    mean_arterial_pressure = phx.mean_arterial_pressure(sepsis["sbp"], sepsis["dbp"]),
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
@@ -485,7 +485,7 @@ r_phoenix8_scores <-
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age, # Also used in the renal assessment.
-      map = dbp + (sbp - dbp)/3,
+      mean_arterial_pressure = dbp + (sbp - dbp)/3,
     # coagulation
       platelets = platelets,
       inr = inr,

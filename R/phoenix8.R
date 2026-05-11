@@ -18,7 +18,8 @@
 #' @param vasoactives an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasoactive medications are considered: dobutamine, dopamine, epinephrine, milrinone, norepinephrine, vasopressin.
 #' @param lactate numeric vector with the lactate value in mmol/L
 #' @param age numeric vector age in months
-#' @param map numeric vector, mean arterial pressure in mmHg
+#' @param mean_arterial_pressure numeric vector, mean arterial pressure in mmHg
+#' @param map soft-deprecated alias for \code{mean_arterial_pressure}
 #' @param platelets numeric vector for platelets counts in units of 1,000/uL (thousand per microliter)
 #' @param inr numeric vector for the international normalised ratio blood test
 #' @param d_dimer numeric vector for D-Dimer, units of mg/L FEU
@@ -94,7 +95,7 @@
 #'       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
 #'       lactate = lactate,
 #'       age = age, # Also used in the renal assessment.
-#'       map = dbp + (sbp - dbp)/3,
+#'       mean_arterial_pressure = dbp + (sbp - dbp)/3,
 #'     # Coagulation
 #'       platelets = platelets,
 #'       inr = inr,
@@ -122,7 +123,7 @@
 #' @export
 phoenix8 <- function(
                     pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support,
-                    vasoactives, lactate, map, #age
+                    vasoactives, lactate, mean_arterial_pressure, #age
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
                     glucose,
@@ -130,7 +131,7 @@ phoenix8 <- function(
                     creatinine,  #age
                     bilirubin, alt,
                     age,
-                    data = parent.frame(), ..., imv = NULL) {
+                    data = parent.frame(), ..., imv = NULL, map = NULL) {
 
   cl <- as.list(match.call())
   if ("imv" %in% names(cl) && "invasive_mechanical_ventilation" %in% names(cl)) {
@@ -140,6 +141,14 @@ phoenix8 <- function(
     warning("`imv` is deprecated; use `invasive_mechanical_ventilation` instead.", call. = FALSE)
     cl[["invasive_mechanical_ventilation"]] <- cl[["imv"]]
     cl[["imv"]] <- NULL
+  }
+  if ("map" %in% names(cl) && "mean_arterial_pressure" %in% names(cl)) {
+    stop("Use only one of `mean_arterial_pressure` or its deprecated alias `map`.", call. = FALSE)
+  }
+  if ("map" %in% names(cl)) {
+    warning("`map` is deprecated; use `mean_arterial_pressure` instead.", call. = FALSE)
+    cl[["mean_arterial_pressure"]] <- cl[["map"]]
+    cl[["map"]] <- NULL
   }
   cl$data <- NULL
 

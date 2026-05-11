@@ -190,13 +190,13 @@ prepare_hfov <-
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_peep <-
+prepare_peep_vent <-
   function(
     x,
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(0, 100),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -211,7 +211,7 @@ prepare_peep <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_peep", class(rtn))
+  class(rtn) <- c("phoenix_prepared_peep_vent", class(rtn))
   rtn
 }
 
@@ -223,7 +223,7 @@ prepare_lactate <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(0, 50),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -250,7 +250,7 @@ prepare_sbp_cuff <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(1, Inf),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -304,7 +304,7 @@ prepare_dbp_cuff <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(1, 200),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -331,7 +331,7 @@ prepare_dbp_arterial <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(1, 200),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -352,13 +352,13 @@ prepare_dbp_arterial <-
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_mapc <-
+prepare_mean_arterial_pressure_cuff <-
   function(
     x,
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(1, 300),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -373,19 +373,19 @@ prepare_mapc <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_mapc", class(rtn))
+  class(rtn) <- c("phoenix_prepared_mean_arterial_pressure_cuff", class(rtn))
   rtn
 }
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_mapa <-
+prepare_mean_arterial_pressure_arterial <-
   function(
     x,
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(1, 300),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -400,7 +400,7 @@ prepare_mapa <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_mapa", class(rtn))
+  class(rtn) <- c("phoenix_prepared_mean_arterial_pressure_aterial", class(rtn))
   rtn
 }
 
@@ -466,7 +466,7 @@ prepare_ddimer <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(0, 500),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -520,7 +520,7 @@ prepare_glucose <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(5, 2000),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -628,7 +628,7 @@ prepare_bilirubin <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(0, 100),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {

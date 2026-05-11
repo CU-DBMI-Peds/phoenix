@@ -18,7 +18,7 @@
                       milrinone + norepinephrine + vasopressin,
         lactate = lactate,
         age = age,
-        map = dbp + (sbp - dbp)/3,
+        mean_arterial_pressure = dbp + (sbp - dbp)/3,
       # coagulation
         platelets = platelets,
         inr = inr,
@@ -55,7 +55,7 @@
                       milrinone + norepinephrine + vasopressin,
         lactate = lactate,
         age = age, # Also used in the renal assessment.
-        map = dbp + (sbp - dbp)/3,
+        mean_arterial_pressure = dbp + (sbp - dbp)/3,
       # coagulation
         platelets = platelets,
         inr = inr,

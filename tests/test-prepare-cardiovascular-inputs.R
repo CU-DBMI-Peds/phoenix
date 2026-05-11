@@ -165,8 +165,8 @@ run_range_case("prepare_sbp_cuff", "SBPC", "systolic_blood_pressure_cuff", c(80,
 run_range_case("prepare_sbp_arterial", "SBPA", "systolic_blood_pressure_arterial", c(85, 95, 105, 115), c(95, 105, 115), c(85, 105, 115), c(50, 150))
 run_range_case("prepare_dbp_cuff", "DBPC", "diastolic_blood_pressure_cuff", c(40, 50, 55, 60), c(50, 55, 60), c(40, 55, 60), c(20, 100))
 run_range_case("prepare_dbp_arterial", "DBPA", "diastolic_blood_pressure_arterial", c(45, 55, 60, 65), c(55, 60, 65), c(45, 60, 65), c(20, 100))
-run_range_case("prepare_mapc", "MAPC", "mean_arterial_pressure_cuff", c(55, 65, 70, 75), c(65, 70, 75), c(55, 70, 75), c(20, 120))
-run_range_case("prepare_mapa", "MAPA", "mean_arterial_pressure_arterial", c(60, 70, 75, 80), c(70, 75, 80), c(60, 75, 80), c(20, 120))
+run_range_case("prepare_mean_arterial_pressure_cuff", "MAPC", "mean_arterial_pressure_cuff", c(55, 65, 70, 75), c(65, 70, 75), c(55, 70, 75), c(20, 120))
+run_range_case("prepare_mean_arterial_pressure_arterial", "MAPA", "mean_arterial_pressure_arterial", c(60, 70, 75, 80), c(70, 75, 80), c(60, 75, 80), c(20, 120))
 
 run_indicator_case("prepare_dobutamine", "DOBUTAMINE", "dobutamine_indicator")
 run_indicator_case("prepare_dopamine", "DOPAMINE", "dopamine_indicator")

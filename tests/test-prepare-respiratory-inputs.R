@@ -435,7 +435,7 @@ run_range_case(
 )
 
 run_range_case(
-  fun_name = "prepare_peep",
+  fun_name = "prepare_peep_vent",
   variable_label = "PEEP",
   value.var = "positive_end_expiratory_pressure",
   values = c(5, 8, 6, 10),

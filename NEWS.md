@@ -16,6 +16,12 @@
   `phoenix()`, and `phoenix8()` functions in favor of
   `invasive_mechanical_ventilation`.  Positional calls and named `imv =` calls
   still work for compatibility.  SQL examples now use the longer name.
+* Rename the public mean arterial pressure helper and arguments from `map` to
+  `mean_arterial_pressure` in R, Python, examples, and SQL documentation.  The
+  R and Python `map()` helper remains available as a soft-deprecated alias for
+  `mean_arterial_pressure()`, and the `map` argument remains available as a
+  soft-deprecated alias for `mean_arterial_pressure` in
+  `phoenix_cardiovascular()`, `phoenix()`, and `phoenix8()`.
 * Package now depends on R >= 4.0.0 due to the use of `deparse1()`
 * Add data.table and dplyr to suggested packages.  The phoenix package will use
   the native data.table or dplyr data methods if the user passes a data.table or

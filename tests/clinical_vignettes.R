@@ -32,7 +32,7 @@ library(phoenix)
 cv1 <-
   phoenix(
     vasoactives = 1,  # norepinephrine drip
-    map = 32 + (67 - 32) / 3, # 43.667 mmHg
+    mean_arterial_pressure = 32 + (67 - 32) / 3, # 43.667 mmHg
     platelets = 95,
     gcs = 14, # irritability
     age = 3 * 12 # expected input for age is in months
@@ -94,7 +94,7 @@ stopifnot("Clinical Vignette 1" = identical(cv1, expected_cv1))
 cv2 <-
   phoenix(
     gcs = 2 + 2 + 4, # eye + verbal + motor
-    map = 52,
+    mean_arterial_pressure = 52,
     invasive_mechanical_ventilation = 1,
     sf_ratio = 92 / 0.45,
     platelets = 120,

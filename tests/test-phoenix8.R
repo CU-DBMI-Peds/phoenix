@@ -25,17 +25,17 @@ cardiovascular <-
   expand.grid(vasos = c(NA, 0:6),
               lactate = c(NA, 3.2, 5, 7.8, 11, 14),
               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
-              map = c(NA, 16:52))
+              mean_arterial_pressure = c(NA, 16:52))
 
 cardiovascular$vaso_score <- (cardiovascular$vasos > 0) + (cardiovascular$vasos > 1)
 cardiovascular$lact_score <- (cardiovascular$lactate >= 5) + (cardiovascular$lactate >= 11)
 cardiovascular$map_score  <- with(cardiovascular, {
-      (             age <   1) * ((map < 17) + (map < 31)) +
-      (age >=   1 & age <  12) * ((map < 25) + (map < 39)) +
-      (age >=  12 & age <  24) * ((map < 31) + (map < 44)) +
-      (age >=  24 & age <  60) * ((map < 32) + (map < 45)) +
-      (age >=  60 & age < 144) * ((map < 36) + (map < 49)) +
-      (age >= 144            ) * ((map < 38) + (map < 52))
+      (             age <   1) * ((mean_arterial_pressure < 17) + (mean_arterial_pressure < 31)) +
+      (age >=   1 & age <  12) * ((mean_arterial_pressure < 25) + (mean_arterial_pressure < 39)) +
+      (age >=  12 & age <  24) * ((mean_arterial_pressure < 31) + (mean_arterial_pressure < 44)) +
+      (age >=  24 & age <  60) * ((mean_arterial_pressure < 32) + (mean_arterial_pressure < 45)) +
+      (age >=  60 & age < 144) * ((mean_arterial_pressure < 36) + (mean_arterial_pressure < 49)) +
+      (age >= 144            ) * ((mean_arterial_pressure < 38) + (mean_arterial_pressure < 52))
               })
 
 cardiovascular$vaso_score[is.na(cardiovascular$vaso_score)] <- 0
@@ -137,7 +137,7 @@ respiratory$phoenix_resp <-
   phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, data = respiratory)
 
 cardiovascular$phoenix_card <-
-  phoenix_cardiovascular(vasoactives = vasos, lactate = lactate, age = age, map = map, data = cardiovascular)
+  phoenix_cardiovascular(vasoactives = vasos, lactate = lactate, age = age, mean_arterial_pressure = mean_arterial_pressure, data = cardiovascular)
 
 coagulation$phoenix_coag <-
   phoenix_coagulation(platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, data = coagulation)
@@ -218,7 +218,7 @@ realized_phoenix <-
            other_respiratory_support = o2,
            vasoactives = vasos,
            lactate = lactate,
-           map = map,
+           mean_arterial_pressure = mean_arterial_pressure,
            platelets = plts,
            inr = inr,
            d_dimer = ddmr,
@@ -249,7 +249,7 @@ realized_phoenix8 <-
            other_respiratory_support = o2,
            vasoactives = vasos,
            lactate = lactate,
-           map = map,
+           mean_arterial_pressure = mean_arterial_pressure,
            platelets = plts,
            inr = inr,
            d_dimer = ddmr,
@@ -291,14 +291,39 @@ stopifnot(identical(resp_a, resp_b))
 stopifnot(identical(resp_a, resp_c))
 
 # phoenix
-p_a <- phoenix(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
-p8_a <- phoenix8(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
+p_a <- phoenix(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, mean_arterial_pressure = mean_arterial_pressure, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
+p8_a <- phoenix8(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, mean_arterial_pressure = mean_arterial_pressure, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age, data = DF)
 
-p_b <- with(DF, phoenix(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
-p8_b <- with(DF, phoenix8(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = map, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
+p_b <- with(DF, phoenix(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, mean_arterial_pressure = mean_arterial_pressure, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
+p8_b <- with(DF, phoenix8(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, mean_arterial_pressure = mean_arterial_pressure, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age))
+
+legacy_map_warning <- NULL
+p_legacy_map <- withCallingHandlers(
+  with(DF, phoenix(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = mean_arterial_pressure, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age)),
+  warning = function(w) {
+    legacy_map_warning <<- conditionMessage(w)
+    invokeRestart("muffleWarning")
+  }
+)
+
+legacy_map8_warning <- NULL
+p8_legacy_map <- withCallingHandlers(
+  with(DF, phoenix8(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, vasoactives = vasos, lactate = lactate, map = mean_arterial_pressure, platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, gcs = gcs, fixed_pupils = pupils, glucose = glc, anc = anc, alc = alc, creatinine = creatinine, bilirubin = bil, alt = alt, age = age)),
+  warning = function(w) {
+    legacy_map8_warning <<- conditionMessage(w)
+    invokeRestart("muffleWarning")
+  }
+)
+
+stopifnot(
+  identical(p_legacy_map, p_a),
+  identical(p8_legacy_map, p8_a),
+  identical(legacy_map_warning, "`map` is deprecated; use `mean_arterial_pressure` instead."),
+  identical(legacy_map8_warning, "`map` is deprecated; use `mean_arterial_pressure` instead.")
+)
 
 x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
-x5 <- DF$vasos; x6 <- DF$lactate; x7 <- DF$map
+x5 <- DF$vasos; x6 <- DF$lactate; x7 <- DF$mean_arterial_pressure
 x8 <- DF$plts; x9 <- DF$inr; x10 <- DF$ddmr; x11 <- DF$fib;
 x12 <- DF$gcs; x13 <- DF$pupils;
 x14 <- DF$glc; x15 <- DF$anc; x16 <- DF$alc; x17 <- DF$creatinine;

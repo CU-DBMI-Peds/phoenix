@@ -20,8 +20,8 @@ prepare_phoenix_data(
   norepinephrine = NULL,
   vasopressin = NULL,
   lactate = NULL,
-  mapc = NULL,
-  mapa = NULL,
+  mean_arterial_pressure_cuff = NULL,
+  mean_arterial_pressure_arterial = NULL,
   sbp_cuff = NULL,
   sbp_arterial = NULL,
   dbp_arterial = NULL,
@@ -48,7 +48,7 @@ prepare_phoenix_data(
   antiinfectioustests = NULL,
   resp.lookback = 360,
   vaso.lookback = 720,
-  map.lookback = 360,
+  bp.lookback = 360,
   lac.lookback = 360,
   gcs.lookback = 360,
   pupil.lookback = 720,
@@ -72,7 +72,7 @@ prepare_phoenix_data(
 
 \item{hfov}{an object returned from \code{\link{prepare_hfov}}}
 
-\item{peep}{an object returned from \code{\link{prepare_peep}}}
+\item{peep}{an object returned from \code{\link{prepare_peep_vent}}}
 
 \item{invasive_mechanical_ventilation}{an object returned from \code{\link{prepare_invasive_mechanical_ventilation}}}
 
@@ -92,9 +92,9 @@ prepare_phoenix_data(
 
 \item{lactate}{an object returned from \code{\link{prepare_lactate}}}
 
-\item{mapc}{an object returned from \code{\link{prepare_mapc}}}
+\item{mean_arterial_pressure_cuff}{an object returned from \code{\link{prepare_mean_arterial_pressure_cuff}}}
 
-\item{mapa}{an object returned from \code{\link{prepare_mapa}}}
+\item{mean_arterial_pressure_arterial}{an object returned from \code{\link{prepare_mean_arterial_pressure_arterial}}}
 
 \item{sbp_cuff}{an object returned from \code{\link{prepare_sbp_cuff}}}
 
@@ -148,7 +148,7 @@ prepare_phoenix_data(
 
 \item{vaso.lookback}{The number of minutes to look back in an encounter for carry-forward vasoactive medication status}
 
-\item{map.lookback}{The number of minutes to look back in an encounter for carry-forward blood pressure values}
+\item{bp.lookback}{The number of minutes to look back in an encounter for carry-forward blood pressure values}
 
 \item{lac.lookback}{The number of minutes to look back in an encounter for carry-forward of lactate values}
 

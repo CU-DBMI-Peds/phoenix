@@ -418,7 +418,7 @@ MAP.
 # vas: number of vasoactive meds
 # lct: lactate in mmol/L
 # age: age in months
-# map: mean arterial pressure in mmHg
+# mean_arterial_pressure: mean arterial pressure in mmHg
 cat(tail(as.character(body(phoenix::phoenix_cardiovascular)), 4), sep = "\n")
 ```
 

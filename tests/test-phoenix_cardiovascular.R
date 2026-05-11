@@ -16,7 +16,7 @@ eg <-
          vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
          lactate = lactate,
          age = age,
-         map = dbp + (sbp - dbp)/3,
+         mean_arterial_pressure = dbp + (sbp - dbp)/3,
          data = x
       )
     }
@@ -58,7 +58,7 @@ test_zero_row_result <-
         vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
         lactate = lactate,
         age = age,
-        map = dbp + (sbp - dbp)/3,
+        mean_arterial_pressure = dbp + (sbp - dbp)/3,
         data = x[0, ]
       )
     }
@@ -80,7 +80,7 @@ test_list_result <-
     vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
     lactate = lactate,
     age = age,
-    map = dbp + (sbp - dbp)/3,
+    mean_arterial_pressure = dbp + (sbp - dbp)/3,
     data = test_list_data
   )
 
@@ -89,7 +89,7 @@ test_env_result <-
     vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
     lactate = lactate,
     age = age,
-    map = dbp + (sbp - dbp)/3,
+    mean_arterial_pressure = dbp + (sbp - dbp)/3,
     data = test_env_data
   )
 
@@ -106,7 +106,7 @@ test_bad_env_result <- tryCatch(
     vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
     lactate = lactate,
     age = age,
-    map = dbp + (sbp - dbp)/3,
+    mean_arterial_pressure = dbp + (sbp - dbp)/3,
     data = test_bad_env_data
   ),
   error = function(e) e
@@ -130,15 +130,37 @@ x <- tryCatch(phoenix_cardiovascular(vasoactives = numeric(0)), error = function
 stopifnot(inherits(x, "simpleError"))
 stopifnot(identical(
   x$message,
- "All inputs need to either have the same length or have length 1. Length of vasoactives is 0; Length of lactate is 1; Length of age is 1; Length of map is 1."
+ "All inputs need to either have the same length or have length 1. Length of vasoactives is 0; Length of lactate is 1; Length of age is 1; Length of mean_arterial_pressure is 1."
 ))
 
 x <- tryCatch(phoenix_cardiovascular(vasoactives = c(NA, NA), age = c(NA, NA, NA)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))
 stopifnot(identical(
   x$message,
- "All inputs need to either have the same length or have length 1. Length of vasoactives is 2; Length of lactate is 1; Length of age is 3; Length of map is 1."
+ "All inputs need to either have the same length or have length 1. Length of vasoactives is 2; Length of lactate is 1; Length of age is 3; Length of mean_arterial_pressure is 1."
 ))
+
+################################################################################
+# verify deprecated map alias still works for public API compatibility
+legacy_alias_warning <- NULL
+legacy_alias_result <- withCallingHandlers(
+  phoenix_cardiovascular(
+    vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
+    lactate = lactate,
+    age = age,
+    map = dbp + (sbp - dbp)/3,
+    data = sepsis
+  ),
+  warning = function(w) {
+    legacy_alias_warning <<- conditionMessage(w)
+    invokeRestart("muffleWarning")
+  }
+)
+
+stopifnot(
+  identical(legacy_alias_result, eg[["DF"]]),
+  identical(legacy_alias_warning, "`map` is deprecated; use `mean_arterial_pressure` instead.")
+)
 
 
 ################################################################################

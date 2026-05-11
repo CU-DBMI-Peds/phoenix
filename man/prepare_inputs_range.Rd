@@ -7,14 +7,14 @@
 \alias{prepare_pao2}
 \alias{prepare_vent}
 \alias{prepare_hfov}
-\alias{prepare_peep}
+\alias{prepare_peep_vent}
 \alias{prepare_lactate}
 \alias{prepare_sbp_cuff}
 \alias{prepare_sbp_arterial}
 \alias{prepare_dbp_cuff}
 \alias{prepare_dbp_arterial}
-\alias{prepare_mapc}
-\alias{prepare_mapa}
+\alias{prepare_mean_arterial_pressure_cuff}
+\alias{prepare_mean_arterial_pressure_arterial}
 \alias{prepare_platelets}
 \alias{prepare_inr}
 \alias{prepare_ddimer}
@@ -79,12 +79,12 @@ prepare_hfov(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_peep(
+prepare_peep_vent(
   x,
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(0, 100),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -94,7 +94,7 @@ prepare_lactate(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(0, 50),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -104,7 +104,7 @@ prepare_sbp_cuff(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(1, Inf),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -124,7 +124,7 @@ prepare_dbp_cuff(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(1, 200),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -134,27 +134,27 @@ prepare_dbp_arterial(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(1, 200),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_mapc(
+prepare_mean_arterial_pressure_cuff(
   x,
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(1, 300),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_mapa(
+prepare_mean_arterial_pressure_arterial(
   x,
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(1, 300),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -184,7 +184,7 @@ prepare_ddimer(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(0, 500),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -204,7 +204,7 @@ prepare_glucose(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(5, 2000),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -244,7 +244,7 @@ prepare_bilirubin(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(0, 100),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )

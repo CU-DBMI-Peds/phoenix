@@ -169,8 +169,8 @@ print(resp)
 #
 #   lactate: mmol/L
 #
-#   map (mean arterial pressure): mmHg.
-#                                 In the example below we report the map as the
+#   mean_arterial_pressure: mmHg.
+#                           In the example below we report mean arterial pressure as the
 #                                 weighted average of systolic (sbp) and
 #                                 diastolic (dbp) pressures, also reported in
 #                                 mmHg.
@@ -180,7 +180,7 @@ card = phx.phoenix_cardiovascular(
                   sepsis["milrinone"]  + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
+    mean_arterial_pressure = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3
 )
 print(type(card))
 ## <class 'numpy.ndarray'>
@@ -303,7 +303,7 @@ phoenix = phx.phoenix(
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    mean_arterial_pressure = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
   # Coagulation
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
@@ -356,7 +356,7 @@ phoenix8_scores = phx.phoenix8(
   # Cardiovascular
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
-    map = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
+    mean_arterial_pressure = sepsis["dbp"] + (sepsis["sbp"] - sepsis["dbp"]) / 3,
     age = sepsis["age"],
 
   # Coagulation

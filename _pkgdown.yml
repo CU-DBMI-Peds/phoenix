@@ -31,7 +31,7 @@ reference:
   - phoenix_hepatic
   - phoenix_renal
   - sepsis
-  - map
+  - mean_arterial_pressure
 
 - title: Curatated Data to Phoenix Sepsis Scores
 - subtitle: Prepare Data
@@ -49,4 +49,4 @@ reference:
   - sepsis
 - subtitle: Functions
 - contents:
-    - map
+    - mean_arterial_pressure

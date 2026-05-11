@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import warnings
 
-def map(sbp, dbp):
+def mean_arterial_pressure(sbp, dbp):
     """
     Mean Arterial Pressure
 
@@ -17,6 +17,14 @@ def map(sbp, dbp):
     """
     return(np.array(2/3 * dbp + 1/3 * sbp))
 
+def map(sbp, dbp):
+    warnings.warn(
+        "`map()` is deprecated; use `mean_arterial_pressure()` instead.",
+        FutureWarning,
+        stacklevel = 2
+    )
+    return mean_arterial_pressure(sbp, dbp)
+
 def _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv):
     if imv is not None:
         if not np.isscalar(invasive_mechanical_ventilation) or not np.isnan(invasive_mechanical_ventilation):
@@ -28,6 +36,18 @@ def _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, im
         )
         return imv
     return invasive_mechanical_ventilation
+
+def _resolve_mean_arterial_pressure(mean_arterial_pressure, map):
+    if map is not None:
+        if not np.isscalar(mean_arterial_pressure) or not np.isnan(mean_arterial_pressure):
+            raise ValueError("Use only one of `mean_arterial_pressure` or its deprecated alias `map`.")
+        warnings.warn(
+            "`map` is deprecated; use `mean_arterial_pressure` instead.",
+            FutureWarning,
+            stacklevel = 3
+        )
+        return map
+    return mean_arterial_pressure
 
 def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, *, imv = None):
     """
@@ -72,7 +92,7 @@ def phoenix_respiratory(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanica
 
     return(np.array(rtn))
 
-def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan, map = np.nan):
+def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan, mean_arterial_pressure = np.nan, *, map = None):
     """
     Phoenix Cardiovascular Scoring
 
@@ -87,7 +107,9 @@ def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan,
 
         age : numeric vector age in months
 
-        map : numeric vector, mean arterial pressure in mmHg
+        mean_arterial_pressure : numeric vector, mean arterial pressure in mmHg
+
+        map : soft-deprecated alias for mean_arterial_pressure
 
     Returns:
         A np.array of integer values
@@ -95,22 +117,24 @@ def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan,
     vas = np.nan_to_num(vasoactives, nan = 0)
     lct = np.nan_to_num(lactate, nan = 0)
 
-    # for age and map, if one is missing set both values so a score of 0 is
+    mean_arterial_pressure = _resolve_mean_arterial_pressure(mean_arterial_pressure, map)
+
+    # for age and mean arterial pressure, if one is missing set both values so a score of 0 is
     # returned.  use np.nan_to_num to copy the data before using [idx] to set al
     # the missing values
     age = np.nan_to_num(age, nan = 222)
-    map = np.nan_to_num(map, nan = 100)
+    mean_arterial_pressure = np.nan_to_num(mean_arterial_pressure, nan = 100)
 
     vas_score = (vas > 1).astype(int) + (vas > 0).astype(int)
     lct_score = (lct >= 11).astype(int) + (lct >= 5).astype(int)
     map_score = (
-            ((age >=   0) & (age <    1)).astype(int) * ((map < 17).astype(int) + (map < 31).astype(int)) +
-            ((age >=   1) & (age <   12)).astype(int) * ((map < 25).astype(int) + (map < 39).astype(int)) +
-            ((age >=  12) & (age <   24)).astype(int) * ((map < 31).astype(int) + (map < 44).astype(int)) +
-            ((age >=  24) & (age <   60)).astype(int) * ((map < 32).astype(int) + (map < 45).astype(int)) +
-            ((age >=  60) & (age <  144)).astype(int) * ((map < 36).astype(int) + (map < 49).astype(int)) +
-            ((age >= 144) & (age <= 216)).astype(int) * ((map < 38).astype(int) + (map < 52).astype(int))
-    )
+            ((age >=   0) & (age <    1)).astype(int) * ((mean_arterial_pressure < 17).astype(int) + (mean_arterial_pressure < 31).astype(int)) +
+            ((age >=   1) & (age <   12)).astype(int) * ((mean_arterial_pressure < 25).astype(int) + (mean_arterial_pressure < 39).astype(int)) +
+            ((age >=  12) & (age <   24)).astype(int) * ((mean_arterial_pressure < 31).astype(int) + (mean_arterial_pressure < 44).astype(int)) +
+            ((age >=  24) & (age <   60)).astype(int) * ((mean_arterial_pressure < 32).astype(int) + (mean_arterial_pressure < 45).astype(int)) +
+            ((age >=  60) & (age <  144)).astype(int) * ((mean_arterial_pressure < 36).astype(int) + (mean_arterial_pressure < 49).astype(int)) +
+            ((age >= 144) & (age <= 216)).astype(int) * ((mean_arterial_pressure < 38).astype(int) + (mean_arterial_pressure < 52).astype(int))
+            )
 
     return(np.array(vas_score + lct_score + map_score))
 
@@ -236,7 +260,7 @@ def phoenix_hepatic(bilirubin = np.nan, alt = np.nan):
     alt = np.nan_to_num(alt, nan = 0)
     return( np.array(((bil >= 4) | (alt > 102)).astype(int)))
 
-def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, age = np.nan, *, imv = None):
+def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, mean_arterial_pressure = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, age = np.nan, *, imv = None, map = None):
     """
     Phoenix Sepsis Scoring
 
@@ -269,7 +293,9 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilatio
 
         age : numeric vector age in months
 
-        map : numeric vector, mean arterial pressure in mmHg
+        mean_arterial_pressure : numeric vector, mean arterial pressure in mmHg
+
+        map : soft-deprecated alias for mean_arterial_pressure
 
         platelets : numeric vector for platelets counts in units of 1,000/uL
                     (thousand per microliter)
@@ -294,8 +320,9 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilatio
         (sepsis with at least one cardiovascular point).
     """
     invasive_mechanical_ventilation = _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv)
+    mean_arterial_pressure = _resolve_mean_arterial_pressure(mean_arterial_pressure, map)
     resp = phoenix_respiratory(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support)
-    card = phoenix_cardiovascular(vasoactives, lactate, age, map)
+    card = phoenix_cardiovascular(vasoactives, lactate, age, mean_arterial_pressure)
     coag = phoenix_coagulation(platelets, inr, d_dimer, fibrinogen)
     neur = phoenix_neurologic(gcs, fixed_pupils)
     total = resp + card + coag + neur
@@ -305,7 +332,7 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilatio
     rtn.columns = ["phoenix_respiratory_score", "phoenix_cardiovascular_score", "phoenix_coagulation_score", "phoenix_neurologic_score", "phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock"]
     return(rtn)
 
-def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, map = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, glucose = np.nan, anc = np.nan, alc = np.nan, creatinine = np.nan, bilirubin = np.nan, alt = np.nan, age = np.nan, *, imv = None):
+def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilation = np.nan, other_respiratory_support = np.nan, vasoactives = np.nan, lactate = np.nan, mean_arterial_pressure = np.nan, platelets = np.nan, inr = np.nan, d_dimer = np.nan, fibrinogen = np.nan, gcs = np.nan, fixed_pupils = np.nan, glucose = np.nan, anc = np.nan, alc = np.nan, creatinine = np.nan, bilirubin = np.nan, alt = np.nan, age = np.nan, *, imv = None, map = None):
     """
     Phoenix-8 Scoring
 
@@ -338,7 +365,9 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilati
 
         age : numeric vector age in months
 
-        map : numeric vector, mean arterial pressure in mmHg
+        mean_arterial_pressure : numeric vector, mean arterial pressure in mmHg
+
+        map : soft-deprecated alias for mean_arterial_pressure
 
         platelets : numeric vector for platelets counts in units of 1,000/uL
                     (thousand per microliter)
@@ -376,8 +405,9 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilati
         (sepsis with at least one cardiovascular point).
     """
     invasive_mechanical_ventilation = _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv)
+    mean_arterial_pressure = _resolve_mean_arterial_pressure(mean_arterial_pressure, map)
     resp = phoenix_respiratory(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support)
-    card = phoenix_cardiovascular(vasoactives, lactate, age, map)
+    card = phoenix_cardiovascular(vasoactives, lactate, age, mean_arterial_pressure)
     coag = phoenix_coagulation(platelets, inr, d_dimer, fibrinogen)
     neur = phoenix_neurologic(gcs, fixed_pupils)
     total = resp + card + coag + neur

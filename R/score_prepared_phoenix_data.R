@@ -106,7 +106,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phoenix_cardiovascular(
       vasoactives = x[["DOBUTAMINE"]] + x[["DOPAMINE"]] + x[["EPINEPHRINE"]] + x[["MILRINONE"]] + x[["NOREPINEPHRINE"]] + x[["VASOPRESSIN"]],
       lactate = x[["LACTATE"]],
-      map = x[["MAP"]],
+      mean_arterial_pressure = x[["MAP"]],
       age = x[["AGE"]],
     )
 
@@ -240,7 +240,7 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phoenix_cardiovascular(
       vasoactives = x[["DOBUTAMINE"]] + x[["DOPAMINE"]] + x[["EPINEPHRINE"]] + x[["MILRINONE"]] + x[["NOREPINEPHRINE"]] + x[["VASOPRESSIN"]],
       lactate = x[["LACTATE"]],
-      map = x[["MAP"]],
+      mean_arterial_pressure = x[["MAP"]],
       age = x[["AGE"]],
     )
 
@@ -363,7 +363,7 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
 alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Overlly simplified, the score is
-  # max(resp) + max(vaso) + max(map) + max(lactate) + max(neuro) + max(coag)
+  # max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
 
   if (verbose) message("    building organ system scores...")
   # find all the needed organ system scores at every moment in time
