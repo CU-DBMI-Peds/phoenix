@@ -119,12 +119,12 @@ look like:
 
 If at time T₃ FiO₂ is updated:
 
-| time | FiO₂                                               | Lactate                                           |
-|:----:|:---------------------------------------------------|:--------------------------------------------------|
-|  T₀  | 0.40                                               | 6.8                                               |
-|  T₁  | 0.40 (Assuming T₁ - T₀ \< 6 hours; NULL Otherwise) | 7.3                                               |
-|  T₂  | 0.40 (Assuming T₂ - T₀ \< 6 hours; NULL Otherwise) | 7.1                                               |
-|  T₃  | 0.80 (good new value)                              | 7.1 (Assuming T₃ - T₂ \< 6 hours; NULL Otherwise) |
+| time | FiO₂ | Lactate |
+|:--:|:---|:---|
+| T₀ | 0.40 | 6.8 |
+| T₁ | 0.40 (Assuming T₁ - T₀ \< 6 hours; NULL Otherwise) | 7.3 |
+| T₂ | 0.40 (Assuming T₂ - T₀ \< 6 hours; NULL Otherwise) | 7.1 |
+| T₃ | 0.80 (good new value) | 7.1 (Assuming T₃ - T₂ \< 6 hours; NULL Otherwise) |
 
 ------------------------------------------------------------------------
 
@@ -246,27 +246,27 @@ data checks can be performed before the score is determined.
     use. If the FiO₂ is then updated at 11:59, the PaO₂ value from 11:45
     would not be valid to use in the calculation of the PFR
 
-    |  time |     FiO₂ |    PaO₂ |    PFR |                                                    Note: |
-    |------:|---------:|--------:|-------:|---------------------------------------------------------:|
-    | 11:31 |   0.30\* |         |        |                                                          |
-    | 11:45 | 0.30^(c) |   118\* | 393.33 |                                                          |
-    | 11:47 | 0.30^(c) | 118^(c) | 393.33 |                                                          |
-    | 11:59 |   0.40\* | 118^(c) |        |                          No PFR, FiO₂ is newer than PaO₂ |
-    | 12:10 | 0.40^(c) |   152\* |    380 |                                                          |
-    | 12:15 | 0.40^(c) | 152^(c) |    380 |                                                          |
-    | 17:45 | 0.40^(c) | 152^(c) |    380 |                                                          |
-    | 18:00 |          | 152^(c) |        |                No PFR, FiO₂ carry forward window expired |
-    | 18:30 |          |         |        | No PFR, FiO₂ and PaO₂ carry forward windows have expired |
+    | time | FiO₂ | PaO₂ | PFR | Note: |
+    |---:|---:|---:|---:|---:|
+    | 11:31 | 0.30\* |  |  |  |
+    | 11:45 | 0.30^(c) | 118\* | 393.33 |  |
+    | 11:47 | 0.30^(c) | 118^(c) | 393.33 |  |
+    | 11:59 | 0.40\* | 118^(c) |  | No PFR, FiO₂ is newer than PaO₂ |
+    | 12:10 | 0.40^(c) | 152\* | 380 |  |
+    | 12:15 | 0.40^(c) | 152^(c) | 380 |  |
+    | 17:45 | 0.40^(c) | 152^(c) | 380 |  |
+    | 18:00 |  | 152^(c) |  | No PFR, FiO₂ carry forward window expired |
+    | 18:30 |  |  |  | No PFR, FiO₂ and PaO₂ carry forward windows have expired |
 
     \* New value  
-    ^(c) value carried forward
+    ^(c) value carried forward {.table}
 - Look back: implied by the look back on PaO₂ and FiO₂ and the condition
   that FiO₂ value is the same age or older than the PaO₂ value.
 
 #### SFR: SpO₂ / FiO₂
 
 - Units: none
-- Expected Values: \[0, 97\]/0.21
+- Expected Values: \[0, 97/0.21\]
   - Floating point
   - The upper limit includes the limitation on SpO₂ ≤ 97
 - Caveats:
@@ -276,22 +276,22 @@ data checks can be performed before the score is determined.
     use. If the FiO₂ is then updated at 11:59, the SpO₂ value from 11:45
     would not be valid to use in the calculation of the SFR
 
-    |  time |     FiO₂ |   SpO₂ |   SFR |                                                    Note: |
-    |------:|---------:|-------:|------:|---------------------------------------------------------:|
-    | 10:15 |   0.25\* |   92\* |   368 |                                                          |
-    | 10:20 | 0.25^(c) |   98\* |       |                                       No SFR, SpO₂ \> 97 |
-    | 11:31 |   0.30\* | 98^(c) |       |              No SFR, SpO₂ \> 97 and FiO₂ newer than SpO₂ |
-    | 11:45 | 0.30^(c) |   87\* |   290 |                                                          |
-    | 11:47 | 0.30^(c) | 87^(c) |   290 |                                                          |
-    | 11:59 |   0.40\* | 87^(c) |       |                          No SFR, FiO₂ is newer than SpO₂ |
-    | 12:10 | 0.40^(c) |   85\* | 212.5 |                                                          |
-    | 12:15 | 0.40^(c) | 85^(c) | 212.5 |                                                          |
-    | 17:45 | 0.40^(c) | 85^(c) | 212.5 |                                                          |
-    | 18:00 |          | 85^(c) |       |                No SFR, FiO₂ carry forward window expired |
-    | 18:30 |          |        |       | No SFR, FiO₂ and SpO₂ carry forward windows have expired |
+    | time | FiO₂ | SpO₂ | SFR | Note: |
+    |---:|---:|---:|---:|---:|
+    | 10:15 | 0.25\* | 92\* | 368 |  |
+    | 10:20 | 0.25^(c) | 98\* |  | No SFR, SpO₂ \> 97 |
+    | 11:31 | 0.30\* | 98^(c) |  | No SFR, SpO₂ \> 97 and FiO₂ newer than SpO₂ |
+    | 11:45 | 0.30^(c) | 87\* | 290 |  |
+    | 11:47 | 0.30^(c) | 87^(c) | 290 |  |
+    | 11:59 | 0.40\* | 87^(c) |  | No SFR, FiO₂ is newer than SpO₂ |
+    | 12:10 | 0.40^(c) | 85\* | 212.5 |  |
+    | 12:15 | 0.40^(c) | 85^(c) | 212.5 |  |
+    | 17:45 | 0.40^(c) | 85^(c) | 212.5 |  |
+    | 18:00 |  | 85^(c) |  | No SFR, FiO₂ carry forward window expired |
+    | 18:30 |  |  |  | No SFR, FiO₂ and SpO₂ carry forward windows have expired |
 
     \* New value  
-    ^(c) value carried forward
+    ^(c) value carried forward {.table}
 - Look back: implied by the look back on SpO₂ and FiO₂ and the condition
   that FiO₂ value is the same age or older than the SpO₂ value.
 
@@ -328,6 +328,7 @@ Scoring is based on the lowest available PaO₂/FiO₂ (PFR) and SpO₂/FiO₂
 (SFR) with consideration for IMV and ORS.
 
 ``` r
+
 # R code: booleans are implicitly coerced to integers
 cat(tail(as.character(body(phoenix::phoenix_respiratory)), 1), sep = "\n")
 #> imv * (((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220))) + ors * ((pfr < 400) | (sfr < 292))
@@ -441,6 +442,7 @@ two points for vasoactives, up to two points for lactate, and up to two
 points for MAP.
 
 ``` r
+
 # vas: number of vasoactive meds
 # lct: lactate in mmol/L
 # age: age in months
@@ -492,6 +494,7 @@ While there are four inputs and a patient could get a point for each
 one, the final score is capped at two points.
 
 ``` r
+
 cat(tail(as.character(body(phoenix::phoenix_coagulation)), 2), sep = "\n")
 #> rtn <- as.integer(plt < 100) + as.integer(inr > 1.3) + as.integer(ddm > 2) + as.integer(fib < 100)
 #> pmin(rtn, 2)
@@ -555,6 +558,7 @@ A patient with a GCS ≤ 10 and bilaterally fixed pupils will have a score
 of 2.
 
 ``` r
+
 # fpl: 1 if bilaterally fixed pupils; 0 otherwise
 cat(tail(as.character(body(phoenix::phoenix_neurologic)), 1), sep = "\n")
 #> pmin(fpl * 2 + as.integer(gcs <= 10), 2)
@@ -581,6 +585,7 @@ cat(tail(as.character(body(phoenix::phoenix_neurologic)), 1), sep = "\n")
 Scoring for Phoenix-8 only. 1 point if glucose \< 50 or \> 150
 
 ``` r
+
 cat(tail(as.character(body(phoenix::phoenix_endocrine)), 1), sep = "\n")
 #> as.integer((glc < 50) | (glc > 150))
 ```
@@ -614,6 +619,7 @@ cat(tail(as.character(body(phoenix::phoenix_endocrine)), 1), sep = "\n")
 At most one point
 
 ``` r
+
 cat(tail(as.character(body(phoenix::phoenix_immunologic)), 1), sep = "\n")
 #> as.integer((anc < 0.5) | (alc < 1))
 ```
@@ -638,6 +644,7 @@ cat(tail(as.character(body(phoenix::phoenix_immunologic)), 1), sep = "\n")
 Age-adjusted creatinine
 
 ``` r
+
 cat(tail(as.character(body(phoenix::phoenix_renal)), 1), sep = "\n")
 #> (age >= 0 & age < 1) * (crt >= 0.8) + (age >= 1 & age < 12) * (crt >= 0.3) + (age >= 12 & age < 24) * (crt >= 0.4) + (age >= 24 & age < 60) * (crt >= 0.6) + (age >= 60 & age < 144) * (crt >= 0.7) + (age >= 144 & age <= 216) * (crt >= 1)
 ```
@@ -668,6 +675,7 @@ cat(tail(as.character(body(phoenix::phoenix_renal)), 1), sep = "\n")
 0 or 1 points
 
 ``` r
+
 cat(tail(as.character(body(phoenix::phoenix_hepatic)), 1), sep = "\n")
 #> as.integer((bil >= 4) | (alt > 102))
 ```
@@ -676,13 +684,12 @@ cat(tail(as.character(body(phoenix::phoenix_hepatic)), 1), sep = "\n")
 
 ## References
 
-Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, Seth
-Russell, Margaret N. Rebull, Blake Martin, Samuel Akech, et al. 2024.
-“Development and Validation of the Phoenix Criteria for Pediatric Sepsis
-and Septic Shock.” *JAMA*, January.
+Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, et al.
+2024. “Development and Validation of the Phoenix Criteria for Pediatric
+Sepsis and Septic Shock.” *JAMA*, ahead of print, January.
 <https://doi.org/10.1001/jama.2024.0196>.
 
-Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, Andrew C.
-Argent, Kusum Menon, Mark W. Hall, Samuel Akech, et al. 2024.
+Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, et al. 2024.
 “International Consensus Criteria for Pediatric Sepsis and Septic
-Shock.” *JAMA*, January. <https://doi.org/10.1001/jama.2024.0179>.
+Shock.” *JAMA*, ahead of print, January.
+<https://doi.org/10.1001/jama.2024.0179>.

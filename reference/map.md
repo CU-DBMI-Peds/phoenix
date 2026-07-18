@@ -31,6 +31,7 @@ Mean Arterial Pressure is approximated by: (DBP + (SBP - DBP) / 3) =
 ## Examples
 
 ``` r
+
 DF <- expand.grid(
         sbp = 40:130, # expected units of mmHg
         dbp = 20:100  # expected units of mmHg

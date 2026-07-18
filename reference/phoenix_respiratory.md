@@ -78,9 +78,9 @@ oxygen, high-flow, non-invasive positive pressure, or imv.
 
 ## Phoenix Respiratory Scoring
 
-|                                       |                                                                  |                                              |                                              |
-|---------------------------------------|------------------------------------------------------------------|----------------------------------------------|----------------------------------------------|
-| 0 points                              | 1 point                                                          | 2 points                                     | 3 points                                     |
+|  |  |  |  |
+|----|----|----|----|
+| 0 points | 1 point | 2 points | 3 points |
 | pf_ratio \>= 400 and sf_ratio \>= 292 | (pf_ratio \< 400 or sf_ratio \< 292) and any respiratory support | (pf_ratio \< 200 or sf_ratio \< 220) and imv | (pf_ratio \< 100 or sf_ratio \< 148) and imv |
 
 ## References
@@ -121,6 +121,7 @@ for more details and examples.
 ## Examples
 
 ``` r
+
 # Using the provided example data set:
 # Expected units:
 #   pf_ratio: PaO2 / FiO2

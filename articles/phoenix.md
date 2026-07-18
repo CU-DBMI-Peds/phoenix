@@ -1,6 +1,7 @@
 # The Phoenix Sepsis Criteria
 
 ``` r
+
 library(phoenix)
 packageVersion("phoenix")
 ## [1] '1.1.3'
@@ -61,45 +62,45 @@ scores for Phoenix and
 
 ### Phoenix Scoring Rubric
 
-| Organ System                                                          | 0 Points                 | 1 Point                 | 2 Points                 | 3 Points |
-|:----------------------------------------------------------------------|:-------------------------|:------------------------|:-------------------------|:---------|
-| **Respiratory** (0-3 points)                                          |                          |                         |                          |          |
-|                                                                       |                          | Any respiratory support | IMV^(a)                  | IMV      |
-|   PaO₂:FiO₂                                                           | ≥ 400                    | \< 400                  | \< 200                   | \< 100   |
-|   SpO₂:FiO₂^(b)                                                       | ≥ 292                    | \< 292                  | \< 220                   | \< 148   |
-| **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |                          |                         |                          |          |
-|    Systemic Vasoactive Medications^(c)                                | No medications           | 1 medication            | 2 or more medications    |          |
-|    Lactate^(d) (mmol/L)                                               | \< 5                     | 5 ≤ Lactate \< 11       | ≥ 11                     |          |
-|    Age^(e) (months) adjusted MAP^(f) (mmHg)                           |                          |                         |                          |          |
-|      0 ≤ Age \< 1                                                     | ≥ 31                     | 17 ≤ MAP \< 31          | \< 17                    |          |
-|      1 ≤ Age \< 12                                                    | ≥ 39                     | 25 ≤ MAP \< 39          | \< 25                    |          |
-|      12 ≤ Age \< 24                                                   | ≥ 44                     | 31 ≤ MAP \< 44          | \< 31                    |          |
-|      24 ≤ Age \< 60                                                   | ≥ 45                     | 32 ≤ MAP \< 45          | \< 32                    |          |
-|      60 ≤ Age \< 144                                                  | ≥ 49                     | 36 ≤ MAP \< 49          | \< 36                    |          |
-|      144 ≤ Age \< 216                                                 | ≥ 52                     | 38 ≤ MAP \< 52          | \< 38                    |          |
-| **Coagulation**^(g) (0-2 points; 1 for each lab; max of 2 points)     |                          |                         |                          |          |
-|    Platelets (1000/μL)                                                | ≥ 100                    | \< 100                  |                          |          |
-|    INR                                                                | ≤ 1.3                    | \> 1.3                  |                          |          |
-|    D-Dimer (mg/L FEU)                                                 | ≤ 2                      | \> 2                    |                          |          |
-|    Fibrinogen (mg/dL)                                                 | ≥ 100                    | \< 100                  |                          |          |
-| **Neurologic**^(h) (0-2 points)                                       |                          |                         |                          |          |
-|                                                                       | GCS^(i) ≥ 11             | GCS ≤ 10                | Bilaterally fixed pupils |          |
-| **Endocrine** (0-1 point)                                             |                          |                         |                          |          |
-|    Blood Glucose (mg/dL)                                              | 50 ≤ Blood Glucose ≤ 150 | \< 50; or \> 150        |                          |          |
-| **Immunologic** (0-1 point; point from ANC and/or ALC)                |                          |                         |                          |          |
-|    ANC (cells/mm³)                                                    | ≥ 500                    | \< 500                  |                          |          |
-|    ALC (cells/mm³)                                                    | ≥ 1000                   | \< 1000                 |                          |          |
-| **Renal** (0-1 point)                                                 |                          |                         |                          |          |
-|    Age^(e) (months) adjusted Creatinine (mg/dL)                       |                          |                         |                          |          |
-|      0 ≤ Age \< 1                                                     | \< 0.8                   | ≥ 0.8                   |                          |          |
-|      1 ≤ Age \< 12                                                    | \< 0.3                   | ≥ 0.3                   |                          |          |
-|      12 ≤ Age \< 24                                                   | \< 0.4                   | ≥ 0.4                   |                          |          |
-|      24 ≤ Age \< 60                                                   | \< 0.6                   | ≥ 0.6                   |                          |          |
-|      60 ≤ Age \< 144                                                  | \< 0.7                   | ≥ 0.7                   |                          |          |
-|      144 ≤ Age \< 216                                                 | \< 1.0                   | ≥ 1.0                   |                          |          |
-| **Hepatic** (0-1 point; point from total bilirubin and/or ALT)        |                          |                         |                          |          |
-|    Total Bilirubin (mg/dL)                                            | \< 4                     | ≥ 4                     |                          |          |
-|    ALT (IU/L)                                                         | ≤ 102                    | \> 102                  |                          |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Respiratory** (0-3 points) |  |  |  |  |
+|  |  | Any respiratory support | IMV^(a) | IMV |
+|   PaO₂:FiO₂ | ≥ 400 | \< 400 | \< 200 | \< 100 |
+|   SpO₂:FiO₂^(b) | ≥ 292 | \< 292 | \< 220 | \< 148 |
+| **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |  |  |  |  |
+|    Systemic Vasoactive Medications^(c) | No medications | 1 medication | 2 or more medications |  |
+|    Lactate^(d) (mmol/L) | \< 5 | 5 ≤ Lactate \< 11 | ≥ 11 |  |
+|    Age^(e) (months) adjusted MAP^(f) (mmHg) |  |  |  |  |
+|      0 ≤ Age \< 1 | ≥ 31 | 17 ≤ MAP \< 31 | \< 17 |  |
+|      1 ≤ Age \< 12 | ≥ 39 | 25 ≤ MAP \< 39 | \< 25 |  |
+|      12 ≤ Age \< 24 | ≥ 44 | 31 ≤ MAP \< 44 | \< 31 |  |
+|      24 ≤ Age \< 60 | ≥ 45 | 32 ≤ MAP \< 45 | \< 32 |  |
+|      60 ≤ Age \< 144 | ≥ 49 | 36 ≤ MAP \< 49 | \< 36 |  |
+|      144 ≤ Age \< 216 | ≥ 52 | 38 ≤ MAP \< 52 | \< 38 |  |
+| **Coagulation**^(g) (0-2 points; 1 for each lab; max of 2 points) |  |  |  |  |
+|    Platelets (1000/μL) | ≥ 100 | \< 100 |  |  |
+|    INR | ≤ 1.3 | \> 1.3 |  |  |
+|    D-Dimer (mg/L FEU) | ≤ 2 | \> 2 |  |  |
+|    Fibrinogen (mg/dL) | ≥ 100 | \< 100 |  |  |
+| **Neurologic**^(h) (0-2 points) |  |  |  |  |
+|    | GCS^(i) ≥ 11 | GCS ≤ 10 | Bilaterally fixed pupils |  |
+| **Endocrine** (0-1 point) |  |  |  |  |
+|    Blood Glucose (mg/dL) | 50 ≤ Blood Glucose ≤ 150 | \< 50; or \> 150 |  |  |
+| **Immunologic** (0-1 point; point from ANC and/or ALC) |  |  |  |  |
+|    ANC (cells/mm³) | ≥ 500 | \< 500 |  |  |
+|    ALC (cells/mm³) | ≥ 1000 | \< 1000 |  |  |
+| **Renal** (0-1 point) |  |  |  |  |
+|    Age^(e) (months) adjusted Creatinine (mg/dL) |  |  |  |  |
+|      0 ≤ Age \< 1 | \< 0.8 | ≥ 0.8 |  |  |
+|      1 ≤ Age \< 12 | \< 0.3 | ≥ 0.3 |  |  |
+|      12 ≤ Age \< 24 | \< 0.4 | ≥ 0.4 |  |  |
+|      24 ≤ Age \< 60 | \< 0.6 | ≥ 0.6 |  |  |
+|      60 ≤ Age \< 144 | \< 0.7 | ≥ 0.7 |  |  |
+|      144 ≤ Age \< 216 | \< 1.0 | ≥ 1.0 |  |  |
+| **Hepatic** (0-1 point; point from total bilirubin and/or ALT) |  |  |  |  |
+|    Total Bilirubin (mg/dL) | \< 4 | ≥ 4 |  |  |
+|    ALT (IU/L) | ≤ 102 | \> 102 |  |  |
 
 ^(a)Abbreviations: ALC: Absolute lymphocyte count; ALT: alanine
 aminotransferase; ANC: Absolute neutrophil count; FEU: fibrinogen
@@ -256,6 +257,7 @@ A patient with a nasal cannula at 5 L/min (approximate FiO₂ of 0.4) and
 SpO₂ of 87:
 
 ``` r
+
 phoenix_respiratory(
   sf_ratio = 87 / 0.40,
   other_respiratory_support = 1)
@@ -268,6 +270,7 @@ an input is missing it is assumed to be `NA`.
 When your data is in a `data.frame` then:
 
 ``` r
+
 DF <- read.table(sep = "|", header = TRUE, text =
 "
 pfr | sfr | imv | o2
@@ -296,6 +299,7 @@ have to construct a few variables as we only have information on FiO₂,
 PaO₂, SpO₂, and invasive mechanical ventilation.
 
 ``` r
+
 resp_example <- sepsis[c("pid", "fio2", "pao2", "spo2", "vent")]
 ```
 
@@ -303,6 +307,7 @@ Implied in this data is other respiratory support when FiO₂ is greater
 than 0.21, the approximate fraction of oxygen in the atmosphere.
 
 ``` r
+
 resp_example$score <-
   phoenix_respiratory(
   pf_ratio = pao2 / fio2,
@@ -381,6 +386,7 @@ function `map` has been provided to estimate the mean arterial pressure
 given sbp and dbp.
 
 ``` r
+
 card_example <-
   sepsis[c("pid", "dobutamine", "dopamine", "epinephrine", "milrinone", "norepinephrine", "vasopressin", "lactate", "dbp", "sbp", "age")]
 
@@ -395,28 +401,28 @@ card_example$score <-
 card_example
 ```
 
-| pid | dobutamine | dopamine | epinephrine | milrinone | norepinephrine | vasopressin | lactate | dbp | sbp |    age | score |
-|----:|-----------:|---------:|------------:|----------:|---------------:|------------:|--------:|----:|----:|-------:|------:|
-|   1 |          1 |        1 |           1 |         1 |              0 |           0 |      NA |  40 |  53 |   0.06 |     2 |
-|   2 |          0 |        1 |           0 |         0 |              1 |           0 |    3.32 |  60 |  90 | 201.70 |     2 |
-|   3 |          0 |        1 |           0 |         0 |              0 |           0 |    1.00 |  87 | 233 |  20.80 |     1 |
-|   4 |          0 |        0 |           0 |         0 |              0 |           0 |      NA |  57 | 104 | 192.50 |     0 |
-|   5 |          0 |        0 |           0 |         0 |              0 |           0 |      NA |  57 | 101 | 214.40 |     0 |
-|   6 |          0 |        1 |           0 |         0 |              0 |           0 |    1.15 |  79 | 119 | 101.20 |     1 |
-|   7 |          0 |        0 |           1 |         1 |              0 |           1 |      NA |  11 |  14 | 150.70 |     4 |
-|   8 |          0 |        0 |           0 |         0 |              0 |           0 |      NA |  66 | 112 | 159.70 |     0 |
-|   9 |          0 |        0 |           1 |         1 |              1 |           1 |    8.10 |  51 | 117 | 176.10 |     3 |
-|  10 |          0 |        0 |           0 |         0 |              0 |           0 |      NA |  58 |  84 |   6.60 |     0 |
-|  11 |          0 |        1 |           1 |         0 |              0 |           0 |      NA |  39 |  51 |  36.70 |     3 |
-|  12 |          0 |        0 |           0 |         0 |              0 |           0 |      NA |  63 | 132 |  37.40 |     0 |
-|  13 |          0 |        0 |           0 |         0 |              0 |           0 |      NA |  55 |  93 |   0.12 |     0 |
-|  14 |          0 |        0 |           1 |         1 |              0 |           0 |      NA |  54 | 106 |  62.30 |     2 |
-|  15 |          0 |        1 |           1 |         1 |              0 |           1 |      NA |  25 |  37 |  10.60 |     3 |
-|  16 |          1 |        1 |           1 |         1 |              1 |           0 |    0.90 |  55 |  82 |   0.89 |     2 |
-|  17 |          0 |        1 |           1 |         1 |              0 |           1 |    0.60 |  43 |  79 |  10.70 |     2 |
-|  18 |          0 |        1 |           1 |         1 |              0 |           1 |      NA |  53 |  75 |  10.60 |     2 |
-|  19 |          0 |        0 |           1 |         1 |              0 |           0 |      NA |  44 |  70 |   0.17 |     2 |
-|  20 |          0 |        0 |           1 |         0 |              0 |           0 |    2.20 |  77 |  99 |  71.90 |     1 |
+| pid | dobutamine | dopamine | epinephrine | milrinone | norepinephrine | vasopressin | lactate | dbp | sbp | age | score |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 1 | 1 | 1 | 1 | 0 | 0 | NA | 40 | 53 | 0.06 | 2 |
+| 2 | 0 | 1 | 0 | 0 | 1 | 0 | 3.32 | 60 | 90 | 201.70 | 2 |
+| 3 | 0 | 1 | 0 | 0 | 0 | 0 | 1.00 | 87 | 233 | 20.80 | 1 |
+| 4 | 0 | 0 | 0 | 0 | 0 | 0 | NA | 57 | 104 | 192.50 | 0 |
+| 5 | 0 | 0 | 0 | 0 | 0 | 0 | NA | 57 | 101 | 214.40 | 0 |
+| 6 | 0 | 1 | 0 | 0 | 0 | 0 | 1.15 | 79 | 119 | 101.20 | 1 |
+| 7 | 0 | 0 | 1 | 1 | 0 | 1 | NA | 11 | 14 | 150.70 | 4 |
+| 8 | 0 | 0 | 0 | 0 | 0 | 0 | NA | 66 | 112 | 159.70 | 0 |
+| 9 | 0 | 0 | 1 | 1 | 1 | 1 | 8.10 | 51 | 117 | 176.10 | 3 |
+| 10 | 0 | 0 | 0 | 0 | 0 | 0 | NA | 58 | 84 | 6.60 | 0 |
+| 11 | 0 | 1 | 1 | 0 | 0 | 0 | NA | 39 | 51 | 36.70 | 3 |
+| 12 | 0 | 0 | 0 | 0 | 0 | 0 | NA | 63 | 132 | 37.40 | 0 |
+| 13 | 0 | 0 | 0 | 0 | 0 | 0 | NA | 55 | 93 | 0.12 | 0 |
+| 14 | 0 | 0 | 1 | 1 | 0 | 0 | NA | 54 | 106 | 62.30 | 2 |
+| 15 | 0 | 1 | 1 | 1 | 0 | 1 | NA | 25 | 37 | 10.60 | 3 |
+| 16 | 1 | 1 | 1 | 1 | 1 | 0 | 0.90 | 55 | 82 | 0.89 | 2 |
+| 17 | 0 | 1 | 1 | 1 | 0 | 1 | 0.60 | 43 | 79 | 10.70 | 2 |
+| 18 | 0 | 1 | 1 | 1 | 0 | 1 | NA | 53 | 75 | 10.60 | 2 |
+| 19 | 0 | 0 | 1 | 1 | 0 | 0 | NA | 44 | 70 | 0.17 | 2 |
+| 20 | 0 | 0 | 1 | 0 | 0 | 0 | 2.20 | 77 | 99 | 71.90 | 1 |
 
 ### Coagulation
 
@@ -443,6 +449,7 @@ values.](phoenix_files/figure-html/unnamed-chunk-12-1.png)
 #### Example Use
 
 ``` r
+
 coag_example <- sepsis[c("pid", "platelets", "inr", "d_dimer", "fibrinogen")]
 coag_example$score <-
   phoenix_coagulation(platelets, inr, d_dimer, fibrinogen, data = sepsis)
@@ -485,6 +492,7 @@ coag_example
 #### Example Use
 
 ``` r
+
 neuro_example <- sepsis[c("pid", "gcs_total", "pupil")]
 neuro_example$score <-
   phoenix_neurologic(gcs = gcs_total, fixed_pupils = as.integer(pupil == "both-fixed"), data = sepsis)
@@ -526,6 +534,7 @@ scoring.
 #### Example Use
 
 ``` r
+
 endo_example <- sepsis[c("pid", "glucose")]
 endo_example$score <- phoenix_endocrine(glucose, data = sepsis)
 endo_example
@@ -567,6 +576,7 @@ scoring.
 #### Example Use
 
 ``` r
+
 immu_example <- sepsis[c("pid", "anc", "alc")]
 immu_example$score <- phoenix_immunologic(anc, alc, sepsis)
 immu_example
@@ -608,6 +618,7 @@ The renal score is only applicable to the extended Phoenix-8 scoring.
 #### Example Use
 
 ``` r
+
 renal_example <- sepsis[c("creatinine", "age")]
 renal_example$score <- phoenix_renal(creatinine, age, sepsis)
 renal_example
@@ -649,6 +660,7 @@ The hepatic score is only applicable to the extended Phoenix-8 scoring.
 #### Example Use
 
 ``` r
+
 hep_example <- sepsis[c("pid", "bilirubin", "alt")]
 hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
 hep_example
@@ -697,6 +709,7 @@ scores.
 #### Example Use
 
 ``` r
+
 phoenix_scores <-
   phoenix(
     # respiratory
@@ -734,27 +747,27 @@ str(phoenix_scores)
 The results as a easy to read table:
 
 | phoenix respiratory score | phoenix cardiovascular score | phoenix coagulation score | phoenix neurologic score | phoenix sepsis score | phoenix sepsis | phoenix septic shock |
-|:-------------------------:|:----------------------------:|:-------------------------:|:------------------------:|:--------------------:|:--------------:|:--------------------:|
-|             0             |              2               |             1             |            0             |          3           |       1        |          1           |
-|             3             |              2               |             1             |            1             |          7           |       1        |          1           |
-|             3             |              1               |             2             |            0             |          6           |       1        |          1           |
-|             0             |              0               |             1             |            0             |          1           |       0        |          0           |
-|             0             |              0               |             0             |            0             |          0           |       0        |          0           |
-|             3             |              1               |             2             |            1             |          7           |       1        |          1           |
-|             3             |              4               |             2             |            0             |          9           |       1        |          1           |
-|             0             |              0               |             1             |            0             |          1           |       0        |          0           |
-|             3             |              3               |             1             |            1             |          8           |       1        |          1           |
-|             3             |              0               |             0             |            1             |          4           |       1        |          0           |
-|             3             |              3               |             1             |            2             |          9           |       1        |          1           |
-|             1             |              0               |             0             |            0             |          1           |       0        |          0           |
-|             0             |              0               |             0             |            0             |          0           |       0        |          0           |
-|             2             |              2               |             1             |            0             |          5           |       1        |          1           |
-|             3             |              3               |             2             |            0             |          8           |       1        |          1           |
-|             0             |              2               |             1             |            0             |          3           |       1        |          1           |
-|             2             |              2               |             1             |            0             |          5           |       1        |          1           |
-|             3             |              2               |             2             |            0             |          7           |       1        |          1           |
-|             2             |              2               |             0             |            0             |          4           |       1        |          1           |
-|             0             |              1               |             1             |            0             |          2           |       1        |          1           |
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| 0 | 2 | 1 | 0 | 3 | 1 | 1 |
+| 3 | 2 | 1 | 1 | 7 | 1 | 1 |
+| 3 | 1 | 2 | 0 | 6 | 1 | 1 |
+| 0 | 0 | 1 | 0 | 1 | 0 | 0 |
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 3 | 1 | 2 | 1 | 7 | 1 | 1 |
+| 3 | 4 | 2 | 0 | 9 | 1 | 1 |
+| 0 | 0 | 1 | 0 | 1 | 0 | 0 |
+| 3 | 3 | 1 | 1 | 8 | 1 | 1 |
+| 3 | 0 | 0 | 1 | 4 | 1 | 0 |
+| 3 | 3 | 1 | 2 | 9 | 1 | 1 |
+| 1 | 0 | 0 | 0 | 1 | 0 | 0 |
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 2 | 2 | 1 | 0 | 5 | 1 | 1 |
+| 3 | 3 | 2 | 0 | 8 | 1 | 1 |
+| 0 | 2 | 1 | 0 | 3 | 1 | 1 |
+| 2 | 2 | 1 | 0 | 5 | 1 | 1 |
+| 3 | 2 | 2 | 0 | 7 | 1 | 1 |
+| 2 | 2 | 0 | 0 | 4 | 1 | 1 |
+| 0 | 1 | 1 | 0 | 2 | 1 | 1 |
 
 ### Phoenix 8
 
@@ -772,6 +785,7 @@ calling `phoenix8`.
 #### Example Use
 
 ``` r
+
 phoenix8_scores <-
   phoenix8(
     # respiratory
@@ -825,27 +839,27 @@ str(phoenix8_scores)
 The results as a easy to read table:
 
 | phoenix respiratory score | phoenix cardiovascular score | phoenix coagulation score | phoenix neurologic score | phoenix sepsis score | phoenix sepsis | phoenix septic shock | phoenix endocrine score | phoenix immunologic score | phoenix renal score | phoenix hepatic score | phoenix8 sepsis score |
-|:-------------------------:|:----------------------------:|:-------------------------:|:------------------------:|:--------------------:|:--------------:|:--------------------:|:-----------------------:|:-------------------------:|:-------------------:|:---------------------:|:---------------------:|
-|             0             |              2               |             1             |            0             |          3           |       1        |          1           |            0            |             0             |          1          |           0           |           4           |
-|             3             |              2               |             1             |            1             |          7           |       1        |          1           |            0            |             0             |          0          |           0           |           7           |
-|             3             |              1               |             2             |            0             |          6           |       1        |          1           |            0            |             1             |          0          |           1           |           8           |
-|             0             |              0               |             1             |            0             |          1           |       0        |          0           |            0            |             1             |          0          |           1           |           3           |
-|             0             |              0               |             0             |            0             |          0           |       0        |          0           |            0            |             0             |          0          |           0           |           0           |
-|             3             |              1               |             2             |            1             |          7           |       1        |          1           |            0            |             1             |          1          |           0           |           9           |
-|             3             |              4               |             2             |            0             |          9           |       1        |          1           |            0            |             0             |          1          |           1           |          11           |
-|             0             |              0               |             1             |            0             |          1           |       0        |          0           |            0            |             0             |          0          |           0           |           1           |
-|             3             |              3               |             1             |            1             |          8           |       1        |          1           |            1            |             0             |          1          |           1           |          11           |
-|             3             |              0               |             0             |            1             |          4           |       1        |          0           |            0            |             0             |          0          |           0           |           4           |
-|             3             |              3               |             1             |            2             |          9           |       1        |          1           |            1            |             0             |          1          |           0           |          11           |
-|             1             |              0               |             0             |            0             |          1           |       0        |          0           |            0            |             0             |          0          |           0           |           1           |
-|             0             |              0               |             0             |            0             |          0           |       0        |          0           |            0            |             0             |          0          |           0           |           0           |
-|             2             |              2               |             1             |            0             |          5           |       1        |          1           |            0            |             0             |          0          |           0           |           5           |
-|             3             |              3               |             2             |            0             |          8           |       1        |          1           |            0            |             0             |          1          |           1           |          10           |
-|             0             |              2               |             1             |            0             |          3           |       1        |          1           |            0            |             0             |          0          |           0           |           3           |
-|             2             |              2               |             1             |            0             |          5           |       1        |          1           |            0            |             0             |          0          |           0           |           5           |
-|             3             |              2               |             2             |            0             |          7           |       1        |          1           |            0            |             0             |          1          |           1           |           9           |
-|             2             |              2               |             0             |            0             |          4           |       1        |          1           |            0            |             0             |          1          |           0           |           5           |
-|             0             |              1               |             1             |            0             |          2           |       1        |          1           |            1            |             0             |          0          |           0           |           3           |
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| 0 | 2 | 1 | 0 | 3 | 1 | 1 | 0 | 0 | 1 | 0 | 4 |
+| 3 | 2 | 1 | 1 | 7 | 1 | 1 | 0 | 0 | 0 | 0 | 7 |
+| 3 | 1 | 2 | 0 | 6 | 1 | 1 | 0 | 1 | 0 | 1 | 8 |
+| 0 | 0 | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 1 | 3 |
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 3 | 1 | 2 | 1 | 7 | 1 | 1 | 0 | 1 | 1 | 0 | 9 |
+| 3 | 4 | 2 | 0 | 9 | 1 | 1 | 0 | 0 | 1 | 1 | 11 |
+| 0 | 0 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 3 | 3 | 1 | 1 | 8 | 1 | 1 | 1 | 0 | 1 | 1 | 11 |
+| 3 | 0 | 0 | 1 | 4 | 1 | 0 | 0 | 0 | 0 | 0 | 4 |
+| 3 | 3 | 1 | 2 | 9 | 1 | 1 | 1 | 0 | 1 | 0 | 11 |
+| 1 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 2 | 2 | 1 | 0 | 5 | 1 | 1 | 0 | 0 | 0 | 0 | 5 |
+| 3 | 3 | 2 | 0 | 8 | 1 | 1 | 0 | 0 | 1 | 1 | 10 |
+| 0 | 2 | 1 | 0 | 3 | 1 | 1 | 0 | 0 | 0 | 0 | 3 |
+| 2 | 2 | 1 | 0 | 5 | 1 | 1 | 0 | 0 | 0 | 0 | 5 |
+| 3 | 2 | 2 | 0 | 7 | 1 | 1 | 0 | 0 | 1 | 1 | 9 |
+| 2 | 2 | 0 | 0 | 4 | 1 | 1 | 0 | 0 | 1 | 0 | 5 |
+| 0 | 1 | 1 | 0 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 3 |
 
 ## Clinical Vignettes
 
@@ -879,6 +893,7 @@ points of the Phoenix Sepsis Score, and ≥1 cardiovascular points, so she
 meets criteria for septic shock.
 
 ``` r
+
 phoenix(
   vasoactives = 1,  # norepinephrine drip
   map = 32 + (67 - 32) / 3, # 43.667 mmHg
@@ -936,6 +951,7 @@ points of the Phoenix Sepsis Score, and 0 cardiovascular points, so he
 meets criteria for sepsis.
 
 ``` r
+
 phoenix(
   gcs = 2 + 2 + 4, # eye + verbal + motor
   map = 52,
@@ -956,13 +972,12 @@ phoenix(
 
 ## References
 
-Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, Seth
-Russell, Margaret N. Rebull, Blake Martin, Samuel Akech, et al. 2024.
-“Development and Validation of the Phoenix Criteria for Pediatric Sepsis
-and Septic Shock.” *JAMA*, January.
+Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, et al.
+2024. “Development and Validation of the Phoenix Criteria for Pediatric
+Sepsis and Septic Shock.” *JAMA*, ahead of print, January.
 <https://doi.org/10.1001/jama.2024.0196>.
 
-Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, Andrew C.
-Argent, Kusum Menon, Mark W. Hall, Samuel Akech, et al. 2024.
+Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, et al. 2024.
 “International Consensus Criteria for Pediatric Sepsis and Septic
-Shock.” *JAMA*, January. <https://doi.org/10.1001/jama.2024.0179>.
+Shock.” *JAMA*, ahead of print, January.
+<https://doi.org/10.1001/jama.2024.0179>.

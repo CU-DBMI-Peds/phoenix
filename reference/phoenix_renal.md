@@ -101,6 +101,7 @@ for more details and examples.
 ## Examples
 
 ``` r
+
 # using the example sepsis data set
 # Expected units:
 #   age: months

@@ -170,6 +170,7 @@ for more details and examples.
 ## Examples
 
 ``` r
+
 # Using the example sepsis data set, read more details in the vignette
 
 phoenix_scores <-

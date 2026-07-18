@@ -94,6 +94,7 @@ for more details and examples.
 ## Examples
 
 ``` r
+
 # using the example data set
 phoenix_coagulation(
   platelets = platelets,    # 1000/uL (thousand per microliter)

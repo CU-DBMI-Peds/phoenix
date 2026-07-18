@@ -153,6 +153,7 @@ for more details and examples.
 ## Examples
 
 ``` r
+
 # using the example sepsis data set
 phoenix_cardiovascular(
    vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,

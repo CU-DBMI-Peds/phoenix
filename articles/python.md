@@ -48,35 +48,35 @@ print(sepsis.head())
 ## [5 rows x 27 columns]
 ```
 
-| Column Name    | Note                                                        |
-|:---------------|:------------------------------------------------------------|
-| pid            | patient identification number                               |
-| age            | age in months                                               |
-| fio2           | fraction of inspired oxygen                                 |
-| pao2           | partial pressure of oxygen in arterial blood (mmHg)         |
-| spo2           | pulse oximetry                                              |
-| vent           | indicator for invasive mechanical ventilation               |
-| gcs_total      | total Glasgow Coma Scale                                    |
-| pupil          | character vector reporting if pupils are reactive or fixed. |
-| platelets      | platelets measured in 1,000 / microliter                    |
-| inr            | international normalized ratio                              |
-| d_dimer        | D-dimer; units of mg/L FEU                                  |
-| fibrinogen     | units of mg/dL                                              |
-| dbp            | diastolic blood pressure (mmHg)                             |
-| sbp            | systolic blood pressure (mmHg)                              |
-| lactate        | units of mmol/L                                             |
-| dobutamine     | indicator for receiving systemic dobutamine                 |
-| dopamine       | indicator for receiving systemic dopamine                   |
-| epinephrine    | indicator for receiving systemic epinephrine                |
-| milrinone      | indicator for receiving systemic milrinone                  |
-| norepinephrine | indicator for receiving systemic norepinephrine             |
-| vasopressin    | indicator for receiving systemic vasopressin                |
-| glucose        | units of mg/dL                                              |
-| anc            | units of 1,000 cells per cubic millimeter                   |
-| alc            | units of 1,000 cells per cubic millimeter                   |
-| creatinine     | units of mg/dL                                              |
-| bilirubin      | units of mg/dL                                              |
-| alt            | units of IU/L                                               |
+| Column Name | Note |
+|:---|:---|
+| pid | patient identification number |
+| age | age in months |
+| fio2 | fraction of inspired oxygen |
+| pao2 | partial pressure of oxygen in arterial blood (mmHg) |
+| spo2 | pulse oximetry |
+| vent | indicator for invasive mechanical ventilation |
+| gcs_total | total Glasgow Coma Scale |
+| pupil | character vector reporting if pupils are reactive or fixed. |
+| platelets | platelets measured in 1,000 / microliter |
+| inr | international normalized ratio |
+| d_dimer | D-dimer; units of mg/L FEU |
+| fibrinogen | units of mg/dL |
+| dbp | diastolic blood pressure (mmHg) |
+| sbp | systolic blood pressure (mmHg) |
+| lactate | units of mmol/L |
+| dobutamine | indicator for receiving systemic dobutamine |
+| dopamine | indicator for receiving systemic dopamine |
+| epinephrine | indicator for receiving systemic epinephrine |
+| milrinone | indicator for receiving systemic milrinone |
+| norepinephrine | indicator for receiving systemic norepinephrine |
+| vasopressin | indicator for receiving systemic vasopressin |
+| glucose | units of mg/dL |
+| anc | units of 1,000 cells per cubic millimeter |
+| alc | units of 1,000 cells per cubic millimeter |
+| creatinine | units of mg/dL |
+| bilirubin | units of mg/dL |
+| alt | units of IU/L |
 
 ### Organ Dysfunction Scores
 
@@ -87,12 +87,12 @@ numpy arrays.
 
 Scoring for respiratory dysfunction:
 
-| Organ System                 | 0 Points | 1 Point                 | 2 Points | 3 Points |
-|:-----------------------------|:---------|:------------------------|:---------|:---------|
-| **Respiratory** (0-3 points) |          |                         |          |          |
-|                              |          | Any respiratory support | IMV^(a)  | IMV      |
-|   PaO₂:FiO₂                  | ≥ 400    | \< 400                  | \< 200   | \< 100   |
-|   SpO₂:FiO₂^(b)              | ≥ 292    | \< 292                  | \< 220   | \< 148   |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Respiratory** (0-3 points) |  |  |  |  |
+|  |  | Any respiratory support | IMV^(a) | IMV |
+|   PaO₂:FiO₂ | ≥ 400 | \< 400 | \< 200 | \< 100 |
+|   SpO₂:FiO₂^(b) | ≥ 292 | \< 292 | \< 220 | \< 148 |
 
 ^(a) IMV: invasive mechanical ventilation; PaO₂: arterial oxygen
 pressure; SpO₂: pulse oximetry oxygen saturation;
@@ -114,18 +114,18 @@ print(py_resp)
 
 #### Cardiovascular
 
-| Organ System                                                          | 0 Points       | 1 Point           | 2 Points              | 3 Points |
-|:----------------------------------------------------------------------|:---------------|:------------------|:----------------------|:---------|
-| **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |                |                   |                       |          |
-|    Systemic Vasoactive Medications^(c)                                | No medications | 1 medication      | 2 or more medications |          |
-|    Lactate^(d) (mmol/L)                                               | \< 5           | 5 ≤ Lactate \< 11 | ≥ 11                  |          |
-|    Age^(e) (months) adjusted MAP^(f) (mmHg)                           |                |                   |                       |          |
-|      0 ≤ Age \< 1                                                     | ≥ 31           | 17 ≤ MAP \< 31    | \< 17                 |          |
-|      1 ≤ Age \< 12                                                    | ≥ 39           | 25 ≤ MAP \< 39    | \< 25                 |          |
-|      12 ≤ Age \< 24                                                   | ≥ 44           | 31 ≤ MAP \< 44    | \< 31                 |          |
-|      24 ≤ Age \< 60                                                   | ≥ 45           | 32 ≤ MAP \< 45    | \< 32                 |          |
-|      60 ≤ Age \< 144                                                  | ≥ 49           | 36 ≤ MAP \< 49    | \< 36                 |          |
-|      144 ≤ Age \< 216                                                 | ≥ 52           | 38 ≤ MAP \< 52    | \< 38                 |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Cardiovascular** (0-6 points; sum of medications, Lactate, and MAP) |  |  |  |  |
+|    Systemic Vasoactive Medications^(c) | No medications | 1 medication | 2 or more medications |  |
+|    Lactate^(d) (mmol/L) | \< 5 | 5 ≤ Lactate \< 11 | ≥ 11 |  |
+|    Age^(e) (months) adjusted MAP^(f) (mmHg) |  |  |  |  |
+|      0 ≤ Age \< 1 | ≥ 31 | 17 ≤ MAP \< 31 | \< 17 |  |
+|      1 ≤ Age \< 12 | ≥ 39 | 25 ≤ MAP \< 39 | \< 25 |  |
+|      12 ≤ Age \< 24 | ≥ 44 | 31 ≤ MAP \< 44 | \< 31 |  |
+|      24 ≤ Age \< 60 | ≥ 45 | 32 ≤ MAP \< 45 | \< 32 |  |
+|      60 ≤ Age \< 144 | ≥ 49 | 36 ≤ MAP \< 49 | \< 36 |  |
+|      144 ≤ Age \< 216 | ≥ 52 | 38 ≤ MAP \< 52 | \< 38 |  |
 
 ^(d)Lactate can be arterial or venous. Reference range 0.5 - 2.2 mmol/L
 ^(e)Age: measured in months and is not adjusted for prematurity.
@@ -153,13 +153,13 @@ print(py_card)
 
 #### Coagulation
 
-| Organ System                                                      | 0 Points | 1 Point | 2 Points | 3 Points |
-|:------------------------------------------------------------------|:---------|:--------|:---------|:---------|
-| **Coagulation**^(g) (0-2 points; 1 for each lab; max of 2 points) |          |         |          |          |
-|    Platelets (1000/μL)                                            | ≥ 100    | \< 100  |          |          |
-|    INR                                                            | ≤ 1.3    | \> 1.3  |          |          |
-|    D-Dimer (mg/L FEU)                                             | ≤ 2      | \> 2    |          |          |
-|    Fibrinogen (mg/dL)                                             | ≥ 100    | \< 100  |          |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Coagulation**^(g) (0-2 points; 1 for each lab; max of 2 points) |  |  |  |  |
+|    Platelets (1000/μL) | ≥ 100 | \< 100 |  |  |
+|    INR | ≤ 1.3 | \> 1.3 |  |  |
+|    D-Dimer (mg/L FEU) | ≤ 2 | \> 2 |  |  |
+|    Fibrinogen (mg/dL) | ≥ 100 | \< 100 |  |  |
 
 FEU: fibrinogen equivalent units; INR: International normalized ratio;
 
@@ -183,10 +183,10 @@ print(py_coag)
 
 #### Neurologic
 
-| Organ System                    | 0 Points     | 1 Point  | 2 Points                 | 3 Points |
-|:--------------------------------|:-------------|:---------|:-------------------------|:---------|
-| **Neurologic**^(h) (0-2 points) |              |          |                          |          |
-|                                 | GCS^(i) ≥ 11 | GCS ≤ 10 | Bilaterally fixed pupils |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Neurologic**^(h) (0-2 points) |  |  |  |  |
+|    | GCS^(i) ≥ 11 | GCS ≤ 10 | Bilaterally fixed pupils |  |
 
 FEU: fibrinogen equivalent units; INR: International normalized ratio;
 
@@ -209,10 +209,10 @@ print(py_neur)
 
 #### Endocrine
 
-| Organ System              | 0 Points                 | 1 Point          | 2 Points | 3 Points |
-|:--------------------------|:-------------------------|:-----------------|:---------|:---------|
-| **Endocrine** (0-1 point) |                          |                  |          |          |
-|    Blood Glucose (mg/dL)  | 50 ≤ Blood Glucose ≤ 150 | \< 50; or \> 150 |          |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Endocrine** (0-1 point) |  |  |  |  |
+|    Blood Glucose (mg/dL) | 50 ≤ Blood Glucose ≤ 150 | \< 50; or \> 150 |  |  |
 
 ``` python
 py_endo = phx.phoenix_endocrine(sepsis["glucose"])
@@ -224,11 +224,11 @@ print(py_endo)
 
 #### Immunologic
 
-| Organ System                                           | 0 Points | 1 Point | 2 Points | 3 Points |
-|:-------------------------------------------------------|:---------|:--------|:---------|:---------|
-| **Immunologic** (0-1 point; point from ANC and/or ALC) |          |         |          |          |
-|    ANC (cells/mm³)                                     | ≥ 500    | \< 500  |          |          |
-|    ALC (cells/mm³)                                     | ≥ 1000   | \< 1000 |          |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Immunologic** (0-1 point; point from ANC and/or ALC) |  |  |  |  |
+|    ANC (cells/mm³) | ≥ 500 | \< 500 |  |  |
+|    ALC (cells/mm³) | ≥ 1000 | \< 1000 |  |  |
 
 ALC: Absolute lymphocyte count; ANC: Absolute neutrophil count;
 
@@ -242,16 +242,16 @@ print(py_immu)
 
 #### Renal
 
-| Organ System                                    | 0 Points | 1 Point | 2 Points | 3 Points |
-|:------------------------------------------------|:---------|:--------|:---------|:---------|
-| **Renal** (0-1 point)                           |          |         |          |          |
-|    Age^(e) (months) adjusted Creatinine (mg/dL) |          |         |          |          |
-|      0 ≤ Age \< 1                               | \< 0.8   | ≥ 0.8   |          |          |
-|      1 ≤ Age \< 12                              | \< 0.3   | ≥ 0.3   |          |          |
-|      12 ≤ Age \< 24                             | \< 0.4   | ≥ 0.4   |          |          |
-|      24 ≤ Age \< 60                             | \< 0.6   | ≥ 0.6   |          |          |
-|      60 ≤ Age \< 144                            | \< 0.7   | ≥ 0.7   |          |          |
-|      144 ≤ Age \< 216                           | \< 1.0   | ≥ 1.0   |          |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Renal** (0-1 point) |  |  |  |  |
+|    Age^(e) (months) adjusted Creatinine (mg/dL) |  |  |  |  |
+|      0 ≤ Age \< 1 | \< 0.8 | ≥ 0.8 |  |  |
+|      1 ≤ Age \< 12 | \< 0.3 | ≥ 0.3 |  |  |
+|      12 ≤ Age \< 24 | \< 0.4 | ≥ 0.4 |  |  |
+|      24 ≤ Age \< 60 | \< 0.6 | ≥ 0.6 |  |  |
+|      60 ≤ Age \< 144 | \< 0.7 | ≥ 0.7 |  |  |
+|      144 ≤ Age \< 216 | \< 1.0 | ≥ 1.0 |  |  |
 
 ``` python
 py_renal = phx.phoenix_renal(sepsis["creatinine"], sepsis["age"])
@@ -263,11 +263,11 @@ print(py_renal)
 
 #### Hepatic
 
-| Organ System                                                   | 0 Points | 1 Point | 2 Points | 3 Points |
-|:---------------------------------------------------------------|:---------|:--------|:---------|:---------|
-| **Hepatic** (0-1 point; point from total bilirubin and/or ALT) |          |         |          |          |
-|    Total Bilirubin (mg/dL)                                     | \< 4     | ≥ 4     |          |          |
-|    ALT (IU/L)                                                  | ≤ 102    | \> 102  |          |          |
+| Organ System | 0 Points | 1 Point | 2 Points | 3 Points |
+|:---|:---|:---|:---|:---|
+| **Hepatic** (0-1 point; point from total bilirubin and/or ALT) |  |  |  |  |
+|    Total Bilirubin (mg/dL) | \< 4 | ≥ 4 |  |  |
+|    ALT (IU/L) | ≤ 102 | \> 102 |  |  |
 
 ALT: alanine aminotransferase;
 

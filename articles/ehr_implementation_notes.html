@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Phoenix Sepsis EHR Implementation Notes • phoenix</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Phoenix Sepsis EHR Implementation Notes">
 </head>
@@ -563,7 +563,7 @@ age or older than the PaO<sub>2</sub> value.</li>
 </h4>
 <ul>
 <li>Units: none</li>
-<li>Expected Values: [0, 97]/0.21
+<li>Expected Values: [0, 97/0.21]
 <ul>
 <li>Floating point</li>
 <li>The upper limit includes the limitation on SpO<sub>2</sub> ≤ 97</li>
@@ -1225,20 +1225,18 @@ might use cells / mm³</li>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-sanchezpinto_2024_development" class="csl-entry">
-Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, Seth
-Russell, Margaret N. Rebull, Blake Martin, Samuel Akech, et al. 2024.
-<span>“<span class="nocase">Development and Validation of the Phoenix
-Criteria for Pediatric Sepsis and Septic Shock</span>.”</span>
-<em>JAMA</em>, January. <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link">https://doi.org/10.1001/jama.2024.0196</a>.
+Sanchez-Pinto, L. Nelson, Tellen D. Bennett, Peter E. DeWitt, et al.
+2024. <span>“<span class="nocase">Development and Validation of the
+Phoenix Criteria for Pediatric Sepsis and Septic Shock</span>.”</span>
+<em>JAMA</em>, ahead of print, January. <a href="https://doi.org/10.1001/jama.2024.0196" class="external-link">https://doi.org/10.1001/jama.2024.0196</a>.
 </div>
 <div id="ref-schlapbach_2024_international" class="csl-entry">
-Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, Andrew C.
-Argent, Kusum Menon, Mark W. Hall, Samuel Akech, et al. 2024.
+Schlapbach, Luregn J., R. Scott Watson, Lauren R. Sorce, et al. 2024.
 <span>“<span class="nocase">International Consensus Criteria for
-Pediatric Sepsis and Septic Shock</span>.”</span> <em>JAMA</em>,
-January. <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link">https://doi.org/10.1001/jama.2024.0179</a>.
+Pediatric Sepsis and Septic Shock</span>.”</span> <em>JAMA</em>, ahead
+of print, January. <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link">https://doi.org/10.1001/jama.2024.0179</a>.
 </div>
 </div>
 </div>
@@ -1253,7 +1251,7 @@ January. <a href="https://doi.org/10.1001/jama.2024.0179" class="external-link">
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

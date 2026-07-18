@@ -18,6 +18,7 @@ The best overview for this package is the R vignette which you can view
 locally after installing the R package via
 
 ``` r
+
 vignette("phoenix")
 ```
 
@@ -54,6 +55,7 @@ pediatric sepsis score and criteria, JAMIA Open, Volume 7, Issue 3, October
 Bibtex formatted citations can be retrieved within R via
 
 ``` r
+
 # Manuscripts
 print(citation("phoenix"), bibtex = TRUE)
 
@@ -74,6 +76,7 @@ Install the current release from the Comprehensive R Archive Network
 (CRAN). Within R call:
 
 ``` r
+
 install.packages("phoenix", repos = "https://cran.rstudio.com")
 ```
 
@@ -103,6 +106,7 @@ started](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
 on the website, or the vignette within R
 
 ``` r
+
 vignette("phoenix")
 ```
 

@@ -6,6 +6,7 @@ data set `sepsis` from the R package for the following examples. The
 examples are made possible by using the following R packages
 
 ``` r
+
 library(odbc)
 library(DBI)
 library(RSQLite)
@@ -19,6 +20,7 @@ We start in R by setting up a local example SQL database with one table
 `sepsis`
 
 ``` r
+
 con <- dbConnect(drv = RSQLite::SQLite(), dbname = ":memory:")
 dbWriteTable(conn = con, name = "sepsis", value = sepsis)
 ```
@@ -29,20 +31,20 @@ We can easily query the table:
 SELECT * FROM sepsis
 ```
 
-| pid |    age | fio2 | pao2 | spo2 | vent | gcs_total | pupil         | platelets |  inr | d_dimer | fibrinogen | dbp | sbp | lactate | dobutamine | dopamine | epinephrine | milrinone | norepinephrine | vasopressin | glucose |    anc |   alc | creatinine | bilirubin |  alt |
-|:----|-------:|-----:|-----:|-----:|-----:|----------:|:--------------|----------:|-----:|--------:|-----------:|----:|----:|--------:|-----------:|---------:|------------:|----------:|---------------:|------------:|--------:|-------:|------:|-----------:|----------:|-----:|
-| 1   |   0.06 | 0.75 |   NA |   99 |    1 |        NA |               |       199 | 1.46 |      NA |        180 |  40 |  53 |      NA |          1 |        1 |           1 |         1 |              0 |           0 |      NA |     NA |    NA |       1.03 |        NA |   36 |
-| 2   | 201.70 | 0.75 | 75.3 |   95 |    1 |         5 | both-reactive |       243 | 1.18 |    2.45 |        311 |  60 |  90 |    3.32 |          0 |        1 |           0 |         0 |              1 |           0 |     110 | 14.220 | 2.220 |       0.51 |       0.2 |   32 |
-| 3   |  20.80 | 1.00 | 49.5 |   NA |    1 |        15 | both-reactive |        49 | 1.60 |      NA |        309 |  87 | 233 |    1.00 |          0 |        1 |           0 |         0 |              0 |           0 |      93 |  2.210 | 0.190 |       0.33 |       0.8 |  182 |
-| 4   | 192.50 |   NA |   NA |   NA |    0 |        14 |               |        NA | 1.30 |    2.82 |        220 |  57 | 104 |      NA |          0 |        0 |           0 |         0 |              0 |           0 |     110 |  3.184 | 0.645 |       0.31 |       8.5 |   21 |
-| 5   | 214.40 |   NA | 38.7 |   95 |    0 |        NA |               |       393 |   NA |      NA |         NA |  57 | 101 |      NA |          0 |        0 |           0 |         0 |              0 |           0 |      NA |     NA |    NA |       0.52 |        NA |   NA |
-| 6   | 101.20 | 0.60 | 69.9 |   88 |    1 |         3 | both-reactive |        86 | 1.23 |    4.72 |        270 |  79 | 119 |    1.15 |          0 |        1 |           0 |         0 |              0 |           0 |     147 | 20.200 | 0.240 |       0.77 |       1.2 |   15 |
-| 7   | 150.70 | 0.50 |   NA |   31 |    1 |        NA |               |        65 | 3.10 |      NA |         94 |  11 |  14 |      NA |          0 |        0 |           1 |         1 |              0 |           1 |      NA |     NA |    NA |       1.47 |       1.7 | 3664 |
-| 8   | 159.70 | 0.30 |   NA |   97 |    1 |        15 | both-reactive |       215 | 0.97 |    5.15 |        489 |  66 | 112 |      NA |          0 |        0 |           0 |         0 |              0 |           0 |     100 |  3.760 | 1.550 |       0.58 |       0.5 |   50 |
-| 9   | 176.10 | 0.65 | 51.0 |   82 |    1 |         3 | both-reactive |       101 | 1.08 |    7.71 |        456 |  51 | 117 |    8.10 |          0 |        0 |           1 |         1 |              1 |           1 |     264 |  8.770 | 3.600 |       1.23 |      21.1 |  151 |
-| 10  |   6.60 | 0.80 |   NA |   76 |    1 |         3 | both-reactive |       292 |   NA |      NA |         NA |  58 |  84 |      NA |          0 |        0 |           0 |         0 |              0 |           0 |      93 |  9.084 | 4.617 |       0.18 |        NA |   NA |
+| pid | age | fio2 | pao2 | spo2 | vent | gcs_total | pupil | platelets | inr | d_dimer | fibrinogen | dbp | sbp | lactate | dobutamine | dopamine | epinephrine | milrinone | norepinephrine | vasopressin | glucose | anc | alc | creatinine | bilirubin | alt |
+|:---|---:|---:|---:|---:|---:|---:|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 0.06 | 0.75 | NA | 99 | 1 | NA |  | 199 | 1.46 | NA | 180 | 40 | 53 | NA | 1 | 1 | 1 | 1 | 0 | 0 | NA | NA | NA | 1.03 | NA | 36 |
+| 2 | 201.70 | 0.75 | 75.3 | 95 | 1 | 5 | both-reactive | 243 | 1.18 | 2.45 | 311 | 60 | 90 | 3.32 | 0 | 1 | 0 | 0 | 1 | 0 | 110 | 14.220 | 2.220 | 0.51 | 0.2 | 32 |
+| 3 | 20.80 | 1.00 | 49.5 | NA | 1 | 15 | both-reactive | 49 | 1.60 | NA | 309 | 87 | 233 | 1.00 | 0 | 1 | 0 | 0 | 0 | 0 | 93 | 2.210 | 0.190 | 0.33 | 0.8 | 182 |
+| 4 | 192.50 | NA | NA | NA | 0 | 14 |  | NA | 1.30 | 2.82 | 220 | 57 | 104 | NA | 0 | 0 | 0 | 0 | 0 | 0 | 110 | 3.184 | 0.645 | 0.31 | 8.5 | 21 |
+| 5 | 214.40 | NA | 38.7 | 95 | 0 | NA |  | 393 | NA | NA | NA | 57 | 101 | NA | 0 | 0 | 0 | 0 | 0 | 0 | NA | NA | NA | 0.52 | NA | NA |
+| 6 | 101.20 | 0.60 | 69.9 | 88 | 1 | 3 | both-reactive | 86 | 1.23 | 4.72 | 270 | 79 | 119 | 1.15 | 0 | 1 | 0 | 0 | 0 | 0 | 147 | 20.200 | 0.240 | 0.77 | 1.2 | 15 |
+| 7 | 150.70 | 0.50 | NA | 31 | 1 | NA |  | 65 | 3.10 | NA | 94 | 11 | 14 | NA | 0 | 0 | 1 | 1 | 0 | 1 | NA | NA | NA | 1.47 | 1.7 | 3664 |
+| 8 | 159.70 | 0.30 | NA | 97 | 1 | 15 | both-reactive | 215 | 0.97 | 5.15 | 489 | 66 | 112 | NA | 0 | 0 | 0 | 0 | 0 | 0 | 100 | 3.760 | 1.550 | 0.58 | 0.5 | 50 |
+| 9 | 176.10 | 0.65 | 51.0 | 82 | 1 | 3 | both-reactive | 101 | 1.08 | 7.71 | 456 | 51 | 117 | 8.10 | 0 | 0 | 1 | 1 | 1 | 1 | 264 | 8.770 | 3.600 | 1.23 | 21.1 | 151 |
+| 10 | 6.60 | 0.80 | NA | 76 | 1 | 3 | both-reactive | 292 | NA | NA | NA | 58 | 84 | NA | 0 | 0 | 0 | 0 | 0 | 0 | 93 | 9.084 | 4.617 | 0.18 | NA | NA |
 
-Displaying records 1 - 10
+Displaying records 1 - 10 {.table style="width:100%;"}
 
 ## Respiratory
 
@@ -73,6 +75,7 @@ The above query was saved to an R `data.frame` called `resp` and will be
 added to the virtual database for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "respiratory", value = resp)
 ```
 
@@ -130,6 +133,7 @@ The results of the above query were saved behind the scene to an R
 for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "cardiovascular", value = card)
 ```
 
@@ -155,6 +159,7 @@ The above was stored as an R `data.frame` named `coag` and will be added
 to the SQLite database for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "coagulation", value = coag)
 ```
 
@@ -179,6 +184,7 @@ The above was stored as an R `data.frame` named `neuro` and will be
 added to the SQLite database for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "neurologic", value = neuro)
 ```
 
@@ -197,6 +203,7 @@ The above was stored as an R `data.frame` named `endo` and will be added
 to the SQLite database for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "endocrine", value = endo)
 ```
 
@@ -215,6 +222,7 @@ The above was stored as an R `data.frame` named `immu` and will be added
 to the SQLite database for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "immunologic", value = immu)
 ```
 
@@ -237,6 +245,7 @@ The above was stored as an R `data.frame` named `renal` and will be
 added to the SQLite database for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "renal", value = renal)
 ```
 
@@ -255,6 +264,7 @@ The above was stored as an R `data.frame` named `hep` and will be added
 to the SQLite database for inspection later.
 
 ``` r
+
 dbWriteTable(conn = con, name = "hepatic", value = hep)
 ```
 
@@ -287,6 +297,7 @@ ON respiratory.pid = neurologic.pid
 ```
 
 ``` r
+
 phoenix_scores
 ##    pid phoenix_respiratory_score phoenix_cardiovascular_score
 ## 1    1                         0                            2
@@ -356,6 +367,7 @@ phoenix_scores
 This output is the same as the output generated in R via:
 
 ``` r
+
 phoenix_scores_from_r <-
   phoenix(
     # respiratory
@@ -447,6 +459,7 @@ ON respiratory.pid = hepatic.pid
 ```
 
 ``` r
+
 phoenix8_scores
 ##    pid phoenix_respiratory_score phoenix_cardiovascular_score
 ## 1    1                         0                            2
@@ -622,5 +635,6 @@ identical(phoenix8_scores[, -1], phoenix8_scores_r)
 ```
 
 ``` r
+
 dbDisconnect(con)
 ```

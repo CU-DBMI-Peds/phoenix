@@ -82,6 +82,7 @@ for more details and examples.
 ## Examples
 
 ``` r
+
 # using the example sepsis data set
 # recall expected units:
 #   (total) bilirubin: mg/dL
