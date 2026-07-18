@@ -1,14 +1,23 @@
 # Version 1.1.3.9000
 
-## New Featues
+## New Features
 
 ### Operationalize Phoenix
 
-* `prepare_<input>()` will run some simple checks for expected data ranges
-  (values) and return an object that is expected to be passed to
-  `prepare_phoenix_data()`.
-* `prepare_phoenix_data()` applies last-observation-carry-forward windowing and
-  data checks before applying a scoring method.
+* Add `prepare_<input>()` functions for transforming long-format clinical data
+  into validated Phoenix inputs.  These helpers check identifiers, encounter
+  clock values, missingness, expected ranges or allowable discrete values, and
+  duplicate observations.
+* Add `prepare_phoenix_data()` for assembling prepared inputs into a
+  longitudinal encounter data set, applying last-observation-carried-forward
+  windows, and constructing derived variables used for scoring, including
+  PaO2/FiO2 ratio, SpO2/FiO2 ratio, invasive mechanical ventilation, other
+  respiratory support, mean arterial pressure, Glasgow Coma Scale, fixed pupils,
+  and suspected infection.
+* Add `score_prepared_phoenix_data()` for scoring prepared longitudinal data
+  within a user-defined observation window.  The default `jama2024` method
+  reproduces the Phoenix and Phoenix-8 score definitions, and alternate
+  exploratory scoring methods `alt1` and `alt2` are available.
 
 ## Other changes
 
@@ -23,12 +32,14 @@
   soft-deprecated alias for `mean_arterial_pressure` in
   `phoenix_cardiovascular()`, `phoenix()`, and `phoenix8()`.
 * Package now depends on R >= 4.0.0 due to the use of `deparse1()`
-* Add data.table and dplyr to suggested packages.  The phoenix package will use
-  the native data.table or dplyr data methods if the user passes a data.table or
-  a tibble to the operationalization methods and the needed namespaces are
-  avaialble.  If the namespaces are not availble then the code will default to
-  data.frame methods.
+* Add data.table, dplyr, and tidyselect to suggested packages.  The input
+  preparation helpers have backend-aware paths for data.frames, data.tables, and
+  tibbles.  The full `prepare_phoenix_data()` assembly path currently requires
+  data.table support.
 * Add digest to suggested packages.  Used in testing.
+* Update package build tooling, data generation Make targets, pkgdown reference
+  sections, R examples, Python examples, and SQL examples for the new
+  operationalization workflow and renamed arguments.
 
 # Version 1.1.3:
 
