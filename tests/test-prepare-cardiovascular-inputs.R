@@ -168,6 +168,28 @@ run_range_case("prepare_dbp_arterial", "DBPA", "diastolic_blood_pressure_arteria
 run_range_case("prepare_mean_arterial_pressure_cuff", "MAPC", "mean_arterial_pressure_cuff", c(55, 65, 70, 75), c(65, 70, 75), c(55, 70, 75), c(20, 120))
 run_range_case("prepare_mean_arterial_pressure_arterial", "MAPA", "mean_arterial_pressure_arterial", c(60, 70, 75, 80), c(70, 75, 80), c(60, 75, 80), c(20, 120))
 
+mapa_class_check <-
+  prepare_mean_arterial_pressure_arterial(
+    x = data.frame(
+      hospital = "H1",
+      patient = "P1",
+      encounter = "E1",
+      minutes_from_admission = 0,
+      mean_arterial_pressure_arterial = 70
+    ),
+    id.vars = c("hospital", "patient", "encounter"),
+    eclock = "minutes_from_admission",
+    value.var = "mean_arterial_pressure_arterial",
+    verbose = FALSE
+  )
+
+stopifnot(
+  inherits(
+    mapa_class_check,
+    "phoenix_prepared_mean_arterial_pressure_arterial"
+  )
+)
+
 run_indicator_case("prepare_dobutamine", "DOBUTAMINE", "dobutamine_indicator")
 run_indicator_case("prepare_dopamine", "DOPAMINE", "dopamine_indicator")
 run_indicator_case("prepare_epinephrine", "EPINEPHRINE", "epinephrine_indicator")

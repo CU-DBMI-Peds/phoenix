@@ -400,7 +400,7 @@ prepare_mean_arterial_pressure_arterial <-
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_mean_arterial_pressure_aterial", class(rtn))
+  class(rtn) <- c("phoenix_prepared_mean_arterial_pressure_arterial", class(rtn))
   rtn
 }
 
