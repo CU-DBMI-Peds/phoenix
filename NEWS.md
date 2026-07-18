@@ -1,4 +1,4 @@
-# Version 1.1.3.9000
+# Version 1.1.3.9001
 
 ## New Features
 
@@ -32,10 +32,9 @@
   soft-deprecated alias for `mean_arterial_pressure` in
   `phoenix_cardiovascular()`, `phoenix()`, and `phoenix8()`.
 * Package now depends on R >= 4.0.0 due to the use of `deparse1()`
-* Add data.table, dplyr, and tidyselect to suggested packages.  The input
-  preparation helpers have backend-aware paths for data.frames, data.tables, and
-  tibbles.  The full `prepare_phoenix_data()` assembly path currently requires
-  data.table support.
+* Add data.table, dplyr, tidyr, and tidyselect to suggested packages.  The
+  operationalization helpers use guarded backend-aware paths for data.frames,
+  data.tables, and tibbles without importing these optional namespaces.
 * Add digest to suggested packages.  Used in testing.
 * Update package build tooling, data generation Make targets, pkgdown reference
   sections, R examples, Python examples, and SQL examples for the new
