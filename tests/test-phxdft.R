@@ -16,7 +16,9 @@ dataframetools <-
     "phxdft_cbind",
     "phxdft_dcast",
     "phxdft_rbindlist",
-    "phxdft_aggregate"
+    "phxdft_aggregate",
+    "phxdft_namespace_available",
+    "phxdft_dcast_vars"
   )
 
 phxns <- getNamespace("phoenix")
@@ -718,6 +720,102 @@ stopifnot(
 
 ################################################################################
 # testing phxdft_dcast
+dcast_df <-
+  data.frame(
+    id = c(1L, 1L, 1L, 1L, 2L, 2L),
+    encounter_clock = c(0L, 0L, 60L, 60L, 0L, 0L),
+    variable = c("FIO2", "SPO2", "FIO2", "SPO2", "FIO2", "SPO2"),
+    value = c(0.30, 95, 0.40, 96, 0.21, 99),
+    stringsAsFactors = FALSE
+  )
+
+expected_dcast <-
+  data.frame(
+    id = c(1L, 1L, 2L),
+    encounter_clock = c(0L, 60L, 0L),
+    FIO2 = c(0.30, 0.40, 0.21),
+    SPO2 = c(95, 96, 99)
+  )
+
+dcast_df_out <-
+  getFromNamespace(x = "phxdft_dcast", ns = "phoenix")(
+    data = dcast_df,
+    formula = id + encounter_clock ~ variable,
+    value.var = "value"
+  )
+
+stopifnot(
+  identical(dcast_df_out, expected_dcast)
+)
+
+dcast_df_out_string_formula <-
+  getFromNamespace(x = "phxdft_dcast", ns = "phoenix")(
+    data = dcast_df,
+    formula = "id + encounter_clock ~ variable",
+    value.var = "value"
+  )
+
+stopifnot(
+  identical(dcast_df_out_string_formula, expected_dcast)
+)
+
+dcast_dt <- as_data_table_if_available(dcast_df)
+dcast_dt_out <-
+  getFromNamespace(x = "phxdft_dcast", ns = "phoenix")(
+    data = dcast_dt,
+    formula = id + encounter_clock ~ variable,
+    value.var = "value"
+  )
+
+if (requireNamespace("data.table", quietly = TRUE)) {
+  expected_dcast_dt <- data.table::as.data.table(expected_dcast)
+  stopifnot(
+    inherits(dcast_dt_out, "data.table"),
+    isTRUE(all.equal(dcast_dt_out, expected_dcast_dt, check.attributes = FALSE))
+  )
+} else {
+  stopifnot(
+    identical(dcast_dt_out, expected_dcast)
+  )
+}
+
+dcast_tb <- as_tibble_if_available(dcast_df)
+dcast_tb_out <-
+  getFromNamespace(x = "phxdft_dcast", ns = "phoenix")(
+    data = dcast_tb,
+    formula = id + encounter_clock ~ variable,
+    value.var = "value"
+  )
+
+if (requireNamespace("dplyr", quietly = TRUE) &&
+    requireNamespace("tidyr", quietly = TRUE) &&
+    packageVersion("dplyr") >= "1.1.0" &&
+    packageVersion("tidyr") >= "1.0.0") {
+  expected_dcast_tb <- dplyr::as_tibble(expected_dcast)
+  stopifnot(
+    inherits(dcast_tb_out, "tbl_df"),
+    identical(dcast_tb_out, expected_dcast_tb)
+  )
+} else {
+  stopifnot(
+    identical(dcast_tb_out, expected_dcast)
+  )
+}
+
+dcast_bad_formula <-
+  tryCatch(
+    getFromNamespace(x = "phxdft_dcast", ns = "phoenix")(
+      data = dcast_df,
+      formula = id ~ variable + encounter_clock,
+      value.var = "value"
+    ),
+    error = function(e) e
+  )
+
+stopifnot(
+  inherits(dcast_bad_formula, "error"),
+  grepl("right side", dcast_bad_formula[["message"]])
+)
 
 ################################################################################
 # testing phxdft_rbindlist
@@ -733,14 +831,22 @@ TB2 <- as_tibble_if_available(DF2)
 
 expected <- rbind(DF0, DF1, DF2)
 DF <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(DF0, DF1, DF2))
-DT <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(DF0, DF1, DF2))
-TB <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(DF0, DF1, DF2))
+DT <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(DT0, DT1, DT2))
+TB <- getFromNamespace(x = "phxdft_rbindlist", ns = "phoenix")(list(TB0, TB1, TB2))
 
 stopifnot(
   identical(DF, expected),
   all.equal(DT, expected, check.attributes = FALSE),
   all.equal(TB, expected, check.attributes = FALSE)
 )
+
+if (requireNamespace("data.table", quietly = TRUE)) {
+  stopifnot(inherits(DT, "data.table"))
+}
+
+if (requireNamespace("dplyr", quietly = TRUE)) {
+  stopifnot(inherits(TB, "tbl_df"))
+}
 
 ################################################################################
 # testing phxdft_aggregate

@@ -8,16 +8,9 @@ source("utilities.R")
 # prepared longitudinal inputs and assembles them into the encounter-by-time
 # data set needed by the Phoenix respiratory scoring methods.
 #
-# At present the implementation is narrower than the prepare_<input>() wrappers:
-#   - only respiratory inputs (FIO2, SPO2, PAO2) are accepted
-#   - the stack/cast path is implemented for data.table inputs
-#   - base data.frame and tibble inputs are expected to stop with "not yet built"
-#
-# The tests below therefore do two things:
-#   1. verify the implemented data.table behavior, including carry-forward
-#      within the configured respiratory lookback window
-#   2. document the current failure mode for data.frame and tibble inputs so a
-#      future expansion of backend support can update the tests intentionally
+# The tests below verify assembly behavior across the supported data backends,
+# including carry-forward within configured lookback windows and encounter
+# boundary handling.
 ################################################################################
 
 # Ordering matters when we compare expected carry-forward values.  The assembly
@@ -99,21 +92,34 @@ prepared_pao2 <-
     }
   )
 
+assert_assembled_resp <- function(x, expected_class = NULL) {
+  x <- sort_phxdata(x, id.vars = id.vars, eclock = eclock)
+  stopifnot(
+    inherits(x, "prepared_phoenix_data"),
+    is.null(expected_class) || inherits(x, expected_class),
+    isTRUE(all.equal(x[[eclock]], c(0, 60, 120, 500))),
+    identical(x[["FIO2"]], c(0.30, 0.30, 0.30, NA_real_)),
+    isTRUE(all.equal(x[["FIO2_eclock"]], c(0, 0, 0, NA))),
+    identical(x[["SPO2"]], c(NA_real_, 95, 95, 96)),
+    isTRUE(all.equal(x[["SPO2_eclock"]], c(NA, 60, 60, 500))),
+    identical(x[["PAO2"]], c(NA_real_, NA_real_, 80, NA_real_)),
+    isTRUE(all.equal(x[["PAO2_eclock"]], c(NA, NA, 120, NA)))
+  )
+  invisible(x)
+}
+
 ###############################################################################
-# The current implementation should succeed on the data.table backend and should
-# not yet work for plain data.frames or tibbles.
+# Assembly should work for base data.frames and for optional data.table/tibble
+# backends when those suggested packages are available.
 test_assembled <-
   Map(
     f = function(fio2, spo2, pao2) {
-      tryCatch(
-        prepare_phoenix_data(
-          fio2 = fio2,
-          spo2 = spo2,
-          pao2 = pao2,
-          resp.lookback = 360,
-          verbose = FALSE
-        ),
-        error = function(e) e
+      prepare_phoenix_data(
+        fio2 = fio2,
+        spo2 = spo2,
+        pao2 = pao2,
+        resp.lookback = 360,
+        verbose = FALSE
       )
     },
     fio2 = prepared_fio2,
@@ -121,56 +127,44 @@ test_assembled <-
     pao2 = prepared_pao2
   )
 
-stopifnot(inherits(test_assembled[["DF"]], "error"))
-stopifnot(grepl("not yet built", test_assembled[["DF"]][["message"]]))
+assert_assembled_resp(test_assembled[["DF"]], expected_class = "data.frame")
 
 if (inherits(prepared_fio2[["DT"]], "data.table")) {
-  test_assembled[["DT"]] <- sort_phxdata(test_assembled[["DT"]], id.vars = id.vars, eclock = eclock)
-  stopifnot(
-    inherits(test_assembled[["DT"]], "data.table"),
-    isTRUE(all.equal(test_assembled[["DT"]][[eclock]], c(0, 60, 120, 500))),
-    identical(test_assembled[["DT"]][["FIO2"]], c(0.30, 0.30, 0.30, NA_real_)),
-    isTRUE(all.equal(test_assembled[["DT"]][["FIO2_eclock"]], c(0, 0, 0, NA))),
-    identical(test_assembled[["DT"]][["SPO2"]], c(NA_real_, 95, 95, 96)),
-    isTRUE(all.equal(test_assembled[["DT"]][["SPO2_eclock"]], c(NA, 60, 60, 500))),
-    identical(test_assembled[["DT"]][["PAO2"]], c(NA_real_, NA_real_, 80, NA_real_)),
-    isTRUE(all.equal(test_assembled[["DT"]][["PAO2_eclock"]], c(NA, NA, 120, NA)))
-  )
+  assert_assembled_resp(test_assembled[["DT"]], expected_class = "data.table")
 } else {
-  stopifnot(inherits(test_assembled[["DT"]], "error"))
-  stopifnot(grepl("not yet built", test_assembled[["DT"]][["message"]]))
+  assert_assembled_resp(test_assembled[["DT"]], expected_class = "data.frame")
 }
 
-if (inherits(prepared_fio2[["TB"]], "tbl_df")) {
-  stopifnot(inherits(test_assembled[["TB"]], "error"))
-  stopifnot(grepl("not yet built", test_assembled[["TB"]][["message"]]))
+if (inherits(prepared_fio2[["TB"]], "tbl_df") &&
+    requireNamespace("tidyr", quietly = TRUE) &&
+    packageVersion("tidyr") >= "1.0.0") {
+  assert_assembled_resp(test_assembled[["TB"]], expected_class = "tbl_df")
 } else {
-  stopifnot(inherits(test_assembled[["TB"]], "error"))
-  stopifnot(grepl("not yet built", test_assembled[["TB"]][["message"]]))
+  assert_assembled_resp(test_assembled[["TB"]], expected_class = "data.frame")
 }
 
 ###############################################################################
-# Single-input assembly should still work on the implemented data.table path.
+# Single-input assembly should work through the same backend-aware path.
 test_single_input <-
-  tryCatch(
-    prepare_phoenix_data(
-      fio2 = prepared_fio2[["DT"]],
-      resp.lookback = 360,
-      verbose = FALSE
-    ),
-    error = function(e) e
+  prepare_phoenix_data(
+    fio2 = prepared_fio2[["DT"]],
+    resp.lookback = 360,
+    verbose = FALSE
   )
 
+test_single_input <- sort_phxdata(test_single_input, id.vars = id.vars, eclock = eclock)
 if (inherits(prepared_fio2[["DT"]], "data.table")) {
-  test_single_input <- sort_phxdata(test_single_input, id.vars = id.vars, eclock = eclock)
   stopifnot(
     inherits(test_single_input, "data.table"),
     identical(test_single_input[["FIO2"]], 0.30),
     isTRUE(all.equal(test_single_input[["FIO2_eclock"]], 0))
   )
 } else {
-  stopifnot(inherits(test_single_input, "error"))
-  stopifnot(grepl("not yet built", test_single_input[["message"]]))
+  stopifnot(
+    inherits(test_single_input, "data.frame"),
+    identical(test_single_input[["FIO2"]], 0.30),
+    isTRUE(all.equal(test_single_input[["FIO2_eclock"]], 0))
+  )
 }
 
 ###############################################################################
