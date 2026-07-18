@@ -373,7 +373,7 @@ phxdft_rbindlist <- function(x) {
   }
   if (inherits(x[[1]], "data.table") && requireNamespace("data.table", quietly = TRUE)) {
     rtn <- getExportedValue(name = "rbindlist", ns = "data.table")(x, use.names = TRUE, fill = TRUE)
-  } else if (inherits(x, "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
+  } else if (inherits(x[[1]], "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
     rtn <- getExportedValue(name = "bind_rows", ns = "dplyr")(x)
   } else {
     rtn <- do.call(rbind, x)
@@ -389,14 +389,81 @@ phxdft_rbindlist <- function(x) {
 phxdft_dcast <- function(data, formula, value.var) {
   stopifnot(inherits(data, "data.frame"))
 
+  vars <- phxdft_dcast_vars(formula = formula, data = data, value.var = value.var)
+  id.vars <- vars[["id.vars"]]
+  names_from <- vars[["names_from"]]
+
   if (inherits(data, "data.table") && requireNamespace("data.table", quietly = TRUE)) {
     rtn <- getExportedValue(name = "dcast", ns = "data.table")(data = data, formula = formula, value.var = value.var)
-  } else if (inherits(data, "tbl_df") && requireNamespace("dplyr", quietly = TRUE)) {
-    stop("not yet built")
+  } else if (inherits(data, "tbl_df") &&
+             phxdft_namespace_available("dplyr", "1.1.0") &&
+             phxdft_namespace_available("tidyr", "1.0.0")) {
+    # tidyr::pivot_wider() is the tidyverse analogue to data.table::dcast().
+    # Pass column names as character vectors so this wrapper can call tidyr
+    # without importing or attaching tidyverse namespaces.
+    rtn <-
+      do.call(
+        what = getExportedValue(name = "pivot_wider", ns = "tidyr"),
+        args = list(
+          data = data,
+          id_cols = id.vars,
+          names_from = names_from,
+          values_from = value.var
+        )
+      )
   } else {
-    stop("not yet built")
+    # Base reshape() uses the older "v.name.time" naming convention.  Strip
+    # the value-var prefix afterward to match data.table::dcast() and
+    # tidyr::pivot_wider().
+    rtn <-
+      stats::reshape(
+        data = as.data.frame(data, stringsAsFactors = FALSE),
+        idvar = id.vars,
+        timevar = names_from,
+        v.names = value.var,
+        direction = "wide"
+    )
+    names(rtn) <- sub(sprintf("^%s\\.", value.var), "", names(rtn))
+    attr(rtn, "reshapeWide") <- NULL
+    rownames(rtn) <- NULL
   }
   rtn
+}
+
+phxdft_namespace_available <- function(package, version = NULL) {
+  if (!requireNamespace(package = package, quietly = TRUE)) {
+    return(FALSE)
+  }
+  if (!is.null(version) && utils::packageVersion(package) < version) {
+    return(FALSE)
+  }
+  TRUE
+}
+
+phxdft_dcast_vars <- function(formula, data, value.var) {
+  if (is.character(formula)) {
+    formula <- stats::as.formula(formula)
+  }
+  stopifnot(inherits(formula, "formula"))
+  stopifnot(length(formula) == 3L)
+  stopifnot(is.character(value.var), length(value.var) == 1L)
+
+  id.vars <- all.vars(formula[[2L]])
+  names_from <- all.vars(formula[[3L]])
+
+  if (length(id.vars) < 1L) {
+    stop("The left side of `formula` must identify at least one id column.", call. = FALSE)
+  }
+  if (length(names_from) != 1L) {
+    stop("The right side of `formula` must identify exactly one names-from column.", call. = FALSE)
+  }
+
+  missing <- setdiff(c(id.vars, names_from, value.var), names(data))
+  if (length(missing)) {
+    stop(sprintf("Column(s) not found in `data`: %s", paste(missing, collapse = ", ")), call. = FALSE)
+  }
+
+  list(id.vars = id.vars, names_from = names_from)
 }
 
 #'
