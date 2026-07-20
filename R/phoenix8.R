@@ -152,19 +152,19 @@ phoenix8 <- function(
   }
   cl$data <- NULL
 
-  cl[[1]] <- quote(phoenix)
+  cl[[1]] <- get("phoenix", mode = "function")
   rtn <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
-  cl[[1]] <- quote(phoenix_endocrine)
+  cl[[1]] <- get("phoenix_endocrine", mode = "function")
   rtn$phoenix_endocrine_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
-  cl[[1]] <- quote(phoenix_immunologic)
+  cl[[1]] <- get("phoenix_immunologic", mode = "function")
   rtn$phoenix_immunologic_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
-  cl[[1]] <- quote(phoenix_renal)
+  cl[[1]] <- get("phoenix_renal", mode = "function")
   rtn$phoenix_renal_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
-  cl[[1]] <- quote(phoenix_hepatic)
+  cl[[1]] <- get("phoenix_hepatic", mode = "function")
   rtn$phoenix_hepatic_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   rtn$phoenix8_sepsis_score <-

@@ -247,7 +247,7 @@ can be performed before the score is determined.
 
 ### SFR: SpO~2~ / FiO~2~
 * Units: none
-* Expected Values: [0, 97]/0.21
+* Expected Values: [0, 97/0.21]
   * Floating point
   * The upper limit includes the limitation on SpO~2~ ≤ 97
 * Caveats:

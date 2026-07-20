@@ -345,5 +345,53 @@ stopifnot(identical(p_a, p8_b[, 1:7]))
 stopifnot(identical(p_a, p8_c[, 1:7]))
 
 ################################################################################
+# verify namespace-loaded, package-detached usage
+phoenix_fun <- getExportedValue("phoenix", "phoenix")
+phoenix8_fun <- getExportedValue("phoenix", "phoenix8")
+
+detach("package:phoenix", unload = FALSE)
+
+p_ns <- phoenix_fun(pf_ratio = pfr,
+                    sf_ratio = sfr,
+                    imv = vent,
+                    other_respiratory_support = o2,
+                    vasoactives = vasos,
+                    lactate = lactate,
+                    map = map,
+                    platelets = plts,
+                    inr = inr,
+                    d_dimer = ddmr,
+                    fibrinogen = fib,
+                    gcs = gcs,
+                    fixed_pupils = pupils,
+                    age = age,
+                    data = DF)
+
+p8_ns <- phoenix8_fun(pf_ratio = pfr,
+                      sf_ratio = sfr,
+                      imv = vent,
+                      other_respiratory_support = o2,
+                      vasoactives = vasos,
+                      lactate = lactate,
+                      map = map,
+                      platelets = plts,
+                      inr = inr,
+                      d_dimer = ddmr,
+                      fibrinogen = fib,
+                      gcs = gcs,
+                      fixed_pupils = pupils,
+                      glucose = glc,
+                      anc = anc,
+                      alc = alc,
+                      creatinine = creatinine,
+                      bilirubin = bil,
+                      alt = alt,
+                      age = age,
+                      data = DF)
+
+stopifnot(identical(p_ns, p_a))
+stopifnot(identical(p8_ns, p8_a))
+
+################################################################################
 #                                 End of File                                  #
 ################################################################################
