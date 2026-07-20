@@ -76,6 +76,36 @@ run_range_case <- function(fun_name,
 
 run_range_case("prepare_creatinine", "CREATININE", "creatinine_value", c(0.8, 0.3, 0.6, 1.0), c(0.8, 0.6, 1.0), c(0.3, 0.6, 1.0), c(0, 5), max, min)
 
+test_creatinine_above_default_range <-
+  lapply(
+    X = make_backends(
+      data.frame(
+        hospital = "H1",
+        patient = "P1",
+        encounter = "E1",
+        minutes_from_admission = 0,
+        creatinine = 51
+      )
+    ),
+    FUN = function(x) {
+      tryCatch(
+        prepare_creatinine(
+          x = x,
+          id.vars = c("hospital", "patient", "encounter"),
+          eclock = "minutes_from_admission",
+          value.var = "creatinine",
+          verbose = FALSE
+        ),
+        error = function(e) e
+      )
+    }
+  )
+
+stopifnot(
+  sapply(test_creatinine_above_default_range, inherits, "error"),
+  sapply(sapply(test_creatinine_above_default_range, getElement, "message"), grepl, pattern = "> 50\\.000000")
+)
+
 ################################################################################
 #                                 End of File                                  #
 ################################################################################
