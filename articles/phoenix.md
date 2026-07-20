@@ -4,7 +4,7 @@
 
 library(phoenix)
 packageVersion("phoenix")
-## [1] '1.1.3'
+## [1] '1.1.3.9000'
 ```
 
 ## Development and International Consensus

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">phoenix</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,7 +92,7 @@ blue are SQL and chunks with no outline are R chunks.</p>
 <p>We start in R by setting up a local example SQL database with one
 table <code>sepsis</code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span>drv <span class="op">=</span> <span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RSQLite/man/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, dbname <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span>drv <span class="op">=</span> <span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, dbname <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span>conn <span class="op">=</span> <span class="va">con</span>, name <span class="op">=</span> <span class="st">"sepsis"</span>, value <span class="op">=</span> <span class="va">sepsis</span><span class="op">)</span></span></code></pre></div>
 <p>We can easily query the table:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql sqlchunk"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> sepsis</span></code></pre></div>

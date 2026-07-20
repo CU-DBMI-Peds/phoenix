@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 1.1.3.9000
+
+### Bug Fixes
+
+- Use [`get()`](https://rdrr.io/r/base/get.html) instead of
+  [`quote()`](https://rdrr.io/r/base/substitute.html) so that the
+  methods will work when the namespace is load and not attached.
+  ([\#20](https://github.com/CU-DBMI-Peds/phoenix/issues/20))
+
 ## Version 1.1.3:
 
 CRAN release: 2025-10-22
