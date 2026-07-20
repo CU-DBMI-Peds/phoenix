@@ -9,7 +9,7 @@
 #' @param kappa numeric (integer) value, minimum cardiovascular score required
 #' to flag septic shock.
 #' @param version The scoring version to apply to the data.  Default is
-#'   "jama2024" the scoring method used to develope the Phoenix Sepsis Criteria.
+#'   "jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
 #'   See Details.
 #' @param verbose when \code{TRUE}, display progress messages
 #'
@@ -90,7 +90,13 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
 }
 
 jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # Overlly simplified, the score is max( resp + card + neuro + coag )
+  # The scoring method used when Phoenix was developed and published in JAMA
+  # (2024).
+  #
+  # Overly simplified, the score is max( resp + card + neuro + coag )
+  #
+  # Explicit details are in Equation \ref{eq:pss} in
+  # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
   # find all the needed organ system scores at every moment in time
@@ -223,8 +229,14 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 }
 
 alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # Overlly simplified, the score is
-  # max(resp) + max(card) + max(neuro) + max(coag)
+  # Alternative Scoring Method 1:
+  #   Organ-level Maxima
+  #
+  # Overly simplified, the score is
+  #   max(resp) + max(card) + max(neuro) + max(coag)
+  #
+  # Explicit details are in Equation \ref{eq:pss-alt1} in
+  # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
   # find all the needed organ system scores at every moment in time
@@ -362,8 +374,14 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 }
 
 alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # Overlly simplified, the score is
-  # max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
+  # Alternative Scoring Method 2:
+  #   Organ-level with Cardiovascular Component Decoupling.
+  #
+  # Overly simplified, the score is
+  #   max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
+  #
+  # Explicit details are in Equation \ref{eq:pss-alt2} in
+  # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
   # find all the needed organ system scores at every moment in time
@@ -498,17 +516,29 @@ alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 }
 
 alt3 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+  # Alternative Scoring Method 3:
+  #   Full Component Decoupling
+  #
+  # Overly simplified, the score is
+  #  max(IVM) * (PRF | SFR) + max(ORS) * (PRF | SFR) +  # respiratory
+  #  max(vaso) + max(MAP) + max(lactate) + # cardio
+  #  min( {2, max(GCS) + 2 * max(pupils) }) + # neuro
+  #  min(2, sum(platetes + INR + DDimer + Fibrinogen) )
+  #
+  # Explicit details are in Equation \ref{eq:pss-alt3} in
+  # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
   stop("version alt3 not yet implimented")
 }
-alt4 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  stop("version alt4 not yet implimented")
-}
-alt5 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  stop("version alt5 not yet implimented")
-}
-alt6 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  stop("version alt6 not yet implimented")
-}
-alt7 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  stop("version alt7 not yet implimented")
-}
+
+#alt4 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+#  stop("version alt4 not yet implimented")
+#}
+#alt5 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+#  stop("version alt5 not yet implimented")
+#}
+#alt6 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+#  stop("version alt6 not yet implimented")
+#}
+#alt7 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+#  stop("version alt7 not yet implimented")
+#}

@@ -35,8 +35,8 @@
 \section{Objective}\label{sec:objective}
 
 Provide formal notation for the operational definition of the Phoenix
-Sepsis Score as published in \citet{sanchezpinto2024phoenix} and
-\citet{schlapbach2024consensus} along with several alternatives.  The different
+Sepsis Score as published in \citet{sanchezpinto_2024_development} and
+\citet{schlapbach_2024_international} along with several alternatives.  The different
 scoring methods are based on when and how data is aggregated.  The differences
 in the aggregation methods can dramatically change the Phoenix score and the
 published cut point of two or more points for sepsis may not be applicable to
@@ -678,7 +678,7 @@ medications is:
 \end{equation}
 
 This was based on the use of the vasoactive inotrope score
-(VIS)\citep{haque_2015_association}.  The VIS used the same six vasoactive
+(VIS)\citep{haque2015association}.  The VIS used the same six vasoactive
 medications and based the score on the dosage.  During the development of the
 Phoenix criteria we found some lower resourced sites did not have all six
 medications.  As such, patients at these lower resourced sites had a ceiling on
@@ -741,7 +741,7 @@ expected MAPs, so the cutpoints increase with age. Let
 \end{equation}
 and
 \begin{equation}
-  \label{eq:theta1}
+  \label{eq:theta2}
   \theta_{2}(age) :=
     \begin{cases}
       17 & age \in [  0,   1) \\
@@ -1066,7 +1066,7 @@ and alanine aminotrasferase (ALT) reported in units of IU/L, Table~\ref{tab:hepa
 
 \begin{longtable}{lllll}
   \caption{EHR Inputs for Hepatic Organ Dysfunction Scoring}
-  \label{tab:immu-ehr} \\
+  \label{tab:hepatic-ehr} \\
 
   \toprule
   \textbf{Variable} &
@@ -1197,8 +1197,9 @@ SI(t) := \mathbb{I}\left\{T_{InfectiousTestOrdered} \leq t\right\} \times \mathb
 
 \section{Phoenix Sepsis Score}\label{define-phoenix-sepsis-score}
 
-Define the look-back windows as the vector \begin{equation}
-\boldsymbol{m} := \left(m_{resp}, m_{vaso}, m_{map}, m_{lac}, m_{gcs}, m_{pupil}, m_{coag}\right).
+Define the look-back windows as the vector
+\begin{equation}
+  \boldsymbol{m} := \left(m_{resp}, m_{vaso}, m_{map}, m_{lac}, m_{gcs}, m_{pupil}, m_{coag}\right).
 \end{equation}
 
 In this definition, the time interval of interest is the same for both
@@ -1240,7 +1241,7 @@ Septic Shock is sepsis with at least $\kappa$ point(s) from cardiovascular dysfu
 where $\sigma \geq \kappa > 0.$
 
 For the published Phoenix Sepsis Criteria
-\citep{sanchezpinto2024phoenix,schlapbach2024consensus} we used:
+\citep{sanchezpinto_2024_development,schlapbach_2024_international} we used:
 \begin{itemize}
   \item $T = [0, 1440)$
   \item Look backs:
@@ -1338,6 +1339,7 @@ Define
 \noindent Then the Alternative 2 PSS is
 
 \begin{equation}
+  \label{eq:pss-alt2}
   \substack{PSS \\ Alt2}\left(T; \boldsymbol{m}, age\right) :=
   \max_{t \in T} SI(t) \times \sum_{x \in \Omega_{Alt2}} \max_{t \in T} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)
 \end{equation}
@@ -1375,9 +1377,10 @@ Card_{Alt3}(T; m_{vaso}, m_{map}, m_{lac}, age) := Card_{Alt2}(T; m_{vaso}, m_{m
 
 \noindent Neurological:
 \begin{equation}
-  Neuro_{Alt3}(T; m_{gcs}, m_{pupil}) :=
+  Neuro_{Alt3}(T; m_{gcs}, m_{pupil}) := \min\left(2, 
   \mathbb{I}\left\{ \min_{t \in T} GCS(t; m_{gcs}) \leq 10\right\} +
-  2 \times \mathbb{I}\left\{\max_{t \in T}  Pupils(t; m_{pupil}) = 1\right\}.
+  2 \times \mathbb{I}\left\{\max_{t \in T}  Pupils(t; m_{pupil}) = 1\right\}
+  \right).
 \end{equation}
 
 \noindent Coagulation:
@@ -1397,6 +1400,7 @@ where
 
 \noindent Then the Alternative 3 PSS is
 \begin{equation}
+  \label{eq:pss-alt3}
   \substack{PSS \\ Alt3}\left(T; \boldsymbol{m}, age\right) :=
   \max_{t \in T} SI(t) \times \sum_{x \in \Omega_{Alt3}} \max_{t \in T}
   \mathcal{D}[x]\left(t;\boldsymbol{m};age\right),
@@ -1408,82 +1412,27 @@ where
 
 TODO: write out the notation for sepsis and spetic shock
 
-\subsection{Alternative 4 (Infection‑Anchored Window)}\label{alternative-4-infectionanchored-window}
+% \subsection{Alternative XX (Persistence Rule)}\label{alternative-XX-persistence-rule}
+% Define a persistence requirement over a duration $\delta>0$
 
-Define an infection‑anchored window
-%$W(t_{SI}) := [t_{SI}-\omega_{pre},\, t_{SI}+\omega_{post}]$ where
-%$t_{SI}$ is any time such that $SI(t_{SI})=1$. Then \begin{equation}
-%\substack{PSS \\ Alt4}\left(W(t_{SI}); \boldsymbol{m}, age\right) :=
-%\max_{t \in W(t_{SI})} PS(t; \boldsymbol{m}, age),
-%\end{equation} and the final score is \begin{equation}
-%\substack{PSS \\ Alt4}\left(T; \boldsymbol{m}, age\right) :=
-%SI_T \times \max_{t_{SI} \in T: SI(t_{SI})=1} \substack{PSS \\ Alt4}\left(W(t_{SI}); \boldsymbol{m}, age\right).
-%\end{equation} This enforces temporal proximity between suspected infection and
-%organ dysfunction while still allowing flexible look‑back windows.
+% \subsection{Alternative XX (Component‑Level Persistence)}
+% 
+% Alternative XX extends the persistence idea to each component within each
+% organ system. That is, each component must meet its threshold
+% continuously for at least $\delta$ before contributing to the organ
+% score.
 %
-\subsection{Alternative 5 (Persistence Rule)}\label{alternative-5-persistence-rule}
-
-Define a persistence requirement over a duration $\delta>0$
-%: \begin{equation}
-%\substack{PSS \\ Alt5}\left(T; \boldsymbol{m}, age, \delta\right) :=
-%SI_T \times \mathbb{I}\left\{\exists\, t \in T \text{ such that } PS(s; \boldsymbol{m}, age) \geq \sigma \ \forall s \in [t, t+\delta)\right\}.
-%\end{equation} This requires sustained organ dysfunction for at least $\delta$
-%minutes (or hours) rather than a single transient peak.
-
-\subsection{Alternative 6 (Component‑Level Persistence)}
-
-Alternative 6 extends the persistence idea to each component within each
-organ system. That is, each component must meet its threshold
-continuously for at least $\delta$ before contributing to the organ
-score.
-
-TODO: write out the notation
-
-%\begin{equation}
-%\mathbb{P}_{\delta}\{A(t)\} := \mathbb{I}\left\{\exists\, t_0 \in T \text{ such that } A(s) \text{ holds } \forall s \in [t_0, t_0+\delta)\right\}.
-%\end{equation}
 %
-%Then define component‑persistent organ scores by replacing each
-%indicator $\mathbb{I}\{\cdot\}$ with $\mathbb{P}_{\delta}\{\cdot\}$
-%in the original component definitions. For example:
+%\subsection{Alternative XX (Component‑Level Persistence + Organ Decoupling)}
 %
-%\begin{equation}
-%Card_{Alt6}(T; m_{vaso}, m_{map}, m_{lac}, age, \delta) :=
-%\min\left(2, \mathbb{P}_{\delta}\{Vasos(t; m_{vaso}) = 1\} +
-%\mathbb{P}_{\delta}\{MAP(t; m_{map}, age) < \theta_2(age)\} +
-%\mathbb{P}_{\delta}\{Lactate(t; m_{lac}) \geq 5\}\right)
-%\end{equation} with higher thresholds (e.g., lactate $\ge 11$ and MAP below
-%$\theta_1$) treated similarly. Analogous persistent definitions can be
-%constructed for respiratory, neurologic, and coagulation components.
+%Alternative XX combines the component‑level persistence of Alternative XX
+%with full organ‑system decoupling (as in Alternative 1).
 %
-%Finally, \begin{equation}
-%\substack{PSS \\ Alt6}\left(T; \boldsymbol{m}, age, \delta\right) :=
-%SI_T \times \max_{t \in T} \Bigl(
-%Resp_{Alt6}(T; m_{resp}, \delta) +
-%Card_{Alt6}(T; m_{vaso}, m_{map}, m_{lac}, age, \delta) +
-%Neuro_{Alt6}(T; m_{gcs}, m_{pupil}, \delta) +
-%Coag_{Alt6}(T; m_{coag}, \delta)
-%\Bigr).
-%\end{equation}
+% \subsection{Alternative XX (Infection‑Anchored Window)}\label{alternative-XX-infectionanchored-window}
+% Define an infection‑anchored window
 
-\subsection{Alternative 7 (Component‑Level Persistence + Organ Decoupling)}
 
-Alternative 7 combines the component‑level persistence of Alternative 6
-with full organ‑system decoupling (as in Alternative 1).
-
-TODO: write out the notation
-
-%\begin{equation}
-%\substack{PSS \\ Alt7}\left(T; \boldsymbol{m}, age, \delta\right) :=
-%SI_T \times \Bigl(
-%\max_{t \in T} Resp_{Alt6}(T; m_{resp}, \delta) +
-%\max_{t \in T} Card_{Alt6}(T; m_{vaso}, m_{map}, m_{lac}, age, \delta) +
-%\max_{t \in T} Neuro_{Alt6}(T; m_{gcs}, m_{pupil}, \delta) +
-%\max_{t \in T} Coag_{Alt6}(T; m_{coag}, \delta)
-%\Bigr).
-%\end{equation}
-
-\bibliography{references}
+\bibliography{../references}
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

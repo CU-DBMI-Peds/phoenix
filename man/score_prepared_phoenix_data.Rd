@@ -29,7 +29,7 @@ sepsis or septic shock.}
 to flag septic shock.}
 
 \item{version}{The scoring version to apply to the data.  Default is
-"jama2024" the scoring method used to develope the Phoenix Sepsis Criteria.
+"jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
 See Details.}
 
 \item{verbose}{when \code{TRUE}, display progress messages}
