@@ -75,7 +75,7 @@ stopifnot(
 
 test_age_above_range <-
   lapply(
-    X = make_backends(phoenix:::phxdft_set(age_df, i = 1L, j = "age_months", value = 217)),
+    X = make_backends(phoenix:::phxdft_set(age_df, i = 1L, j = "age_months", value = 216)),
     FUN = function(x) {
       tryCatch(
         prepare_age(
@@ -91,7 +91,30 @@ test_age_above_range <-
 
 stopifnot(
   sapply(test_age_above_range, inherits, "error"),
-  sapply(sapply(test_age_above_range, getElement, "message"), grepl, pattern = "> 216\\.000000")
+  sapply(sapply(test_age_above_range, getElement, "message"), grepl, pattern = ">= 216\\.000000")
+)
+
+test_age_custom_closed_range <-
+  lapply(
+    X = make_backends(phoenix:::phxdft_set(age_df, i = 1L, j = "age_months", value = 216)),
+    FUN = function(x) {
+      prepare_age(
+        x = x,
+        id.vars = id.vars,
+        value.var = "age_months",
+        valid.range.closed = c(TRUE, TRUE),
+        tie.breaker = max,
+        verbose = FALSE
+      )
+    }
+  )
+
+test_age_custom_closed_range <- lapply(test_age_custom_closed_range, sort_prepared, eclock = "hospital")
+
+stopifnot(
+  identical(test_age_custom_closed_range[["DF"]][["AGE"]], c(216, 24)),
+  identical(test_age_custom_closed_range[["DT"]][["AGE"]], c(216, 24)),
+  identical(test_age_custom_closed_range[["TB"]][["AGE"]], c(216, 24))
 )
 
 ###############################################################################
