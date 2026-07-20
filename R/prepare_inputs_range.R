@@ -9,16 +9,19 @@
 #' amount of time from admission, \code{eclock}
 #' ('encounter clock'; generally expected to be in minutes with 0 being the encounter start).
 #' \code{value.var} denotes the reported values for the input of interest.
-#' \code{valid.range} is used for simple checks for valid values via
+#' \code{valid.range} is used for simple inclusive checks for valid values via
 #' \code{x[[value.var]] >= min(valid.range) & x[[value.var]] <= max(valid.range)}.
+#' \code{prepare_age()} is the exception; its default upper limit is exclusive
+#' to match the expected age interval of [0, 216) months.
 #'
 #' There is an expectation when going to Phoenix scoring that the
 #' \code{x[[c(id.vars, eclock)]]} are unique for each input.  These functions
 #' check this assumption and will aggregate, if needed, using the
 #' \code{tie.breaker} method.
 #'
-#' Default values are based on the values used when building the Phoenix
-#' criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024).
+#' Default values match the values used when developing the Phoenix Sepsis
+#' Criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024). End
+#' users can modify these checks by passing a different \code{valid.range}.
 #'
 #' @references See reference details in \code{\link{phoenix-package}} or by calling
 #' \code{citation('phoenix')}.
@@ -38,9 +41,15 @@
 #' medication, or test.
 #'
 #' @param valid.range A numeric vector of length two defining an interval of
-#' valid values for \code{x[[value.var]]}. The defaults are set to be
-#' considerably wider than clinically possible in some cases, e.g., infinite
-#' upper limit for blood pressures.
+#' valid values for \code{x[[value.var]]}. The defaults match the values used
+#' when developing the Phoenix Sepsis Criteria and can be modified by end users.
+#'
+#' @param valid.range.closed A logical vector of length one or two denoting
+#' whether the lower and upper bounds of \code{valid.range} are closed
+#' (inclusive) or open (exclusive). A length-one value is recycled for both
+#' bounds. Most inputs default to \code{c(TRUE, TRUE)}. \code{prepare_age()}
+#' defaults to \code{c(TRUE, FALSE)} to match the expected age interval of
+#' [0, 216) months.
 #'
 #' @param tie.breaker When \code{x[c(id.vars, eclock)]} is not unique this
 #' function is uses to aggregate \code{x[[value.var]]} into one value.
@@ -59,6 +68,7 @@ prepare_fio2 <-
     eclock,
     value.var,
     valid.range = c(0.21, 1.00),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -71,6 +81,7 @@ prepare_fio2 <-
       value.var = value.var,
       variable.name = "FIO2",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -87,6 +98,7 @@ prepare_spo2 <-
     eclock,
     value.var,
     valid.range = c(0, 100),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -99,6 +111,7 @@ prepare_spo2 <-
       value.var = value.var,
       variable.name = "SPO2",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -115,6 +128,7 @@ prepare_pao2 <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -127,6 +141,7 @@ prepare_pao2 <-
       value.var = value.var,
       variable.name = "PAO2",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -143,6 +158,7 @@ prepare_vent <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -154,6 +170,7 @@ prepare_vent <-
       value.var = value.var,
       variable.name = "VENT",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -170,6 +187,7 @@ prepare_hfov <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -181,6 +199,7 @@ prepare_hfov <-
       value.var = value.var,
       variable.name = "HFOV",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -197,6 +216,7 @@ prepare_peep_vent <-
     eclock,
     value.var,
     valid.range = c(0, 100),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -208,6 +228,7 @@ prepare_peep_vent <-
       value.var = value.var,
       variable.name = "PEEP",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -224,6 +245,7 @@ prepare_lactate <-
     eclock,
     value.var,
     valid.range = c(0, 50),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -235,6 +257,7 @@ prepare_lactate <-
       value.var = value.var,
       variable.name = "LACTATE",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -250,7 +273,8 @@ prepare_sbp_cuff <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(1, Inf),
+    valid.range = c(1, 300),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -262,6 +286,7 @@ prepare_sbp_cuff <-
       value.var = value.var,
       variable.name = "SBPC",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -277,7 +302,8 @@ prepare_sbp_arterial <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(1, 300),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -289,6 +315,7 @@ prepare_sbp_arterial <-
       value.var = value.var,
       variable.name = "SBPA",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -305,6 +332,7 @@ prepare_dbp_cuff <-
     eclock,
     value.var,
     valid.range = c(1, 200),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -316,6 +344,7 @@ prepare_dbp_cuff <-
       value.var = value.var,
       variable.name = "DBPC",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -332,6 +361,7 @@ prepare_dbp_arterial <-
     eclock,
     value.var,
     valid.range = c(1, 200),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -343,6 +373,7 @@ prepare_dbp_arterial <-
       value.var = value.var,
       variable.name = "DBPA",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -359,6 +390,7 @@ prepare_mean_arterial_pressure_cuff <-
     eclock,
     value.var,
     valid.range = c(1, 300),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -370,6 +402,7 @@ prepare_mean_arterial_pressure_cuff <-
       value.var = value.var,
       variable.name = "MAPC",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -386,6 +419,7 @@ prepare_mean_arterial_pressure_arterial <-
     eclock,
     value.var,
     valid.range = c(1, 300),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -397,6 +431,7 @@ prepare_mean_arterial_pressure_arterial <-
       value.var = value.var,
       variable.name = "MAPA",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -413,6 +448,7 @@ prepare_platelets <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -424,6 +460,7 @@ prepare_platelets <-
       value.var = value.var,
       variable.name = "PLATELETS",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -440,6 +477,7 @@ prepare_inr <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -451,6 +489,7 @@ prepare_inr <-
       value.var = value.var,
       variable.name = "INR",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -467,6 +506,7 @@ prepare_ddimer <-
     eclock,
     value.var,
     valid.range = c(0, 500),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -478,6 +518,7 @@ prepare_ddimer <-
       value.var = value.var,
       variable.name = "DDIMER",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -494,6 +535,7 @@ prepare_fibrinogen <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -505,6 +547,7 @@ prepare_fibrinogen <-
       value.var = value.var,
       variable.name = "FIBRINOGEN",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -521,6 +564,7 @@ prepare_glucose <-
     eclock,
     value.var,
     valid.range = c(5, 2000),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -532,6 +576,7 @@ prepare_glucose <-
       value.var = value.var,
       variable.name = "GLUCOSE",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -548,6 +593,7 @@ prepare_anc <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -559,6 +605,7 @@ prepare_anc <-
       value.var = value.var,
       variable.name = "ANC",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -575,6 +622,7 @@ prepare_alc <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -586,6 +634,7 @@ prepare_alc <-
       value.var = value.var,
       variable.name = "ALC",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -601,7 +650,8 @@ prepare_creatinine <-
     id.vars,
     eclock,
     value.var,
-    valid.range = c(0, Inf),
+    valid.range = c(0, 50),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -613,6 +663,7 @@ prepare_creatinine <-
       value.var = value.var,
       variable.name = "CREATININE",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -629,6 +680,7 @@ prepare_bilirubin <-
     eclock,
     value.var,
     valid.range = c(0, 100),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -640,6 +692,7 @@ prepare_bilirubin <-
       value.var = value.var,
       variable.name = "BILIRUBIN",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -656,6 +709,7 @@ prepare_alt <-
     eclock,
     value.var,
     valid.range = c(0, Inf),
+    valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -667,6 +721,7 @@ prepare_alt <-
       value.var = value.var,
       variable.name = "ALT",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
@@ -682,6 +737,7 @@ prepare_age <-
     id.vars,
     value.var,
     valid.range = c(0, 216),
+    valid.range.closed = c(TRUE, FALSE),
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
@@ -692,11 +748,18 @@ prepare_age <-
       value.var = value.var,
       variable.name = "AGE",
       valid.range = valid.range,
+      valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
-    )
+  )
   rtn <- phxdft_set(rtn, j = "variable", value = NULL)
   rtn <- phxdft_setnames(rtn, old = "value", new = "AGE")
+  rtn <- phxdft_select(rtn, c(id.vars, "AGE"))
+  # phxdft_select() returns a new subset object and base data.frame subsetting
+  # drops custom attributes.  Age is static per encounter, so keep only id.vars
+  # and AGE, then restore the preparation contract expected downstream.
+  attr(rtn, "id.vars") <- id.vars
+  attr(rtn, "eclock") <- NULL
   class(rtn) <- c("phoenix_prepared_age", class(rtn))
   rtn
 }
