@@ -35,6 +35,7 @@ prepare_variable <-
     variable.name,
     valid.range = NULL,
     valid.values = NULL,
+    valid.range.closed = c(TRUE, TRUE),
     eclock = NULL,
     tie.breaker = NULL,
     verbose = getOption("phoenix_verbose", TRUE)
@@ -65,11 +66,30 @@ prepare_variable <-
   if (!is.null(valid.range) & !is.null(valid.values)) {
     stop("Only one of valid.range and valid.values should be provided")
   } else if (!is.null(valid.range)) {
-    below <- any(x[[value.var]] < min(valid.range))
-    above <- any(x[[value.var]] > max(valid.range))
+    valid.range.closed <- rep(valid.range.closed, length.out = 2L)
+    below <- if (isTRUE(valid.range.closed[1L])) {
+      any(x[[value.var]] < min(valid.range))
+    } else {
+      any(x[[value.var]] <= min(valid.range))
+    }
+    above <- if (isTRUE(valid.range.closed[2L])) {
+      any(x[[value.var]] > max(valid.range))
+    } else {
+      any(x[[value.var]] >= max(valid.range))
+    }
     if (below | above) {
-      bmsg <- sprintf("%s < %f", xv, min(valid.range))
-      amsg <- sprintf("%s > %f", xv, max(valid.range))
+      bmsg <- sprintf(
+        "%s %s %f",
+        xv,
+        if (isTRUE(valid.range.closed[1L])) "<" else "<=",
+        min(valid.range)
+      )
+      amsg <- sprintf(
+        "%s %s %f",
+        xv,
+        if (isTRUE(valid.range.closed[2L])) ">" else ">=",
+        max(valid.range)
+      )
       if (below & above) {
         msg <- sprintf("There are %s and %s.", bmsg, amsg)
       } else if (below) {
