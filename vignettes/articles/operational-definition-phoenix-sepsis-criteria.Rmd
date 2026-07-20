@@ -1,0 +1,18 @@
+---
+title: "Operational Definition of the Phoenix Sepsis Criteria"
+output: html_document
+resource_files:
+  - operational-definition-phoenix-sepsis-criteria.pdf
+---
+
+```{=html}
+<meta http-equiv="refresh" content="0; url=operational-definition-phoenix-sepsis-criteria.pdf">
+<script>
+window.location.replace("operational-definition-phoenix-sepsis-criteria.pdf");
+</script>
+```
+
+This article is a PDF rendered directly from a plain LaTeX source file.
+
+If your browser did not automatically redirect you, you can [click here to
+download or view the PDF](operational-definition-phoenix-sepsis-criteria.pdf)

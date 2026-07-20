@@ -4,6 +4,18 @@ template:
 
 url: https://cu-dbmi-peds.github.io/phoenix
 
+navbar:
+  components:
+    articles:
+      text: Articles
+      menu:
+        - text: "Operational Definition"
+          href: articles/operational-definition-phoenix-sepsis-criteria.html
+        - text: "EHR Implementation Guide"
+          href: articles/ehr_implementation_notes.html
+        - text: "Mobile App"
+          href: articles/mobile_app.html
+
 reference:
 
 - title: Phoenix
