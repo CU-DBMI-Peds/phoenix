@@ -35,6 +35,7 @@ prepare_fio2(
   eclock,
   value.var,
   valid.range = c(0.21, 1),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -45,6 +46,7 @@ prepare_spo2(
   eclock,
   value.var,
   valid.range = c(0, 100),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -55,6 +57,7 @@ prepare_pao2(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -65,6 +68,7 @@ prepare_vent(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -75,6 +79,7 @@ prepare_hfov(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -85,6 +90,7 @@ prepare_peep_vent(
   eclock,
   value.var,
   valid.range = c(0, 100),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -95,6 +101,7 @@ prepare_lactate(
   eclock,
   value.var,
   valid.range = c(0, 50),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -104,7 +111,8 @@ prepare_sbp_cuff(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(1, Inf),
+  valid.range = c(1, 300),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -114,7 +122,8 @@ prepare_sbp_arterial(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(1, 300),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -125,6 +134,7 @@ prepare_dbp_cuff(
   eclock,
   value.var,
   valid.range = c(1, 200),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -135,6 +145,7 @@ prepare_dbp_arterial(
   eclock,
   value.var,
   valid.range = c(1, 200),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -145,6 +156,7 @@ prepare_mean_arterial_pressure_cuff(
   eclock,
   value.var,
   valid.range = c(1, 300),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -155,6 +167,7 @@ prepare_mean_arterial_pressure_arterial(
   eclock,
   value.var,
   valid.range = c(1, 300),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -165,6 +178,7 @@ prepare_platelets(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -175,6 +189,7 @@ prepare_inr(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -185,6 +200,7 @@ prepare_ddimer(
   eclock,
   value.var,
   valid.range = c(0, 500),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -195,6 +211,7 @@ prepare_fibrinogen(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -205,6 +222,7 @@ prepare_glucose(
   eclock,
   value.var,
   valid.range = c(5, 2000),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -215,6 +233,7 @@ prepare_anc(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -225,6 +244,7 @@ prepare_alc(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -234,7 +254,8 @@ prepare_creatinine(
   id.vars,
   eclock,
   value.var,
-  valid.range = c(0, Inf),
+  valid.range = c(0, 50),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -245,6 +266,7 @@ prepare_bilirubin(
   eclock,
   value.var,
   valid.range = c(0, 100),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -255,6 +277,7 @@ prepare_alt(
   eclock,
   value.var,
   valid.range = c(0, Inf),
+  valid.range.closed = c(TRUE, TRUE),
   tie.breaker = max,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -264,6 +287,7 @@ prepare_age(
   id.vars,
   value.var,
   valid.range = c(0, 216),
+  valid.range.closed = c(TRUE, FALSE),
   tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
@@ -284,9 +308,15 @@ id, patient id, encounter id.}
 medication, or test.}
 
 \item{valid.range}{A numeric vector of length two defining an interval of
-valid values for \code{x[[value.var]]}. The defaults are set to be
-considerably wider than clinically possible in some cases, e.g., infinite
-upper limit for blood pressures.}
+valid values for \code{x[[value.var]]}. The defaults match the values used
+when developing the Phoenix Sepsis Criteria and can be modified by end users.}
+
+\item{valid.range.closed}{A logical vector of length one or two denoting
+whether the lower and upper bounds of \code{valid.range} are closed
+(inclusive) or open (exclusive). A length-one value is recycled for both
+bounds. Most inputs default to \code{c(TRUE, TRUE)}. \code{prepare_age()}
+defaults to \code{c(TRUE, FALSE)} to match the expected age interval of
+[0, 216) months.}
 
 \item{tie.breaker}{When \code{x[c(id.vars, eclock)]} is not unique this
 function is uses to aggregate \code{x[[value.var]]} into one value.}
@@ -303,16 +333,19 @@ The input data is expected to be in a "long" format with \code{id.vars}
 amount of time from admission, \code{eclock}
 ('encounter clock'; generally expected to be in minutes with 0 being the encounter start).
 \code{value.var} denotes the reported values for the input of interest.
-\code{valid.range} is used for simple checks for valid values via
+\code{valid.range} is used for simple inclusive checks for valid values via
 \code{x[[value.var]] >= min(valid.range) & x[[value.var]] <= max(valid.range)}.
+\code{prepare_age()} is the exception; its default upper limit is exclusive
+to match the expected age interval of [0, 216) months.
 
 There is an expectation when going to Phoenix scoring that the
 \code{x[[c(id.vars, eclock)]]} are unique for each input.  These functions
 check this assumption and will aggregate, if needed, using the
 \code{tie.breaker} method.
 
-Default values are based on the values used when building the Phoenix
-criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024).
+Default values match the values used when developing the Phoenix Sepsis
+Criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024). End
+users can modify these checks by passing a different \code{valid.range}.
 }
 \references{
 See reference details in \code{\link{phoenix-package}} or by calling
