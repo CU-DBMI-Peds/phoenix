@@ -176,10 +176,14 @@ prepare_phoenix_data <-
   phxdata <- Filter(f = Negate(is.null), phxdata)
 
   # verify that all the input data sets are either null or phoenix_prepared
+  input_names <- c(tolower(names(phxdata)), "age")
+  input_classes <- paste0("phoenix_prepared_", input_names)
+  input_classes[input_names == "peep"] <- "phoenix_prepared_peep_vent"
+
   check <-
     Map(f = function(obj, cls) { is.null(obj) || inherits(obj, cls) },
       obj = c(phxdata, list(age = age)),
-      cls = paste0("phoenix_prepared_", c(tolower(names(phxdata)), "age"))
+      cls = input_classes
     )
   check <- unlist(check)
 
@@ -336,10 +340,10 @@ prepare_phoenix_data <-
       value = (phxdata[["SPO2"]] / phxdata[["FIO2"]])[idx]
     )
 
-  # Invasive Mechancical Ventalation
+  # Invasive Mechanical Ventilation
   # if the inputs are not in the data set set them to NA, this will simplify the
   # logic for flagging IMV overall.
-  if (verbose) message("  Invasive Mechancical Ventalation...")
+  if (verbose) message("  Invasive Mechanical Ventilation...")
   phxdata <-
     phxdft_set(
       x = phxdata,
@@ -376,8 +380,9 @@ prepare_phoenix_data <-
   # if any of the components are younger than the total, use the sum of the
   # compoents
   if (verbose) message("  GCS....")
-  gcstotal2 <-
-    rowSums(phxdft_select(phxdata, c("GCSEYE", "GCSVERBAL", "GCSMOTOR")))
+  gcs_components <- phxdft_select(phxdata, c("GCSEYE", "GCSVERBAL", "GCSMOTOR"))
+  gcstotal2 <- rowSums(gcs_components)
+  gcstotal2_complete <- rowSums(!is.na(gcs_components)) == 3L
   gcstotal2_deltas <-
     phxdata[[eclock]] -
     phxdft_select(phxdata, c("GCSEYE_eclock", "GCSVERBAL_eclock", "GCSMOTOR_eclock"))
@@ -386,9 +391,19 @@ prepare_phoenix_data <-
   deltatotal <- phxdata[[eclock]] - phxdata[["GCSTOTAL_eclock"]]
 
   # use gcstotal2
-  idx2 <- which(gcstotal2_delta <= pmin(deltatotal, gcs.lookback))
+  idx2 <-
+    which(
+      gcstotal2_complete &
+      gcstotal2_delta <= gcs.lookback &
+      (is.na(deltatotal) | gcstotal2_delta <= deltatotal)
+    )
   # use gcstotal
-  idx <- which((deltatotal < gcstotal2_delta) & (phxdata[[eclock]] <= gcs.lookback))
+  idx <-
+    which(
+      !is.na(deltatotal) &
+      deltatotal <= gcs.lookback &
+      (!gcstotal2_complete | deltatotal < gcstotal2_delta)
+    )
 
   phxdata <- phxdft_set(phxdata, i = idx2, j = "GCS", value = gcstotal2[idx2])
   phxdata <- phxdft_set(phxdata, i = idx,  j = "GCS", value = phxdata[["GCSTOTAL"]][idx])
