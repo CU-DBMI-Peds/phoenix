@@ -13,3 +13,12 @@ python/*.egg-info/*
 python/dist/*
 docs
 .install_dev_deps.Rout
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.aux
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.bbl
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.blg
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.fdb_latexmk
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.fls
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.log
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.lot
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.out
+vignettes/articles/operational-definition-phoenix-sepsis-criteria.toc

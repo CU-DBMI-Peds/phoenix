@@ -91,6 +91,7 @@ covr: covr-report-all.html covr-report-tests.html covr-report-examples.html covr
 	       install.packages('htmltools', repos='$(CRAN)')"
 
 site: $(PKG_TARBALL)
+	$(MAKE) -C vignettes/articles
 	$(R) -e "pkgdown::build_site()"
 
 ################################################################################

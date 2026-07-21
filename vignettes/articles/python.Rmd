@@ -30,13 +30,18 @@ library(phoenix)
 if (!virtualenv_exists(envname = "phoenix")) {
   virtualenv_create(envname = "phoenix")
   virtualenv_install(envname = "phoenix", packages = c("numpy", "pandas"))
-
-  p <- normalizePath("python")  # for how build_site is called locally
-  if (!dir.exists(p)) {
-    p <- normalizePath("../../python") # for how build_site is called in github actions
-  }
-  virtualenv_install(envname = "phoenix", packages = p)
 }
+
+p <- normalizePath("python")  # for how build_site is called locally
+if (!dir.exists(p)) {
+  p <- normalizePath("../../python") # for how build_site is called in github actions
+}
+virtualenv_install(
+  envname = "phoenix",
+  packages = p,
+  ignore_installed = TRUE,
+  pip_options = c("--upgrade", "--force-reinstall")
+)
 
 use_virtualenv(virtualenv = "phoenix")
 ```
@@ -152,7 +157,7 @@ cat(
 py_resp = phx.phoenix_respiratory(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    invasive_mechanical_ventilation = sepsis["vent"],
+    imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy()
 )
 print(type(py_resp))
@@ -163,7 +168,7 @@ print(py_resp)
 r_resp <- phoenix_respiratory(
   pf_ratio = pao2 / fio2,
   sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-  invasive_mechanical_ventilation = vent,
+  imv = vent,
   other_respiratory_support = as.integer(fio2 > 0.21),
   data = sepsis
   )
@@ -182,7 +187,7 @@ cat(
     ftnt[grepl("\\^(d|e|f)\\^", ftnt)], sep = "\n")
 ```
 
-As with the R package, the Python module has a function `mean_arterial_pressure` to simplify the
+As with the R package, the Python module has a function `map` to simplify the
 estimation of mean arterial pressure based on systolic and diastolic pressures.
 MAP is approximated as (2/3)*DBP + (1/3)*SBP.
 
@@ -192,7 +197,7 @@ py_card = phx.phoenix_cardiovascular(
                   sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    mean_arterial_pressure = phx.mean_arterial_pressure(sepsis["sbp"], sepsis["dbp"])
+    map = phx.map(sepsis["sbp"], sepsis["dbp"])
 )
 print(type(py_card))
 print(py_card)
@@ -203,7 +208,7 @@ r_card <- phoenix_cardiovascular(
   vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
   lactate = lactate,
   age = age,
-  mean_arterial_pressure = mean_arterial_pressure(sbp, dbp),
+  map = map(sbp, dbp),
   data = sepsis
 )
 stopifnot(identical(r_card, as.integer(py$py_card)))
@@ -387,12 +392,12 @@ Septic Shock is defined as sepsis with at least one cardiovascular point.
 py_phoenix_scores = phx.phoenix(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    invasive_mechanical_ventilation = sepsis["vent"],
+    imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
     age = sepsis["age"],
-    mean_arterial_pressure = phx.mean_arterial_pressure(sepsis["sbp"], sepsis["dbp"]),
+    map = phx.map(sepsis["sbp"], sepsis["dbp"]),
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
@@ -404,21 +409,19 @@ print(py_phoenix_scores.info())
 print(py_phoenix_scores.head())
 ```
 
-```{r, include = FALSE, eval = FALSE}
-# this block currently doesn't evaluate due to error:
-# cannot coerce class 'c("pandas.DataFrame", "pandas.core.generic.NDFrame", "pandas.core.base.PandasObject", ' to a data.frame
+```{r, include = FALSE, eval = TRUE}
 r_phoenix_scores <-
   phoenix(
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      invasive_mechanical_ventilation = vent,
+      imv = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age,
-      mean_arterial_pressure = dbp + (sbp - dbp)/3,
+      map = dbp + (sbp - dbp)/3,
     # coagulation
       platelets = platelets,
       inr = inr,
@@ -448,11 +451,11 @@ other four organ systems:
 py_phoenix8_scores = phx.phoenix8(
     pf_ratio = sepsis["pao2"] / sepsis["fio2"],
     sf_ratio = np.where(sepsis["spo2"] <= 97, sepsis["spo2"] / sepsis["fio2"], np.nan),
-    invasive_mechanical_ventilation = sepsis["vent"],
+    imv      = sepsis["vent"],
     other_respiratory_support = (sepsis["fio2"] > 0.21).astype(int).to_numpy(),
     vasoactives = sepsis["dobutamine"] + sepsis["dopamine"] + sepsis["epinephrine"] + sepsis["milrinone"] + sepsis["norepinephrine"] + sepsis["vasopressin"],
     lactate = sepsis["lactate"],
-    mean_arterial_pressure = phx.mean_arterial_pressure(sepsis["sbp"], sepsis["dbp"]),
+    map = phx.map(sepsis["sbp"], sepsis["dbp"]),
     platelets = sepsis['platelets'],
     inr = sepsis['inr'],
     d_dimer = sepsis['d_dimer'],
@@ -471,21 +474,19 @@ print(py_phoenix8_scores.info())
 print(py_phoenix8_scores.head())
 ```
 
-```{r, include = FALSE, eval = FALSE}
-# this block currently doesn't evaluate due to error:
-# cannot coerce class 'c("pandas.DataFrame", "pandas.core.generic.NDFrame", "pandas.core.base.PandasObject", ' to a data.frame
+```{r, include = FALSE, eval = TRUE}
 r_phoenix8_scores <-
   phoenix8(
     # respiratory
       pf_ratio = pao2 / fio2,
       sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
-      invasive_mechanical_ventilation = vent,
+      imv = vent,
       other_respiratory_support = as.integer(fio2 > 0.21),
     # cardiovascular
       vasoactives = dobutamine + dopamine + epinephrine + milrinone + norepinephrine + vasopressin,
       lactate = lactate,
       age = age, # Also used in the renal assessment.
-      mean_arterial_pressure = dbp + (sbp - dbp)/3,
+      map = dbp + (sbp - dbp)/3,
     # coagulation
       platelets = platelets,
       inr = inr,

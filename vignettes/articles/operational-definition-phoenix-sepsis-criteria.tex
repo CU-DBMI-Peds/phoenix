@@ -198,11 +198,15 @@ Detailed definitions for the functions will follow in
     \rowcolor{gray!20}
     $m_{pupil}$ & Look-back window for Pupils & $[0, \infty)$\\
     $m_{coag}$  & Look-back window for coagulation related values & $[0, \infty)$\\
+    $m_{endo}$  & Look-back window for endocrine related values & $[0, \infty)$\\
+    $m_{immu}$  & Look-back window for immunologic related values & $[0, \infty)$\\
+    $m_{hepatic}$  & Look-back window for hepatic related values & $[0, \infty)$\\
+    $m_{renal}$  & Look-back window for renal related values & $[0, \infty)$\\
 
     \rowcolor{gray!20}
     $\boldsymbol{m}$ &
     Vector of look-back windows used for carry-forward operations. &
-    $\boldsymbol{m}:=(m_{resp},m_{vaso},m_{map},m_{lac},m_{gcs},m_{pupil},m_{coag})$. \\
+    $\boldsymbol{m}:=(m_{resp},m_{vaso},m_{map},m_{lac},m_{gcs},m_{pupil},m_{coag},m_{endo},m_{immu},m_{hepatic},m_{renal})$. \\
 
   \addlinespace[0.5em]
   \multicolumn{3}{l}{\textbf{Observation History and Carry-Forward}} \\
@@ -493,7 +497,7 @@ value is reported at the same time as the $FiO_2$ or after.
 Additionally, the SF ratio is valid if the $SpO_2 \leq 97.$ This requirement is
 based on the PODIUM\citep{bembea2022podium,squires2022podium} organ
 dysfunction scoring, and is an additional requirement on the
-pSOFA\citep{matric2017psofa} cut points in
+pSOFA\citep{matics2017psofa} cut points in
 the scoring.
 
 \begin{equation}
@@ -537,8 +541,8 @@ The PEEP limit of 3 CM H2O is used to limit false positives while limiting false
 negatives.  Similar limits have been used in other criteria.  For example, the
 lung injury score\citep{martin2001airway} uses a PEEP of 5 CMH20 for 0 points
 and 6-8 CM H20.  Further, \cite{martin2001airway} states a PEEP of 5 CM H20 and
-$FiO_2 < 0.5$ as part of the criteria for identifing patients ready to accept a
-trial of sponteaneous breathing.
+$FiO_2 < 0.5$ as part of the criteria for identifying patients ready to accept a
+trial of spontaneous breathing.
 
 \paragraph{Other Respiratory Support}
 
@@ -715,10 +719,15 @@ Then
 \begin{equation}
   \widehat{\widehat{MAP}}(t; m_{map}) :=
   \begin{cases}
-    \widehat{MAP_{1}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) \ne \mathrm{NA} \\
-    \widehat{MAP_{2}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) = \mathrm{NA} \wedge \widehat{MAP_{2}}(t; m_{map}) \ne \mathrm{NA} \\
-    \widehat{MAP_{3}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) = \widehat{MAP_{2}}(t; m_{map}) = \mathrm{NA} \wedge \widehat{MAP_{3}}(t; m_{map}) \ne \mathrm{NA} \\
-    \widehat{MAP_{4}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) = \widehat{MAP_{2}}(t; m_{map}) = \widehat{MAP_{3}}(t; m_{map}) = \mathrm{NA} \wedge \widehat{MAP_{4}}(t; m_{map}) \ne \mathrm{NA} \\
+    %\widehat{MAP_{1}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) \ne \mathrm{NA} \\
+    %\widehat{MAP_{2}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) = \mathrm{NA} \wedge \widehat{MAP_{2}}(t; m_{map}) \ne \mathrm{NA} \\
+    %\widehat{MAP_{3}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) = \widehat{MAP_{2}}(t; m_{map}) = \mathrm{NA} \wedge \widehat{MAP_{3}}(t; m_{map}) \ne \mathrm{NA} \\
+    %\widehat{MAP_{4}}(t; m_{map}) & \widehat{MAP_{1}}(t; m_{map}) = \widehat{MAP_{2}}(t; m_{map}) = \widehat{MAP_{3}}(t; m_{map}) = \mathrm{NA} \wedge \widehat{MAP_{4}}(t; m_{map}) \ne \mathrm{NA} \\
+    %%% \widehat{MAP_{i^{*}}}(t; m_{map}) & \exists i^{*} \quad \text{such that} \\ & i^{*} := \min \left\{i \in \left\{1, 2, 3, 4\right\}: \widehat{MAP_{i}}(t; m_{map}) \ne \mathrm{NA} \right\} \\
+    \widehat{MAP_{i^{\ast}}}(t; m_{map}) &
+    \begin{aligned}
+      & \exists i^{\ast} \in \left\{1, 2, 3, 4\right\} \quad \text{such that} \\ & i^{\ast} := \min \left\{i \in \left\{1, 2, 3, 4\right\}: \widehat{MAP_{i}}(t; m_{map}) \ne \mathrm{NA} \right\} \\
+    \end{aligned} \\
     \mathrm{NA} & \text{otherwise.}
   \end{cases}
 \end{equation}
@@ -736,7 +745,7 @@ expected MAPs, so the cutpoints increase with age. Let
       44 & age \in [ 12,  24) \\
       45 & age \in [ 24,  60) \\
       49 & age \in [ 60, 144) \\
-      52 & age \in [144, 216],
+      52 & age \in [144, 216),
     \end{cases}
 \end{equation}
 and
@@ -749,7 +758,7 @@ and
       31 & age \in [ 12,  24) \\
       32 & age \in [ 24,  60) \\
       26 & age \in [ 60, 144) \\
-      38 & age \in [144, 216].
+      38 & age \in [144, 216).
     \end{cases}
 \end{equation}
 
@@ -763,7 +772,7 @@ and
 \end{equation}
 The domain for this component of the cardiovascular dysfunction score is
 \begin{equation}
-  MAP(t; m_{map}, age) \in \{0, 1, 2\} \quad \forall m_{map},t;
+  MAP(t; m_{map}, age) \in \{0, 1, 2\} \quad \forall m_{map},t.
 \end{equation}
 
 \paragraph{Lactate}\label{lactate}
@@ -777,7 +786,7 @@ used in the cardiovascular dysfunction score is:
     \mathbb{I}\left\{\mathcal{C}[Lactate](t;m_{lac}) \geq  5\right\} +
     \mathbb{I}\left\{\mathcal{C}[Lactate](t;m_{lac}) \geq 11\right\}.
 \end{equation}
-That is, one point for a lacate value of at least 5 mmol/L; two points for a
+That is, one point for a lactate value of at least 5 mmol/L; two points for a
 lactate value of at least 11 mmol/L. The domain for the contribution of lactate
 to the cardiovascular dysfunction score is:
 \begin{equation}
@@ -803,7 +812,7 @@ The domain for the cardiovascular dysfunction score is
 
 \subsection{Neurological}\label{sec:neuro}
 
-The neurological score is based on the Glasgow Comma score (GCS) and
+The neurological score is based on the Glasgow Coma score (GCS) and
 whether or not the patient has bilaterally fixed pupils. These capture
 level of consciousness and brainstem function, respectively.
 
@@ -823,10 +832,10 @@ level of consciousness and brainstem function, respectively.
 
   \bottomrule
   \endlastfoot
-  $GCS_{motor}$ & Glasgow Comma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ \\
-  $GCS_{eye}$ & Glasgow Comma Eye Score & Integer & unitless & $\{1, 2, 3, 4\}$ \\
-  $GCS_{verbal}$ & Glasgow Comma Verbal Score & Integer & unitless & $\{1, 2, 3, 4, 5\}$ \\
-  $GCS_{total}$ & Total Glasgow Comma Score & Integer & unitless & $\{3, 4, \ldots, 15\}$ \\
+  $GCS_{motor}$ & Glasgow Coma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ \\
+  $GCS_{eye}$ & Glasgow Coma Eye Score & Integer & unitless & $\{1, 2, 3, 4\}$ \\
+  $GCS_{verbal}$ & Glasgow Coma Verbal Score & Integer & unitless & $\{1, 2, 3, 4, 5\}$ \\
+  $GCS_{total}$ & Total Glasgow Coma Score & Integer & unitless & $\{3, 4, \ldots, 15\}$ \\
   $Pupils$ & Bilaterally fixed pupils & Integer & & $\{0, 1\}$ \\
 \end{longtable}
 
@@ -944,7 +953,7 @@ relevant threshold. The score sums how many thresholds are met, then
 caps at 2 points.
 
 \begin{equation}
-Coag(t; m_{coag}) := \min \left(2, \sum_{i=1}^{4} \mathbb{I}\left\{A_{i}(t; m_{coag})\right\} \right)
+  \mathcal{D}\left[Coag\right](t; m_{coag}) := \min \left(2, \sum_{i=1}^{4} \mathbb{I}\left\{A_{i}(t; m_{coag})\right\} \right)
 \end{equation}
 where
 \begin{equation}
@@ -952,7 +961,7 @@ where
 A_{1}(t; m_{coag}) &:= \mathcal{C}[Platelets](t;m_{coag}) < 100\\
 A_{2}(t; m_{coag}) &:= \mathcal{C}[INR](t;m_{coag}) > 1.3 \\
 A_{3}(t; m_{coag}) &:= \mathcal{C}[DDimer](t;m_{coag}) > 2\\
-A_{4}(t; m_{coag}) &:= \mathcal{C}[Fibrinogen](t;m_{coag}) < 100
+A_{4}(t; m_{coag}) &:= \mathcal{C}[Fibrinogen](t;m_{coag}) < 100.
 \end{aligned}
 \end{equation}
 
@@ -1047,7 +1056,7 @@ There are no constructed variables for the immunologic score.
 \subsubsection{Immunologic Organ Dysfunction Score}
 
 \begin{equation}
-  \mathcal{D}[Immu]\left(t; m_{immu}\right) := 
+  \mathcal{D}[Immu]\left(t; m_{immu}\right) :=
   \mathbb{I}\left(
     \mathcal{C}[ALC]\left(t; m_{immu}\right) < 1.00 \vee
     \mathcal{C}[ANC]\left(t; m_{immu}\right) < 0.50
@@ -1111,7 +1120,7 @@ either the bilirubin or ALT values.
 \end{equation}
 The domain for the hepatic score is
 \begin{equation}
-  \mathcal{D}[Immu]\left(t; m_{immu}\right) \in \left\{0, 1\right\}, \quad
+  \mathcal{D}[Hepatic]\left(t; m_{hepatic}\right) \in \left\{0, 1\right\}, \quad
   \forall m_{immu}, t.
 \end{equation}
 
@@ -1125,7 +1134,7 @@ The patient's age (at admission, in months) and their creatinine levels (in
 mg/dL) are required to assess renal dysfunction.  Age is also required for
 assessment of cardiovascular dysfunction as part of the Phoenix scoring and thus
 the only additional variable to collect to extend to Phoenix-8 from Phoenix for
-the renal dysfunction score is teh creatinine.
+the renal dysfunction score is the creatinine.
 \begin{longtable}{lllll}
   \caption{EHR Inputs for renal Organ Dysfunction Scoring}
   \label{tab:renal-ehr} \\
@@ -1165,12 +1174,12 @@ in the cardiovascular scoring, \eqref{eq:theta1} and \eqref{eq:theta2}.
   \label{eq:renal-score}
   \mathcal{D}[Renal]\left(t; m_{renal}\right) :=
   \begin{cases}
-    1 & age \in [  0,   1) \wedge Creatinine \geq 0.8 \\
-    1 & age \in [  1,  12) \wedge Creatinine \geq 0.3 \\
-    1 & age \in [ 12,  24) \wedge Creatinine \geq 0.4 \\
-    1 & age \in [ 24,  60) \wedge Creatinine \geq 0.6 \\
-    1 & age \in [ 60, 144) \wedge Creatinine \geq 0.7 \\
-    1 & age \in [144, 216] \wedge Creatinine \geq 1.0 \\
+    1 & age \in [  0,   1) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 0.8 \\
+    1 & age \in [  1,  12) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 0.3 \\
+    1 & age \in [ 12,  24) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 0.4 \\
+    1 & age \in [ 24,  60) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 0.6 \\
+    1 & age \in [ 60, 144) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 0.7 \\
+    1 & age \in [144, 216) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 1.0 \\
     0 & \text{otherwise.}
   \end{cases}
 \end{equation}
@@ -1199,7 +1208,7 @@ SI(t) := \mathbb{I}\left\{T_{InfectiousTestOrdered} \leq t\right\} \times \mathb
 
 Define the look-back windows as the vector
 \begin{equation}
-  \boldsymbol{m} := \left(m_{resp}, m_{vaso}, m_{map}, m_{lac}, m_{gcs}, m_{pupil}, m_{coag}\right).
+  \boldsymbol{m} := \left(m_{resp}, m_{vaso}, m_{map}, m_{lac}, m_{gcs}, m_{pupil}, m_{coag}, m_{endo}, m_{immu}, m_{hepatic}, m_{renal}\right).
 \end{equation}
 
 In this definition, the time interval of interest is the same for both
@@ -1212,48 +1221,66 @@ suspected infection.
 
 \begin{equation}
   \label{eq:pss}
-  PSS\left(T;\boldsymbol{m}, age \right) :=
-  \max_{t \in T} SI(t) \times \max_{t \in T} \sum_{x \in \Omega} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right).
+  PSS_{k}\left(T;\boldsymbol{m}, age \right) :=
+  \left[ \max_{t \in T} SI(t) \right] \left[ \max_{t \in T} \sum_{x \in \Omega_{k}} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right) \right], \quad k \in \left\{4, 8\right\},
 \end{equation}
 where
 \begin{equation}
-  \Omega := \{Resp, Card, Neuro, Coag\}.
+  \Omega_{4} := \{Resp, Card, Neuro, Coag\}
+\end{equation}
+and
+\begin{equation}
+  \Omega_{8} := \Omega_{4} \cup \{Endo, Immu, Hepatic, Renal\}.
 \end{equation}
 
-From the PSS definition sepsis is defined as having a PSS in exceeding $\sigma >
-0.$
+Sepsis is defined as organ-dysfunction in the presence of a suspected infection.  Specifically, a score of at least $\sigma > 0$ points:
 \begin{equation}
   \label{eq:sepsis}
   Sepsis\left(T;\boldsymbol{m},age\right) := \mathbb{I}
-  \left\{PSS\left(T;\boldsymbol{m}, age \right) \geq \sigma \right\}.
+  \left\{PSS_{4}\left(T;\boldsymbol{m}, age \right) \geq \sigma \right\}.
 \end{equation}
 Septic Shock is sepsis with at least $\kappa$ point(s) from cardiovascular dysfunction.
 \begin{equation}
   \label{eq:septicshock}
   SepticShock\left(T;\boldsymbol{m},age\right) :=
   \mathbb{I} \left\{
-  \max_{t \in T} SI(t) \times \max_{t \in T} \left( \sum_{x \in \Omega} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)
+    \max_{t \in T} SI(t) \times \max_{t \in T} \left( \sum_{x \in \Omega_{4}} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)
   \mathbb{I}\left\{\mathcal{D}[Card]\left(t;\boldsymbol{m};age\right) \geq
   \kappa
   \right\} \right)
   \geq \sigma \right\},
 \end{equation}
 where $\sigma \geq \kappa > 0.$
+Note that the specific shock definition does not simply consider any
+cardiovascular dysfunction in the window $T.$  It must occur with the organ
+dysfunction associated with reaching the sepsis score threshold.
 
 For the published Phoenix Sepsis Criteria
 \citep{sanchezpinto_2024_development,schlapbach_2024_international} we used:
 \begin{itemize}
   \item $T = [0, 1440)$
   \item Look backs:
-    \begin{itemize}
-      \item $m_{resp} = 360$  minutes ( 6 hours): all respiratory EHR variables
-      \item $m_{vaso} = 720$  minutes (12 hours): vasoactive medications
-      \item $m_{map} = 360$   minutes ( 6 hours): blood pressure / MAP
-      \item $m_{lac} = 360$   minutes ( 6 hours): lactate
-      \item $m_{gcs} = 720$   minutes (12 hours): GCS components or total
-      \item $m_{pupil} = 720$ minutes (12 hours): pupils
-      \item $m_{coag} = 1440$ minutes (24 hours): coagulation labs
-    \end{itemize}
+
+    \begin{tabular}{lrrl}
+    \rowcolor{gray!20}
+      $m_{resp}$  &  360 minutes &  (6 hours) & all respiratory EHR variables \\
+      $m_{vaso}$  &  720 minutes & (12 hours) & vasoactive medications \\
+    \rowcolor{gray!20}
+      $m_{map}$   &  360 minutes &  (6 hours) & blood pressure / MAP \\
+      $m_{lac}$   &  360 minutes &  (6 hours) & lactate \\
+    \rowcolor{gray!20}
+      $m_{gcs}$   &  720 minutes & (12 hours) & GCS components or total \\
+      $m_{pupil}$ &  720 minutes & (12 hours) & pupils \\
+    \rowcolor{gray!20}
+      $m_{coag}$  & 1440 minutes & (24 hours) & coagulation labs \\
+      $m_{endo}$  &  720 minutes & (12 hours) & glucose \\
+    \rowcolor{gray!20}
+      $m_{immu}$  & 1440 minutes & (24 hours) & ANC and ALC \\
+      $m_{hepatic}$  & 1440 minutes & (24 hours) & ALT and Total bilirubin \\
+    \rowcolor{gray!20}
+      $m_{renal}$  & 1440 minutes & (24 hours) & creatine
+    \end{tabular}
+
   \item $\sigma = 2$
   \item $\kappa = 1$
 \end{itemize}
@@ -1269,9 +1296,9 @@ maximum of that sum over $T$. This preserves temporal alignment across
 organ systems, so a high score reflects concurrent multi‑organ
 dysfunction at a single time point.
 
-\section{Alternative Definitions}\label{sec:alternatives}
+\section{Exploratory Aggregation Schema}\label{sec:eas}
 
-There are several alternatives to explore. Daily and block‑based ``worst
+There are several expiratory aggregation schema. Daily and block‑based ``worst
 value'' aggregation is common in pediatric organ dysfunction scoring
 (e.g., PELOD/qPELOD and pSOFA), which motivates the time‑decoupled
 alternatives below. See, for example, daily PELOD scoring using the most
@@ -1279,42 +1306,42 @@ abnormal value each day and pSOFA evaluations that use maximum/mean
 daily scores or the highest score in fixed time blocks.
 \citep{leteurtre2003pelod,bestati2010pelod,matics2017psofa,badke2025psofa}
 
-\subsection{Alternative 1 (Organ‑Level Maxima)}\label{sec:alt1}
+\subsection{Organ‑Level Maxima}\label{sec:eas1}
 
 The primary definition for PSS in \eqref{eq:pss} looks for the max of the sum of
 the organ dysfunction scores.  This alternative definition looks at the sum of
 the max of each of the organ system dysfunction scores.
 
 \begin{equation}
-  \label{eq:pss-alt1}
-  \substack{PSS \\ Alt1}\left(T;\boldsymbol{m}, age \right) :=
+  \label{eq:pss-eas1}
+  \substack{PSS \\ eas1}\left(T;\boldsymbol{m}, age \right) :=
   \max_{t \in T} SI(t) \times \sum_{x \in \Omega} \max_{t \in T} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right).
 \end{equation}
 
-$\substack{PSS \\ Alt1}$ decouples time across organ systems. It
+$\substack{PSS \\ eas1}$ decouples time across organ systems. It
 takes the maximum score for each organ system independently and then
 sums those maxima. This measures the overall burden of dysfunction over
 the interval, not necessarily dysfunction occurring at the same time. As
-a result, $\substack{PSS \\ Alt1}$ can be larger than the $PSS$, because peaks
+a result, $\substack{PSS \\ eas1}$ can be larger than the $PSS$, because peaks
 from different time points can accumulate.
 That is, by construction,
 \begin{equation}
-PSS\left(T; \boldsymbol{m}, age\right) \leq \substack{PSS \\ Alt1}\left(T; \boldsymbol{m}, age\right).
+PSS\left(T; \boldsymbol{m}, age\right) \leq \substack{PSS \\ eas1}\left(T; \boldsymbol{m}, age\right).
 \end{equation}
 This is an example of the triangle inequality.
 
-Using \eqref{eq:pss-alt1} to define sepsis is not structurally different from the
+Using \eqref{eq:pss-eas1} to define sepsis is not structurally different from the
 primary definition \eqref{eq:sepsis}.
 \begin{equation}
-  \label{eq:sepsis-alt1}
-  \substack{Sepsis \\ Alt1}\left(T;\boldsymbol{m},age\right) := \mathbb{I}
-  \left\{\substack{PSS \\ Alt1}\left(T;\boldsymbol{m}, age \right) \geq \sigma \right\}.
+  \label{eq:sepsis-eas1}
+  \substack{Sepsis \\ eas1}\left(T;\boldsymbol{m},age\right) := \mathbb{I}
+  \left\{\substack{PSS \\ eas1}\left(T;\boldsymbol{m}, age \right) \geq \sigma \right\}.
 \end{equation}
-Septic Shock does require a slight structural differences from the primary
+Septic Shock does require a slight structural difference from the primary
 definition \eqref{eq:septicshock}.
 \begin{equation}
-  \label{eq:septicshock-alt1}
-  \substack{SepticShock \\ Alt1}\left(T;\boldsymbol{m},age\right) :=
+  \label{eq:septicshock-eas1}
+  \substack{SepticShock \\ eas1}\left(T;\boldsymbol{m},age\right) :=
   \mathbb{I} \left\{ \left(
   \max_{t \in T} SI(t) \times
   \max_{t \in T}
@@ -1323,14 +1350,14 @@ definition \eqref{eq:septicshock}.
   \right) \geq \sigma \right\}.
 \end{equation}
 
-\subsection{Alternative 2 (Organ‑Level + Cardiovascular Component Decoupling)}
+\subsection{Organ‑Level + Cardiovascular Component Decoupling}
 
 Alternative 2 builds on Alternative 1 by decoupling all organ systems
 \textbf{and} the three cardiovascular components (vasoactive medications, MAP, lactate).
 
 Define
 \begin{equation}
-  \mathcal{D}\left[Card_{Alt2}\right]\left(T; m_{vaso}, m_{map}, m_{lac}, age\right) :=
+  \mathcal{D}\left[Card_{eas2}\right]\left(T; m_{vaso}, m_{map}, m_{lac}, age\right) :=
   \max_{t \in T} Vasos(t; m_{vaso}) +
   \max_{t \in T} MAP(t; m_{map}, age) +
   \max_{t \in T} Lactate(t; m_{lac}).
@@ -1339,18 +1366,18 @@ Define
 \noindent Then the Alternative 2 PSS is
 
 \begin{equation}
-  \label{eq:pss-alt2}
-  \substack{PSS \\ Alt2}\left(T; \boldsymbol{m}, age\right) :=
-  \max_{t \in T} SI(t) \times \sum_{x \in \Omega_{Alt2}} \max_{t \in T} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)
+  \label{eq:pss-eas2}
+  \substack{PSS \\ eas2}\left(T; \boldsymbol{m}, age\right) :=
+  \max_{t \in T} SI(t) \times \sum_{x \in \Omega_{eas2}} \max_{t \in T} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)
 \end{equation}
 where
 \begin{equation}
-  \Omega_{Alt2} := \{Resp, Card_{Alt2}, Neuro, Coag\}.
+  \Omega_{eas2} := \{Resp, Card_{eas2}, Neuro, Coag\}.
 \end{equation}
 
 TODO: Write out notation for sepsis and septic shock
 
-\subsection{Alternative 3 (Full Component Decoupling)}
+\subsection{Full Component Decoupling}
 
 Alternative 3 decouples \emph{all} components within each organ system. That is,
 each term that contributes to an organ score is maximized or minimized
@@ -1359,7 +1386,7 @@ capping rules as the original score.
 
 \noindent Respiratory:
 \begin{equation}
-Resp_{Alt3}(T; m_{resp}) :=
+Resp_{eas3}(T; m_{resp}) :=
 \max_{t \in T} \left( IMV(t; m_{resp}) \right) \times \left(\mathbb{I}\{B_3(t; m_{resp})\} + \mathbb{I}\{B_2(t; m_{resp})\}\bigr)\right)
   + \max_{t \in T} \left(ORS(t; m_{resp})\right) \times \mathbb{I}\{B_1(t; m_{resp})\},
 \end{equation} where \begin{equation}
@@ -1372,12 +1399,12 @@ Resp_{Alt3}(T; m_{resp}) :=
 
 \noindent Cardiovascular is the same as Alt 2:
 \begin{equation}
-Card_{Alt3}(T; m_{vaso}, m_{map}, m_{lac}, age) := Card_{Alt2}(T; m_{vaso}, m_{map}, m_{lac}, age).
+Card_{eas3}(T; m_{vaso}, m_{map}, m_{lac}, age) := Card_{eas2}(T; m_{vaso}, m_{map}, m_{lac}, age).
 \end{equation}
 
 \noindent Neurological:
 \begin{equation}
-  Neuro_{Alt3}(T; m_{gcs}, m_{pupil}) := \min\left(2, 
+  Neuro_{eas3}(T; m_{gcs}, m_{pupil}) := \min\left(2,
   \mathbb{I}\left\{ \min_{t \in T} GCS(t; m_{gcs}) \leq 10\right\} +
   2 \times \mathbb{I}\left\{\max_{t \in T}  Pupils(t; m_{pupil}) = 1\right\}
   \right).
@@ -1385,7 +1412,7 @@ Card_{Alt3}(T; m_{vaso}, m_{map}, m_{lac}, age) := Card_{Alt2}(T; m_{vaso}, m_{m
 
 \noindent Coagulation:
 \begin{equation}
-Coag_{Alt3}(T; m_{coag}) :=
+Coag_{eas3}(T; m_{coag}) :=
 \min\left(2, \sum_{i=1}^{4} \mathbb{I}\{A_i(t; m_{coag})\}\right)
 \end{equation}
 where
@@ -1400,14 +1427,14 @@ where
 
 \noindent Then the Alternative 3 PSS is
 \begin{equation}
-  \label{eq:pss-alt3}
-  \substack{PSS \\ Alt3}\left(T; \boldsymbol{m}, age\right) :=
-  \max_{t \in T} SI(t) \times \sum_{x \in \Omega_{Alt3}} \max_{t \in T}
+  \label{eq:pss-eas3}
+  \substack{PSS \\ eas3}\left(T; \boldsymbol{m}, age\right) :=
+  \max_{t \in T} SI(t) \times \sum_{x \in \Omega_{eas3}} \max_{t \in T}
   \mathcal{D}[x]\left(t;\boldsymbol{m};age\right),
 \end{equation}
 where
 \begin{equation}
-  \Omega_{Alt3} := \{Resp_{Alt3}, Card_{Alt3}, Neuro_{Alt3}, Coag_{Alt3}\}.
+  \Omega_{eas3} := \{Resp_{eas3}, Card_{eas3}, Neuro_{eas3}, Coag_{eas3}\}.
 \end{equation}
 
 TODO: write out the notation for sepsis and spetic shock
@@ -1416,7 +1443,7 @@ TODO: write out the notation for sepsis and spetic shock
 % Define a persistence requirement over a duration $\delta>0$
 
 % \subsection{Alternative XX (Component‑Level Persistence)}
-% 
+%
 % Alternative XX extends the persistence idea to each component within each
 % organ system. That is, each component must meet its threshold
 % continuously for at least $\delta$ before contributing to the organ
