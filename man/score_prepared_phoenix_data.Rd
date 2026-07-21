@@ -35,12 +35,23 @@ See Details.}
 \item{verbose}{when \code{TRUE}, display progress messages}
 }
 \description{
-Score Prepared Phoenix Data
+Apply the published and experimental aggregation schema and scoring to
+prepared Phoneix Data.
 }
 \details{
+TODO: Make a nice table and and pros
+
 published  Published, time-aligned Phoenix aggregation
 eas1       Exploratory aggregation scheme 1: organ-level maxima
 eas2       Exploratory aggregation scheme 2: organ-level maxima with
            cardiovascular component decoupling
 eas3       Total decoupling
+}
+\references{
+See reference details in \code{\link{phoenix-package}} or by calling
+\code{citation('phoenix')}.
+}
+\seealso{
+\code{\link{prepare_inputs_range}},
+\code{\link{prepare_inputs_discrete}}
 }

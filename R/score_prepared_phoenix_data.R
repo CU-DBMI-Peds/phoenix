@@ -1,6 +1,9 @@
 #' Score Prepared Phoenix Data
 #'
-#' 
+#' Apply the published and experimental aggregation schema and scoring to
+#' prepared Phoneix Data.
+#'
+#' TODO: Make a nice table and and pros
 #'
 #' published  Published, time-aligned Phoenix aggregation
 #' eas1       Exploratory aggregation scheme 1: organ-level maxima
@@ -24,6 +27,12 @@
 #'   "jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
 #'   See Details.
 #' @param verbose when \code{TRUE}, display progress messages
+#'
+#' @seealso \code{\link{prepare_inputs_range}},
+#' \code{\link{prepare_inputs_discrete}}
+#'
+#' @references See reference details in \code{\link{phoenix-package}} or by calling
+#' \code{citation('phoenix')}.
 #'
 #' @export
 score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "eas1", "eas2"), verbose = getOption("phoenix_verbose", interactive())) {
