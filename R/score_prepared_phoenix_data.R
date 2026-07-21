@@ -1,5 +1,17 @@
 #' Score Prepared Phoenix Data
 #'
+#' 
+#'
+#' published  Published, time-aligned Phoenix aggregation
+#' eas1       Exploratory aggregation scheme 1: organ-level maxima
+#' eas2       Exploratory aggregation scheme 2: organ-level maxima with
+#'            cardiovascular component decoupling
+#' eas3       Total decoupling
+#'
+#'
+#'
+#'
+#'
 #' @param x an object returned from \code{\link{prepare_phoenix_data}}
 #' @param T0 The start of observation window for assessing if the patient has
 #'   sepsis or septic shock.
@@ -8,16 +20,16 @@
 #' @param sigma numeric (integer) value, sepsis = sepsis_score >= sigma.
 #' @param kappa numeric (integer) value, minimum cardiovascular score required
 #' to flag septic shock.
-#' @param version The scoring version to apply to the data.  Default is
+#' @param aggregation The aggregation approach to apply to the data.  Default is
 #'   "jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
 #'   See Details.
 #' @param verbose when \code{TRUE}, display progress messages
 #'
 #' @export
-score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, version = c("jama2024", "alt1", "alt2"), verbose = getOption("phoenix_verbose", interactive())) {
+score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "eas1", "eas2"), verbose = getOption("phoenix_verbose", interactive())) {
   stopifnot(inherits(x, "prepared_phoenix_data"))
   stopifnot(length(sigma) == 1, length(kappa) == 1, is.numeric(sigma), is.numeric(kappa))
-  version <- match.arg(version, several.ok = FALSE)
+  aggregation <- match.arg(aggregation, several.ok = FALSE)
 
   if (verbose) message("Scoring prepared_phoenix_data...")
   if (verbose) message("  identifying suspsected infections...")
@@ -64,15 +76,11 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   # apply the scoring method to the oss and si
   pss <-
     switch(
-      version,
+      aggregation,
       jama2024 = jama2024(x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      alt1     = alt1(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      alt2     = alt2(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      alt3     = alt3(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      alt4     = alt4(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      alt5     = alt5(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      alt6     = alt6(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      alt7     = alt7(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
+      eas1     = eas1(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+      eas2     = eas2(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+      eas3     = eas3(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
     )
 
   if (verbose) message("  building outout...")
@@ -82,7 +90,7 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
 
   attr(rtn, "T0") <- T0
   attr(rtn, "T1") <- T1
-  attr(rtn, "version") <- version
+  attr(rtn, "aggregation") <- aggregation
   class(rtn) <- c("scored_prepared_phoenix_data", class(rtn))
 
   if (verbose) message("Scoring complete!")
@@ -228,14 +236,14 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
 }
 
-alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+eas1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Alternative Scoring Method 1:
   #   Organ-level Maxima
   #
   # Overly simplified, the score is
   #   max(resp) + max(card) + max(neuro) + max(coag)
   #
-  # Explicit details are in Equation \ref{eq:pss-alt1} in
+  # Explicit details are in Equation \ref{eq:pss-eas1} in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
@@ -322,7 +330,7 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt1_sepsis_score",
+      j = "eas1_sepsis_score",
       value = oss[["respscore"]] +
               oss[["cardscore"]] +
               oss[["neuroscore"]] +
@@ -332,14 +340,14 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt1_septic_shock_score",
-      value = as.integer(oss[["cardscore"]] >= kappa) * oss[["alt1_sepsis_score"]]
+      j = "eas1_septic_shock_score",
+      value = as.integer(oss[["cardscore"]] >= kappa) * oss[["eas1_sepsis_score"]]
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt1_8_sepsis_score",
+      j = "eas1_8_sepsis_score",
       value = oss[["respscore"]]  + oss[["cardscore"]] + oss[["neuroscore"]] + oss[["coagscore"]] +
               oss[["immunscore"]] + oss[["endoscore"]] + oss[["renalscore"]] + oss[["hepaticscore"]]
     )
@@ -347,40 +355,40 @@ alt1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt1_sepsis",
-      value = as.integer(oss[["alt1_sepsis_score"]] >= sigma)
+      j = "eas1_sepsis",
+      value = as.integer(oss[["eas1_sepsis_score"]] >= sigma)
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt1_septic_shock",
-      value = as.integer(oss[["alt1_septic_shock_score"]] >= sigma)
+      j = "eas1_septic_shock",
+      value = as.integer(oss[["eas1_septic_shock_score"]] >= sigma)
     )
 
   # omit the septic_shock_score
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt1_septic_shock_score",
+      j = "eas1_septic_shock_score",
       value = NULL
     )
 
   phxdft_select(
     oss,
-    c(id.vars, "alt1_sepsis_score", "alt1_sepsis", "alt1_septic_shock", "alt1_8_sepsis_score")
+    c(id.vars, "eas1_sepsis_score", "eas1_sepsis", "eas1_septic_shock", "eas1_8_sepsis_score")
   )
 
 }
 
-alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+eas2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Alternative Scoring Method 2:
   #   Organ-level with Cardiovascular Component Decoupling.
   #
   # Overly simplified, the score is
   #   max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
   #
-  # Explicit details are in Equation \ref{eq:pss-alt2} in
+  # Explicit details are in Equation \ref{eq:pss-eas2} in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
@@ -460,7 +468,7 @@ alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt2_sepsis_score",
+      j = "eas2_sepsis_score",
       value = oss[["respscore"]] +
               oss[["vasoscore"]] +
               oss[["mapscore"]] +
@@ -472,14 +480,14 @@ alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt2_septic_shock_score",
-      value = as.integer((oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]]) >= kappa) * oss[["alt2_sepsis_score"]]
+      j = "eas2_septic_shock_score",
+      value = as.integer((oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]]) >= kappa) * oss[["eas2_sepsis_score"]]
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt2_8_sepsis_score",
+      j = "eas2_8_sepsis_score",
       value = oss[["respscore"]]  +
         oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]] +
         oss[["neuroscore"]] + oss[["coagscore"]] +
@@ -489,33 +497,33 @@ alt2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt2_sepsis",
-      value = as.integer(oss[["alt2_sepsis_score"]] >= sigma)
+      j = "eas2_sepsis",
+      value = as.integer(oss[["eas2_sepsis_score"]] >= sigma)
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt2_septic_shock",
-      value = as.integer(oss[["alt2_septic_shock_score"]] >= sigma)
+      j = "eas2_septic_shock",
+      value = as.integer(oss[["eas2_septic_shock_score"]] >= sigma)
     )
 
   # omit the septic_shock_score
   oss <-
     phxdft_set(
       x = oss,
-      j = "alt2_septic_shock_score",
+      j = "eas2_septic_shock_score",
       value = NULL
     )
 
   phxdft_select(
     oss,
-    c(id.vars, "alt2_sepsis_score", "alt2_sepsis", "alt2_septic_shock", "alt2_8_sepsis_score")
+    c(id.vars, "eas2_sepsis_score", "eas2_sepsis", "eas2_septic_shock", "eas2_8_sepsis_score")
   )
 
 }
 
-alt3 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+eas3 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Alternative Scoring Method 3:
   #   Full Component Decoupling
   #
@@ -525,20 +533,7 @@ alt3 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   #  min( {2, max(GCS) + 2 * max(pupils) }) + # neuro
   #  min(2, sum(platetes + INR + DDimer + Fibrinogen) )
   #
-  # Explicit details are in Equation \ref{eq:pss-alt3} in
+  # Explicit details are in Equation \ref{eq:pss-eas3} in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
-  stop("version alt3 not yet implimented")
+  stop("aggregation eas3 not yet implimented")
 }
-
-#alt4 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-#  stop("version alt4 not yet implimented")
-#}
-#alt5 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-#  stop("version alt5 not yet implimented")
-#}
-#alt6 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-#  stop("version alt6 not yet implimented")
-#}
-#alt7 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-#  stop("version alt7 not yet implimented")
-#}

@@ -10,7 +10,7 @@ score_prepared_phoenix_data(
   T1 = 1440,
   sigma = 2,
   kappa = 1,
-  version = c("jama2024", "alt1", "alt2"),
+  aggregation = c("jama2024", "eas1", "eas2"),
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -28,7 +28,7 @@ sepsis or septic shock.}
 \item{kappa}{numeric (integer) value, minimum cardiovascular score required
 to flag septic shock.}
 
-\item{version}{The scoring version to apply to the data.  Default is
+\item{aggregation}{The aggregation approach to apply to the data.  Default is
 "jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
 See Details.}
 
@@ -36,4 +36,11 @@ See Details.}
 }
 \description{
 Score Prepared Phoenix Data
+}
+\details{
+published  Published, time-aligned Phoenix aggregation
+eas1       Exploratory aggregation scheme 1: organ-level maxima
+eas2       Exploratory aggregation scheme 2: organ-level maxima with
+           cardiovascular component decoupling
+eas3       Total decoupling
 }

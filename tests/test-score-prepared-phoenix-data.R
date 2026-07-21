@@ -147,21 +147,21 @@ assert_end_to_end <- function(backend) {
     is.na(scored[["phoenix8_sepsis_score"]][2])
   )
 
-  alt1 <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, version = "alt1", verbose = FALSE)
-  alt1 <- sort_by_encounter(alt1)
+  eas1 <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "eas1", verbose = FALSE)
+  eas1 <- sort_by_encounter(eas1)
 
-  alt2 <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, version = "alt2", verbose = FALSE)
-  alt2 <- sort_by_encounter(alt2)
+  eas2 <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "eas2", verbose = FALSE)
+  eas2 <- sort_by_encounter(eas2)
 
   stopifnot(
-    isTRUE(all.equal(alt1[["alt1_sepsis_score"]][1], 5)),
-    isTRUE(all.equal(alt1[["alt1_sepsis"]][1], 1)),
-    isTRUE(all.equal(alt1[["alt1_septic_shock"]][1], 1)),
-    isTRUE(all.equal(alt1[["alt1_8_sepsis_score"]][1], 9)),
-    isTRUE(all.equal(alt2[["alt2_sepsis_score"]][1], 5)),
-    isTRUE(all.equal(alt2[["alt2_sepsis"]][1], 1)),
-    isTRUE(all.equal(alt2[["alt2_septic_shock"]][1], 1)),
-    isTRUE(all.equal(alt2[["alt2_8_sepsis_score"]][1], 9))
+    isTRUE(all.equal(eas1[["eas1_sepsis_score"]][1], 5)),
+    isTRUE(all.equal(eas1[["eas1_sepsis"]][1], 1)),
+    isTRUE(all.equal(eas1[["eas1_septic_shock"]][1], 1)),
+    isTRUE(all.equal(eas1[["eas1_8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(eas2[["eas2_sepsis_score"]][1], 5)),
+    isTRUE(all.equal(eas2[["eas2_sepsis"]][1], 1)),
+    isTRUE(all.equal(eas2[["eas2_septic_shock"]][1], 1)),
+    isTRUE(all.equal(eas2[["eas2_8_sepsis_score"]][1], 9))
   )
 }
 
