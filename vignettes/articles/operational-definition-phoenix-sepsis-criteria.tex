@@ -720,7 +720,7 @@ medications as the count of the number of vasoactive medications received,
 regardless of dose, with a cap of 2 points.
 
 \begin{equation}
-  \mathcal{D}\left[Vasos\right](t; m_{vaso}) \coloneqq \min\left\{2, \sum_{v \in \boldsymbol{V}}
+  \DS{Vasos}[\m{vaso}] \coloneqq \min\left\{2, \sum_{v \in \boldsymbol{V}}
   \mathbb{I}\left\{\mathcal{C}[v](t;m_{vaso}) = 1\right\} \right\}.
 \end{equation}
 
@@ -728,7 +728,7 @@ The domain for the contribution to the cardiovascular score from vasoactive
 medications is:
 \begin{equation}
   \label{eq:vasos}
-  \mathcal{D}\left[Vasos\right](t; m_{vaso}) \in \{0,1,2\} \quad \forall m_{vaso},t
+  \DS{Vasos}[\m{vaso}] \in \{0,1,2\} \quad \forall m_{vaso},t
 \end{equation}
 
 This was based on the use of the vasoactive inotrope score
@@ -812,13 +812,13 @@ and
 
 \begin{equation}
   \label{eq:map}
-  \mathcal{D}\left[MAP\right](t; m_{bp}, age) \coloneqq
+  \DS{MAP}[\m{bp}, \mathrm{age}] \coloneqq
     \mathbb{I}\left\{\widehat{\widehat{MAP}}(t; m_{bp}) < \theta_{2}(age)\right\} +
     \mathbb{I}\left\{\widehat{\widehat{MAP}}(t; m_{bp}) < \theta_{1}(age)\right\}.
 \end{equation}
 The domain for this component of the cardiovascular dysfunction score is
 \begin{equation}
-  \mathcal{D}\left[MAP\right](t; m_{bp}, age) \in \{0, 1, 2\} \quad \forall m_{bp},t.
+  \DS{MAP}[\m{bp}, \mathrm{age}] \in \{0, 1, 2\} \quad \forall m_{bp},t.
 \end{equation}
 
 \paragraph{Lactate}\label{sec:lactate}
@@ -828,7 +828,7 @@ Higher lactate thresholds contribute more points. The definition for lactate
 used in the cardiovascular dysfunction score is:
 \begin{equation}
   \label{eq:lactate}
-  \mathcal{D}\left[Lactate\right](t; m_{lac}) \coloneqq
+  \DS{Lactate}[\m{lac}] \coloneqq
     \mathbb{I}\left\{\mathcal{C}[Lactate](t;m_{lac}) \geq  5\right\} +
     \mathbb{I}\left\{\mathcal{C}[Lactate](t;m_{lac}) \geq 11\right\}.
 \end{equation}
@@ -836,7 +836,7 @@ That is, one point for a lactate value of at least 5 mmol/L; two points for a
 lactate value of at least 11 mmol/L. The domain for the contribution of lactate
 to the cardiovascular dysfunction score is:
 \begin{equation}
-  \mathcal{D}\left[Lactate\right](t; m_{lac}) \in \{0, 1, 2\} \quad \forall m_{lac},t.
+  \DS{Lactate}[\m{lac}] \in \{0, 1, 2\} \quad \forall m_{lac},t.
 \end{equation}
 
 \subsubsection{Cardiovascular Dysfunction Score}\label{sec:card-ods}
@@ -845,14 +845,14 @@ The cardiovascular dysfunction is based on \eqref{eq:vasos}, \eqref{eq:map}, and
 
 \begin{equation}
   \label{eq:card}
-  \mathcal{D}[Card](t; m_{vaso}, m_{bp}, m_{lac}, age) \coloneqq
-    \mathcal{D}\left[Vasos\right]\left(t; m_{vaso}\right) +
-    \mathcal{D}\left[MAP\right]\left(t; m_{bp}, age\right) +
-    \mathcal{D}\left[Lactate\right]\left(t; m_{lac}\right).
+  \DS{Card}[\m{vaso}, \m{bp}, \m{lac}, \mathrm{age}] \coloneqq
+    \DS{Vasos}[\m{vaso}] +
+    \DS{MAP}[\m{bp}, \mathrm{age}] +
+    \DS{Lactate}[\m{lac}].
 \end{equation}
 The domain for the cardiovascular dysfunction score is
 \begin{equation}
-  \mathcal{D}[Card](t; m_{vaso}, m_{bp}, m_{lac}, age)
+  \DS{Card}[\m{vaso}, \m{bp}, \m{lac}, \mathrm{age}]
   \in \{0, 1, 2, 3, 4, 5, 6\} \quad \forall \boldsymbol{m},t;
 \end{equation}
 
@@ -929,7 +929,7 @@ total, even if those component timestamps are not identical.
 The score contribution from GCS is
 \begin{equation}
   \label{eq:gcscontribution}
-  \mathcal{D}\left[GCS\right]\left(t;m_{gcs}\right) \coloneqq \mathbb{I}\left\{ GCS\left(t; m_{gcs}\right) \leq 10\right\}
+  \DS{GCS}[\m{gcs}] \coloneqq \mathbb{I}\left\{ GCS\left(t; m_{gcs}\right) \leq 10\right\}
 \end{equation}
 
 \paragraph{Pupils}
@@ -939,7 +939,7 @@ The bilaterally fixed pupils are defined as.
 
 \begin{equation}
   \label{eq:pupils}
-  \mathcal{D}\left[Pupils\right](t; m_{pupil}) \coloneqq 2 \times \mathbb{I}\left\{\mathcal{C}[Pupils](t;m_{pupil}) = 1\right\}.
+  \DS{Pupils}[\m{pupil}] \coloneqq 2 \times \mathbb{I}\left\{\mathcal{C}[Pupils](t;m_{pupil}) = 1\right\}.
 \end{equation}
 
 \subsubsection{Neurological Organ Dysfunction Score}\label{sec:neuro-ods}
@@ -948,9 +948,9 @@ The neurological component on the score is The score is 0, 1, or 2, where
 a fixed-pupil finding yields 2 points.
 
 \begin{equation}
-  \mathcal{D}\left[Neuro\right]\left(t; m_{gcs}, m_{pupil}\right) \coloneqq
-  \max \left\{ \mathcal{D}\left[GCS\right]\left(t; m_{gcs}\right),
-  \mathcal{D}\left[Pupils\right]\left(t; m_{pupil}\right) \right\}.
+  \DS{Neuro}[\m{gcs}, \m{pupil}] \coloneqq
+  \max \left\{ \DS{GCS}[\m{gcs}],
+  \DS{Pupils}[\m{pupil}] \right\}.
 \end{equation}
 
 \subsection{Coagulation}\label{sec:coag}
@@ -1013,15 +1013,15 @@ caps at 2 points.
 Define:
 \begin{equation}
 \begin{aligned}
-  \mathcal{D}\left[Platelets\right](t; m_{coag})  &\coloneqq \mathbb{I}\left\{\mathcal{C}[Platelets](t;m_{coag}) < 100\right\} \\
-  \mathcal{D}\left[INR\right](t; m_{coag})        &\coloneqq \mathbb{I}\left\{\mathcal{C}[INR](t;m_{coag}) > 1.3\right\} \\
-  \mathcal{D}\left[DDimer\right](t; m_{coag})     &\coloneqq \mathbb{I}\left\{\mathcal{C}[DDimer](t;m_{coag}) > 2\right\} \\
-  \mathcal{D}\left[Fibrinogen\right](t; m_{coag}) &\coloneqq \mathbb{I}\left\{\mathcal{C}[Fibrinogen](t;m_{coag}) < 100\right\},
+  \DS{Platelets}[\m{coag}]  &\coloneqq \mathbb{I}\left\{\mathcal{C}[Platelets](t;m_{coag}) < 100\right\} \\
+  \DS{INR}[\m{coag}]        &\coloneqq \mathbb{I}\left\{\mathcal{C}[INR](t;m_{coag}) > 1.3\right\} \\
+  \DS{DDimer}[\m{coag}]     &\coloneqq \mathbb{I}\left\{\mathcal{C}[DDimer](t;m_{coag}) > 2\right\} \\
+  \DS{Fibrinogen}[\m{coag}] &\coloneqq \mathbb{I}\left\{\mathcal{C}[Fibrinogen](t;m_{coag}) < 100\right\},
 \end{aligned}
 \end{equation}
 and then
 \begin{equation}
-  \mathcal{D}\left[Coag\right](t; m_{coag}) \coloneqq \min \left\{2, \sum_{x \in \boldsymbol{C}} \mathcal{D}\left[x\right]\left(t; m_{coag}\right) \right\},
+  \DS{Coag}[\m{coag}] \coloneqq \min \left\{2, \sum_{x \in \boldsymbol{C}} \DS{x}[\m{coag}] \right\},
 \end{equation}
 where
 \begin{equation}
@@ -1067,12 +1067,12 @@ There are no constructed variables to define.
 \subsubsection{Endocrine Organ Dysfunction Score}
 
 \begin{equation}
-  \mathcal{D}[Endo]\left(t; m_{endo}\right) \coloneqq
+  \DS{Endo}[\m{endo}] \coloneqq
   \mathbb{I}\left\{\mathcal{C}[Glucose]\left(t; m_{endo}\right) < 50 \vee \mathcal{C}[Glucose]\left(t; m_{endo}\right) > 150 \right\}
 \end{equation}
 The domain for the endocrine score is
 \begin{equation}
-  \mathcal{D}[Endo]\left(t; m_{endo}\right) \in \left\{0, 1\right\}, \quad
+  \DS{Endo}[\m{endo}] \in \left\{0, 1\right\}, \quad
   \forall m_{endo}, t.
 \end{equation}
 
@@ -1120,25 +1120,25 @@ There are no constructed variables for the immunologic score.
 \subsubsection{Immunologic Organ Dysfunction Score}
 Define
 \begin{equation}
-  \mathcal{D}\left[ALC\right]\left(t; m_{immu}\right) \coloneqq
+  \DS{ALC}[\m{immu}] \coloneqq
   \mathbb{I} \left\{ \mathcal{C}\left[ALC\right]\left(t; m_{immu}\right) < 1.00 \right\},
 \end{equation}
 and
 \begin{equation}
-  \mathcal{D}\left[ANC\right]\left(t; m_{immu}\right) \coloneqq
+  \DS{ANC}[\m{immu}] \coloneqq
   \mathbb{I} \left\{ \mathcal{C}\left[ANC\right]\left(t; m_{immu}\right) < 0.50 \right\}.
 \end{equation}
 Then
 \begin{equation}
-  \mathcal{D}[Immu]\left(t; m_{immu}\right) \coloneqq
+  \DS{Immu}[\m{immu}] \coloneqq
   \max\left\{
-  \mathcal{D}\left[ALC\right]\left(t; m_{immu}\right),
-  \mathcal{D}\left[ANC\right]\left(t; m_{immu}\right)
+  \DS{ALC}[\m{immu}],
+  \DS{ANC}[\m{immu}]
     \right\}.
 \end{equation}
 The domain for the immunologic score is
 \begin{equation}
-  \mathcal{D}[Immu]\left(t; m_{immu}\right) \in \left\{0, 1\right\}, \quad
+  \DS{Immu}[\m{immu}] \in \left\{0, 1\right\}, \quad
   \forall m_{immu}, t.
 \end{equation}
 
@@ -1187,26 +1187,26 @@ either the bilirubin or ALT values.
 
 Define:
 \begin{equation}
-  \mathcal{D}\left[Bilirubin\right]\left(t; m_{hepatic}\right) \coloneqq
+  \DS{Bilirubin}[\m{hepatic}] \coloneqq
   \mathbb{I} \left\{\mathcal{C}[Bilirubin]\left(t;m_{hepatic}\right) \geq 4 \right\},
 \end{equation}
 and
 \begin{equation}
-  \mathcal{D}\left[ALT\right]\left(t; m_{hepatic}\right) \coloneqq
+  \DS{ALT}[\m{hepatic}] \coloneqq
   \mathbb{I}\left\{
     \mathcal{C}[ALT]\left(t;m_{hepatic}\right) > 102 \right\}.
 \end{equation}
 Then
 \begin{equation}
-  \mathcal{D}[Hepatic]\left(t; m_{hepatic}\right) \coloneqq
+  \DS{Hepatic}[\m{hepatic}] \coloneqq
   \max \left\{
-    \mathcal{D}\left[Bilirubin\right]\left(t;m_{hepatic}\right),
-    \mathcal{D}\left[ALT\right]\left(t;m_{hepatic}\right)
+    \DS{Bilirubin}[\m{hepatic}],
+    \DS{ALT}[\m{hepatic}]
     \right\}.
 \end{equation}
 The domain for the hepatic score is
 \begin{equation}
-  \mathcal{D}[Hepatic]\left(t; m_{hepatic}\right) \in \left\{0, 1\right\}, \quad
+  \DS{Hepatic}[\m{hepatic}] \in \left\{0, 1\right\}, \quad
   \forall m_{hepatic}, t.
 \end{equation}
 
@@ -1256,7 +1256,7 @@ in the cardiovascular scoring, \eqref{eq:theta1} and \eqref{eq:theta2}.
 
 \begin{equation}
   \label{eq:renal-score}
-  \mathcal{D}[Renal]\left(t; m_{renal}, age\right) \coloneqq
+  \DS{Renal}[\m{renal}, \mathrm{age}] \coloneqq
   \begin{cases}
     1 & age \in [  0,   1) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 0.8 \\
     1 & age \in [  1,  12) \wedge \mathcal{C}[Creatinine]\left(t;m_{renal}\right) \geq 0.3 \\
@@ -1305,7 +1305,7 @@ presence of} suspected infection.
 \begin{equation}
   \label{eq:pss}
   \PSS{d}{} \coloneqq
-  \left[ \max_{t \in T} \SI \right] \left[ \max_{t \in T} \sum_{x \in \Omega_{d}} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right) \right], \quad d \in \left\{4, 8\right\},
+  \left[ \max_{t \in T} \SI \right] \left[ \max_{t \in T} \sum_{x \in \Omega_{d}} \DS{x} \right], \quad d \in \left\{4, 8\right\},
 \end{equation}
 where
 \begin{equation}
@@ -1328,8 +1328,8 @@ Septic Shock is sepsis with at least $\kappa$ point(s) from cardiovascular dysfu
   \label{eq:septicshock}
   \SepticShock{} \coloneqq
   \mathbb{I} \left\{
-    \max_{t \in T} \SI \times \max_{t \in T} \left( \sum_{x \in \Omega_{4}} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)
-  \mathbb{I}\left\{\mathcal{D}[Card]\left(t;\boldsymbol{m};age\right) \geq
+    \max_{t \in T} \SI \times \max_{t \in T} \left( \sum_{x \in \Omega_{4}} \DS{x}
+  \mathbb{I}\left\{\DS{Card} \geq
   \kappa
   \right\} \right)
   \geq \sigma \right\},
@@ -1429,7 +1429,7 @@ the max of each of the organ system dysfunction scores.
   \label{eq:pss-olm}
   \mathrm{PSS}_{d}^{\mathrm{OLM}}\left(T;\boldsymbol{m}, age \right) \coloneqq
   \left[\max_{t \in T} \SI \right]
-  \left[\sum_{x \in \Omega_{d}} \max_{t \in T} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)\right],
+  \left[\sum_{x \in \Omega_{d}} \max_{t \in T} \DS{x}\right],
   \quad d \in \left\{4, 8\right\}.
 \end{equation}
 
@@ -1463,7 +1463,7 @@ definition \eqref{eq:septicshock}.
   \substack{Sepsis \\ OLM}\left(T;\boldsymbol{m},age\right)
   \right]
   \left[
-    \mathbb{I} \left\{ \max_{t \in T} \mathcal{D}\left[Card\right]\left(t;\boldsymbol{m},age\right) \geq \kappa\right\}
+    \mathbb{I} \left\{ \max_{t \in T} \DS{Card} \geq \kappa\right\}
   \right]
 \end{equation}
 for $\sigma \geq \kappa > 0.$
@@ -1479,8 +1479,8 @@ and lactate.
   \left(T; \boldsymbol{m}, age\right) \coloneqq \\
   \left[\max_{t \in T} \SI \right]
   \Bigg[
-    \sum_{x \in \Omega_{d}\setminus \left\{Card\right\}} \max_{t \in T} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right) +
-    \sum_{x \in \boldsymbol{C}_{card}} \max_{t \in T} \mathcal{D}[x]\left(t;\boldsymbol{m};age\right)
+    \sum_{x \in \Omega_{d}\setminus \left\{Card\right\}} \max_{t \in T} \DS{x} +
+    \sum_{x \in \boldsymbol{C}_{card}} \max_{t \in T} \DS{x}
   \Bigg],
   \quad d \in \left\{4, 8\right\},
 \end{multline}
@@ -1502,7 +1502,7 @@ and
   \substack{Sepsis \\ CCD}\left(T;\boldsymbol{m},age\right)
   \right]
   \left[
-    \mathbb{I} \left\{ \sum_{x \in \boldsymbol{C}_{card}}\max_{t \in T} \mathcal{D}\left[x\right]\left(t;\boldsymbol{m},age\right) \geq \kappa\right\}
+    \mathbb{I} \left\{ \sum_{x \in \boldsymbol{C}_{card}}\max_{t \in T} \DS{x} \geq \kappa\right\}
   \right]
 \end{equation}
 for $\sigma \geq \kappa > 0.$
@@ -1536,9 +1536,9 @@ The overall scores are then defined as:
       \left[\max_{t \in T} \SI \right]
       \Bigg[
         \substack{Resp \\ FCD}\left(T; m_{resp}\right) +
-        \min \left\{ 2, \sum_{x \in \boldsymbol{C}_{coag}} \max_{t \in T} \mathcal{D}\left[x\right]\left(t;\boldsymbol{m}\right)\right\}
+        \min \left\{ 2, \sum_{x \in \boldsymbol{C}_{coag}} \max_{t \in T} \DS{x}[\boldsymbol{m}]\right\}
     } \\
-    \quad + \sum_{x \in \omega_{d}} \max_{t \in T} \mathcal{D}\left[x\right]\left(t; \boldsymbol{m}, age\right)
+    \quad + \sum_{x \in \omega_{d}} \max_{t \in T} \DS{x}
     \Bigg], \quad d \in \left\{4, 8\right\},
 \end{multline}
 where
@@ -1553,13 +1553,13 @@ Note: the contributions from neurologic, immunologic, and hepatic scores do
 consider more than one input form the EHR.  However, because
 \begin{equation}
   \max_{t \in T} \max \left\{
-  \mathcal{D} \left[GCS\right]\left(t;\boldsymbol{m}\right),
-  \mathcal{D} \left[Pupils\right]\left(t;\boldsymbol{m}\right)
+  \DS{GCS}[\boldsymbol{m}],
+  \DS{Pupils}[\boldsymbol{m}]
   \right\}
   =
   \max \left\{
-  \max_{t \in T} \mathcal{D} \left[GCS\right]\left(t;\boldsymbol{m}\right),
-  \max_{t \in T} \mathcal{D} \left[Pupils\right]\left(t;\boldsymbol{m}\right)
+  \max_{t \in T} \DS{GCS}[\boldsymbol{m}],
+  \max_{t \in T} \DS{Pupils}[\boldsymbol{m}]
   \right\}
 \end{equation}
 we need not explicitly decouple the inputs in the equations.
@@ -1581,7 +1581,7 @@ Septic shock is defined as follows:
   \substack{Sepsis \\ FCD}\left(T;\boldsymbol{m},age\right)
   \right]
   \left[
-    \mathbb{I} \left\{ \sum_{x \in \boldsymbol{C}_{card}}\max_{t \in T} \mathcal{D}\left[x\right]\left(t;\boldsymbol{m},age\right) \geq \kappa\right\}
+    \mathbb{I} \left\{ \sum_{x \in \boldsymbol{C}_{card}}\max_{t \in T} \DS{x} \geq \kappa\right\}
   \right]
 \end{equation}
 for $\sigma \geq \kappa > 0.$
