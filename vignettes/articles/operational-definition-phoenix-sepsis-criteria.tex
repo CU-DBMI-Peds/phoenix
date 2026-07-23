@@ -418,10 +418,12 @@ $\mathbb{I}\{A\}$ then lets us convert logical statements (e.g.,
 For potentially incomplete time-indexed function $f,$ extrema are evaluated over
 the available values of $f.$ Define:
 \begin{equation}
+  \label{eq:available-values}
   \mathcal{A}_{f}\left(T\right) \coloneqq \left\{ f \left(t\right) : t \in T, f\left(t\right) \text{ is available}\right\}.
 \end{equation}
 Then
 \begin{equation}
+  \label{eq:max-available-values}
   \max_{t \in T} f\left(t\right) \coloneqq
     \begin{cases}
       \max \mathcal{A}_{f}\left(T\right) & \mathcal{A}_{f}\left(T\right) \ne \emptyset \\
@@ -430,6 +432,7 @@ Then
 \end{equation}
 and
 \begin{equation}
+  \label{eq:min-available-values}
   \min_{t \in T} f\left(t\right) \coloneqq
     \begin{cases}
       \min \mathcal{A}_{f}\left(T\right) & \mathcal{A}_{f}\left(T\right) \ne \emptyset \\
@@ -557,6 +560,7 @@ For determining the PF ratio at time $t$ we consider look-back windows for
 both \fiotwo and \paotwo and the relative look-back between the two.
 Specifically, the PFR is only valid when
 \begin{equation}
+  \label{eq:pfr-validity}
   \tau_{\fiotwo}(t) \leq \tau_{\paotwo}(t) \quad \equiv \quad \Delta_{\fiotwo}(t) \geq
   \Delta_{\paotwo}(t).
 \end{equation}
@@ -567,6 +571,7 @@ the same time, or after the \fiotwo is reported.
 
 The PFR at time $t$ is:
 \begin{equation}
+  \label{eq:pfr}
   \PFR \coloneqq
     \begin{cases}
       \frac{\mathcal{C}\left[\paotwo\right]\left(t;\m{resp}\right)}{\mathcal{C}\left[\fiotwo\right]\left(t;\m{resp}\right)}
@@ -582,6 +587,7 @@ Like the PF ratio, we only consider the SF ratio valid if the \spotwo
 value is reported at the same time as the \fiotwo or after.
 
 \begin{equation}
+  \label{eq:sfr-validity}
   \tau_{\fiotwo}(t) \leq \tau_{\spotwo}(t) \quad \equiv \quad
   \Delta_{\fiotwo}(t) \geq \Delta_{\spotwo}(t).
 \end{equation}
@@ -593,6 +599,7 @@ pSOFA~\citep{matics2017psofa} cut points in
 the scoring.
 
 \begin{equation}
+  \label{eq:sfr}
   \SFR \coloneqq
   \begin{cases}
     \frac{\mathcal{C}\left[\spotwo\right]\left(t;\m{resp}\right)}{\mathcal{C}\left[\fiotwo\right]\left(t;\m{resp}\right)} &
@@ -615,6 +622,7 @@ We defined invasive mechanical ventilation (IMV) as an indicator
 based on four possible conditions.
 
 \begin{equation}
+  \label{eq:imv}
   \IMV \coloneqq \mathbb{I}\left\{\bigvee_{i=1}^{4} A_{i}\left(t; \m{resp}\right)\right\}
 \end{equation}
 where
@@ -662,6 +670,7 @@ PFR values sufficiently low enough to score at least one point for respiratory
 dysfunction would not have at the very least supplemental oxygen.
 
 \begin{equation}
+  \label{eq:resp}
   \DS{Resp}[\m{resp}] \coloneqq
     \ORS \mathbb{I} \left\{B_1\left(t; \m{resp}\right)\right\}
     +
@@ -669,6 +678,7 @@ dysfunction would not have at the very least supplemental oxygen.
 \end{equation}
 where
 \begin{equation}
+  \label{eq:resp-conditions}
   \begin{aligned}
     B_1\left(t; \m{resp}\right) &\coloneqq \PFR < 400 \vee \SFR < 292 \\
     B_2\left(t; \m{resp}\right) &\coloneqq \PFR < 200 \vee \SFR < 220 \\
@@ -679,6 +689,7 @@ where
 The domain for the respiratory organ dysfunction score is
 
 \begin{equation}
+  \label{eq:resp-domain}
   \DS{Resp}[\m{resp}] \in \{0, 1, 2, 3\} \quad \forall \m{resp}, t.
 \end{equation}
 
@@ -750,6 +761,7 @@ line) and how we handle timing.
 
 Each of the six vasoactive medications
 \begin{equation}
+  \label{eq:vasoactive-medications}
   \boldsymbol{V} \coloneqq \{\mathrm{Dobutamine}, \mathrm{Dopamine},
   \mathrm{Epinephrine}, \mathrm{Milrinone}, \mathrm{Norepinephrine},
   \mathrm{Vasopressin} \}
@@ -766,6 +778,7 @@ medications as the count of the number of vasoactive medications received,
 regardless of dose, with a cap of 2 points.
 
 \begin{equation}
+  \label{eq:vasos}
   \DS{Vasos}[\m{vaso}] \coloneqq \min\left\{2, \sum_{v \in \boldsymbol{V}}
   \mathbb{I}\left\{\mathcal{C}[v](t;\m{vaso}) = 1\right\} \right\}.
 \end{equation}
@@ -773,7 +786,7 @@ regardless of dose, with a cap of 2 points.
 The domain for the contribution to the cardiovascular score from vasoactive
 medications is:
 \begin{equation}
-  \label{eq:vasos}
+  \label{eq:vasos-domain}
   \DS{Vasos}[\m{vaso}] \in \{0,1,2\} \quad \forall \m{vaso},t
 \end{equation}
 
@@ -804,6 +817,7 @@ available, then use values from a cuff preferentially taking a reported mean
 arterial pressure, \mapc, and lastly, approximate via \sbpc and
 \dbpc. That is, let
 \begin{equation}
+  \label{eq:map-candidates}
   \begin{aligned}
     \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) &\coloneqq \mathcal{C}[\mapa](t;\m{bp}), \\
     \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) &\coloneqq \frac{1}{3}\mathcal{C}[\sbpa](t;\m{bp}) + \frac{2}{3}\mathcal{C}[\dbpa](t;\m{bp}), \\
@@ -813,6 +827,7 @@ arterial pressure, \mapc, and lastly, approximate via \sbpc and
 \end{equation}
 Then
 \begin{equation}
+  \label{eq:map-priority}
   \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
   \begin{cases}
     \widehat{\mathrm{MAP}}_{i^{\ast}}(t; \m{bp}) &
@@ -864,6 +879,7 @@ and
 \end{equation}
 The domain for this component of the cardiovascular dysfunction score is
 \begin{equation}
+  \label{eq:map-domain}
   \DS{MAP}[\m{bp}, \mathrm{Age}] \in \{0, 1, 2\} \quad \forall \m{bp},t.
 \end{equation}
 
@@ -882,6 +898,7 @@ That is, one point for a lactate value of at least 5 mmol/L; two points for a
 lactate value of at least 11 mmol/L. The domain for the contribution of lactate
 to the cardiovascular dysfunction score is:
 \begin{equation}
+  \label{eq:lactate-domain}
   \DS{Lactate}[\m{lac}] \in \{0, 1, 2\} \quad \forall \m{lac},t.
 \end{equation}
 
@@ -898,6 +915,7 @@ The cardiovascular dysfunction is based on \eqref{eq:vasos}, \eqref{eq:map}, and
 \end{equation}
 The domain for the cardiovascular dysfunction score is
 \begin{equation}
+  \label{eq:card-domain}
   \DS{Card}[\m{vaso}, \m{bp}, \m{lac}, \mathrm{Age}]
   \in \{0, 1, 2, 3, 4, 5, 6\} \quad \forall \boldsymbol{m},t;
 \end{equation}
@@ -963,6 +981,7 @@ artificially lowering the score when only one component is updated.
 \end{equation}
 where
 \begin{equation}
+  \label{eq:gcs-components}
   \boldsymbol{G} \coloneqq \{\mathrm{motor}, \mathrm{eye}, \mathrm{verbal}\}.
 \end{equation}
 The use of $\mathcal{C}[\cdot](t;\infty)$ means ``carry forward the most recent value
@@ -991,6 +1010,7 @@ The bilaterally fixed pupils are defined as:
 
 The neurological component on the score is:
 \begin{equation}
+  \label{eq:neuro}
   \DS{Neuro}[\m{gcs}, \m{pupil}] \coloneqq
   \max \left\{ \DS{GCS}[\m{gcs}],
   \DS{Pupils}[\m{pupil}] \right\}.
@@ -1055,6 +1075,7 @@ caps at 2 points.
 
 Define:
 \begin{equation}
+  \label{eq:coag-components}
 \begin{aligned}
   \DS{Platelets}[\m{coag}]  &\coloneqq \mathbb{I}\left\{\CF{Platelets}[\m{coag}] < 100 \right\} \\
   \DS{INR}[\m{coag}]        &\coloneqq \mathbb{I}\left\{\CF{INR}[\m{coag}] > 1.3\right\} \\
@@ -1064,10 +1085,12 @@ Define:
 \end{equation}
 and then
 \begin{equation}
+  \label{eq:coag}
   \DS{Coag}[\m{coag}] \coloneqq \min \left\{2, \sum_{x \in \boldsymbol{C}_{\mathrm{coag}}} \DS*{x}[\m{coag}] \right\},
 \end{equation}
 where
 \begin{equation}
+  \label{eq:coag-component-set}
   \boldsymbol{C}_{\mathrm{coag}} \coloneqq \left\{\mathrm{Platelets}, \mathrm{INR}, \mathrm{DDimer}, \mathrm{Fibrinogen}\right\}.
 \end{equation}
 
@@ -1110,11 +1133,13 @@ There are no constructed variables to define.
 \subsubsection{Endocrine Organ Dysfunction Score}
 
 \begin{equation}
+  \label{eq:endo}
   \DS{Endo}[\m{endo}] \coloneqq
   \mathbb{I}\left\{\CF{Glucose}[\m{endo}] < 50 \vee \CF{Glucose}[\m{endo}] > 150 \right\}
 \end{equation}
 The domain for the endocrine score is
 \begin{equation}
+  \label{eq:endo-domain}
   \DS{Endo}[\m{endo}] \in \left\{0, 1\right\}, \quad
   \forall \m{endo}, t.
 \end{equation}
@@ -1163,16 +1188,19 @@ There are no constructed variables for the immunologic score.
 \subsubsection{Immunologic Organ Dysfunction Score}
 Define
 \begin{equation}
+  \label{eq:alc}
   \DS{ALC}[\m{immu}] \coloneqq
   \mathbb{I} \left\{ \CF{ALC}[\m{immu}] < 1.00 \right\},
 \end{equation}
 and
 \begin{equation}
+  \label{eq:anc}
   \DS{ANC}[\m{immu}] \coloneqq
   \mathbb{I} \left\{ \CF{ANC}[\m{immu}] < 0.50 \right\}.
 \end{equation}
 Then
 \begin{equation}
+  \label{eq:immu}
   \DS{Immu}[\m{immu}] \coloneqq
   \max\left\{
   \DS{ALC}[\m{immu}],
@@ -1181,6 +1209,7 @@ Then
 \end{equation}
 The domain for the immunologic score is
 \begin{equation}
+  \label{eq:immu-domain}
   \DS{Immu}[\m{immu}] \in \left\{0, 1\right\}, \quad
   \forall \m{immu}, t.
 \end{equation}
@@ -1230,14 +1259,17 @@ either the bilirubin or ALT values.
 
 Define:
 \begin{equation}
+  \label{eq:bilirubin}
   \DS{Bilirubin}[\m{hepatic}] \coloneqq \mathbb{I} \left\{\CF{Bilirubin}[\m{hepatic}] \geq 4 \right\},
 \end{equation}
 and
 \begin{equation}
+  \label{eq:alt}
   \DS{ALT}[\m{hepatic}] \coloneqq \mathbb{I}\left\{ \CF{ALT}[\m{hepatic}] > 102 \right\}.
 \end{equation}
 Then
 \begin{equation}
+  \label{eq:hepatic}
   \DS{Hepatic}[\m{hepatic}] \coloneqq
   \max \left\{
     \DS{Bilirubin}[\m{hepatic}],
@@ -1246,6 +1278,7 @@ Then
 \end{equation}
 The domain for the hepatic score is
 \begin{equation}
+  \label{eq:hepatic-domain}
   \DS{Hepatic}[\m{hepatic}] \in \left\{0, 1\right\}, \quad
   \forall \m{hepatic}, t.
 \end{equation}
@@ -1325,6 +1358,7 @@ a systemic anti-infectious agent was administered.
 Suspected infection status is defined as
 
 \begin{equation}
+  \label{eq:suspected-infection}
 \SI \coloneqq \mathbb{I}\left\{t_{1} \leq t\right\} \times \mathbb{I}\left\{t_{2} \leq t\right\}.
 \end{equation}
 
@@ -1332,6 +1366,7 @@ Suspected infection status is defined as
 
 Define the look-back windows as the vector
 \begin{equation}
+  \label{eq:lookback-vector}
   \boldsymbol{m} \coloneqq \left(\m{resp}, \m{vaso}, \m{bp}, \m{lac}, \m{gcs}, \m{pupil}, \m{coag}, \m{endo}, \m{immu}, \m{hepatic}, \m{renal}\right).
 \end{equation}
 
@@ -1354,10 +1389,12 @@ presence of} suspected infection.
 \end{equation}
 where
 \begin{equation}
+  \label{eq:omega4}
   \Omega_{4} \coloneqq \{\mathrm{Resp}, \mathrm{Card}, \mathrm{Neuro}, \mathrm{Coag}\}
 \end{equation}
 and
 \begin{equation}
+  \label{eq:omega8}
   \Omega_{8} \coloneqq \Omega_{4} \cup \{\mathrm{Endo}, \mathrm{Immu}, \mathrm{Hepatic}, \mathrm{Renal}\}.
 \end{equation}
 
@@ -1484,10 +1521,12 @@ necessarily dysfunction occurring at the same time. As a result,
 \PSS{d}[OLM] can be larger than the \PSS{d}, because peaks
 from different time points can accumulate. That is, by construction,
 \begin{equation}
+  \label{eq:pss-olm-bound}
   \PSS{d} \leq \PSS{d}[OLM].
 \end{equation}
 This follows from the max-sum inequality:
 \begin{equation}
+  \label{eq:max-sum-inequality}
   \max_t \sum_x f_x(t) \leq \sum_x \max_t f_x (t).
 \end{equation}
 
@@ -1526,11 +1565,13 @@ and lactate.
 \end{multline}
 where
 \begin{equation}
+  \label{eq:card-component-set}
   \boldsymbol{C}_{\mathrm{card}} \coloneqq \left\{\mathrm{Vasos}, \mathrm{MAP}, \mathrm{Lactate}\right\}.
 \end{equation}
 
 The constuction here creates the relationsip:
 \begin{equation}
+  \label{eq:pss-ccd-bound}
   \PSS{d} \leq \PSS{d}[OLM] \leq \PSS{d}[CCD].
 \end{equation}
 
@@ -1560,12 +1601,16 @@ respiratory oxygenation, lower PFR and SFR values represent greater dysfunction
 and are therefore minimized.
 
 \begin{equation}
+  \label{eq:resp-fcd}
   \begin{split}
     \mathrm{Resp}^{\mathrm{FCD}}\left(T;\m{resp}\right) \coloneqq{}
     & \max_{t \in T} \left( \IMV \right) \times \left(\mathbb{I}\{B_3(T; \m{resp})\} + \mathbb{I}\{B_2(T; \m{resp})\}\right) \\
     &+ \max_{t \in T} \left(\ORS\right) \times \mathbb{I}\{B_1(T; \m{resp})\},
   \end{split}
-\end{equation} where \begin{equation}
+\end{equation}
+where
+\begin{equation}
+  \label{eq:resp-fcd-conditions}
 \begin{aligned}
   B_1(T; \m{resp}) &\coloneqq \min_{t \in T} \PFR < 400 \vee \min_{t \in T} \SFR < 292, \\
   B_2(T; \m{resp}) &\coloneqq \min_{t \in T} \PFR < 200 \vee \min_{t \in T} \SFR < 220, \\
@@ -1591,15 +1636,18 @@ The overall scores are then defined as:
 \end{multline}
 where
 \begin{equation}
+  \label{eq:omega4-fcd}
   \omega_4 \coloneqq \left\{\mathrm{Vasos}, \mathrm{MAP}, \mathrm{Lactate}, \mathrm{Neuro}\right\},
 \end{equation}
 and
 \begin{equation}
+  \label{eq:omega8-fcd}
   \omega_8 \coloneqq \omega_4 \cup \left\{\mathrm{Endo}, \mathrm{Immu}, \mathrm{Hepatic}, \mathrm{Renal}\right\}.
 \end{equation}
 Note: the contributions from neurologic, immunologic, and hepatic scores do
 consider more than one input from the EHR.  However, because
 \begin{equation}
+  \label{eq:max-of-max-decomposition}
   \max_{t \in T} \max \left\{ \DS{GCS}[\m{gcs}], \DS{Pupils}[\m{pupil}] \right\}
   =
   \max \left\{ \max_{t \in T} \DS{GCS}[\m{gcs}], \max_{t \in T} \DS{Pupils}[\m{pupil}] \right\}
@@ -1608,6 +1656,7 @@ we need not explicitly decouple these component scores.
 
 The constuction here creates the relationsip:
 \begin{equation}
+  \label{eq:pss-fcd-bound}
   \PSS{d} \leq \PSS{d}[OLM] \leq \PSS{d}[CCD] \leq \PSS{d}[FCD].
 \end{equation}
 
