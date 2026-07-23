@@ -10,7 +10,7 @@ score_prepared_phoenix_data(
   T1 = 1440,
   sigma = 2,
   kappa = 1,
-  aggregation = c("jama2024", "eas1", "eas2"),
+  aggregation = c("jama2024", "olm", "ccd", "fcd"),
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -42,10 +42,10 @@ prepared Phoneix Data.
 TODO: Make a nice table and and pros
 
 published  Published, time-aligned Phoenix aggregation
-eas1       Exploratory aggregation scheme 1: organ-level maxima
-eas2       Exploratory aggregation scheme 2: organ-level maxima with
+olm        Exploratory aggregation scheme 1: organ-level maxima
+ccd       Exploratory aggregation scheme 2: organ-level maxima with
            cardiovascular component decoupling
-eas3       Total decoupling
+fcd       Total decoupling
 }
 \references{
 See reference details in \code{\link{phoenix-package}} or by calling

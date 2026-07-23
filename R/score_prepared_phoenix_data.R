@@ -544,5 +544,92 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   #
   # Explicit details are in Equation \ref{eq:pss-fcd} in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
-  stop("aggregation fcd not yet implimented")
+
+  # Aggregate
+  if (verbose) message("    aggregating....")
+
+  # NOTE: glucose will results in endocrine points if too lower or too high.
+  # All other inputs are just too low or too high.  To make things easier, look
+  # for any value in the glucose that is over 150 and set to 0.150 and then take
+  # the min
+  x[["GLUCOSE"]][ x[["GLUCOSE"]] > 150 ] <- 0.150
+
+  mins <-
+    phxdft_aggregate(
+      data = x,
+      y = c(
+        "PFR", "SFR",
+        "MAP",
+        "GCS",
+        "PLATELETS", "FIBRINOGEN",
+        "GLUCOSE",
+        "ALC", "ANC",
+        "AGE"
+        ),
+      by = id.vars,
+      FUN = min
+    )
+
+  maxs <-
+    phxdft_aggregate(
+      data = x,
+      y = c(
+        "IMV", "ORS",
+        "DOBUTAMINE", "DOPAMINE", "EPINEPHRINE",
+        "MILRINONE", "NOREPINEPHRINE", "VASOPRESSIN",
+        "LACTATE",
+        "FIXEDPUPILS",
+        "INR", "DDIMER",
+        "BILIRUBIN", "ALT",
+        "CREATININE"
+        ),
+      by = id.vars,
+      FUN = max
+    )
+
+  DF <- phxdft_left_join(mins, maxs, by = id.vars)
+
+  if (verbose) message("    scoring....")
+  p8 <-
+    phoenix8(
+    # Respiratory
+    pf_ratio = PFR,
+    sf_ratio = SFR,
+    invasive_mechanical_ventilation = IMV,
+    other_respiratory_support = ORS,
+    # Cardiovascular
+    vasoactive = DOBUTAMINE + DOPAMINE + EPINEPHRINE +
+                 MILRINONE + NOREPINEPHRINE + VASOPRESSIN,
+    lactate = LACTATE,
+    mean_arterial_pressure = MAP,
+    # Coagulation
+    platelets  = PLATELETS,
+    inr        = INR,
+    d_dimer    = DDIMER,
+    fibrinogen = FIBRINOGEN,
+    # Neurological
+    gcs = GCS,
+    fixed_pupils = FIXEDPUPILS,
+    # Endocrine
+    glucose = GLUCOSE,
+    # Immunologic
+    anc = ANC,
+    alc = ALC,
+    # Renal
+    creatinine = CREATININE,
+    # Hepatic
+    bilirubin = BILIRUBIN,
+    alt = ALT,
+    # age (used in cardiovascular and renal)
+    age = AGE,
+    data = DF
+  )
+
+  rtn <- phxdft_select(DF, cols = id.vars)
+  rtn <- phxdft_set(rtn, j = "fcd_sepsis_score", value = p8[["phoenix_sepsis_score"]])
+  rtn <- phxdft_set(rtn, j = "fcd_sepsis", value = as.integer(p8[["phoenix_sepsis_score"]] >= sigma))
+  rtn <- phxdft_set(rtn, j = "fcs_septic_shock", value = rtn[["fcd_sepsis"]] * as.integer(p8[["phoenix_cardiovascular_score"]] >= kappa))
+  rtn <- phxdft_set(rtn, j = "fcd_8_sepsis_score", value = p8[["phoenix8_sepsis_score"]])
+
+  rtn
 }
