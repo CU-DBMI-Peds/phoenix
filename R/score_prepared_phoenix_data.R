@@ -6,10 +6,10 @@
 #' TODO: Make a nice table and and pros
 #'
 #' published  Published, time-aligned Phoenix aggregation
-#' eas1       Exploratory aggregation scheme 1: organ-level maxima
-#' eas2       Exploratory aggregation scheme 2: organ-level maxima with
+#' olm        Exploratory aggregation scheme 1: organ-level maxima
+#' ccd       Exploratory aggregation scheme 2: organ-level maxima with
 #'            cardiovascular component decoupling
-#' eas3       Total decoupling
+#' fcd       Total decoupling
 #'
 #'
 #'
@@ -35,7 +35,7 @@
 #' \code{citation('phoenix')}.
 #'
 #' @export
-score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "eas1", "eas2"), verbose = getOption("phoenix_verbose", interactive())) {
+score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd"), verbose = getOption("phoenix_verbose", interactive())) {
   stopifnot(inherits(x, "prepared_phoenix_data"))
   stopifnot(length(sigma) == 1, length(kappa) == 1, is.numeric(sigma), is.numeric(kappa))
   aggregation <- match.arg(aggregation, several.ok = FALSE)
@@ -87,9 +87,9 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
     switch(
       aggregation,
       jama2024 = jama2024(x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      eas1     = eas1(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      eas2     = eas2(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      eas3     = eas3(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
+      olm     = olm(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+      ccd     = ccd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+      fcd     = fcd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
     )
 
   if (verbose) message("  building outout...")
@@ -245,14 +245,14 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
 }
 
-eas1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # Alternative Scoring Method 1:
-  #   Organ-level Maxima
+olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+  # Exploratory Aggregation Schema 1:
+  #   Organ-Level Maxima (OLM)
   #
   # Overly simplified, the score is
   #   max(resp) + max(card) + max(neuro) + max(coag)
   #
-  # Explicit details are in Equation \ref{eq:pss-eas1} in
+  # Explicit details are in Equation \ref{eq:pss-olm} in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
@@ -339,7 +339,7 @@ eas1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas1_sepsis_score",
+      j = "olm_sepsis_score",
       value = oss[["respscore"]] +
               oss[["cardscore"]] +
               oss[["neuroscore"]] +
@@ -349,14 +349,14 @@ eas1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas1_septic_shock_score",
-      value = as.integer(oss[["cardscore"]] >= kappa) * oss[["eas1_sepsis_score"]]
+      j = "olm_septic_shock_score",
+      value = as.integer(oss[["cardscore"]] >= kappa) * oss[["olm_sepsis_score"]]
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas1_8_sepsis_score",
+      j = "olm_8_sepsis_score",
       value = oss[["respscore"]]  + oss[["cardscore"]] + oss[["neuroscore"]] + oss[["coagscore"]] +
               oss[["immunscore"]] + oss[["endoscore"]] + oss[["renalscore"]] + oss[["hepaticscore"]]
     )
@@ -364,40 +364,40 @@ eas1 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas1_sepsis",
-      value = as.integer(oss[["eas1_sepsis_score"]] >= sigma)
+      j = "olm_sepsis",
+      value = as.integer(oss[["olm_sepsis_score"]] >= sigma)
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas1_septic_shock",
-      value = as.integer(oss[["eas1_septic_shock_score"]] >= sigma)
+      j = "olm_septic_shock",
+      value = as.integer(oss[["olm_septic_shock_score"]] >= sigma)
     )
 
   # omit the septic_shock_score
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas1_septic_shock_score",
+      j = "olm_septic_shock_score",
       value = NULL
     )
 
   phxdft_select(
     oss,
-    c(id.vars, "eas1_sepsis_score", "eas1_sepsis", "eas1_septic_shock", "eas1_8_sepsis_score")
+    c(id.vars, "olm_sepsis_score", "olm_sepsis", "olm_septic_shock", "olm_8_sepsis_score")
   )
 
 }
 
-eas2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # Alternative Scoring Method 2:
-  #   Organ-level with Cardiovascular Component Decoupling.
+ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+  # Exploratory Aggregation Schema 2:
+  #   Organ-Level with Cardiovascular Component Decoupling.
   #
   # Overly simplified, the score is
   #   max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
   #
-  # Explicit details are in Equation \ref{eq:pss-eas2} in
+  # Explicit details are in Equation \ref{eq:pss-ccd} in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
@@ -477,7 +477,7 @@ eas2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas2_sepsis_score",
+      j = "ccd_sepsis_score",
       value = oss[["respscore"]] +
               oss[["vasoscore"]] +
               oss[["mapscore"]] +
@@ -489,14 +489,14 @@ eas2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas2_septic_shock_score",
-      value = as.integer((oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]]) >= kappa) * oss[["eas2_sepsis_score"]]
+      j = "ccd_septic_shock_score",
+      value = as.integer((oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]]) >= kappa) * oss[["ccd_sepsis_score"]]
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas2_8_sepsis_score",
+      j = "ccd_8_sepsis_score",
       value = oss[["respscore"]]  +
         oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]] +
         oss[["neuroscore"]] + oss[["coagscore"]] +
@@ -506,34 +506,34 @@ eas2 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas2_sepsis",
-      value = as.integer(oss[["eas2_sepsis_score"]] >= sigma)
+      j = "ccd_sepsis",
+      value = as.integer(oss[["ccd_sepsis_score"]] >= sigma)
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas2_septic_shock",
-      value = as.integer(oss[["eas2_septic_shock_score"]] >= sigma)
+      j = "ccd_septic_shock",
+      value = as.integer(oss[["ccd_septic_shock_score"]] >= sigma)
     )
 
   # omit the septic_shock_score
   oss <-
     phxdft_set(
       x = oss,
-      j = "eas2_septic_shock_score",
+      j = "ccd_septic_shock_score",
       value = NULL
     )
 
   phxdft_select(
     oss,
-    c(id.vars, "eas2_sepsis_score", "eas2_sepsis", "eas2_septic_shock", "eas2_8_sepsis_score")
+    c(id.vars, "ccd_sepsis_score", "ccd_sepsis", "ccd_septic_shock", "ccd_8_sepsis_score")
   )
 
 }
 
-eas3 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # Alternative Scoring Method 3:
+fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+  # Exploratory Aggregation Schema 3:
   #   Full Component Decoupling
   #
   # Overly simplified, the score is
@@ -542,7 +542,7 @@ eas3 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   #  min( {2, max(GCS) + 2 * max(pupils) }) + # neuro
   #  min(2, sum(platetes + INR + DDimer + Fibrinogen) )
   #
-  # Explicit details are in Equation \ref{eq:pss-eas3} in
+  # Explicit details are in Equation \ref{eq:pss-fcd} in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
-  stop("aggregation eas3 not yet implimented")
+  stop("aggregation fcd not yet implimented")
 }
