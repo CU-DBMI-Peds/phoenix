@@ -1664,7 +1664,9 @@ Under full component decoupling, each point-producing component is aggregated
 independently over $T$ and then combined using the original organ-specific
 capping or maximum rules. Component scores are maximized over $T$; for
 respiratory oxygenation, lower PFR and SFR values represent greater dysfunction
-and are therefore minimized.
+and are therefore minimized. For vasoactive medications, each individual
+medication indicator is maximized independently before applying the cap used by
+the cardiovascular score.
 
 \begin{equation}
   \label{eq:resp-fcd}
@@ -1688,6 +1690,16 @@ This scheme decouples respiratory support from oxygenation severity; the
 required support and oxygenation threshold need not occur at the same time
 within T.
 
+The full component decoupling vasoactive contribution is:
+\begin{equation}
+  \label{eq:vasos-fcd}
+  % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
+  \DS{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) \coloneqq
+  \min\left\{2, \sum_{v \in \boldsymbol{V}}
+  \max_{t \in T} \mathbb{I}\left\{\mathcal{C}[v](t;\m{vaso}) = 1\right\}
+  \right\}.
+\end{equation}
+
 The overall scores are then defined as:
 \begin{multline}
   \label{eq:pss-fcd}
@@ -1697,6 +1709,7 @@ The overall scores are then defined as:
       \left[\max_{t \in T} \SI \right]
       \Bigg[
         \mathrm{Resp}^{\mathrm{FCD}}\left(T;\m{resp}\right) +
+        \DS{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) +
         \min \left\{ 2, \sum_{x \in \boldsymbol{C}_{\mathrm{coag}}} \max_{t \in T} \DS*{x}[\boldsymbol{m}]\right\}
     } \\
     \quad + \sum_{x \in \omega_{d}} \max_{t \in T} \DS*{x}
@@ -1705,7 +1718,7 @@ The overall scores are then defined as:
 where
 \begin{equation}
   \label{eq:omega4-fcd}
-  \omega_4 \coloneqq \left\{\mathrm{Vasos}, \mathrm{MAP}, \mathrm{Lactate}, \mathrm{Neuro}\right\},
+  \omega_4 \coloneqq \left\{\mathrm{MAP}, \mathrm{Lactate}, \mathrm{Neuro}\right\},
 \end{equation}
 and
 \begin{equation}
@@ -1743,7 +1756,11 @@ Septic shock is defined as follows:
   % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
   \SepticShock[FCD]\coloneqq
   \left[ \Sepsis[FCD] \right]
-  \mathbb{I} \left\{ \sum_{x \in \boldsymbol{C}_{\mathrm{card}}}\max_{t \in T} \DS*{x} \geq \kappa\right\}
+  \mathbb{I} \left\{
+    \DS{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) +
+    \sum_{x \in \boldsymbol{C}_{\mathrm{card}}\setminus\{\mathrm{Vasos}\}}\max_{t \in T} \DS*{x}
+    \geq \kappa
+  \right\}
 \end{equation}
 for $\sigma \geq \kappa > 0.$
 
