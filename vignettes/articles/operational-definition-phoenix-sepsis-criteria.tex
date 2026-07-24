@@ -673,7 +673,7 @@ Then other respiratory support is defined by \eqref{eq:imv-conditions} and \eqre
   \ORS \coloneqq \mathbb{I}\left\{ \bigvee_{i=1}^{6} A_{i}\left(t; \m{resp} \right) \right\}
 \end{equation}
 
-\subsubsection{Respiratory Organ Dysfunction Score}\label{resp-odss}
+\subsubsection{Respiratory Organ Dysfunction Score}\label{sec:resp-odss}
 
 In the development of Phoenix, we used pSOFA respiratory
 scoring\citep{matics2017psofa}. The pSOFA respiratory
@@ -1152,11 +1152,11 @@ where
 \end{equation}
 
 
-\subsection{Endocrine}
+\subsection{Endocrine}\label{sec:endo}
 
 The endocrine score is part of the Phoenix-8 scoring system.
 
-\subsubsection{Data from the EHR}
+\subsubsection{Data from the EHR}\label{sec:endo-ehr}
 There is only one element from the EHR used in the endocrine dysfunction
 assessment: glucose. See Table~\ref{tab:endo-ehr}.
 
@@ -1184,10 +1184,10 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
   \end{tabular}
 \end{table}
 
-\subsubsection{Constructed Variables}
+\subsubsection{Constructed Variables}\label{sec:endo-constructed}
 There are no constructed variables to define.
 
-\subsubsection{Endocrine Organ Dysfunction Score}
+\subsubsection{Endocrine Organ Dysfunction Score}\label{sec:endo-odss}
 \begin{equation}
   \label{eq:endo}
   % R: phoenix_endocrine()
@@ -1201,10 +1201,10 @@ The domain for the endocrine score is
   \forall \m{endo}, t.
 \end{equation}
 
-\subsection{Immunologic}
+\subsection{Immunologic}\label{sec:immu}
 The immunologic score is part of the Phoenix-8 scoring system.
 
-\subsubsection{Data from the EHR}
+\subsubsection{Data from the EHR}\label{sec:immu-ehr}
 Two values are required from the EHR: Absolute neutrophil count (ANC) and
 absolute lymphocyte count (ALC).  Both are expected in units of 1000 cells per
 cubic millimeter. See Table~\ref{tab:immu-ehr}.
@@ -1240,10 +1240,10 @@ cubic millimeter. See Table~\ref{tab:immu-ehr}.
   \end{tabular}
 \end{table}
 
-\subsubsection{Constructed Variables}
+\subsubsection{Constructed Variables}\label{sec:immu-constructed}
 There are no constructed variables for the immunologic score.
 
-\subsubsection{Immunologic Organ Dysfunction Score}
+\subsubsection{Immunologic Organ Dysfunction Score}\label{sec:immu-odss}
 Define
 \begin{equation}
   \label{eq:alc}
@@ -1275,8 +1275,8 @@ The domain for the immunologic score is
   \forall \m{immu}, t.
 \end{equation}
 
-\subsection{Hepatic}
-\subsubsection{Data from the EHR}
+\subsection{Hepatic}\label{sec:hepatic}
+\subsubsection{Data from the EHR}\label{sec:hepatic-ehr}
 Two values are required from the EHR: total bilirubin reported in units of mg/dL
 and alanine aminotransferase (ALT) reported in units of IU/L. See
 Table~\ref{tab:hepatic-ehr}.
@@ -1312,10 +1312,10 @@ Table~\ref{tab:hepatic-ehr}.
   \end{tabular}
 \end{table}
 
-\subsubsection{Constructed Variables}
+\subsubsection{Constructed Variables}\label{sec:hepatic-constructed}
 There are no constructed variables for the hepatic organ dysfunction assessment.
 
-\subsubsection{Hepatic Organ Dysfunction Score}
+\subsubsection{Hepatic Organ Dysfunction Score}\label{sec:hepatic-odss}
 
 As with endocrine and immunologic scores, the hepatic score can be a 0 or 1 from
 either the bilirubin or ALT values.
@@ -1349,10 +1349,10 @@ The domain for the hepatic score is
   \forall \m{hepatic}, t.
 \end{equation}
 
-\subsection{Renal}
+\subsection{Renal}\label{sec:renal}
 The renal score is part of the Phoenix-8 scoring system.
 
-\subsubsection{Data from the EHR}
+\subsubsection{Data from the EHR}\label{sec:renal-ehr}
 The patient's age (at admission, in months) and their creatinine levels (in
 mg/dL) are required to assess renal dysfunction.  Age is also required for
 assessment of cardiovascular dysfunction as part of the Phoenix scoring and thus
@@ -1386,11 +1386,11 @@ See Table~\ref{tab:renal-ehr}.
   \end{tabular}
 \end{table}
 
-\subsubsection{Constructed Variables}
+\subsubsection{Constructed Variables}\label{sec:renal-constructed}
 There are no constructed variables required for the assessment of renal
 dysfunction.
 
-\subsubsection{Renal Organ Dysfunction Score}
+\subsubsection{Renal Organ Dysfunction Score}\label{sec:renal-odss}
 The renal dysfunction score is based on an age adjusted creatinine level
 \eqref{eq:renal-score}.  The cut points for the age ranges are the same as used
 in the cardiovascular scoring, \eqref{eq:theta1} and \eqref{eq:theta2}.
@@ -1455,9 +1455,9 @@ suspected infection. The Phoenix Sepsis Score (PSS) combines ODSS with evidence
 of suspected infection (via SI), so it reflects organ dysfunction in the
 presence of suspected infection.
 
-Importantly: The ODSS is a convince and has not been evaluated in the absence of
-suspected infection, that is The development of PSS only investigated ODSS in
-the presence of suspected infection~\citep{sanchezpinto_2024_development}.
+Importantly: The ODSS is a convenience score and has not been evaluated in the
+absence of suspected infection; the development of PSS only investigated ODSS
+in the presence of suspected infection~\citep{sanchezpinto_2024_development}.
 \begin{equation}
   \label{eq:odss}
   % R: phoenix(); phoenix8(); score_prepared_phoenix_data(..., aggregation = "jama2024")
@@ -1507,12 +1507,12 @@ dysfunction associated with reaching the sepsis score threshold.
 
 For the published Phoenix Sepsis Criteria
 \citep{sanchezpinto_2024_development,schlapbach_2024_international} the
-following parameter values in Table~\ref{tab:phoenix-parmeters} were used:
+following parameter values in Table~\ref{tab:phoenix-parameters} were used:
 
 \begin{longtable}{lrl}
   \caption{Parameter values defining time windows, look-backs, and thresholds
   for the Phoenix Sepsis Score, Sepsis, and Septic Shock.}
-  \label{tab:phoenix-parmeters} \\
+  \label{tab:phoenix-parameters} \\
 
   \toprule
   \multicolumn{1}{c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Notes}} \\
@@ -1640,7 +1640,7 @@ cardiovascular system is at least $\kappa.$
 \end{equation}
 for $\sigma \geq \kappa > 0.$
 
-\subsection{Organ-Level + Cardiovascular Component Decoupling}
+\subsection{Organ-Level + Cardiovascular Component Decoupling}\label{sec:ccd}
 
 In this exploratory aggregation scheme we decouple all organ systems as done in
 the OLM
