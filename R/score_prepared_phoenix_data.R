@@ -75,28 +75,53 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   if (verbose) message("  identifying records to score...")
   # now, the data of interest that needs to be scored is only for those with a
   # suspected infection and within the window [T0, T1)
+  score_ids <- phxdft_subset(si, i = which(si[["suspected_infection"]] > 0), cols = attr(x, "id.vars"))
   score_this <-
     phxdft_inner_join(
       x = phxdft_subset(x, i = which((x[[attr(x, "eclock")]] >= T0) & (x[[attr(x, "eclock")]] < T1))),
-      y = phxdft_subset(si, i = which(si[["suspected_infection"]] > 0), cols = attr(x, "id.vars")),
+      y = score_ids,
       by = attr(x, "id.vars")
     )
 
   if (verbose) message("  applying scoring...")
   # apply the scoring method to the oss and si
-  pss <-
-    switch(
-      aggregation,
-      jama2024 = jama2024(x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      olm     = olm(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      ccd     = ccd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-      fcd     = fcd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
-    )
+  pss <- score_ids
+  if (nrow(score_this) > 0L) {
+    pss <-
+      switch(
+        aggregation,
+        jama2024 = jama2024(x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+        olm     = olm(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+        ccd     = ccd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+        fcd     = fcd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
+      )
+  }
 
   if (verbose) message("  building outout...")
   iddf <- phxdft_unique(phxdft_select(x, attr(x, "id.vars")))
   rtn <- phxdft_left_join(iddf, si, attr(x, "id.vars"))
   rtn <- phxdft_left_join(rtn, pss, attr(x, "id.vars"))
+  suspected_infection <- rtn[["suspected_infection"]]
+  suspected_infection[is.na(suspected_infection)] <- 0L
+  rtn <- phxdft_set(rtn, j = "suspected_infection", value = suspected_infection)
+
+  score_columns <-
+    switch(
+      aggregation,
+      jama2024 = c("phoenix_sepsis_score", "phoenix_sepsis", "phoenix_septic_shock", "phoenix8_sepsis_score"),
+      olm      = c("olm_sepsis_score", "olm_sepsis", "olm_septic_shock", "olm_8_sepsis_score"),
+      ccd      = c("ccd_sepsis_score", "ccd_sepsis", "ccd_septic_shock", "ccd_8_sepsis_score"),
+      fcd      = c("fcd_sepsis_score", "fcd_sepsis", "fcd_septic_shock", "fcd_8_sepsis_score")
+    )
+  for (col in score_columns) {
+    if (!col %in% names(rtn)) {
+      rtn <- phxdft_set(rtn, j = col, value = 0L)
+    } else {
+      values <- rtn[[col]]
+      values[is.na(values)] <- 0L
+      rtn <- phxdft_set(rtn, j = col, value = values)
+    }
+  }
 
   attr(rtn, "T0") <- T0
   attr(rtn, "T1") <- T1
@@ -559,7 +584,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   #  min(2, sum(platetes + INR + DDimer + Fibrinogen) )
   #
   # TeX: eq:resp-fcd, eq:resp-fcd-conditions, eq:pss-fcd, eq:omega4-fcd,
-  # eq:omega8-fcd, eq:sepsis-fcd, and eq:septicshock-fcd in
+  # eq:vasos-fcd, eq:omega8-fcd, eq:sepsis-fcd, and eq:septicshock-fcd in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   # Aggregate
@@ -570,6 +595,12 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # for any value in the glucose that is over 150 and set to 0.150 and then take
   # the min
   x[["GLUCOSE"]][ x[["GLUCOSE"]] > 150 ] <- 0.150
+  min_available <- function(z) {
+    if (all(is.na(z))) NA_real_ else min(z, na.rm = TRUE)
+  }
+  max_available <- function(z) {
+    if (all(is.na(z))) NA_real_ else max(z, na.rm = TRUE)
+  }
 
   mins <-
     phxdft_aggregate(
@@ -584,7 +615,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
         "AGE"
         ),
       by = id.vars,
-      FUN = min
+      FUN = min_available
     )
 
   maxs <-
@@ -601,7 +632,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
         "CREATININE"
         ),
       by = id.vars,
-      FUN = max
+      FUN = max_available
     )
 
   DF <- phxdft_left_join(mins, maxs, by = id.vars)
@@ -616,8 +647,8 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     invasive_mechanical_ventilation = IMV,
     other_respiratory_support = ORS,
     # Cardiovascular
-    vasoactive = DOBUTAMINE + DOPAMINE + EPINEPHRINE +
-                 MILRINONE + NOREPINEPHRINE + VASOPRESSIN,
+    vasoactives = DOBUTAMINE + DOPAMINE + EPINEPHRINE +
+                  MILRINONE + NOREPINEPHRINE + VASOPRESSIN,
     lactate = LACTATE,
     mean_arterial_pressure = MAP,
     # Coagulation
@@ -647,7 +678,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # TeX: eq:pss-fcd, eq:sepsis-fcd, and eq:septicshock-fcd.
   rtn <- phxdft_set(rtn, j = "fcd_sepsis_score", value = p8[["phoenix_sepsis_score"]])
   rtn <- phxdft_set(rtn, j = "fcd_sepsis", value = as.integer(p8[["phoenix_sepsis_score"]] >= sigma))
-  rtn <- phxdft_set(rtn, j = "fcs_septic_shock", value = rtn[["fcd_sepsis"]] * as.integer(p8[["phoenix_cardiovascular_score"]] >= kappa))
+  rtn <- phxdft_set(rtn, j = "fcd_septic_shock", value = rtn[["fcd_sepsis"]] * as.integer(p8[["phoenix_cardiovascular_score"]] >= kappa))
   rtn <- phxdft_set(rtn, j = "fcd_8_sepsis_score", value = p8[["phoenix8_sepsis_score"]])
 
   rtn

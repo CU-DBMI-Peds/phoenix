@@ -141,10 +141,10 @@ assert_end_to_end <- function(backend) {
     isTRUE(all.equal(scored[["phoenix_sepsis"]][1], 1)),
     isTRUE(all.equal(scored[["phoenix_septic_shock"]][1], 1)),
     isTRUE(all.equal(scored[["phoenix8_sepsis_score"]][1], 9)),
-    is.na(scored[["phoenix_sepsis_score"]][2]),
-    is.na(scored[["phoenix_sepsis"]][2]),
-    is.na(scored[["phoenix_septic_shock"]][2]),
-    is.na(scored[["phoenix8_sepsis_score"]][2])
+    isTRUE(all.equal(scored[["phoenix_sepsis_score"]][2], 0)),
+    isTRUE(all.equal(scored[["phoenix_sepsis"]][2], 0)),
+    isTRUE(all.equal(scored[["phoenix_septic_shock"]][2], 0)),
+    isTRUE(all.equal(scored[["phoenix8_sepsis_score"]][2], 0))
   )
 
   olm <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "olm", verbose = FALSE)
@@ -152,6 +152,9 @@ assert_end_to_end <- function(backend) {
 
   ccd <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "ccd", verbose = FALSE)
   ccd <- sort_by_encounter(ccd)
+
+  fcd <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "fcd", verbose = FALSE)
+  fcd <- sort_by_encounter(fcd)
 
   stopifnot(
     isTRUE(all.equal(olm[["olm_sepsis_score"]][1], 5)),
@@ -161,7 +164,15 @@ assert_end_to_end <- function(backend) {
     isTRUE(all.equal(ccd[["ccd_sepsis_score"]][1], 5)),
     isTRUE(all.equal(ccd[["ccd_sepsis"]][1], 1)),
     isTRUE(all.equal(ccd[["ccd_septic_shock"]][1], 1)),
-    isTRUE(all.equal(ccd[["ccd_8_sepsis_score"]][1], 9))
+    isTRUE(all.equal(ccd[["ccd_8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(fcd[["fcd_sepsis_score"]][1], 5)),
+    isTRUE(all.equal(fcd[["fcd_sepsis"]][1], 1)),
+    isTRUE(all.equal(fcd[["fcd_septic_shock"]][1], 1)),
+    isTRUE(all.equal(fcd[["fcd_8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(fcd[["fcd_sepsis_score"]][2], 0)),
+    isTRUE(all.equal(fcd[["fcd_sepsis"]][2], 0)),
+    isTRUE(all.equal(fcd[["fcd_septic_shock"]][2], 0)),
+    isTRUE(all.equal(fcd[["fcd_8_sepsis_score"]][2], 0))
   )
 }
 
