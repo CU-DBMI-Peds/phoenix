@@ -114,6 +114,7 @@ phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_r
   cl[[1]] <- get("phoenix_neurologic", mode = "function")
   neur <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
+  # TeX: eq:pss, eq:omega4, eq:sepsis, and eq:septicshock.
   rtn <-
     data.frame(
       phoenix_respiratory_score    = resp,

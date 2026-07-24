@@ -159,6 +159,7 @@ phoenix_respiratory <- function(pf_ratio = NA_real_, sf_ratio = NA_real_, invasi
   stopifnot(all(ors %in% c(0L, 1L)))
   ors <- pmax(invasive_mechanical_ventilation, ors)
 
+  # TeX: eq:resp and eq:resp-conditions.
   as.integer(
     invasive_mechanical_ventilation * ( ((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220)) ) +
     ors * ((pfr < 400) | (sfr < 292))

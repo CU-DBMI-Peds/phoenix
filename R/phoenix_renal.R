@@ -109,6 +109,7 @@ phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.f
   age <- replace(age, missing_idx, 0)
   crt <- replace(crt, missing_idx, 0)
 
+  # TeX: eq:renal-score.
   (age >=   0 & age <    1) * (crt >= 0.8) +
   (age >=   1 & age <   12) * (crt >= 0.3) +
   (age >=  12 & age <   24) * (crt >= 0.4) +

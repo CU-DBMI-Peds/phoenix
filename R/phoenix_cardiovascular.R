@@ -187,6 +187,7 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
   age <- replace(age, missing_age_map, 222)
   mean_arterial_pressure <- replace(mean_arterial_pressure, missing_age_map, 100)
 
+  # TeX: eq:card combines eq:vasos, eq:map, and eq:lactate.
   vas_score <- vasoactive_score(vas)
   lct_score <- lactate_score(lct)
   map_score <- map_score(mean_arterial_pressure, age)
@@ -197,18 +198,21 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
 # non-exported methods that are used in
 # phoenix_cardiovascular() and score_prepared_phoenix_data()
 vasoactive_score <- function(x) {
+  # TeX: eq:vasos.
   rtn <- as.integer(x > 1) + as.integer(x > 0)
   rtn[is.na(rtn)] <- 0L
   rtn
 }
 
 lactate_score <- function(x) {
+  # TeX: eq:lactate.
   rtn <- as.integer(x >= 11) + as.integer(x >= 5)
   rtn[is.na(rtn)] <- 0L
   rtn
 }
 
 map_score <- function(map, age) {
+  # TeX: eq:theta1, eq:theta2, and eq:map.
   rtn <- (
     (age >=   0 & age <    1) * ((map < 17) + (map < 31)) +
     (age >=   1 & age <   12) * ((map < 25) + (map < 39)) +

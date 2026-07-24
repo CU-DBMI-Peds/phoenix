@@ -62,5 +62,6 @@ phoenix_endocrine <- function(glucose = NA_real_, data = parent.frame(), ...) {
   # set "healthy" value for missing data
   glc <- replace(glc, which(is.na(glc)), 100)
 
+  # TeX: eq:endo.
   as.integer((glc < 50) | (glc > 150))
 }

@@ -43,6 +43,7 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   if (verbose) message("Scoring prepared_phoenix_data...")
   if (verbose) message("  identifying suspsected infections...")
   # suspected infection is set for the id.var over the window of interest
+  # TeX: eq:suspected-infection.
   si <-
     phxdft_set(
       x = phxdft_select(x, c(attr(x, "id.vars"), attr(x, "eclock"))),
@@ -112,7 +113,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   #
   # Overly simplified, the score is max( resp + card + neuro + coag )
   #
-  # Explicit details are in Equation \ref{eq:pss} in
+  # TeX: eq:pss, eq:omega4, eq:omega8, eq:sepsis, and eq:septicshock in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
@@ -184,6 +185,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "phoenix_sepsis_score",
+      # TeX: eq:pss with eq:omega4.
       value = respscore + cardscore + neuroscore + coagscore
     )
 
@@ -191,6 +193,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "phoenix_septic_shock_score",
+      # TeX: eq:septicshock.
       value = as.integer(cardscore >= kappa) * oss[["phoenix_sepsis_score"]]
     )
 
@@ -198,6 +201,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "phoenix8_sepsis_score",
+      # TeX: eq:pss with eq:omega8.
       value = respscore + cardscore + neuroscore + coagscore +
               immunscore + endoscore + renalscore + hepaticscore
     )
@@ -223,6 +227,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "phoenix_sepsis",
+      # TeX: eq:sepsis.
       value = as.integer(oss[["phoenix_sepsis_score"]] >= sigma)
     )
 
@@ -230,6 +235,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "phoenix_septic_shock",
+      # TeX: eq:septicshock.
       value = as.integer(oss[["phoenix_septic_shock_score"]] >= sigma)
     )
 
@@ -252,7 +258,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Overly simplified, the score is
   #   max(resp) + max(card) + max(neuro) + max(coag)
   #
-  # Explicit details are in Equation \ref{eq:pss-olm} in
+  # TeX: eq:pss-olm, eq:sepsis-olm, and eq:septicshock-olm in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
@@ -340,6 +346,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "olm_sepsis_score",
+      # TeX: eq:pss-olm with eq:omega4.
       value = oss[["respscore"]] +
               oss[["cardscore"]] +
               oss[["neuroscore"]] +
@@ -350,6 +357,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "olm_septic_shock_score",
+      # TeX: eq:septicshock-olm.
       value = as.integer(oss[["cardscore"]] >= kappa) * oss[["olm_sepsis_score"]]
     )
 
@@ -357,6 +365,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "olm_8_sepsis_score",
+      # TeX: eq:pss-olm with eq:omega8.
       value = oss[["respscore"]]  + oss[["cardscore"]] + oss[["neuroscore"]] + oss[["coagscore"]] +
               oss[["immunscore"]] + oss[["endoscore"]] + oss[["renalscore"]] + oss[["hepaticscore"]]
     )
@@ -365,6 +374,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "olm_sepsis",
+      # TeX: eq:sepsis-olm.
       value = as.integer(oss[["olm_sepsis_score"]] >= sigma)
     )
 
@@ -372,6 +382,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "olm_septic_shock",
+      # TeX: eq:septicshock-olm.
       value = as.integer(oss[["olm_septic_shock_score"]] >= sigma)
     )
 
@@ -397,7 +408,7 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Overly simplified, the score is
   #   max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
   #
-  # Explicit details are in Equation \ref{eq:pss-ccd} in
+  # TeX: eq:pss-ccd, eq:card-component-set, eq:sepsis-ccd, and eq:septicshock-ccd in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
@@ -478,6 +489,7 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "ccd_sepsis_score",
+      # TeX: eq:pss-ccd with eq:omega4 and eq:card-component-set.
       value = oss[["respscore"]] +
               oss[["vasoscore"]] +
               oss[["mapscore"]] +
@@ -490,6 +502,7 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "ccd_septic_shock_score",
+      # TeX: eq:septicshock-ccd.
       value = as.integer((oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]]) >= kappa) * oss[["ccd_sepsis_score"]]
     )
 
@@ -497,6 +510,7 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "ccd_8_sepsis_score",
+      # TeX: eq:pss-ccd with eq:omega8 and eq:card-component-set.
       value = oss[["respscore"]]  +
         oss[["vasoscore"]] + oss[["mapscore"]] + oss[["lactatescore"]] +
         oss[["neuroscore"]] + oss[["coagscore"]] +
@@ -507,6 +521,7 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "ccd_sepsis",
+      # TeX: eq:sepsis-ccd.
       value = as.integer(oss[["ccd_sepsis_score"]] >= sigma)
     )
 
@@ -514,6 +529,7 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     phxdft_set(
       x = oss,
       j = "ccd_septic_shock",
+      # TeX: eq:septicshock-ccd.
       value = as.integer(oss[["ccd_septic_shock_score"]] >= sigma)
     )
 
@@ -542,7 +558,8 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   #  min( {2, max(GCS) + 2 * max(pupils) }) + # neuro
   #  min(2, sum(platetes + INR + DDimer + Fibrinogen) )
   #
-  # Explicit details are in Equation \ref{eq:pss-fcd} in
+  # TeX: eq:resp-fcd, eq:resp-fcd-conditions, eq:pss-fcd, eq:omega4-fcd,
+  # eq:omega8-fcd, eq:sepsis-fcd, and eq:septicshock-fcd in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   # Aggregate
@@ -591,6 +608,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
   if (verbose) message("    scoring....")
   p8 <-
+    # TeX: eq:pss-fcd applies phoenix8() after component-level min/max aggregation.
     phoenix8(
     # Respiratory
     pf_ratio = PFR,
@@ -626,6 +644,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   )
 
   rtn <- phxdft_select(DF, cols = id.vars)
+  # TeX: eq:pss-fcd, eq:sepsis-fcd, and eq:septicshock-fcd.
   rtn <- phxdft_set(rtn, j = "fcd_sepsis_score", value = p8[["phoenix_sepsis_score"]])
   rtn <- phxdft_set(rtn, j = "fcd_sepsis", value = as.integer(p8[["phoenix_sepsis_score"]] >= sigma))
   rtn <- phxdft_set(rtn, j = "fcs_septic_shock", value = rtn[["fcd_sepsis"]] * as.integer(p8[["phoenix_cardiovascular_score"]] >= kappa))

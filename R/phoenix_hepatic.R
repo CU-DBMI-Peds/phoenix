@@ -85,5 +85,6 @@ phoenix_hepatic <- function(bilirubin = NA_real_, alt = NA_real_, data = parent.
   bil <- replace(bil, which(is.na(bil)), 0)
   alt <- replace(alt, which(is.na(alt)), 0)
 
+  # TeX: eq:bilirubin, eq:alt, and eq:hepatic.
   as.integer( (bil >= 4) | (alt > 102) )
 }

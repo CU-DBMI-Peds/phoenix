@@ -119,5 +119,6 @@ phoenix_neurologic <- function(gcs = NA_integer_, fixed_pupils = NA_real_, data 
   gcs[is.na(gcs)] <- 15L
   stopifnot(all(gcs %in% as.integer(3:15)))
 
+  # TeX: eq:gcscontribution, eq:pupils, and eq:neuro.
   pmin(fpl * 2L + as.integer(gcs <= 10), 2L)
 }

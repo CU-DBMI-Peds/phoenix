@@ -87,6 +87,7 @@ phoenix_immunologic <- function(anc = NA_real_, alc = NA_real_, data = parent.fr
   anc <- replace(anc, which(is.na(anc)), 555)
   alc <- replace(alc, which(is.na(alc)), 1111)
 
+  # TeX: eq:anc, eq:alc, and eq:immu.
   as.integer((anc < 0.500) | (alc < 1.000)) 
 
 }
