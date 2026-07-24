@@ -22,6 +22,7 @@
 \newcommand{\Ccoag}{\boldsymbol{C}_{\mathrm{coag}}}
 
 \newcommand{\maxtinT}{\max_{t \in T}}
+\newcommand{\mintinT}{\min_{t \in T}}
 
 \NewDocumentCommand{\CF}{m O{\boldsymbol{m}}}{\mathcal{C}[\mathrm{ #1 }]\left(t; #2 \right)}
 
@@ -250,7 +251,7 @@ Detailed definitions for the functions will follow in
 
     $\max$ &
     Maximum operator. &
-    $\max_{t \in T} f(t)$ evaluates $f(t)$ over all
+    $\maxtinT f(t)$ evaluates $f(t)$ over all
     $t \in T$ and returns the maximum value. $\max \boldsymbol{A}$
     returns the largest value of the set $\boldsymbol{A}$, e.g., $\max\left\{1,
     2, 3\right\} = 3.$\\
@@ -258,7 +259,7 @@ Detailed definitions for the functions will follow in
     \rowcolor{gray!20}
     $\min$ &
     Minimum operator. &
-    $\min_{t \in T} f(t)$ evaluates $f(t)$ over all
+    $\mintinT f(t)$ evaluates $f(t)$ over all
     $t \in T$ and returns the minimum value. $\min \boldsymbol{A}$
     returns the smallest value of the set $\boldsymbol{A}$, e.g., $\min\left\{1,
     2, 3\right\} = 1.$ \\
@@ -337,6 +338,34 @@ Detailed definitions for the functions will follow in
     Missing, unknown, or undefined value. &
     Returned when a required measurement is unavailable. \\
 
+  \addlinespace[0.5em]
+  \multicolumn{3}{l}{\textbf{Interval-Level Status and Scores}} \\
+    \rowcolor{gray!20}
+    $\mathrm{SI}(T)$
+    &
+    Suspected infection status during the interval $T$.
+    &
+    Equals 1 when the qualifying infectious test and anti-infective
+    administration occur within $T$; otherwise 0.
+    \\
+
+    $\mathrm{ODSS}_{d}(T;\boldsymbol{m},\mathrm{Age})$
+    &
+    Organ Dysfunction Summary Score for the organ-system set $\Omega_d$.
+    &
+    Summarizes organ dysfunction over $T$ independently of suspected
+    infection status.
+    \\
+
+    \rowcolor{gray!20}
+    $\mathrm{PSS}_{d}(T;\boldsymbol{m},\mathrm{Age})$
+    &
+    Phoenix Sepsis Score for the organ-system set $\Omega_d$.
+    &
+    Defined as $\mathrm{SI}(T)\mathrm{ODSS}_{d}
+    (T;\boldsymbol{m},\mathrm{Age})$.
+    \\
+
 \end{longtable}
 
 Two points are especially important for reading the rest of the
@@ -411,9 +440,9 @@ Define the staleness of the measurement:
     \end{cases}
 \end{equation}
 
-We define a staleness-limited carry-forward operator. Carry forward when
-working with retrospective data, a look back limit when working with
-prospective or real time data. For $m \geq 0$ minutes,
+We define a staleness-limited carry-forward operator. This operator represents
+carry-forward when working retrospectively and a look-back limit when working
+prospectively or in real time. For $m \geq 0$ minutes,
 \begin{equation}
   \label{eq:carry-forward}
   \mathcal{C}\left[X\right](t;m)\coloneqq
@@ -450,7 +479,7 @@ the available values of $f.$ Define:
 Then
 \begin{equation}
   \label{eq:max-available-values}
-  \max_{t \in T} f\left(t\right) \coloneqq
+  \maxtinT f\left(t\right) \coloneqq
     \begin{cases}
       \max \mathcal{A}_{f}\left(T\right) & \mathcal{A}_{f}\left(T\right) \ne \emptyset \\
       \mathrm{NA} & \mathcal{A}_{f}\left(T\right) = \emptyset,
@@ -459,7 +488,7 @@ Then
 and
 \begin{equation}
   \label{eq:min-available-values}
-  \min_{t \in T} f\left(t\right) \coloneqq
+  \mintinT f\left(t\right) \coloneqq
     \begin{cases}
       \min \mathcal{A}_{f}\left(T\right) & \mathcal{A}_{f}\left(T\right) \ne \emptyset \\
       \mathrm{NA} & \mathcal{A}_{f}\left(T\right) = \emptyset.
@@ -501,7 +530,7 @@ Table~\ref{tab:resp-ehr}.
 
 \begin{table}
   \centering
-  \caption{EHR Inputs for Respiratory Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Respiratory Organ Dysfunction Scoring.}
   \label{tab:resp-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -663,7 +692,7 @@ where
 
 The PEEP limit of 3~cm H$_2$O is used to limit false positives while limiting false
 negatives.  Similar limits have been used in other criteria.  For example, the
-lung injury score\citep{martin2001airway} uses a PEEP of 5~cm H$_2$O for 0 points
+lung injury score~\citep{martin2001airway} uses a PEEP of 5~cm H$_2$O for 0 points
 and 6-8~cm H$_2$O.  Further, \cite{martin2001airway} states a PEEP of 5~cm H$_2$O and
 $\fiotwo < 0.5$ as part of the criteria for identifying patients ready to accept a
 trial of spontaneous breathing.
@@ -734,7 +763,7 @@ pressure thresholds). See Table~\ref{tab:card-ehr}.
 
 \begin{table}
   \centering
-  \caption{EHR Inputs for Cardiovascular Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Cardiovascular Organ Dysfunction Scoring.}
   \label{tab:card-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -797,12 +826,12 @@ line) and how we handle timing.
 
 \paragraph{Vasoactive Medications}
 
-Each of the six vasoactive medications
+Each of the six vasoactive medications,
 \begin{equation}
   \label{eq:vasoactive-medications}
   \boldsymbol{V} \coloneqq \{\mathrm{Dobutamine}, \mathrm{Dopamine},
   \mathrm{Epinephrine}, \mathrm{Milrinone}, \mathrm{Norepinephrine},
-  \mathrm{Vasopressin} \}
+  \mathrm{Vasopressin} \},
 \end{equation}
 are to be assessed as 0/1 indicators. Either the patient is receiving systemic
 vasoactive medication for the purpose of cardiovascular support or they are not.
@@ -974,7 +1003,7 @@ and the presence of bilaterally fixed pupils. See Table~\ref{tab:neuro-ehr}.
 
 \begin{table}
   \centering
-  \caption{EHR Inputs for Neurological Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Neurological Organ Dysfunction Scoring.}
   \label{tab:neuro-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -1098,7 +1127,7 @@ platelets, INR, D-dimer, and fibrinogen. See Table~\ref{tab:coag-ehr}.
 
 \begin{table}
   \centering
-  \caption{EHR Inputs for Coagulation Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Coagulation Organ Dysfunction Scoring.}
   \label{tab:coag-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -1124,7 +1153,7 @@ platelets, INR, D-dimer, and fibrinogen. See Table~\ref{tab:coag-ehr}.
 
 There are no variables to construct.
 
-\subsubsection{Coagulation Organ Dysfunction Score}\label{sec:coag-odss}
+\subsubsection{Coagulation Organ Dysfunction Score}\label{sec:coag-score}
 Each indicator below tests whether a lab value crosses a clinically
 relevant threshold. The score sums how many thresholds are met, then
 caps at 2 points.
@@ -1174,7 +1203,7 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
 
 \begin{table}
   \centering
-  \caption{EHR Inputs for Endocrine Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Endocrine Organ Dysfunction Scoring.}
   \label{tab:endo-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -1199,7 +1228,7 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
 \subsubsection{Constructed Variables}\label{sec:endo-constructed}
 There are no constructed variables to define.
 
-\subsubsection{Endocrine Organ Dysfunction Score}\label{sec:endo-odss}
+\subsubsection{Endocrine Organ Dysfunction Score}\label{sec:endo-score}
 The endocrine score converts glucose into a binary dysfunction indicator. Values
 outside the normal operating range contribute one point, while values within the
 range contribute zero points.
@@ -1226,7 +1255,7 @@ cubic millimeter. See Table~\ref{tab:immu-ehr}.
 
 \begin{table}
   \centering
-  \caption{EHR Inputs for Immunologic Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Immunologic Organ Dysfunction Scoring.}
   \label{tab:immu-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -1306,7 +1335,7 @@ Table~\ref{tab:hepatic-ehr}.
 
 \begin{table}
   \centering
-  \caption{EHR Inputs for Hepatic Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Hepatic Organ Dysfunction Scoring.}
   \label{tab:hepatic-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -1384,7 +1413,7 @@ the renal dysfunction score is the creatinine.
 See Table~\ref{tab:renal-ehr}.
 \begin{table}
   \centering
-  \caption{EHR Inputs for Renal Organ Dysfunction Scoring}
+  \caption{EHR Inputs for Renal Organ Dysfunction Scoring.}
   \label{tab:renal-ehr}
   \begin{tabular}{lllll}
     \toprule
@@ -1432,7 +1461,7 @@ in the cardiovascular scoring, \eqref{eq:theta1} and \eqref{eq:theta2}.
   \end{cases}
 \end{equation}
 
-\subsection{Suspected Infection}\label{sec:suspected-infection}
+\section{Suspected Infection}\label{sec:suspected-infection}
 
 A patient is defined to have a suspected infection if they have at least
 one infectious test \emph{ordered} and at least one dose of a systemic
@@ -1448,17 +1477,17 @@ test was ordered. Let $t_{2}$ denote the time when the first dose of
 % R: prepare_antimicrobials()
 a systemic anti-infectious agent was administered.
 
-Suspected infection status is defined as
+Suspected infection status is defined as:
 \begin{equation}
   \label{eq:suspected-infection}
   % R: prepare_phoenix_data() constructs SUSPECTED_INFECTION.
-  \SI \coloneqq \maxtinT \left( \mathbb{I}\left\{t \geq t_{1}\right\} \times \mathbb{I}\left\{t \geq t_{2}\right\} \right).
+  \SI \coloneqq \mathbb{I}\left\{t_{1} \in T \right\} \times \mathbb{I}\left\{t_{2} \in T \right\}.
 \end{equation}
 That is, a patient is considered to have a suspected infection if during the
 time interval $T$ at least one dose of systemic anti-infective agent and at
 least one infectious test has been ordered.
 
-\section{Phoenix Sepsis Score}\label{define-phoenix-sepsis-score}
+\section{Organ Dysfunction Summary Score and Phoenix Sepsis Score}\label{define-phoenix-sepsis-score}
 
 This section combines the organ dysfunction scores with suspected infection to
 define the Phoenix Sepsis Score, sepsis, and septic shock. It also distinguishes
@@ -1477,16 +1506,11 @@ entities $x.$ Each scoring function depends only on the elements of
 $\boldsymbol{m}$, and on $\mathrm{Age},$ that are relevant to its definition;
 all other arguments are ignored.
 
-The organ dysfunction summary score (ODSS) summarizes organ dysfunction over $T$
-regardless of suspected infection status. This makes ODSS useful as a severity
-measure even when a patient does not meet the operational definition of
-suspected infection. The Phoenix Sepsis Score (PSS) combines ODSS with evidence
-of suspected infection (via SI), so it reflects organ dysfunction in the
-presence of suspected infection.
-
-Importantly: The ODSS is a convenience score and has not been evaluated in the
-absence of suspected infection; the development of PSS only investigated ODSS
-in the presence of suspected infection~\citep{sanchezpinto_2024_development}.
+The ODSS permits organ-dysfunction burden to be summarized independently of
+suspected infection status. However, ODSS is introduced here as a convenience
+measure and has not been evaluated as a standalone clinical score; the Phoenix
+development work evaluated the underlying organ dysfunction score in conjunction
+with suspected infection~\citep{sanchezpinto_2024_development,schlapbach_2024_international}.
 \begin{equation}
   \label{eq:odss}
   % R: phoenix(); phoenix8(); score_prepared_phoenix_data(..., aggregation = "jama2024")
@@ -1512,22 +1536,23 @@ The Phoenix Sepsis Score is then:
 \end{equation}
 
 Sepsis is defined as organ-dysfunction in the presence of a suspected
-infection.  Specifically, the four-system ODSS of at least $\sigma > 0:$
+infection, that is:
 \begin{equation}
   \label{eq:sepsis}
   % R: phoenix(); score_prepared_phoenix_data(..., aggregation = "jama2024")
   \Sepsis \coloneqq \mathbb{I} \left\{\PSS{4} \geq \sigma \right\}.
 \end{equation}
 
-Septic Shock is sepsis with at least $\kappa$ point(s) from cardiovascular dysfunction.
+Septic shock is sepsis with at least $\kappa$ point(s) from cardiovascular dysfunction.
 \begin{equation}
   \label{eq:septicshock}
   % R: phoenix(); score_prepared_phoenix_data(..., aggregation = "jama2024")
-  \SepticShock \coloneqq
-    \SI
+  \begin{split}
+    \SepticShock & \coloneqq \SI \\ & \times
     \mathbb{I} \left\{
       \maxtinT \left( \sum_{x \in \Omega_{4}} \DS*{x} \mathbb{I}\left\{\DS{Card} \geq \kappa \right\} \right)
     \geq \sigma \right\},
+  \end{split}
 \end{equation}
 where $\sigma \geq \kappa > 0.$
 Note that the specific shock definition does not simply consider any
@@ -1566,7 +1591,7 @@ following parameter values in Table~\ref{tab:phoenix-parameters} were used:
   \addlinespace[0.5em]
   \multicolumn{3}{l}{\textbf{Time Window}} \\
   \rowcolor{gray!20}
-  ~~$T$ & $\left[0, 1440\right)$ & The first 24-hours of the encounter \\
+  ~~$T$ & $\left[0, 1440\right)$ & The first 24h ours of the encounter \\
 
   \multicolumn{3}{l}{\textbf{Thresholds}} \\
   \rowcolor{gray!20}
@@ -1597,11 +1622,12 @@ Importantly, restricting the maximization to $t \in T$ does not truncate the
 underlying data. For any $t \in T$, the carry-forward operator
 $\mathcal{C}[\cdot](t;m)$ can still use measurements recorded before $T$ (even
 at negative times) as long as they fall within the look-back window $m$.
-Conceptually, this JAMA ODSS definition is time-aligned: at each time $t$ we sum
-the organ dysfunction components evaluated at that same time, then take the
-maximum of that sum over $T$. This preserves temporal alignment across organ
-systems, so a high score reflects concurrent multi-organ dysfunction at a single
-time point.
+Conceptually, the ODSS corresponding to the published
+aggregation~\citep{sanchezpinto_2024_development,schlapbach_2024_international}
+is time-aligned: at each time $t$ we sum the organ dysfunction components
+evaluated at that same time, then take the maximum of that sum over $T$. This
+preserves temporal alignment across organ systems, so a high score reflects
+concurrent multi-organ dysfunction at a single time point.
 
 \section{Exploratory Aggregation Schemes}\label{sec:eas}
 
@@ -1622,7 +1648,7 @@ the max of each of the organ system dysfunction scores.
   \label{eq:odss-olm}
   % R: score_prepared_phoenix_data(..., aggregation = "olm"); olm()
   \ODSS{d}[OLM] \coloneqq
-  \sum_{x \in \Omega_{d}} \max_{t \in T} \DS*{x},
+  \sum_{x \in \Omega_{d}} \maxtinT \DS*{x},
   \quad d \in \left\{4, 8\right\}.
 \end{equation}
 $\ODSS{d}[OLM]$ decouples time across organ systems. It takes the
@@ -1656,7 +1682,7 @@ primary definition \eqref{eq:sepsis}.
   \Sepsis[OLM] \coloneqq
   \mathbb{I} \left\{\PSS{4}[OLM] \geq \sigma \right\}.
 \end{equation}
-Septic Shock, for organ-level maxima, is an easier calculation than the primary
+Septic shock, for organ-level maxima, is an easier calculation than the primary
 definition \eqref{eq:septicshock}.  Since each organ system is considered
 independently over $T$ then we only need to know that the contribution from the
 cardiovascular system is at least $\kappa.$
@@ -1664,7 +1690,7 @@ cardiovascular system is at least $\kappa.$
   \label{eq:septicshock-olm}
   % R: score_prepared_phoenix_data(..., aggregation = "olm"); olm()
   \SepticShock[OLM] \coloneqq
-  \mathbb{I} \left\{ \max_{t \in T} \DS{Card} \geq \kappa\right\}
+  \mathbb{I} \left\{ \maxtinT \DS{Card} \geq \kappa\right\}
   \Sepsis[OLM],
 \end{equation}
 for $\sigma \geq \kappa > 0.$
@@ -1674,35 +1700,39 @@ for $\sigma \geq \kappa > 0.$
 In this exploratory aggregation scheme we decouple all organ systems as done in
 the OLM
 and decouple the three cardiovascular components: vasoactive medications, MAP,
-and lactate within the cardiovascular system.  Note: vasocatives can be
+and lactate within the cardiovascular system.  Note: vasoactives can be
 decoupled further than they are in this exploratory aggregation scheme.  In this
-scheme, at time $t,$, we assign 0 points for zero medications, 1 point for one
+scheme, at time $t,$ we assign 0 points for zero medications, 1 point for one
 medication, and 2 points for two or more concurrent medications.  In
 \S~\ref{sec:fcd} we will fully decouple the vasoactive medications.
 \begin{equation}
   \label{eq:odss-ccd}
   % R: score_prepared_phoenix_data(..., aggregation = "ccd"); ccd()
-  \ODSS{d}[CCD] \coloneqq \\
-  \Bigg[
-    \sum_{x \in \Omega_{d}\setminus \left\{\mathrm{Card}\right\}} \max_{t \in T} \DS*{x} +
-    \sum_{x \in \Ccard} \max_{t \in T} \DS*{x}
-  \Bigg].
+  \begin{aligned}
+    \ODSS{d}[CCD] \coloneqq{}&
+    \smashoperator[r]{\sum_{x \in \Omega_{d}\setminus \left\{\mathrm{Card}\right\}}} \maxtinT \DS*{x}
+    \\
+    &+ \smashoperator[r]{\sum_{x \in \Ccard}} \maxtinT \DS*{x},
+    \quad d \in \left\{4, 8\right\}.
+  \end{aligned}
 \end{equation}
+This definition leads to the relationship:
+\begin{equation}
+  \label{eq:odss-ccd-bound}
+  \ODSS{d} \leq \ODSS{d}[OLM] \leq \ODSS{d}[CCD].
+\end{equation}
+
 This exploratory ODSS leads to the exploratory PSS definition:
 \begin{equation}
   \label{eq:pss-ccd}
   % R: score_prepared_phoenix_data(..., aggregation = "ccd"); ccd()
-  \PSS{d}[CCD] \coloneqq \SI \ODSS{d}[CCD].
+  \PSS{d}[CCD] \coloneqq \SI \ODSS{d}[CCD], \quad d \in \left\{4, 8\right\}.
 \end{equation}
-The definitions for sepsis is structurally the same as the primary and OLM
+The definition of sepsis is structurally the same as the primary and OLM
 variants.
-\begin{equation}
-  \label{eq:odss-ccd-bound}
-  \ODSS{d} \leq \ODSS{d}[OLM] \leq \mathrm{ODS}_{d}[CCD].
-\end{equation}
 
-Septic Shock definition for this exploratory aggregation scheme also decouples
-the contributions of the vasoactives, MAP, and Lactate.
+Septic shock definition for this exploratory aggregation scheme also decouples
+the contributions of the vasoactives, MAP, and lactate.
 \begin{equation}
   \label{eq:sepsis-ccd}
   % R: score_prepared_phoenix_data(..., aggregation = "ccd"); ccd()
@@ -1714,8 +1744,8 @@ and
   \label{eq:septicshock-ccd}
   % R: score_prepared_phoenix_data(..., aggregation = "ccd"); ccd()
   \SepticShock[CCD]\coloneqq
-  \left[ \Sepsis[CCD] \right]
-  \mathbb{I} \left\{ \sum_{x \in \Ccard}\max_{t \in T} \DS*{x} \geq \kappa\right\}
+  \Sepsis[CCD]
+  \mathbb{I} \left\{ \smashoperator[r]{\sum_{x \in \Ccard}} \maxtinT \DS*{x} \geq \kappa\right\},
 \end{equation}
 for $\sigma \geq \kappa > 0.$
 
@@ -1734,17 +1764,17 @@ within T.
   % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
   \begin{split}
     \mathrm{Resp}^{\mathrm{FCD}}\left(T;\m{resp}\right) \coloneqq{}
-    & \max_{t \in T} \left( \IMV \right) \times \left(\mathbb{I}\{B_3(T; \m{resp})\} + \mathbb{I}\{B_2(T; \m{resp})\}\right) \\
-    &+ \max_{t \in T} \left(\ORS\right) \times \mathbb{I}\{B_1(T; \m{resp})\},
+    & \maxtinT \left( \IMV \right) \times \left(\mathbb{I}\{B_3(T; \m{resp})\} + \mathbb{I}\{B_2(T; \m{resp})\}\right) \\
+    &+ \maxtinT \left(\ORS\right) \times \mathbb{I}\{B_1(T; \m{resp})\},
   \end{split}
 \end{equation}
 where
 \begin{equation}
   \label{eq:resp-fcd-conditions}
 \begin{aligned}
-  B_1(T; \m{resp}) &\coloneqq \min_{t \in T} \PFR < 400 \vee \min_{t \in T} \SFR < 292, \\
-  B_2(T; \m{resp}) &\coloneqq \min_{t \in T} \PFR < 200 \vee \min_{t \in T} \SFR < 220, \\
-  B_3(T; \m{resp}) &\coloneqq \min_{t \in T} \PFR < 100 \vee \min_{t \in T} \SFR < 148.
+  B_1(T; \m{resp}) &\coloneqq \mintinT \PFR < 400 \vee \mintinT \SFR < 292, \\
+  B_2(T; \m{resp}) &\coloneqq \mintinT \PFR < 200 \vee \mintinT \SFR < 220, \\
+  B_3(T; \m{resp}) &\coloneqq \mintinT \PFR < 100 \vee \mintinT \SFR < 148.
 \end{aligned}
 \end{equation}
 
@@ -1755,23 +1785,26 @@ independently resulting in:
   % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
   \mathrm{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) \coloneqq
   \min\left\{2, \sum_{v \in \boldsymbol{V}}
-  \max_{t \in T} \mathbb{I}\left\{\mathcal{C}[v](t;\m{vaso}) = 1\right\}
+  \maxtinT \mathbb{I}\left\{\mathcal{C}[v](t;\m{vaso}) = 1\right\}
   \right\}.
 \end{equation}
 The fully decoupled ODSS is:
-\begin{multline}
+\begin{equation}
   \label{eq:odss-fcd}
   % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
-  \ODSS{d}[FCD] \coloneqq \\
-    \shoveleft{ \quad \quad
-      \Bigg[
+  \begin{aligned}
+  \ODSS{d}[FCD] \coloneqq{}&
         \mathrm{Resp}^{\mathrm{FCD}}\left(T;\m{resp}\right) +
-        \mathrm{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) +
-    } \\
-      \min \left\{ 2, \sum_{x \in \Ccoag} \max_{t \in T} \DS*{x}[\boldsymbol{m}]\right\}
-      + \sum_{x \in \omega_{d}} \max_{t \in T} \DS*{x}
-    \Bigg],
-\end{multline}
+        \mathrm{Vasos}^{\mathrm{FCD}}(T;\m{vaso})
+    \\
+    &+
+      \min \left\{ 2, \smashoperator[r]{\sum_{x \in \Ccoag}} \maxtinT \DS*{x}[\m{coag}]\right\}
+    \\
+    &+
+      \sum_{x \in \omega_{d}} \maxtinT \DS*{x}
+    , \quad d \in \left\{4, 8\right\}.
+  \end{aligned}
+\end{equation}
 where
 \begin{equation}
   \label{eq:omega4-fcd}
@@ -1786,9 +1819,20 @@ Note: the contributions from neurologic, immunologic, and hepatic scores do
 consider more than one input from the EHR.  However, because
 \begin{equation}
   \label{eq:max-of-max-decomposition}
-  \max_{t \in T} \max \left\{ \DS{GCS}[\m{gcs}], \DS{Pupils}[\m{pupil}] \right\}
-  =
-  \max \left\{ \max_{t \in T} \DS{GCS}[\m{gcs}], \max_{t \in T} \DS{Pupils}[\m{pupil}] \right\}
+   \begin{aligned}
+    \maxtinT
+    \max\left\{
+      \DS{GCS}[\m{gcs}],
+      \DS{Pupils}[\m{pupil}]
+    \right\}
+    &=
+    \max\Biggl\{
+      \maxtinT \DS{GCS}[\m{gcs}],
+      \\
+    &\qquad
+      \maxtinT \DS{Pupils}[\m{pupil}]
+    \Biggr\}.
+  \end{aligned}
 \end{equation}
 we need not explicitly decouple these component scores.
 
@@ -1802,7 +1846,7 @@ The exploratory Phoenix sepsis score is:
 \begin{equation}
   \label{eq:pss-fcd}
   % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
-  \PSS{d}[FCD] \coloneqq \SI \ODSS{d}[FCD],
+  \PSS{d}[FCD] \coloneqq \SI \ODSS{d}[FCD], \quad d \in \left\{4, 8\right\}.
 \end{equation}
 and Sepsis is defined as:
 \begin{equation}
@@ -1816,9 +1860,15 @@ Septic shock is defined as follows:
 \begin{equation}
   \label{eq:septicshock-fcd}
   % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
-  \SepticShock[FCD]\coloneqq
-  \Sepsis[FCD]
-  \mathbb{I} \left\{ \mathrm{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) \geq \kappa \right\}
+  \begin{split}
+    \SepticShock[FCD] &\coloneqq \Sepsis[FCD] \\ & \times
+    \mathbb{I} \left\{
+        \mathrm{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) +
+        \smashoperator[r]{\sum_{x \in \left\{\mathrm{MAP}, \mathrm{Lactate}\right\}}}
+        \maxtinT \DS*{x}
+      \geq \kappa
+    \right\}
+  \end{split}
 \end{equation}
 for $\sigma \geq \kappa > 0.$
 
