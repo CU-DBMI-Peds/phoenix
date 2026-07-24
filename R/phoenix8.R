@@ -167,7 +167,7 @@ phoenix8 <- function(
   cl[[1]] <- get("phoenix_hepatic", mode = "function")
   rtn$phoenix_hepatic_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
-  # TeX: eq:pss and eq:omega8.
+  # TeX: eq:odss and eq:omega8.
   rtn$phoenix8_sepsis_score <-
     rtn[["phoenix_sepsis_score"]] +
     rtn[["phoenix_endocrine_score"]] +

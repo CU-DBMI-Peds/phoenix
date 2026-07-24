@@ -23,7 +23,7 @@ sepsis or septic shock.}
 \item{T1}{The end of the observation window for assessing if the patient has
 sepsis or septic shock.}
 
-\item{sigma}{numeric (integer) value, sepsis = sepsis_score >= sigma.}
+\item{sigma}{numeric (integer) value, sepsis = PSS >= sigma.}
 
 \item{kappa}{numeric (integer) value, minimum cardiovascular score required
 to flag septic shock.}
@@ -34,18 +34,36 @@ See Details.}
 
 \item{verbose}{when \code{TRUE}, display progress messages}
 }
+\value{
+A scored data frame with one row per encounter identifier. The output
+  always includes \code{suspected_infection}. For the selected aggregation it
+  includes four-organ ODS, four-organ PSS, sepsis and septic shock indicators,
+  eight-organ ODS, and eight-organ PSS. For example,
+  \code{aggregation = "jama2024"} returns
+  \code{phoenix_organ_dysfunction_score},
+  \code{phoenix_sepsis_score}, \code{phoenix_sepsis},
+  \code{phoenix_septic_shock},
+  \code{phoenix8_organ_dysfunction_score}, and
+  \code{phoenix8_sepsis_score}.
+}
 \description{
-Apply the published and experimental aggregation schema and scoring to
-prepared Phoneix Data.
+Apply the published and experimental aggregation schemes to prepared Phoenix
+data.
 }
 \details{
-TODO: Make a nice table and and pros
+Organ dysfunction scores (ODS) are computed for all encounters regardless of
+suspected infection status. Phoenix Sepsis Scores (PSS) are then computed as
+the product of the window-level suspected infection indicator and ODS. Thus,
+encounters without suspected infection can have positive ODS columns and zero
+PSS columns.
 
-published  Published, time-aligned Phoenix aggregation
-olm        Exploratory aggregation scheme 1: organ-level maxima
-ccd       Exploratory aggregation scheme 2: organ-level maxima with
-           cardiovascular component decoupling
-fcd       Total decoupling
+Aggregation schemes:
+\describe{
+  \item{jama2024}{Published, time-aligned Phoenix aggregation.}
+  \item{olm}{Organ-level maxima.}
+  \item{ccd}{Organ-level maxima with cardiovascular component decoupling.}
+  \item{fcd}{Full component decoupling.}
+}
 }
 \references{
 See reference details in \code{\link{phoenix-package}} or by calling

@@ -8,8 +8,8 @@ source("utilities.R")
 #   prepare_<input>() -> prepare_phoenix_data() -> score_prepared_phoenix_data()
 #
 # The fixture has two encounters.  E1 has suspected infection and organ
-# dysfunction across all Phoenix/Phoenix-8 systems.  E2 has no suspected
-# infection, so it should be carried through the output but not scored.
+# dysfunction across all Phoenix/Phoenix-8 systems.  E2 has organ dysfunction
+# without suspected infection, so ODS is positive and PSS is zero.
 ################################################################################
 
 id.vars <- c("hospital", "patient", "encounter")
@@ -83,7 +83,7 @@ build_prepared_end_to_end <- function(backend) {
     gcsverbal = prepare_range_input(prepare_gcsverbal, "gcsverbal", c(3, 5), backend),
     gcsmotor = prepare_range_input(prepare_gcsmotor, "gcsmotor", c(4, 6), backend),
     pupils = prepare_range_input(prepare_pupils, "pupils", c(0, 0), backend),
-    platelets = prepare_range_input(prepare_platelets, "platelets", c(80, 200), backend),
+    platelets = prepare_range_input(prepare_platelets, "platelets", c(80, 80), backend),
     glucose = prepare_range_input(prepare_glucose, "glucose", c(160, 100), backend),
     anc = prepare_range_input(prepare_anc, "anc", c(0.4, 2.0), backend),
     creatinine = prepare_range_input(prepare_creatinine, "creatinine", c(0.7, 0.3), backend),
@@ -137,13 +137,17 @@ assert_end_to_end <- function(backend) {
     inherits(scored, "scored_prepared_phoenix_data"),
     inherits(scored, expected_prepared_class(backend)),
     identical(scored[["suspected_infection"]], c(1L, 0L)),
+    isTRUE(all.equal(scored[["phoenix_organ_dysfunction_score"]][1], 5)),
     isTRUE(all.equal(scored[["phoenix_sepsis_score"]][1], 5)),
     isTRUE(all.equal(scored[["phoenix_sepsis"]][1], 1)),
     isTRUE(all.equal(scored[["phoenix_septic_shock"]][1], 1)),
+    isTRUE(all.equal(scored[["phoenix8_organ_dysfunction_score"]][1], 9)),
     isTRUE(all.equal(scored[["phoenix8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(scored[["phoenix_organ_dysfunction_score"]][2], 1)),
     isTRUE(all.equal(scored[["phoenix_sepsis_score"]][2], 0)),
     isTRUE(all.equal(scored[["phoenix_sepsis"]][2], 0)),
     isTRUE(all.equal(scored[["phoenix_septic_shock"]][2], 0)),
+    isTRUE(all.equal(scored[["phoenix8_organ_dysfunction_score"]][2], 1)),
     isTRUE(all.equal(scored[["phoenix8_sepsis_score"]][2], 0))
   )
 
@@ -157,21 +161,41 @@ assert_end_to_end <- function(backend) {
   fcd <- sort_by_encounter(fcd)
 
   stopifnot(
+    isTRUE(all.equal(olm[["olm_organ_dysfunction_score"]][1], 5)),
     isTRUE(all.equal(olm[["olm_sepsis_score"]][1], 5)),
     isTRUE(all.equal(olm[["olm_sepsis"]][1], 1)),
     isTRUE(all.equal(olm[["olm_septic_shock"]][1], 1)),
+    isTRUE(all.equal(olm[["olm_8_organ_dysfunction_score"]][1], 9)),
     isTRUE(all.equal(olm[["olm_8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(olm[["olm_organ_dysfunction_score"]][2], 1)),
+    isTRUE(all.equal(olm[["olm_sepsis_score"]][2], 0)),
+    isTRUE(all.equal(olm[["olm_sepsis"]][2], 0)),
+    isTRUE(all.equal(olm[["olm_septic_shock"]][2], 0)),
+    isTRUE(all.equal(olm[["olm_8_organ_dysfunction_score"]][2], 1)),
+    isTRUE(all.equal(olm[["olm_8_sepsis_score"]][2], 0)),
+    isTRUE(all.equal(ccd[["ccd_organ_dysfunction_score"]][1], 5)),
     isTRUE(all.equal(ccd[["ccd_sepsis_score"]][1], 5)),
     isTRUE(all.equal(ccd[["ccd_sepsis"]][1], 1)),
     isTRUE(all.equal(ccd[["ccd_septic_shock"]][1], 1)),
+    isTRUE(all.equal(ccd[["ccd_8_organ_dysfunction_score"]][1], 9)),
     isTRUE(all.equal(ccd[["ccd_8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(ccd[["ccd_organ_dysfunction_score"]][2], 1)),
+    isTRUE(all.equal(ccd[["ccd_sepsis_score"]][2], 0)),
+    isTRUE(all.equal(ccd[["ccd_sepsis"]][2], 0)),
+    isTRUE(all.equal(ccd[["ccd_septic_shock"]][2], 0)),
+    isTRUE(all.equal(ccd[["ccd_8_organ_dysfunction_score"]][2], 1)),
+    isTRUE(all.equal(ccd[["ccd_8_sepsis_score"]][2], 0)),
+    isTRUE(all.equal(fcd[["fcd_organ_dysfunction_score"]][1], 5)),
     isTRUE(all.equal(fcd[["fcd_sepsis_score"]][1], 5)),
     isTRUE(all.equal(fcd[["fcd_sepsis"]][1], 1)),
     isTRUE(all.equal(fcd[["fcd_septic_shock"]][1], 1)),
+    isTRUE(all.equal(fcd[["fcd_8_organ_dysfunction_score"]][1], 9)),
     isTRUE(all.equal(fcd[["fcd_8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(fcd[["fcd_organ_dysfunction_score"]][2], 1)),
     isTRUE(all.equal(fcd[["fcd_sepsis_score"]][2], 0)),
     isTRUE(all.equal(fcd[["fcd_sepsis"]][2], 0)),
     isTRUE(all.equal(fcd[["fcd_septic_shock"]][2], 0)),
+    isTRUE(all.equal(fcd[["fcd_8_organ_dysfunction_score"]][2], 1)),
     isTRUE(all.equal(fcd[["fcd_8_sepsis_score"]][2], 0))
   )
 }
