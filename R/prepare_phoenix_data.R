@@ -314,7 +314,8 @@ prepare_phoenix_data <-
   ##############################################################################
   ### Constructed variables
 
-  # PFRatio: only valid if FIO2 is the same age, or older, than the PAO2 value
+  # PFRatio: only valid if FIO2 is the same age, or older, than the PAO2 value.
+  # TeX: eq:pfr-validity and eq:pfr.
   if (verbose) message("Constructing and combining variables...")
 
   if (verbose) message("  PaO2/FiO2...")
@@ -328,7 +329,8 @@ prepare_phoenix_data <-
     )
 
   # SFRatio: only valid if FIO2 is the same age or, or older, than the SPO2
-  # value and SPO2 <= 97
+  # value and SPO2 <= 97.
+  # TeX: eq:sfr-validity and eq:sfr.
   if (verbose) message("  SpO2/FiO2...")
   idx <- which((phxdata[["FIO2_eclock"]] <= phxdata[["SPO2_eclock"]]) & phxdata[["SPO2"]] <= 97)
   phxdata <-
@@ -367,6 +369,7 @@ prepare_phoenix_data <-
     )
 
   # Mean Arterial Pressure
+  # TeX: eq:map-candidates and eq:map-priority.
   # if MAPA exists, use it, if not, then estimate from the sbp_arterial and dbp_arterial.  If
   # both of those are missing, then use MAPC, and lastly estimate from sbp_cuff
   # and dbp_cuff
@@ -382,6 +385,7 @@ prepare_phoenix_data <-
     )
 
   # GCS
+  # TeX: eq:gcs and eq:gcs-components.
   # if the GSCTOTAL_eclock > max compoent eclock, use GCSTOTAL
   # if any of the components are younger than the total, use the sum of the
   # compoents
@@ -415,6 +419,7 @@ prepare_phoenix_data <-
   phxdata <- phxdft_set(phxdata, i = idx,  j = "GCS", value = phxdata[["GCSTOTAL"]][idx])
 
   # FIXEDPUPILS
+  # TeX: eq:pupils.
   phxdata <-
     phxdft_set(
       x = phxdata,
@@ -426,6 +431,7 @@ prepare_phoenix_data <-
     )
 
   # Suspected infection
+  # TeX: eq:suspected-infection.
   phxdata <-
     phxdft_set(
       x = phxdata,

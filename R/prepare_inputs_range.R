@@ -72,6 +72,7 @@ prepare_fio2 <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: respiratory EHR input \fiotwo; used in eq:pfr, eq:sfr, and eq:imv-conditions-part2.
 
   rtn <-
     prepare_variable(
@@ -102,6 +103,7 @@ prepare_spo2 <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: respiratory EHR input \spotwo; used in eq:sfr.
 
   rtn <-
     prepare_variable(
@@ -132,6 +134,7 @@ prepare_pao2 <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: respiratory EHR input \paotwo; used in eq:pfr.
 
   rtn <-
     prepare_variable(
@@ -161,9 +164,9 @@ prepare_mean_airway_pressure_ventilator <-
     valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-	  ) {
+  ) {
   # TeX: respiratory EHR input \pawvent, used in eq:imv-conditions.
-	  rtn <-
+  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
@@ -191,9 +194,9 @@ prepare_mean_airway_pressure_hfov <-
     valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-	  ) {
+  ) {
   # TeX: respiratory EHR input \pawhfov, used in eq:imv-conditions.
-	  rtn <-
+  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
@@ -221,9 +224,9 @@ prepare_positive_end_expiratory_pressure <-
     valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-	  ) {
+  ) {
   # TeX: respiratory EHR input \pawpeep, used in eq:imv-conditions.
-	  rtn <-
+  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
@@ -252,6 +255,7 @@ prepare_lactate <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input Lactate; used in eq:lactate.
   rtn <-
     prepare_variable(
       x = x,
@@ -281,6 +285,7 @@ prepare_sbp_cuff <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input \sbpc; used in eq:map-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -310,6 +315,7 @@ prepare_sbp_arterial <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input \sbpa; used in eq:map-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -339,6 +345,7 @@ prepare_dbp_cuff <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input \dbpc; used in eq:map-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -368,6 +375,7 @@ prepare_dbp_arterial <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input \dbpa; used in eq:map-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -397,6 +405,7 @@ prepare_mean_arterial_pressure_cuff <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input \mapc; used in eq:map-candidates and eq:map-priority.
   rtn <-
     prepare_variable(
       x = x,
@@ -426,6 +435,7 @@ prepare_mean_arterial_pressure_arterial <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input \mapa; used in eq:map-candidates and eq:map-priority.
   rtn <-
     prepare_variable(
       x = x,
@@ -455,6 +465,7 @@ prepare_platelets <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: coagulation EHR input Platelets; used in eq:coag-components.
   rtn <-
     prepare_variable(
       x = x,
@@ -484,6 +495,7 @@ prepare_inr <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: coagulation EHR input INR; used in eq:coag-components.
   rtn <-
     prepare_variable(
       x = x,
@@ -513,6 +525,7 @@ prepare_ddimer <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: coagulation EHR input DDimer; used in eq:coag-components.
   rtn <-
     prepare_variable(
       x = x,
@@ -542,6 +555,7 @@ prepare_fibrinogen <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: coagulation EHR input Fibrinogen; used in eq:coag-components.
   rtn <-
     prepare_variable(
       x = x,
@@ -571,6 +585,7 @@ prepare_glucose <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: endocrine EHR input Glucose; used in eq:endo.
   rtn <-
     prepare_variable(
       x = x,
@@ -600,6 +615,7 @@ prepare_anc <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: immunologic EHR input ANC; used in eq:anc and eq:immu.
   rtn <-
     prepare_variable(
       x = x,
@@ -629,6 +645,7 @@ prepare_alc <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: immunologic EHR input ALC; used in eq:alc and eq:immu.
   rtn <-
     prepare_variable(
       x = x,
@@ -658,6 +675,7 @@ prepare_creatinine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: renal EHR input Creatinine; used in eq:renal-score.
   rtn <-
     prepare_variable(
       x = x,
@@ -687,6 +705,7 @@ prepare_bilirubin <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: hepatic EHR input Bilirubin; used in eq:bilirubin and eq:hepatic.
   rtn <-
     prepare_variable(
       x = x,
@@ -716,6 +735,7 @@ prepare_alt <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: hepatic EHR input ALT; used in eq:alt and eq:hepatic.
   rtn <-
     prepare_variable(
       x = x,
@@ -744,6 +764,7 @@ prepare_age <-
     tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular and renal EHR input Age; used in eq:theta1, eq:theta2, eq:map, and eq:renal-score.
   rtn <-
     prepare_variable(
       x = x,

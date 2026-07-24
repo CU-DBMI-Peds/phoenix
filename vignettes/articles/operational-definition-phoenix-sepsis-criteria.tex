@@ -730,28 +730,42 @@ pressure thresholds).
   \endlastfoot
 
   \rowcolor{gray!20}
+  % R: prepare_dobutamine()
   Dobutamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+  % R: prepare_dopamine()
   Dopamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
   \rowcolor{gray!20}
+  % R: prepare_epinephrine()
   Epinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+  % R: prepare_milrinone()
   Milrinone & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
   \rowcolor{gray!20}
+  % R: prepare_norepinephrine()
   Norepinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+  % R: prepare_vasopressin()
   Vasopressin & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
 
   \rowcolor{gray!20}
+  % R: prepare_lactate()
   Lactate & Lactate & Real & mmol / L & $[0, \infty)$ \\
 
+  % R: prepare_sbp_cuff()
   \sbpc & systolic blood pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
   \rowcolor{gray!20}
+  % R: prepare_dbp_cuff()
   \dbpc & diastolic blood pressure reported from a cuff & Real & mmHg & $[1, 200]$ \\
+  % R: prepare_mean_arterial_pressure_cuff()
   \mapc & mean arterial pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
   \rowcolor{gray!20}
+  % R: prepare_sbp_arterial()
   \sbpa & systolic blood pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
+  % R: prepare_dbp_arterial()
   \dbpa & diastolic blood pressure reported from arterial line & Real & mmHg & $[1, 200]$ \\
   \rowcolor{gray!20}
+  % R: prepare_mean_arterial_pressure_arterial()
   \mapa & mean arterial pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
 
+  % R: prepare_age()
   Age & Patient's age & Real & months & $[0, 216)$ \\
 \end{longtable}
 
@@ -948,10 +962,15 @@ level of consciousness and brainstem function, respectively.
 
   \bottomrule
   \endlastfoot
+  % R: prepare_gcsmotor()
   \gcs{motor} & Glasgow Coma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ \\
+  % R: prepare_gcseye()
   \gcs{eye} & Glasgow Coma Eye Score & Integer & unitless & $\{1, 2, 3, 4\}$ \\
+  % R: prepare_gcsverbal()
   \gcs{verbal} & Glasgow Coma Verbal Score & Integer & unitless & $\{1, 2, 3, 4, 5\}$ \\
+  % R: prepare_gcstotal()
   \gcs{total} & Total Glasgow Coma Score & Integer & unitless & $\{3, 4, \ldots, 15\}$ \\
+  % R: prepare_pupils(); prepare_pupilleft() and prepare_pupilright() can also construct FIXEDPUPILS in prepare_phoenix_data().
   Pupils & Bilaterally fixed pupils & Integer & & $\{0, 1\}$ \\
 \end{longtable}
 
@@ -1064,9 +1083,13 @@ clotting and bleeding risk coexist.
 
   \bottomrule
   \endlastfoot
+  % R: prepare_platelets()
   Platelets  & Platelets  & Real & 1000 / $\mu$L & $[0, \infty)$ \\
+  % R: prepare_inr()
   INR        & INR        & Real & unitless      & $[0, \infty)$ \\
+  % R: prepare_ddimer()
   DDimer     & D-Dimer    & Real & mg/L (FEU)    & $[0, \infty)$ \\
+  % R: prepare_fibrinogen()
   Fibrinogen & Fibrinogen & Real & mg/dL         & $[0, \infty)$ \\
 \end{longtable}
 
@@ -1126,6 +1149,7 @@ assessment: glucose, Table~\ref{tab:endo-ehr}.
   \endlastfoot
 
   \rowcolor{gray!20}
+  % R: prepare_glucose()
   Glucose &
   Blood Glucose &
   Real &
@@ -1175,12 +1199,14 @@ cubic millimeter, Table~\ref{tab:immu-ehr}.
   \endlastfoot
 
   \rowcolor{gray!20}
+  % R: prepare_anc()
   ANC &
   Absolute neutrophil count &
   Real &
   1000 cells / mm$^3$ &
   $[0, \infty)$ \\
 
+  % R: prepare_alc()
   ALC &
   Absolute lymphocyte count &
   Real &
@@ -1242,12 +1268,14 @@ and alanine aminotransferase (ALT) reported in units of IU/L, Table~\ref{tab:hep
   \endlastfoot
 
   \rowcolor{gray!20}
+  % R: prepare_bilirubin()
   Bilirubin &
   Total bilirubin &
   Real &
   mg/dL &
   $[0, \infty)$ \\
 
+  % R: prepare_alt()
   ALT &
   Alanine aminotransferase &
   Real &
@@ -1315,12 +1343,14 @@ the renal dysfunction score is the creatinine.
   \endlastfoot
 
   \rowcolor{gray!20}
+  % R: prepare_creatinine()
   Creatinine &
   Creatinine &
   Real &
   mg / dL &
   $[0, \infty)$ \\
 
+  % R: prepare_age()
   Age & Patient's age & Real & months & $[0, 216)$ \\
 \end{longtable}
 
@@ -1357,14 +1387,17 @@ anti-fungals, anti-virals, or anti-mycobacterial (anti-buberculosis). This
 definition is operational: it identifies when clinicians treated the case as
 infectious, not whether infection was ultimately confirmed.
 
+% R: prepare_antiinfectioustests()
 Let $t_{1}$ denote the time when an infectious
 test was ordered. Let $t_{2}$ denote the time when the first dose of
+% R: prepare_antimicrobials()
 a systemic anti-infectious agent was administered.
 
 Suspected infection status is defined as
 
 \begin{equation}
   \label{eq:suspected-infection}
+  % R: prepare_phoenix_data() constructs SUSPECTED_INFECTION.
 \SI \coloneqq \mathbb{I}\left\{t_{1} \leq t\right\} \times \mathbb{I}\left\{t_{2} \leq t\right\}.
 \end{equation}
 

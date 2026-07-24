@@ -58,21 +58,21 @@ prepare_invasive_mechanical_ventilation_indicator <-
     value.var,
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-	  ) {
+  ) {
   # TeX: respiratory EHR input VENT, used in eq:imv-conditions to construct IMV.
-	  rtn <-
+  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
       value.var = value.var,
-	      variable.name = "VENT",
+      variable.name = "VENT",
       valid.values = c(0, 1),
       eclock = eclock,
       tie.breaker = tie.breaker,
       verbose = verbose
-	    )
+    )
   class(rtn) <- c("phoenix_prepared_invasive_mechanical_ventilation_indicator", class(rtn))
-	  rtn
+  rtn
 }
 
 #' @rdname prepare_inputs_discrete
@@ -86,6 +86,7 @@ prepare_o2support <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: respiratory EHR input \otwosupport; used in eq:imv-conditions-part2 and eq:ors.
   rtn <-
     prepare_variable(
       x = x,
@@ -112,6 +113,7 @@ prepare_dobutamine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input Dobutamine; used in eq:vasoactive-medications and eq:vasos.
   rtn <-
     prepare_variable(
       x = x,
@@ -138,6 +140,7 @@ prepare_dopamine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input Dopamine; used in eq:vasoactive-medications and eq:vasos.
   rtn <-
     prepare_variable(
       x = x,
@@ -165,6 +168,7 @@ prepare_epinephrine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input Epinephrine; used in eq:vasoactive-medications and eq:vasos.
   rtn <-
     prepare_variable(
       x = x,
@@ -191,6 +195,7 @@ prepare_milrinone <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input Milrinone; used in eq:vasoactive-medications and eq:vasos.
   rtn <-
     prepare_variable(
       x = x,
@@ -217,6 +222,7 @@ prepare_norepinephrine <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input Norepinephrine; used in eq:vasoactive-medications and eq:vasos.
   rtn <-
     prepare_variable(
       x = x,
@@ -243,6 +249,7 @@ prepare_vasopressin <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: cardiovascular EHR input Vasopressin; used in eq:vasoactive-medications and eq:vasos.
   rtn <-
     prepare_variable(
       x = x,
@@ -270,6 +277,7 @@ prepare_gcseye <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: neurological EHR input \gcs{eye}; used in eq:gcs and eq:gcs-components.
   rtn <-
     prepare_variable(
       x = x,
@@ -296,6 +304,7 @@ prepare_gcsmotor <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: neurological EHR input \gcs{motor}; used in eq:gcs and eq:gcs-components.
   rtn <-
     prepare_variable(
       x = x,
@@ -322,6 +331,7 @@ prepare_gcsverbal <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: neurological EHR input \gcs{verbal}; used in eq:gcs and eq:gcs-components.
   rtn <-
     prepare_variable(
       x = x,
@@ -348,6 +358,7 @@ prepare_gcstotal <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: neurological EHR input \gcs{total}; used in eq:gcs.
   rtn <-
     prepare_variable(
       x = x,
@@ -374,6 +385,7 @@ prepare_pupilleft <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: left pupil input used by prepare_phoenix_data() to construct FIXEDPUPILS for eq:pupils.
   rtn <-
     prepare_variable(
       x = x,
@@ -400,6 +412,7 @@ prepare_pupilright <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: right pupil input used by prepare_phoenix_data() to construct FIXEDPUPILS for eq:pupils.
   rtn <-
     prepare_variable(
       x = x,
@@ -426,6 +439,7 @@ prepare_pupils <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: neurological EHR input Pupils; used in eq:pupils.
   rtn <-
     prepare_variable(
       x = x,
@@ -452,6 +466,7 @@ prepare_antimicrobials <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: suspected-infection antimicrobial input; used in eq:suspected-infection.
   rtn <-
     prepare_variable(
       x = x,
@@ -478,6 +493,7 @@ prepare_antiinfectioustests <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
+  # TeX: suspected-infection infectious-test input; used in eq:suspected-infection.
   rtn <-
     prepare_variable(
       x = x,
