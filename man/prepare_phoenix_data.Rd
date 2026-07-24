@@ -8,10 +8,10 @@ prepare_phoenix_data(
   fio2 = NULL,
   spo2 = NULL,
   pao2 = NULL,
-  vent = NULL,
-  hfov = NULL,
-  peep = NULL,
-  invasive_mechanical_ventilation = NULL,
+  mean_airway_pressure_ventilator = NULL,
+  mean_airway_pressure_hfov = NULL,
+  positive_end_expiratory_pressure = NULL,
+  invasive_mechanical_ventilation_indicator = NULL,
   o2support = NULL,
   dobutamine = NULL,
   dopamine = NULL,
@@ -68,13 +68,13 @@ prepare_phoenix_data(
 
 \item{pao2}{an object returned from \code{\link{prepare_pao2}}}
 
-\item{vent}{an object returned from \code{\link{prepare_vent}}}
+\item{mean_airway_pressure_ventilator}{an object returned from \code{\link{prepare_mean_airway_pressure_ventilator}}}
 
-\item{hfov}{an object returned from \code{\link{prepare_hfov}}}
+\item{mean_airway_pressure_hfov}{an object returned from \code{\link{prepare_mean_airway_pressure_hfov}}}
 
-\item{peep}{an object returned from \code{\link{prepare_peep_vent}}}
+\item{positive_end_expiratory_pressure}{an object returned from \code{\link{prepare_positive_end_expiratory_pressure}}}
 
-\item{invasive_mechanical_ventilation}{an object returned from \code{\link{prepare_invasive_mechanical_ventilation}}}
+\item{invasive_mechanical_ventilation_indicator}{an object returned from \code{\link{prepare_invasive_mechanical_ventilation_indicator}}}
 
 \item{o2support}{an object returned from \code{\link{prepare_o2support}}}
 

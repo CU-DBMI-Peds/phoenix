@@ -9,11 +9,11 @@ source("utilities.R")
 # R/operationalize.R:
 #   - continuous/range-based inputs such as FIO2, SPO2, PAO2, PEEP, and
 #     ventilator-related values
-#   - discrete indicator inputs such as IMV and O2 support
+#   - discrete indicator inputs such as VENT and O2 support
 #
 # The first part of this file uses compact helper functions to test the common
 # contract across the respiratory prepare_* wrappers.  The later, more verbose
-# FIO2/SPO2/IMV sections are retained because those three inputs are especially
+# FIO2/SPO2/VENT sections are retained because those three inputs are especially
 # central to Phoenix respiratory scoring and benefit from deeper edge-case
 # regression coverage.
 ################################################################################
@@ -388,8 +388,8 @@ run_range_case(
 )
 
 run_discrete_case(
-  fun_name = "prepare_invasive_mechanical_ventilation",
-  variable_label = "IMV",
+  fun_name = "prepare_invasive_mechanical_ventilation_indicator",
+  variable_label = "VENT",
   value.var = "invasive_mechanical_ventilation",
   valid_values = c(0, 1),
   default_tie.breaker = max,
@@ -411,8 +411,8 @@ run_range_case(
 )
 
 run_range_case(
-  fun_name = "prepare_vent",
-  variable_label = "VENT",
+  fun_name = "prepare_mean_airway_pressure_ventilator",
+  variable_label = "PAW_VENT",
   value.var = "ventilator_setting",
   values = c(5, 10, 8, 7),
   expected_default = c(10, 8, 7),
@@ -423,8 +423,8 @@ run_range_case(
 )
 
 run_range_case(
-  fun_name = "prepare_hfov",
-  variable_label = "HFOV",
+  fun_name = "prepare_mean_airway_pressure_hfov",
+  variable_label = "PAW_HFOV",
   value.var = "high_frequency_oscillation",
   values = c(0, 1, 0, 1),
   expected_default = c(1, 0, 1),
@@ -435,8 +435,8 @@ run_range_case(
 )
 
 run_range_case(
-  fun_name = "prepare_peep_vent",
-  variable_label = "PEEP",
+  fun_name = "prepare_positive_end_expiratory_pressure",
+  variable_label = "PAW_PEEP",
   value.var = "positive_end_expiratory_pressure",
   values = c(5, 8, 6, 10),
   expected_default = c(8, 6, 10),
@@ -460,7 +460,7 @@ run_discrete_case(
 ################################################################################
 # Detailed Respiratory Regression Sections
 #
-# The earlier, more explicit FIO2, SPO2, and IMV test bodies are retained below.
+# The earlier, more explicit FIO2, SPO2, and VENT test bodies are retained below.
 # They overlap with the compact family-wise coverage above, but they also serve
 # as detailed documentation of the expected preparation behavior for the most
 # central respiratory inputs.
@@ -1610,7 +1610,7 @@ test_missing_value <-
     X = testdata,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -1642,7 +1642,7 @@ test_values_outside_valid_values <-
     X = testdata,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -1671,7 +1671,7 @@ testdata <-
 
 # because data.table can be used, we want to make sure we don't mutate the
 # user's input.  Get the sha265 for the input data and verify that it has not
-# changed after applying prepare_invasive_mechanical_ventilation
+# changed after applying prepare_invasive_mechanical_ventilation_indicator
 testdata_sha <- digest::digest(testdata, algo = "sha256")
 
 # and test for expected outputs
@@ -1679,7 +1679,7 @@ test_prepared_data <-
   lapply(
     X = testdata,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1721,9 +1721,9 @@ stopifnot(
   identical(test_prepared_data[["DF"]][["value"]], c(1L, 0L, 1L, 0L, 1L)),
   identical(test_prepared_data[["DT"]][["value"]], c(1L, 0L, 1L, 0L, 1L)),
   identical(test_prepared_data[["TB"]][["value"]], c(1L, 0L, 1L, 0L, 1L)),
-  identical(test_prepared_data[["DF"]][["variable"]], rep("IMV", 5)),
-  identical(test_prepared_data[["DT"]][["variable"]], rep("IMV", 5)),
-  identical(test_prepared_data[["TB"]][["variable"]], rep("IMV", 5))
+  identical(test_prepared_data[["DF"]][["variable"]], rep("VENT", 5)),
+  identical(test_prepared_data[["DT"]][["variable"]], rep("VENT", 5)),
+  identical(test_prepared_data[["TB"]][["variable"]], rep("VENT", 5))
 )
 
 # the output from test_prepared_data could be "prepared" again, with no
@@ -1733,7 +1733,7 @@ test_prepared_data2 <-
   lapply(
     X = test_prepared_data,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1749,7 +1749,7 @@ stopifnot(
 # Explicit class and attribute checks for prepared outputs
 stopifnot(
   identical(
-    sapply(test_prepared_data, inherits, "phoenix_prepared_invasive_mechanical_ventilation"),
+    sapply(test_prepared_data, inherits, "phoenix_prepared_invasive_mechanical_ventilation_indicator"),
     c("DF" = TRUE, "DT" = TRUE, "TB" = TRUE)
   ),
   identical(attr(test_prepared_data[["DF"]], "id.vars"), c("hospital", "patient", "encounter")),
@@ -1779,7 +1779,7 @@ test_prepared_no_dups <-
   lapply(
     X = testdata_no_dups,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1817,7 +1817,7 @@ test_prepared_all_dups_max <-
   lapply(
     X = testdata_all_dups,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1832,7 +1832,7 @@ test_prepared_all_dups_min <-
   lapply(
     X = testdata_all_dups,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1877,7 +1877,7 @@ test_numeric_values <-
   lapply(
     X = testdata_numeric_values,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -1900,7 +1900,7 @@ test_bad_id_vars <-
     X = testdata_no_dups,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "missing_id"),
           eclock = "minutes_from_admission",
@@ -1924,7 +1924,7 @@ test_bad_eclock_missing <-
     X = testdata_no_dups,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "missing_eclock",
@@ -1959,7 +1959,7 @@ test_bad_eclock_type <-
     X = testdata_bad_eclock,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -1996,7 +1996,7 @@ test_bad_character_value <-
     X = testdata_character_value,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -2031,7 +2031,7 @@ test_bad_factor_value <-
     X = testdata_factor_value,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -2055,7 +2055,7 @@ test_bad_value_var <-
     X = testdata_no_dups,
     FUN = function(x) {
       tryCatch(
-        prepare_invasive_mechanical_ventilation(
+        prepare_invasive_mechanical_ventilation_indicator(
           x = x,
           id.vars = c("hospital", "patient", "encounter"),
           eclock = "minutes_from_admission",
@@ -2096,7 +2096,7 @@ test_prepared_value_var <-
   lapply(
     X = testdata_value_var,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",
@@ -2134,7 +2134,7 @@ test_prepared_zero_row <-
   lapply(
     X = testdata_zero_row,
     FUN = function(x) {
-      prepare_invasive_mechanical_ventilation(
+      prepare_invasive_mechanical_ventilation_indicator(
         x = x,
         id.vars = c("hospital", "patient", "encounter"),
         eclock = "minutes_from_admission",

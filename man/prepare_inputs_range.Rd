@@ -5,9 +5,9 @@
 \alias{prepare_fio2}
 \alias{prepare_spo2}
 \alias{prepare_pao2}
-\alias{prepare_vent}
-\alias{prepare_hfov}
-\alias{prepare_peep_vent}
+\alias{prepare_mean_airway_pressure_ventilator}
+\alias{prepare_mean_airway_pressure_hfov}
+\alias{prepare_positive_end_expiratory_pressure}
 \alias{prepare_lactate}
 \alias{prepare_sbp_cuff}
 \alias{prepare_sbp_arterial}
@@ -62,7 +62,7 @@ prepare_pao2(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_vent(
+prepare_mean_airway_pressure_ventilator(
   x,
   id.vars,
   eclock,
@@ -73,7 +73,7 @@ prepare_vent(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_hfov(
+prepare_mean_airway_pressure_hfov(
   x,
   id.vars,
   eclock,
@@ -84,7 +84,7 @@ prepare_hfov(
   verbose = getOption("phoenix_verbose", interactive())
 )
 
-prepare_peep_vent(
+prepare_positive_end_expiratory_pressure(
   x,
   id.vars,
   eclock,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_inputs_discrete.R
 \name{prepare_inputs_discrete}
 \alias{prepare_inputs_discrete}
-\alias{prepare_invasive_mechanical_ventilation}
+\alias{prepare_invasive_mechanical_ventilation_indicator}
 \alias{prepare_o2support}
 \alias{prepare_dobutamine}
 \alias{prepare_dopamine}
@@ -22,7 +22,7 @@
 \title{Prepare Discrete Observation, Intervention, Event, and Test Inputs for
 Phoenix Scoring}
 \usage{
-prepare_invasive_mechanical_ventilation(
+prepare_invasive_mechanical_ventilation_indicator(
   x,
   id.vars,
   eclock,

@@ -50,7 +50,7 @@ NULL
 
 #' @rdname prepare_inputs_discrete
 #' @export
-prepare_invasive_mechanical_ventilation <-
+prepare_invasive_mechanical_ventilation_indicator <-
   function(
     x,
     id.vars,
@@ -58,20 +58,21 @@ prepare_invasive_mechanical_ventilation <-
     value.var,
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-  ) {
-  rtn <-
+	  ) {
+  # TeX: respiratory EHR input VENT, used in eq:imv-conditions to construct IMV.
+	  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
       value.var = value.var,
-      variable.name = "IMV",
+	      variable.name = "VENT",
       valid.values = c(0, 1),
       eclock = eclock,
       tie.breaker = tie.breaker,
       verbose = verbose
-    )
-  class(rtn) <- c("phoenix_prepared_invasive_mechanical_ventilation", class(rtn))
-  rtn
+	    )
+  class(rtn) <- c("phoenix_prepared_invasive_mechanical_ventilation_indicator", class(rtn))
+	  rtn
 }
 
 #' @rdname prepare_inputs_discrete

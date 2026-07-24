@@ -151,7 +151,7 @@ prepare_pao2 <-
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_vent <-
+prepare_mean_airway_pressure_ventilator <-
   function(
     x,
     id.vars,
@@ -161,26 +161,27 @@ prepare_vent <-
     valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-  ) {
-  rtn <-
+	  ) {
+  # TeX: respiratory EHR input \pawvent, used in eq:imv-conditions.
+	  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
       eclock = eclock,
       value.var = value.var,
-      variable.name = "VENT",
+      variable.name = "PAW_VENT",
       valid.range = valid.range,
       valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_vent", class(rtn))
+  class(rtn) <- c("phoenix_prepared_mean_airway_pressure_ventilator", class(rtn))
   rtn
 }
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_hfov <-
+prepare_mean_airway_pressure_hfov <-
   function(
     x,
     id.vars,
@@ -190,26 +191,27 @@ prepare_hfov <-
     valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-  ) {
-  rtn <-
+	  ) {
+  # TeX: respiratory EHR input \pawhfov, used in eq:imv-conditions.
+	  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
       eclock = eclock,
       value.var = value.var,
-      variable.name = "HFOV",
+      variable.name = "PAW_HFOV",
       valid.range = valid.range,
       valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_hfov", class(rtn))
+  class(rtn) <- c("phoenix_prepared_mean_airway_pressure_hfov", class(rtn))
   rtn
 }
 
 #' @rdname prepare_inputs_range
 #' @export
-prepare_peep_vent <-
+prepare_positive_end_expiratory_pressure <-
   function(
     x,
     id.vars,
@@ -219,20 +221,21 @@ prepare_peep_vent <-
     valid.range.closed = c(TRUE, TRUE),
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
-  ) {
-  rtn <-
+	  ) {
+  # TeX: respiratory EHR input \pawpeep, used in eq:imv-conditions.
+	  rtn <-
     prepare_variable(
       x = x,
       id.vars = id.vars,
       eclock = eclock,
       value.var = value.var,
-      variable.name = "PEEP",
+      variable.name = "PAW_PEEP",
       valid.range = valid.range,
       valid.range.closed = valid.range.closed,
       tie.breaker = tie.breaker,
       verbose = verbose
     )
-  class(rtn) <- c("phoenix_prepared_peep_vent", class(rtn))
+  class(rtn) <- c("phoenix_prepared_positive_end_expiratory_pressure", class(rtn))
   rtn
 }
 

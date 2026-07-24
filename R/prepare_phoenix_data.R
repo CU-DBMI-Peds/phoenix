@@ -6,10 +6,10 @@
 #' @param fio2 an object returned from \code{\link{prepare_fio2}}
 #' @param spo2 an object returned from \code{\link{prepare_spo2}}
 #' @param pao2 an object returned from \code{\link{prepare_pao2}}
-#' @param vent an object returned from \code{\link{prepare_vent}}
-#' @param hfov an object returned from \code{\link{prepare_hfov}}
-#' @param peep an object returned from \code{\link{prepare_peep_vent}}
-#' @param invasive_mechanical_ventilation an object returned from \code{\link{prepare_invasive_mechanical_ventilation}}
+#' @param mean_airway_pressure_ventilator an object returned from \code{\link{prepare_mean_airway_pressure_ventilator}}
+#' @param mean_airway_pressure_hfov an object returned from \code{\link{prepare_mean_airway_pressure_hfov}}
+#' @param positive_end_expiratory_pressure an object returned from \code{\link{prepare_positive_end_expiratory_pressure}}
+#' @param invasive_mechanical_ventilation_indicator an object returned from \code{\link{prepare_invasive_mechanical_ventilation_indicator}}
 #' @param o2support an object returned from \code{\link{prepare_o2support}}
 #' @param dobutamine an object returned from \code{\link{prepare_dobutamine}}
 #' @param dopamine an object returned from \code{\link{prepare_dopamine}}
@@ -65,10 +65,10 @@ prepare_phoenix_data <-
     fio2 = NULL,
     spo2 = NULL,
     pao2 = NULL,
-    vent = NULL,
-    hfov = NULL,
-    peep = NULL,
-    invasive_mechanical_ventilation = NULL,
+    mean_airway_pressure_ventilator = NULL,
+    mean_airway_pressure_hfov = NULL,
+    positive_end_expiratory_pressure = NULL,
+    invasive_mechanical_ventilation_indicator = NULL,
     o2support = NULL,
     dobutamine = NULL,
     dopamine = NULL,
@@ -135,10 +135,10 @@ prepare_phoenix_data <-
       fio2 = fio2,
       spo2 = spo2,
       pao2 = pao2,
-      vent = vent,
-      hfov = hfov,
-      peep = peep,
-      invasive_mechanical_ventilation = invasive_mechanical_ventilation,
+      mean_airway_pressure_ventilator = mean_airway_pressure_ventilator,
+      mean_airway_pressure_hfov = mean_airway_pressure_hfov,
+      positive_end_expiratory_pressure = positive_end_expiratory_pressure,
+      invasive_mechanical_ventilation_indicator = invasive_mechanical_ventilation_indicator,
       o2support = o2support,
       dobutamine = dobutamine,
       dopamine = dopamine,
@@ -178,7 +178,6 @@ prepare_phoenix_data <-
   # verify that all the input data sets are either null or phoenix_prepared
   input_names <- c(tolower(names(phxdata)), "age")
   input_classes <- paste0("phoenix_prepared_", input_names)
-  input_classes[input_names == "peep"] <- "phoenix_prepared_peep_vent"
 
   check <-
     Map(f = function(obj, cls) { is.null(obj) || inherits(obj, cls) },
@@ -226,7 +225,7 @@ prepare_phoenix_data <-
   id <- phxdft_select(phxdata, cols = id.vars)
   id <- do.call(paste, c(id, sep = "\r\r"))
 
-  RESPVARS <- c("FIO2", "SPO2", "PAO2", "VENT", "HFOV", "PEEP", "IMV", "O2SUPPORT")
+  RESPVARS <- c("FIO2", "SPO2", "PAO2", "VENT", "PAW_VENT", "PAW_HFOV", "PAW_PEEP", "O2SUPPORT")
   VASOVARS <- c("DOBUTAMINE", "DOPAMINE", "EPINEPHRINE", "MILRINONE", "NOREPINEPHRINE", "VASOPRESSIN")
   MAPVARS  <- c("MAPC", "MAPA", "SBPA", "SBPC", "DBPA", "DBPC")
   CARDVARS <- c(VASOVARS, MAPVARS, "LACTATE")
@@ -341,6 +340,7 @@ prepare_phoenix_data <-
     )
 
   # Invasive Mechanical Ventilation
+  # TeX: eq:imv and eq:imv-conditions.
   # if the inputs are not in the data set set them to NA, this will simplify the
   # logic for flagging IMV overall.
   if (verbose) message("  Invasive Mechanical Ventilation...")
@@ -348,16 +348,22 @@ prepare_phoenix_data <-
     phxdft_set(
       x = phxdata,
       j = "IMV",
-      value = as.integer((phxdata[["IMV"]]) | (phxdata[["VENT"]] > 0) | (phxdata[["HFOV"]] > 0) | (phxdata[["PEEP"]] > 3))
+      value = as.integer(
+        (phxdata[["VENT"]] %in% 1) |
+        ((phxdata[["PAW_VENT"]] > 0) %in% TRUE) |
+        ((phxdata[["PAW_HFOV"]] > 0) %in% TRUE) |
+        ((phxdata[["PAW_PEEP"]] > 3) %in% TRUE)
+      )
     )
 
   # Other Respiratory Support
+  # TeX: eq:ors.
   if (verbose) message("  Other Respiratory Support...")
   phxdata <-
     phxdft_set(
       x = phxdata,
       j = "ORS",
-      value = as.integer((phxdata[["O2SUPPORT"]] > 0) | (phxdata[["FIO2"]] > 0.21))
+      value = as.integer((phxdata[["IMV"]] == 1) | (phxdata[["O2SUPPORT"]] %in% 1) | ((phxdata[["FIO2"]] > 0.21) %in% TRUE))
     )
 
   # Mean Arterial Pressure

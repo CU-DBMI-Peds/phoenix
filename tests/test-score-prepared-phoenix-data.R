@@ -60,12 +60,12 @@ build_prepared_end_to_end <- function(backend) {
   prepare_phoenix_data(
     fio2 = prepare_range_input(prepare_fio2, "fio2", c(0.50, 0.21), backend),
     spo2 = prepare_range_input(prepare_spo2, "spo2", c(90, 99), backend),
-    vent = prepare_range_input(prepare_vent, "vent", c(0, 0), backend),
-    hfov = prepare_range_input(prepare_hfov, "hfov", c(0, 0), backend),
-    peep = prepare_range_input(prepare_peep_vent, "peep", c(0, 0), backend),
-    invasive_mechanical_ventilation =
+    mean_airway_pressure_ventilator = prepare_range_input(prepare_mean_airway_pressure_ventilator, "vent", c(0, 0), backend),
+    mean_airway_pressure_hfov = prepare_range_input(prepare_mean_airway_pressure_hfov, "hfov", c(0, 0), backend),
+    positive_end_expiratory_pressure = prepare_range_input(prepare_positive_end_expiratory_pressure, "peep", c(0, 0), backend),
+    invasive_mechanical_ventilation_indicator =
       prepare_range_input(
-        prepare_invasive_mechanical_ventilation,
+        prepare_invasive_mechanical_ventilation_indicator,
         "invasive_mechanical_ventilation",
         c(1, 0),
         backend
@@ -147,21 +147,21 @@ assert_end_to_end <- function(backend) {
     is.na(scored[["phoenix8_sepsis_score"]][2])
   )
 
-  eas1 <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "eas1", verbose = FALSE)
-  eas1 <- sort_by_encounter(eas1)
+  olm <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "olm", verbose = FALSE)
+  olm <- sort_by_encounter(olm)
 
-  eas2 <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "eas2", verbose = FALSE)
-  eas2 <- sort_by_encounter(eas2)
+  ccd <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "ccd", verbose = FALSE)
+  ccd <- sort_by_encounter(ccd)
 
   stopifnot(
-    isTRUE(all.equal(eas1[["eas1_sepsis_score"]][1], 5)),
-    isTRUE(all.equal(eas1[["eas1_sepsis"]][1], 1)),
-    isTRUE(all.equal(eas1[["eas1_septic_shock"]][1], 1)),
-    isTRUE(all.equal(eas1[["eas1_8_sepsis_score"]][1], 9)),
-    isTRUE(all.equal(eas2[["eas2_sepsis_score"]][1], 5)),
-    isTRUE(all.equal(eas2[["eas2_sepsis"]][1], 1)),
-    isTRUE(all.equal(eas2[["eas2_septic_shock"]][1], 1)),
-    isTRUE(all.equal(eas2[["eas2_8_sepsis_score"]][1], 9))
+    isTRUE(all.equal(olm[["olm_sepsis_score"]][1], 5)),
+    isTRUE(all.equal(olm[["olm_sepsis"]][1], 1)),
+    isTRUE(all.equal(olm[["olm_septic_shock"]][1], 1)),
+    isTRUE(all.equal(olm[["olm_8_sepsis_score"]][1], 9)),
+    isTRUE(all.equal(ccd[["ccd_sepsis_score"]][1], 5)),
+    isTRUE(all.equal(ccd[["ccd_sepsis"]][1], 1)),
+    isTRUE(all.equal(ccd[["ccd_septic_shock"]][1], 1)),
+    isTRUE(all.equal(ccd[["ccd_8_sepsis_score"]][1], 9))
   )
 }
 
