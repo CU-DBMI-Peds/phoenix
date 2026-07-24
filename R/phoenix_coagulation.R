@@ -100,7 +100,9 @@ phoenix_coagulation <- function(platelets = NA_real_, inr = NA_real_, d_dimer = 
   ddm <- replace(ddm, which(is.na(ddm)), 0)
   fib <- replace(fib, which(is.na(fib)), Inf)
 
-  # TeX: eq:coag-components, eq:coag, and eq:coag-component-set.
+  # TeX: eq:coag-component-platelets, eq:coag-component-inr,
+  # eq:coag-component-ddimer, eq:coag-component-fibrinogen, eq:coag,
+  # and eq:coag-component-set.
   rtn <- as.integer(plt < 100) + as.integer(inr > 1.3) + as.integer(ddm > 2) + as.integer(fib < 100)
   pmin(rtn, 2L)
 }

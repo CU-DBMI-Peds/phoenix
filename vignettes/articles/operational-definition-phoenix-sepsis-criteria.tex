@@ -387,27 +387,29 @@ statements. If either side of an ``and/or'' statement is unknown, the
 whole statement may be unknown unless the other side already determines
 the answer.
 
-\begin{longtable}{ll}
-  \caption{Logic with $\mathrm{NA}$.}\label{tab:logic-with-na} \\
-\toprule
-Statement & Value \\
-\midrule
-\endhead
-\bottomrule
-\endlastfoot
-  \multicolumn{2}{l}{\textbf{`OR' statements}} \\
-    \rowcolor{gray!20}
-    $\mathrm{NA} \vee \mathrm{NA}$ & $\mathrm{NA}$ \\
-    $\mathrm{NA} \vee \text{true}$ & true \\
-    \rowcolor{gray!20}
-    $\mathrm{NA} \vee \text{false}$ & $\mathrm{NA}$ \\
-  \multicolumn{2}{l}{\textbf{`And' statements}} \\
-    \rowcolor{gray!20}
-    $\mathrm{NA} \wedge \mathrm{NA}$ & $\mathrm{NA}$ \\
-    $\mathrm{NA} \wedge \text{true}$ & $\mathrm{NA}$ \\
-    \rowcolor{gray!20}
-    $\mathrm{NA} \wedge \text{false}$ & false \\
-\end{longtable}
+\begin{table}
+  \centering
+  \caption{Logic with $\mathrm{NA}$.}
+  \label{tab:logic-with-na}
+  \begin{tabular}{ll}
+    \toprule
+    Statement & Value \\
+    \midrule
+    \multicolumn{2}{l}{\textbf{`OR' statements}} \\
+      \rowcolor{gray!20}
+      $\mathrm{NA} \vee \mathrm{NA}$ & $\mathrm{NA}$ \\
+      $\mathrm{NA} \vee \text{true}$ & true \\
+      \rowcolor{gray!20}
+      $\mathrm{NA} \vee \text{false}$ & $\mathrm{NA}$ \\
+    \multicolumn{2}{l}{\textbf{`And' statements}} \\
+      \rowcolor{gray!20}
+      $\mathrm{NA} \wedge \mathrm{NA}$ & $\mathrm{NA}$ \\
+      $\mathrm{NA} \wedge \text{true}$ & $\mathrm{NA}$ \\
+      \rowcolor{gray!20}
+      $\mathrm{NA} \wedge \text{false}$ & false \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsection{Function Definitions}\label{sec:function-definitions}
 

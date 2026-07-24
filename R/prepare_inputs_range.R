@@ -465,7 +465,7 @@ prepare_platelets <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: coagulation EHR input Platelets; used in eq:coag-components.
+  # TeX: coagulation EHR input Platelets; used in eq:coag-component-platelets.
   rtn <-
     prepare_variable(
       x = x,
@@ -495,7 +495,7 @@ prepare_inr <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: coagulation EHR input INR; used in eq:coag-components.
+  # TeX: coagulation EHR input INR; used in eq:coag-component-inr.
   rtn <-
     prepare_variable(
       x = x,
@@ -525,7 +525,7 @@ prepare_ddimer <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: coagulation EHR input DDimer; used in eq:coag-components.
+  # TeX: coagulation EHR input DDimer; used in eq:coag-component-ddimer.
   rtn <-
     prepare_variable(
       x = x,
@@ -555,7 +555,7 @@ prepare_fibrinogen <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: coagulation EHR input Fibrinogen; used in eq:coag-components.
+  # TeX: coagulation EHR input Fibrinogen; used in eq:coag-component-fibrinogen.
   rtn <-
     prepare_variable(
       x = x,
