@@ -18,6 +18,8 @@
 \newcommand{\IMV}{\mathrm{IMV}\left(t; \m{resp}\right)}
 \newcommand{\PFR}{\mathrm{PFR}\left(t; \m{resp}\right)}
 \newcommand{\SFR}{\mathrm{SFR}\left(t; \m{resp}\right)}
+\newcommand{\Ccard}{\boldsymbol{C}_{\mathrm{card}}}
+\newcommand{\Ccoag}{\boldsymbol{C}_{\mathrm{coag}}}
 
 \newcommand{\maxtinT}{\max_{t \in T}}
 
@@ -84,6 +86,13 @@
 %\author{Peter E. DeWitt, Ph.D}
 \date{\today}
 
+% set up the formatting such that there is a new line between paragraphs and
+% there is no indent for a new paragraphs
+\setlength{\parskip}{1em} % Body spacing
+\setlength{\parindent}{0pt} % Body indentation
+\usepackage{tocloft}\setlength{\cftparskip}{0pt} % Fixes TOC spacing
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 \maketitle
 \renewcommand*\contentsname{Table of contents}
@@ -115,7 +124,7 @@ all aggregations.
 
 This section is a quick guide to the symbols used throughout the document.
 Detailed definitions for the functions will follow in
-\S~\ref{sec:function-definitions}
+\S~\ref{sec:function-definitions}. See Table~\ref{tab:symbols}.
 
 \begin{longtable}{c p{2.1in} p{2.7in}}
 \caption{Notation used in the operational definition of the Phoenix Sepsis Score.}
@@ -163,6 +172,11 @@ Detailed definitions for the functions will follow in
     $\boldsymbol{A} \setminus \boldsymbol{B}$ &
     Remove elements of a set &
     Example $\left\{1, 2, 3\right\} \setminus \left\{2\right\} = \left\{1, 3\right\}$ \\
+
+    \rowcolor{gray!20}
+    $\cup$ &
+    Union &
+    $\left\{1, 2\right\} \cup \left\{2, 3\right\} = \left\{1, 2, 3\right\}$ \\
 
   \addlinespace[0.5em]
   \multicolumn{3}{l}{\textbf{Intervals}} \\
@@ -377,14 +391,12 @@ measurements recorded before encounter start, such as EMS data.
 
 For any variable $X,$ define the last observation time prior to or at
 $t$ as:
-
 \begin{equation}
   \label{eq:tau}
   \tau_{X}(t) \coloneqq \max\left\{s \leq t : X(s) \text{ observed or reported}\right\}, \quad \max \emptyset = \mathrm{NA}.
 \end{equation}
 
 Define the staleness of the measurement:
-
 \begin{equation}
   \label{eq:staleness}
   \Delta_{X}(t) \coloneqq
@@ -397,7 +409,6 @@ Define the staleness of the measurement:
 We define a staleness-limited carry-forward operator. Carry forward when
 working with retrospective data, a look back limit when working with
 prospective or real time data. For $m \geq 0$ minutes,
-
 \begin{equation}
   \label{eq:carry-forward}
   \mathcal{C}\left[X\right](t;m)\coloneqq
@@ -473,92 +484,82 @@ capturing oxygenation, \fiotwo{} (fraction of inspired oxygen), \spotwo (pulse
 oximetry oxygen saturation), and \paotwo (arterial oxygen pressure).
 Additionally, the presence of mechanical or noninvasive respiratory support.
 Together, they allow us to quantify how well the patient is oxygenating and
-whether that oxygenation depends on advanced support.
+whether that oxygenation depends on advanced support.  See
+Table~\ref{tab:resp-ehr}.
 
-\begin{longtable}{lllll}
+\begin{table}
+  \centering
   \caption{EHR Inputs for Respiratory Organ Dysfunction Scoring}
-  \label{tab:resp-ehr} \\
+  \label{tab:resp-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
 
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endfirsthead
+    \rowcolor{gray!20}
+    \fiotwo &
+    Fraction of Inspired Oxygen &
+    Real &
+    unitless &
+    $[0.21, 1.00]$ \\
 
-  \multicolumn{5}{c}
-  {{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
+    \spotwo &
+    Pulse oximetry oxygen saturation &
+    Integer &
+    unitless &
+    $\{0, 1, \ldots, 100\}$ \\
 
-  \bottomrule
-  \endlastfoot
+    \rowcolor{gray!20}
+    \paotwo &
+    Arterial oxygen pressure &
+    Real &
+    mmHg &
+    $[0, \infty)$ \\
 
-  \rowcolor{gray!20}
-  \fiotwo &
-  Fraction of Inspired Oxygen &
-  Real &
-  unitless &
-  $[0.21, 1.00]$ \\
+    % R: prepare_mean_airway_pressure_ventilator()
+    \pawvent &
+    Mean Airway Pressure, from a ventilator &
+    Real &
+    cm H$_2$O &
+    $[0, \infty)$ \\
 
-  \spotwo &
-  Pulse oximetry oxygen saturation &
-  Integer &
-  unitless &
-  $\{0, 1, \ldots, 100\}$ \\
+    \rowcolor{gray!20}
+    % R: prepare_mean_airway_pressure_hfov()
+    \pawhfov &
+    Mean Airway Pressure, from a HFOV &
+    Real &
+    cm H$_2$O &
+    $[0, \infty)$ \\
 
-  \rowcolor{gray!20}
-  \paotwo &
-  Arterial oxygen pressure &
-  Real &
-  mmHg &
-  $[0, \infty)$ \\
+    % R: prepare_positive_end_expiratory_pressure()
+    \pawpeep &
+    Positive end-expiratory pressure &
+    Real &
+    cm
+    H$_2$O &
+    $[0, \infty)$ \\
 
-  % R: prepare_mean_airway_pressure_ventilator()
-  \pawvent &
-  Mean Airway Pressure, from a ventilator &
-  Real &
-  cm H$_2$O &
-  $[0, \infty)$ \\
+    \rowcolor{gray!20}
+    % R: prepare_invasive_mechanical_ventilation_indicator()
+    VENT &
+    Indicator for invasive mechanical ventilation &
+    Integer &
+    &
+    $\{0, 1\}$ \\
 
-  \rowcolor{gray!20}
-  % R: prepare_mean_airway_pressure_hfov()
-  \pawhfov &
-  Mean Airway Pressure, from a HFOV &
-  Real &
-  cm H$_2$O &
-  $[0, \infty)$ \\
+    \otwosupport &
+    Any non-invasive oxygen support &
+    Integer &
+    &
+    $\{0, 1\}$ \\
 
-  % R: prepare_positive_end_expiratory_pressure()
-  \pawpeep &
-  Positive end-expiratory pressure &
-  Real &
-  cm
-  H$_2$O &
-  $[0, \infty)$ \\
-
-  \rowcolor{gray!20}
-  % R: prepare_invasive_mechanical_ventilation_indicator()
-  VENT &
-  Indicator for invasive mechanical ventilation &
-  Integer &
-  &
-  $\{0, 1\}$ \\
-
-  \otwosupport &
-  Any non-invasive oxygen support &
-  Integer &
-  &
-  $\{0, 1\}$ \\
-\end{longtable}
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variables}\label{sec:resp-constructed}
 
@@ -599,7 +600,6 @@ valid numeric value or be $\mathrm{NA}.$
 \paragraph{SF Ratio}
 Like the PF ratio, we only consider the SF ratio valid if the \spotwo
 value is reported at the same time as the \fiotwo or after.
-
 \begin{equation}
   \label{eq:sfr-validity}
   \tau_{\fiotwo}(t) \leq \tau_{\spotwo}(t) \quad \equiv \quad
@@ -611,7 +611,6 @@ based on the PODIUM~\citep{bembea2022podium,squires2022podium} organ
 dysfunction scoring, and is an additional requirement on the
 pSOFA~\citep{matics2017psofa} cut points in
 the scoring.
-
 \begin{equation}
   \label{eq:sfr}
   \SFR \coloneqq
@@ -634,7 +633,6 @@ positive end-expiratory pressure (PEEP) to consider as well.
 
 We defined invasive mechanical ventilation (IMV) as an indicator
 based on four possible conditions.
-
 \begin{equation}
   \label{eq:imv}
   % R: prepare_phoenix_data() constructs IMV from VENT, \pawvent, \pawhfov, and \pawpeep.
@@ -684,7 +682,6 @@ point, however, for the Phoenix definition the requirement of some respiratory
 support was made explicit.  It is extremely unlikely that a patient with SFR or
 PFR values sufficiently low enough to score at least one point for respiratory
 dysfunction would not have at the very least supplemental oxygen.
-
 \begin{equation}
   \label{eq:resp}
   % R: phoenix_respiratory()
@@ -704,7 +701,6 @@ where
 \end{equation}
 
 The domain for the respiratory organ dysfunction score is
-
 \begin{equation}
   \label{eq:resp-domain}
   \DS{Resp}[\m{resp}] \in \{0, 1, 2, 3\} \quad \forall \m{resp}, t.
@@ -722,63 +718,62 @@ The input data from the EHR needed for the cardiovascular dysfunction
 scores are vasoactive medications (as indicators of
 pharmacologic cardiovascular support), blood pressure measurements (from
 cuff or arterial line), lactate, and age (for age-specific mean arterial
-pressure thresholds).
+pressure thresholds). See Table~\ref{tab:card-ehr}.
 
-\begin{longtable}{lllll}
+\begin{table}
+  \centering
   \caption{EHR Inputs for Cardiovascular Organ Dysfunction Scoring}
-  \label{tab:card-ehr} \\
+  \label{tab:card-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
 
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
+    \rowcolor{gray!20}
+    % R: prepare_dobutamine()
+    Dobutamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    % R: prepare_dopamine()
+    Dopamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    \rowcolor{gray!20}
+    % R: prepare_epinephrine()
+    Epinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    % R: prepare_milrinone()
+    Milrinone & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    \rowcolor{gray!20}
+    % R: prepare_norepinephrine()
+    Norepinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    % R: prepare_vasopressin()
+    Vasopressin & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
 
-  \bottomrule
-  \endlastfoot
+    \rowcolor{gray!20}
+    % R: prepare_lactate()
+    Lactate & Lactate & Real & mmol / L & $[0, \infty)$ \\
 
-  \rowcolor{gray!20}
-  % R: prepare_dobutamine()
-  Dobutamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
-  % R: prepare_dopamine()
-  Dopamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
-  \rowcolor{gray!20}
-  % R: prepare_epinephrine()
-  Epinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
-  % R: prepare_milrinone()
-  Milrinone & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
-  \rowcolor{gray!20}
-  % R: prepare_norepinephrine()
-  Norepinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
-  % R: prepare_vasopressin()
-  Vasopressin & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    % R: prepare_sbp_cuff()
+    \sbpc & systolic blood pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
+    \rowcolor{gray!20}
+    % R: prepare_dbp_cuff()
+    \dbpc & diastolic blood pressure reported from a cuff & Real & mmHg & $[1, 200]$ \\
+    % R: prepare_mean_arterial_pressure_cuff()
+    \mapc & mean arterial pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
+    \rowcolor{gray!20}
+    % R: prepare_sbp_arterial()
+    \sbpa & systolic blood pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
+    % R: prepare_dbp_arterial()
+    \dbpa & diastolic blood pressure reported from arterial line & Real & mmHg & $[1, 200]$ \\
+    \rowcolor{gray!20}
+    % R: prepare_mean_arterial_pressure_arterial()
+    \mapa & mean arterial pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
 
-  \rowcolor{gray!20}
-  % R: prepare_lactate()
-  Lactate & Lactate & Real & mmol / L & $[0, \infty)$ \\
-
-  % R: prepare_sbp_cuff()
-  \sbpc & systolic blood pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
-  \rowcolor{gray!20}
-  % R: prepare_dbp_cuff()
-  \dbpc & diastolic blood pressure reported from a cuff & Real & mmHg & $[1, 200]$ \\
-  % R: prepare_mean_arterial_pressure_cuff()
-  \mapc & mean arterial pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
-  \rowcolor{gray!20}
-  % R: prepare_sbp_arterial()
-  \sbpa & systolic blood pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
-  % R: prepare_dbp_arterial()
-  \dbpa & diastolic blood pressure reported from arterial line & Real & mmHg & $[1, 200]$ \\
-  \rowcolor{gray!20}
-  % R: prepare_mean_arterial_pressure_arterial()
-  \mapa & mean arterial pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
-
-  % R: prepare_age()
-  Age & Patient's age & Real & months & $[0, 216)$ \\
-\end{longtable}
+    % R: prepare_age()
+    Age & Patient's age & Real & months & $[0, 216)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variable}\label{sec:card-constructed}
 
@@ -807,7 +802,6 @@ support.
 We define the contribution to the cardiovascular score from vasoactive
 medications as the count of the number of vasoactive medications received,
 regardless of dose, with a cap of 2 points.
-
 \begin{equation}
   \label{eq:vasos}
   % R: vasoactive_score(); phoenix_cardiovascular()
@@ -874,7 +868,6 @@ Then
 The limits for the MAP are based on age (in months). Age-based
 thresholds reflect pediatric physiology: younger patients have lower
 expected MAPs, so the cut-points increase with age. Let
-
 \begin{equation}
   \label{eq:theta1}
   \theta_{1}(\mathrm{Age}) \coloneqq
@@ -901,8 +894,7 @@ and
     \end{cases}
 \end{equation}
 
-\noindent Then, the part of the cardiovascular score based on MAP is:
-
+Then, the part of the cardiovascular score based on MAP is:
 \begin{equation}
   \label{eq:map}
   % R: map_score(); phoenix_cardiovascular()
@@ -939,14 +931,16 @@ to the cardiovascular dysfunction score is:
 \subsubsection{Cardiovascular Dysfunction Score}\label{sec:card-odss}
 The cardiovascular dysfunction is based on \eqref{eq:vasos}, \eqref{eq:map}, and
 \eqref{eq:lactate}.
-
 \begin{equation}
   \label{eq:card}
   % R: phoenix_cardiovascular()
   \DS{Card}[\m{vaso}, \m{bp}, \m{lac}, \mathrm{Age}] \coloneqq
-    \DS{Vasos}[\m{vaso}] +
-    \DS{MAP}[\m{bp}, \mathrm{Age}] +
-    \DS{Lactate}[\m{lac}].
+  \sum_{x \in \Ccard} \DS*{x}
+\end{equation}
+where
+\begin{equation}
+  \label{eq:card-component-set}
+  \Ccard \coloneqq \left\{\mathrm{Vasos}, \mathrm{MAP}, \mathrm{Lactate}\right\}.
 \end{equation}
 The domain for the cardiovascular dysfunction score is
 \begin{equation}
@@ -962,32 +956,35 @@ whether or not the patient has bilaterally fixed pupils. These capture
 level of consciousness and brainstem function, respectively.
 
 \subsubsection{Data from the EHR}\label{sec:neuro-ehr}
-\begin{longtable}{lllll}
+The input data from the EHR needed for neurological dysfunction scoring are
+the Glasgow Coma Score components, the total Glasgow Coma Score when available,
+and the presence of bilaterally fixed pupils. See Table~\ref{tab:neuro-ehr}.
+
+\begin{table}
+  \centering
   \caption{EHR Inputs for Neurological Organ Dysfunction Scoring}
-  \label{tab:neuro-ehr} \\
-
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
-
-  \bottomrule
-  \endlastfoot
-  % R: prepare_gcsmotor()
-  \gcs{motor} & Glasgow Coma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ \\
-  % R: prepare_gcseye()
-  \gcs{eye} & Glasgow Coma Eye Score & Integer & unitless & $\{1, 2, 3, 4\}$ \\
-  % R: prepare_gcsverbal()
-  \gcs{verbal} & Glasgow Coma Verbal Score & Integer & unitless & $\{1, 2, 3, 4, 5\}$ \\
-  % R: prepare_gcstotal()
-  \gcs{total} & Total Glasgow Coma Score & Integer & unitless & $\{3, 4, \ldots, 15\}$ \\
-  % R: prepare_pupils(); prepare_pupilleft() and prepare_pupilright() can also construct FIXEDPUPILS in prepare_phoenix_data().
-  Pupils & Bilaterally fixed pupils & Integer & & $\{0, 1\}$ \\
-\end{longtable}
+  \label{tab:neuro-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
+    % R: prepare_gcsmotor()
+    \gcs{motor} & Glasgow Coma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ \\
+    % R: prepare_gcseye()
+    \gcs{eye} & Glasgow Coma Eye Score & Integer & unitless & $\{1, 2, 3, 4\}$ \\
+    % R: prepare_gcsverbal()
+    \gcs{verbal} & Glasgow Coma Verbal Score & Integer & unitless & $\{1, 2, 3, 4, 5\}$ \\
+    % R: prepare_gcstotal()
+    \gcs{total} & Total Glasgow Coma Score & Integer & unitless & $\{3, 4, \ldots, 15\}$ \\
+    % R: prepare_pupils(); prepare_pupilleft() and prepare_pupilright() can also construct FIXEDPUPILS in prepare_phoenix_data().
+    Pupils & Bilaterally fixed pupils & Integer & & $\{0, 1\}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variable}\label{sec:neuro-constructed}
 
@@ -1005,7 +1002,6 @@ updated but the other component(s) and the total were not updated. When
 this occurred we chose to assume it was because there was no change in
 the other component scores. This rule prevents missing totals from
 artificially lowering the score when only one component is updated.
-
 \begin{equation}
   \label{eq:gcs}
   \GCS \coloneqq
@@ -1085,31 +1081,32 @@ this becomes disseminated intravascular coagulation (DIC), where
 clotting and bleeding risk coexist.
 
 \subsubsection{Data from the EHR}\label{sec:coag-ehr}
+The input data from the EHR needed for coagulation dysfunction scoring are
+platelets, INR, D-dimer, and fibrinogen. See Table~\ref{tab:coag-ehr}.
 
-\begin{longtable}{lllll}
+\begin{table}
+  \centering
   \caption{EHR Inputs for Coagulation Organ Dysfunction Scoring}
-  \label{tab:coag-ehr} \\
-
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
-
-  \bottomrule
-  \endlastfoot
-  % R: prepare_platelets()
-  Platelets  & Platelets  & Real & 1000 / $\mu$L & $[0, \infty)$ \\
-  % R: prepare_inr()
-  INR        & INR        & Real & unitless      & $[0, \infty)$ \\
-  % R: prepare_ddimer()
-  DDimer     & D-Dimer    & Real & mg/L (FEU)    & $[0, \infty)$ \\
-  % R: prepare_fibrinogen()
-  Fibrinogen & Fibrinogen & Real & mg/dL         & $[0, \infty)$ \\
-\end{longtable}
+  \label{tab:coag-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
+    % R: prepare_platelets()
+    Platelets  & Platelets  & Real & 1000 / $\mu$L & $[0, \infty)$ \\
+    % R: prepare_inr()
+    INR        & INR        & Real & unitless      & $[0, \infty)$ \\
+    % R: prepare_ddimer()
+    DDimer     & D-Dimer    & Real & mg/L (FEU)    & $[0, \infty)$ \\
+    % R: prepare_fibrinogen()
+    Fibrinogen & Fibrinogen & Real & mg/dL         & $[0, \infty)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variable}\label{sec:coag-constructed}
 
@@ -1122,25 +1119,36 @@ caps at 2 points.
 
 Define:
 \begin{equation}
-  \label{eq:coag-components}
+  \label{eq:coag-component-platelets}
   % R: phoenix_coagulation()
-\begin{aligned}
-  \DS{Platelets}[\m{coag}]  &\coloneqq \mathbb{I}\left\{\CF{Platelets}[\m{coag}] < 100 \right\} \\
-  \DS{INR}[\m{coag}]        &\coloneqq \mathbb{I}\left\{\CF{INR}[\m{coag}] > 1.3\right\} \\
-  \DS{DDimer}[\m{coag}]     &\coloneqq \mathbb{I}\left\{\CF{DDimer}[\m{coag}] > 2\right\} \\
-  \DS{Fibrinogen}[\m{coag}] &\coloneqq \mathbb{I}\left\{\CF{Fibrinogen}[\m{coag}] < 100\right\},
-\end{aligned}
+  \DS{Platelets}[\m{coag}]  \coloneqq \mathbb{I}\left\{\CF{Platelets}[\m{coag}] < 100 \right\},
 \end{equation}
-and then
+\begin{equation}
+  \label{eq:coag-component-inr}
+  % R: phoenix_coagulation()
+  \DS{INR}[\m{coag}]        \coloneqq \mathbb{I}\left\{\CF{INR}[\m{coag}] > 1.3\right\},
+\end{equation}
+\begin{equation}
+  \label{eq:coag-component-ddimer}
+  % R: phoenix_coagulation()
+  \DS{DDimer}[\m{coag}]     \coloneqq \mathbb{I}\left\{\CF{DDimer}[\m{coag}] > 2\right\},
+\end{equation}
+and
+\begin{equation}
+  \label{eq:coag-component-fibrinogen}
+  % R: phoenix_coagulation()
+  \DS{Fibrinogen}[\m{coag}] \coloneqq \mathbb{I}\left\{\CF{Fibrinogen}[\m{coag}] < 100\right\}.
+\end{equation}
+Then, the coagulation score is:
 \begin{equation}
   \label{eq:coag}
   % R: phoenix_coagulation()
-  \DS{Coag}[\m{coag}] \coloneqq \min \left\{2, \sum_{x \in \boldsymbol{C}_{\mathrm{coag}}} \DS*{x}[\m{coag}] \right\},
+  \DS{Coag}[\m{coag}] \coloneqq \min \left\{2, \sum_{x \in \Ccoag} \DS*{x}[\m{coag}] \right\},
 \end{equation}
 where
 \begin{equation}
   \label{eq:coag-component-set}
-  \boldsymbol{C}_{\mathrm{coag}} \coloneqq \left\{\mathrm{Platelets}, \mathrm{INR}, \mathrm{DDimer}, \mathrm{Fibrinogen}\right\}.
+  \Ccoag \coloneqq \left\{\mathrm{Platelets}, \mathrm{INR}, \mathrm{DDimer}, \mathrm{Fibrinogen}\right\}.
 \end{equation}
 
 
@@ -1150,38 +1158,36 @@ The endocrine score is part of the Phoenix-8 scoring system.
 
 \subsubsection{Data from the EHR}
 There is only one element from the EHR used in the endocrine dysfunction
-assessment: glucose, Table~\ref{tab:endo-ehr}.
+assessment: glucose. See Table~\ref{tab:endo-ehr}.
 
-\begin{longtable}{lllll}
+\begin{table}
+  \centering
   \caption{EHR Inputs for Endocrine Organ Dysfunction Scoring}
-  \label{tab:endo-ehr} \\
+  \label{tab:endo-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
 
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
-
-  \bottomrule
-  \endlastfoot
-
-  \rowcolor{gray!20}
-  % R: prepare_glucose()
-  Glucose &
-  Blood Glucose &
-  Real &
-  mg/dL &
-  $[0, \infty)$ \\
-\end{longtable}
+    \rowcolor{gray!20}
+    % R: prepare_glucose()
+    Glucose &
+    Blood Glucose &
+    Real &
+    mg/dL &
+    $[0, \infty)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variables}
 There are no constructed variables to define.
 
 \subsubsection{Endocrine Organ Dysfunction Score}
-
 \begin{equation}
   \label{eq:endo}
   % R: phoenix_endocrine()
@@ -1201,39 +1207,38 @@ The immunologic score is part of the Phoenix-8 scoring system.
 \subsubsection{Data from the EHR}
 Two values are required from the EHR: Absolute neutrophil count (ANC) and
 absolute lymphocyte count (ALC).  Both are expected in units of 1000 cells per
-cubic millimeter, Table~\ref{tab:immu-ehr}.
+cubic millimeter. See Table~\ref{tab:immu-ehr}.
 
-\begin{longtable}{lllll}
+\begin{table}
+  \centering
   \caption{EHR Inputs for Immunologic Organ Dysfunction Scoring}
-  \label{tab:immu-ehr} \\
+  \label{tab:immu-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
 
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
+    \rowcolor{gray!20}
+    % R: prepare_anc()
+    ANC &
+    Absolute neutrophil count &
+    Real &
+    1000 cells / mm$^3$ &
+    $[0, \infty)$ \\
 
-  \bottomrule
-  \endlastfoot
-
-  \rowcolor{gray!20}
-  % R: prepare_anc()
-  ANC &
-  Absolute neutrophil count &
-  Real &
-  1000 cells / mm$^3$ &
-  $[0, \infty)$ \\
-
-  % R: prepare_alc()
-  ALC &
-  Absolute lymphocyte count &
-  Real &
-  1000 cells / mm$^3$ &
-  $[0, \infty)$ \\
-\end{longtable}
+    % R: prepare_alc()
+    ALC &
+    Absolute lymphocyte count &
+    Real &
+    1000 cells / mm$^3$ &
+    $[0, \infty)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variables}
 There are no constructed variables for the immunologic score.
@@ -1273,39 +1278,39 @@ The domain for the immunologic score is
 \subsection{Hepatic}
 \subsubsection{Data from the EHR}
 Two values are required from the EHR: total bilirubin reported in units of mg/dL
-and alanine aminotransferase (ALT) reported in units of IU/L, Table~\ref{tab:hepatic-ehr}.
+and alanine aminotransferase (ALT) reported in units of IU/L. See
+Table~\ref{tab:hepatic-ehr}.
 
-\begin{longtable}{lllll}
+\begin{table}
+  \centering
   \caption{EHR Inputs for Hepatic Organ Dysfunction Scoring}
-  \label{tab:hepatic-ehr} \\
+  \label{tab:hepatic-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
 
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
+    \rowcolor{gray!20}
+    % R: prepare_bilirubin()
+    Bilirubin &
+    Total bilirubin &
+    Real &
+    mg/dL &
+    $[0, \infty)$ \\
 
-  \bottomrule
-  \endlastfoot
-
-  \rowcolor{gray!20}
-  % R: prepare_bilirubin()
-  Bilirubin &
-  Total bilirubin &
-  Real &
-  mg/dL &
-  $[0, \infty)$ \\
-
-  % R: prepare_alt()
-  ALT &
-  Alanine aminotransferase &
-  Real &
-  IU / L &
-  $[0, \infty)$ \\
-\end{longtable}
+    % R: prepare_alt()
+    ALT &
+    Alanine aminotransferase &
+    Real &
+    IU / L &
+    $[0, \infty)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variables}
 There are no constructed variables for the hepatic organ dysfunction assessment.
@@ -1353,33 +1358,33 @@ mg/dL) are required to assess renal dysfunction.  Age is also required for
 assessment of cardiovascular dysfunction as part of the Phoenix scoring and thus
 the only additional variable to collect to extend to Phoenix-8 from Phoenix for
 the renal dysfunction score is the creatinine.
-\begin{longtable}{lllll}
+See Table~\ref{tab:renal-ehr}.
+\begin{table}
+  \centering
   \caption{EHR Inputs for Renal Organ Dysfunction Scoring}
-  \label{tab:renal-ehr} \\
+  \label{tab:renal-ehr}
+  \begin{tabular}{lllll}
+    \toprule
+    \textbf{Variable} &
+    \textbf{Description} &
+    \textbf{Type} &
+    \textbf{Units} &
+    \textbf{Domain} \\
+    \midrule
 
-  \toprule
-  \textbf{Variable} &
-  \textbf{Description} &
-  \textbf{Type} &
-  \textbf{Units} &
-  \textbf{Domain} \\
-  \midrule
-  \endhead
+    \rowcolor{gray!20}
+    % R: prepare_creatinine()
+    Creatinine &
+    Creatinine &
+    Real &
+    mg / dL &
+    $[0, \infty)$ \\
 
-  \bottomrule
-  \endlastfoot
-
-  \rowcolor{gray!20}
-  % R: prepare_creatinine()
-  Creatinine &
-  Creatinine &
-  Real &
-  mg / dL &
-  $[0, \infty)$ \\
-
-  % R: prepare_age()
-  Age & Patient's age & Real & months & $[0, 216)$ \\
-\end{longtable}
+    % R: prepare_age()
+    Age & Patient's age & Real & months & $[0, 216)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsubsection{Constructed Variables}
 There are no constructed variables required for the assessment of renal
@@ -1389,7 +1394,6 @@ dysfunction.
 The renal dysfunction score is based on an age adjusted creatinine level
 \eqref{eq:renal-score}.  The cut points for the age ranges are the same as used
 in the cardiovascular scoring, \eqref{eq:theta1} and \eqref{eq:theta2}.
-
 \begin{equation}
   \label{eq:renal-score}
   % R: phoenix_renal()
@@ -1454,7 +1458,6 @@ presence of suspected infection.
 Importantly: The ODSS is a convince and has not been evaluated in the absence of
 suspected infection, that is The development of PSS only investigated ODSS in
 the presence of suspected infection~\citep{sanchezpinto_2024_development}.
-
 \begin{equation}
   \label{eq:odss}
   % R: phoenix(); phoenix8(); score_prepared_phoenix_data(..., aggregation = "jama2024")
@@ -1647,20 +1650,14 @@ decoupled further than they are in this exploratory aggregation scheme.  In this
 scheme, at time $t,$, we assign 0 points for zero medications, 1 point for one
 medication, and 2 points for two or more concurrent medications.  In
 \S~\ref{sec:fcd} we will fully decouple the vasoactive medications.
-
 \begin{equation}
   \label{eq:odss-ccd}
   % R: score_prepared_phoenix_data(..., aggregation = "ccd"); ccd()
   \ODSS{d}[CCD] \coloneqq \\
   \Bigg[
     \sum_{x \in \Omega_{d}\setminus \left\{\mathrm{Card}\right\}} \max_{t \in T} \DS*{x} +
-    \sum_{x \in \boldsymbol{C}_{\mathrm{card}}} \max_{t \in T} \DS*{x}
-  \Bigg],
-\end{equation}
-where
-\begin{equation}
-  \label{eq:card-component-set}
-  \boldsymbol{C}_{\mathrm{card}} \coloneqq \left\{\mathrm{Vasos}, \mathrm{MAP}, \mathrm{Lactate}\right\}.
+    \sum_{x \in \Ccard} \max_{t \in T} \DS*{x}
+  \Bigg].
 \end{equation}
 This exploratory ODSS leads to the exploratory PSS definition:
 \begin{equation}
@@ -1689,7 +1686,7 @@ and
   % R: score_prepared_phoenix_data(..., aggregation = "ccd"); ccd()
   \SepticShock[CCD]\coloneqq
   \left[ \Sepsis[CCD] \right]
-  \mathbb{I} \left\{ \sum_{x \in \boldsymbol{C}_{\mathrm{card}}}\max_{t \in T} \DS*{x} \geq \kappa\right\}
+  \mathbb{I} \left\{ \sum_{x \in \Ccard}\max_{t \in T} \DS*{x} \geq \kappa\right\}
 \end{equation}
 for $\sigma \geq \kappa > 0.$
 
@@ -1742,7 +1739,7 @@ The fully decoupled ODSS is:
         \mathrm{Resp}^{\mathrm{FCD}}\left(T;\m{resp}\right) +
         \mathrm{Vasos}^{\mathrm{FCD}}(T;\m{vaso}) +
     } \\
-      \min \left\{ 2, \sum_{x \in \boldsymbol{C}_{\mathrm{coag}}} \max_{t \in T} \DS*{x}[\boldsymbol{m}]\right\}
+      \min \left\{ 2, \sum_{x \in \Ccoag} \max_{t \in T} \DS*{x}[\boldsymbol{m}]\right\}
       + \sum_{x \in \omega_{d}} \max_{t \in T} \DS*{x}
     \Bigg],
 \end{multline}
