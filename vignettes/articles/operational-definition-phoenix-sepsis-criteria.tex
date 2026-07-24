@@ -120,6 +120,11 @@ all aggregations.
 
 \section{Notation}\label{sec:notation}
 
+This section establishes the notation used throughout the operational
+definition. It first lists common symbols and then defines the helper functions
+used to carry values forward, restrict values to look-back windows, and evaluate
+indicator functions with missing data.
+
 \subsection{Symbols}\label{sec:symbols}
 
 This section is a quick guide to the symbols used throughout the document.
@@ -477,6 +482,13 @@ domains are intentionally broad (wider than clinically plausible values) to keep
 data validation separate from scoring.
 
 \subsection{Respiratory}\label{sec:resp}
+
+The respiratory score summarizes oxygenation severity in the context of
+respiratory support. This subsection identifies the EHR inputs needed for
+oxygenation ratios and support indicators, defines the constructed PF ratio, SF
+ratio, invasive mechanical ventilation, and other respiratory support variables,
+and then maps those constructed variables to respiratory dysfunction points.
+
 \subsubsection{Data from the EHR}\label{sec:resp-ehr}
 
 There are several values we expect to get from the Electronic Health Record
@@ -1188,6 +1200,9 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
 There are no constructed variables to define.
 
 \subsubsection{Endocrine Organ Dysfunction Score}\label{sec:endo-odss}
+The endocrine score converts glucose into a binary dysfunction indicator. Values
+outside the normal operating range contribute one point, while values within the
+range contribute zero points.
 \begin{equation}
   \label{eq:endo}
   % R: phoenix_endocrine()
@@ -1244,6 +1259,9 @@ cubic millimeter. See Table~\ref{tab:immu-ehr}.
 There are no constructed variables for the immunologic score.
 
 \subsubsection{Immunologic Organ Dysfunction Score}\label{sec:immu-odss}
+The immunologic score converts low absolute lymphocyte count and low absolute
+neutrophil count into component indicators. The organ score is positive if
+either immune-cell count crosses its threshold.
 Define
 \begin{equation}
   \label{eq:alc}
@@ -1276,6 +1294,11 @@ The domain for the immunologic score is
 \end{equation}
 
 \subsection{Hepatic}\label{sec:hepatic}
+
+The hepatic score is part of the Phoenix-8 scoring system. It uses total
+bilirubin and ALT as markers of hepatic injury or dysfunction and maps them to a
+single binary organ dysfunction score.
+
 \subsubsection{Data from the EHR}\label{sec:hepatic-ehr}
 Two values are required from the EHR: total bilirubin reported in units of mg/dL
 and alanine aminotransferase (ALT) reported in units of IU/L. See
@@ -1436,6 +1459,12 @@ time interval $T$ at least one dose of systemic anti-infective agent and at
 least one infectious test has been ordered.
 
 \section{Phoenix Sepsis Score}\label{define-phoenix-sepsis-score}
+
+This section combines the organ dysfunction scores with suspected infection to
+define the Phoenix Sepsis Score, sepsis, and septic shock. It also distinguishes
+the organ dysfunction score summary (ODSS), which can be computed regardless of
+suspected infection status, from the Phoenix Sepsis Score (PSS), which is gated
+by suspected infection.
 
 Define the look-back windows as the vector:
 \begin{equation}
