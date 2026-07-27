@@ -21,7 +21,7 @@
 #'    Age in [60, 144) months \tab\tab \cr
 #'      \tab creatinine in [0, 0.7) mg/dL \tab 0 points \cr
 #'      \tab creatinine in [0.7, Inf)  mg/dL \tab 1 point  \cr
-#'    Age in [144, 216] months \tab\tab \cr
+#'    Age in [144, 216) months \tab\tab \cr
 #'      \tab creatinine in [0, 1.0) mg/dL \tab 0 points \cr
 #'      \tab creatinine in [1.0, Inf)  mg/dL \tab 1 point  \cr
 #'  }
@@ -115,6 +115,6 @@ phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.f
   (age >=  12 & age <   24) * (crt >= 0.4) +
   (age >=  24 & age <   60) * (crt >= 0.6) +
   (age >=  60 & age <  144) * (crt >= 0.7) +
-  (age >= 144 & age <= 216) * (crt >= 1.0)
+  (age >= 144 & age <  216) * (crt >= 1.0)
 
 }

@@ -114,7 +114,9 @@ phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_r
   cl[[1]] <- get("phoenix_neurologic", mode = "function")
   neur <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
-  # TeX: eq:odss, eq:omega4, eq:sepsis, and eq:septicshock.
+  # TeX: row-level sum over eq:omega4 used in eq:odss.
+  # The sepsis and septic shock columns are legacy ungated indicators; PSS-gated
+  # definitions with suspected infection are in score_prepared_phoenix_data().
   rtn <-
     data.frame(
       phoenix_respiratory_score    = resp,

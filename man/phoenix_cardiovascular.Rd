@@ -92,7 +92,7 @@ for each of systemic vasoactive medications, lactate, and MAP.
      \tab [49, Inf) mmHg \tab 0 points \cr
      \tab [36, 49)  mmHg \tab 1 point  \cr
      \tab [0, 36)   mmHg \tab 2 points \cr
-   Age in [144, 216] months \tab\tab \cr
+   Age in [144, 216) months \tab\tab \cr
      \tab [52, Inf) mmHg \tab 0 points \cr
      \tab [38, 52)  mmHg \tab 1 point  \cr
      \tab [0, 38)   mmHg \tab 2 points \cr

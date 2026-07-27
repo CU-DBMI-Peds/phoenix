@@ -128,6 +128,20 @@ stopifnot(
 # verify error if lengths differ
 x <- tryCatch(phoenix_cardiovascular(vasoactives = numeric(0)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))
+
+################################################################################
+# verify the documented age interval is [0, 216) months
+stopifnot(
+  identical(
+    phoenix_cardiovascular(
+      vasoactives = 0,
+      lactate = 0,
+      age = c(215.999, 216),
+      mean_arterial_pressure = c(37, 37)
+    ),
+    c(2L, 0L)
+  )
+)
 stopifnot(identical(
   x$message,
  "All inputs need to either have the same length or have length 1. Length of vasoactives is 0; Length of lactate is 1; Length of age is 1; Length of mean_arterial_pressure is 1."

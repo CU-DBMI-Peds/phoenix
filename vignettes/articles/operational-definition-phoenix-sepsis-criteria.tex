@@ -1515,7 +1515,8 @@ development work evaluated the underlying organ dysfunction score in conjunction
 with suspected infection~\citep{sanchezpinto_2024_development,schlapbach_2024_international}.
 \begin{equation}
   \label{eq:odss}
-  % R: phoenix(); phoenix8(); score_prepared_phoenix_data(..., aggregation = "jama2024")
+  % R: score_prepared_phoenix_data(..., aggregation = "jama2024") computes window-level ODSS.
+  %    phoenix() and phoenix8() compute the row-level organ-score sums used before maximization over T.
   \ODSS{d} \coloneqq
   \maxtinT \sum_{x \in \Omega_{d}} \DS*{x}, \quad d \in \left\{4, 8\right\},
 \end{equation}
@@ -1541,14 +1542,14 @@ Sepsis is defined as organ-dysfunction in the presence of a suspected
 infection, that is:
 \begin{equation}
   \label{eq:sepsis}
-  % R: phoenix(); score_prepared_phoenix_data(..., aggregation = "jama2024")
+  % R: score_prepared_phoenix_data(..., aggregation = "jama2024")
   \Sepsis \coloneqq \mathbb{I} \left\{\PSS{4} \geq \sigma \right\}.
 \end{equation}
 
 Septic shock is sepsis with at least $\kappa$ point(s) from cardiovascular dysfunction.
 \begin{equation}
   \label{eq:septicshock}
-  % R: phoenix(); score_prepared_phoenix_data(..., aggregation = "jama2024")
+  % R: score_prepared_phoenix_data(..., aggregation = "jama2024")
   \begin{split}
     \SepticShock & \coloneqq \SI \\ & \times
     \mathbb{I} \left\{

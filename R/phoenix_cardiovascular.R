@@ -53,7 +53,7 @@
 #'      \tab [49, Inf) mmHg \tab 0 points \cr
 #'      \tab [36, 49)  mmHg \tab 1 point  \cr
 #'      \tab [0, 36)   mmHg \tab 2 points \cr
-#'    Age in [144, 216] months \tab\tab \cr
+#'    Age in [144, 216) months \tab\tab \cr
 #'      \tab [52, Inf) mmHg \tab 0 points \cr
 #'      \tab [38, 52)  mmHg \tab 1 point  \cr
 #'      \tab [0, 38)   mmHg \tab 2 points \cr
@@ -219,7 +219,7 @@ map_score <- function(map, age) {
     (age >=  12 & age <   24) * ((map < 31) + (map < 44)) +
     (age >=  24 & age <   60) * ((map < 32) + (map < 45)) +
     (age >=  60 & age <  144) * ((map < 36) + (map < 49)) +
-    (age >= 144 & age <= 216) * ((map < 38) + (map < 52))
+    (age >= 144 & age <  216) * ((map < 38) + (map < 52))
   )
   rtn[is.na(rtn)] <- 0L
   rtn
