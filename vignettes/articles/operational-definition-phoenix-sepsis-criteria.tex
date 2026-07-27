@@ -522,10 +522,10 @@ and then maps those constructed variables to respiratory dysfunction points.
 
 \subsubsection{Data from the EHR}\label{sec:resp-ehr}
 
-There are several values we expect to get from the Electronic Health Record
-capturing oxygenation, \fiotwo{} (fraction of inspired oxygen), \spotwo (pulse
-oximetry oxygen saturation), and \paotwo (arterial oxygen pressure).
-Additionally, the presence of mechanical or noninvasive respiratory support.
+Several values from the Electronic Health Record capture oxygenation: \fiotwo{}
+(fraction of inspired oxygen), \spotwo (pulse oximetry oxygen saturation), and
+\paotwo (arterial oxygen pressure). The EHR also records the presence of
+mechanical or noninvasive respiratory support.
 Together, they allow us to quantify how well the patient is oxygenating and
 whether that oxygenation depends on advanced support.  See
 Table~\ref{tab:resp-ehr}.
@@ -650,7 +650,7 @@ value is reported at the same time as the \fiotwo or after.
 \end{equation}
 
 Additionally, the SF ratio is valid if the $\spotwo \leq 97.$ This requirement is
-based on the PODIUM~\citep{bembea2022podium,squires2022podium} organ
+based on the PODIUM~\citep{bembea2022podium,yehya2022podium_respiratory} organ
 dysfunction scoring, and is an additional requirement on the
 pSOFA~\citep{matics2017psofa} cut points in
 the scoring.
@@ -1594,7 +1594,7 @@ following parameter values in Table~\ref{tab:phoenix-parameters} were used:
   \addlinespace[0.5em]
   \multicolumn{3}{l}{\textbf{Time Window}} \\
   \rowcolor{gray!20}
-  ~~$T$ & $\left[0, 1440\right)$ & The first 24h ours of the encounter \\
+  ~~$T$ & $\left[0, 1440\right)$ & The first 24 hours of the encounter \\
 
   \multicolumn{3}{l}{\textbf{Thresholds}} \\
   \rowcolor{gray!20}
