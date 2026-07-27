@@ -621,37 +621,36 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   p8 <-
     # TeX: eq:odss-fcd applies phoenix8() after component-level min/max aggregation.
     phoenix8(
-    # Respiratory
-    pf_ratio = PFR,
-    sf_ratio = SFR,
-    invasive_mechanical_ventilation = IMV,
-    other_respiratory_support = ORS,
-    # Cardiovascular
-    vasoactives = DOBUTAMINE + DOPAMINE + EPINEPHRINE +
-                  MILRINONE + NOREPINEPHRINE + VASOPRESSIN,
-    lactate = LACTATE,
-    mean_arterial_pressure = MAP,
-    # Coagulation
-    platelets  = PLATELETS,
-    inr        = INR,
-    d_dimer    = DDIMER,
-    fibrinogen = FIBRINOGEN,
-    # Neurological
-    gcs = GCS,
-    fixed_pupils = FIXEDPUPILS,
-    # Endocrine
-    glucose = GLUCOSE,
-    # Immunologic
-    anc = ANC,
-    alc = ALC,
-    # Renal
-    creatinine = CREATININE,
-    # Hepatic
-    bilirubin = BILIRUBIN,
-    alt = ALT,
-    # age (used in cardiovascular and renal)
-    age = AGE,
-    data = DF
+      # Respiratory
+      pf_ratio = DF[["PFR"]],
+      sf_ratio = DF[["SFR"]],
+      invasive_mechanical_ventilation = DF[["IMV"]],
+      other_respiratory_support = DF[["ORS"]],
+      # Cardiovascular
+      vasoactives = DF[["DOBUTAMINE"]] + DF[["DOPAMINE"]] + DF[["EPINEPHRINE"]] +
+                    DF[["MILRINONE"]] + DF[["NOREPINEPHRINE"]] + DF[["VASOPRESSIN"]],
+      lactate = DF[["LACTATE"]],
+      mean_arterial_pressure = DF[["MAP"]],
+      # Coagulation
+      platelets  = DF[["PLATELETS"]],
+      inr        = DF[["INR"]],
+      d_dimer    = DF[["DDIMER"]],
+      fibrinogen = DF[["FIBRINOGEN"]],
+      # Neurological
+      gcs = DF[["GCS"]],
+      fixed_pupils = DF[["FIXEDPUPILS"]],
+      # Endocrine
+      glucose = DF[["GLUCOSE"]],
+      # Immunologic
+      anc = DF[["ANC"]],
+      alc = DF[["ALC"]],
+      # Renal
+      creatinine = DF[["CREATININE"]],
+      # Hepatic
+      bilirubin = DF[["BILIRUBIN"]],
+      alt = DF[["ALT"]],
+      # age (used in cardiovascular and renal)
+      age = DF[["AGE"]]
   )
 
   rtn <- phxdft_select(DF, cols = id.vars)
