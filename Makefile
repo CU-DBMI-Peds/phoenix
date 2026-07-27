@@ -14,7 +14,7 @@ SRC       = $(wildcard $(PKG_ROOT)/src/*.cpp)
 RFILES    = $(wildcard $(PKG_ROOT)/R/*.R)
 TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
 RAWDATAR  = $(wildcard $(PKG_ROOT)/data-raw/*.R)
-VIGNETTES = $(addsuffix .Rmd, $(PKG_ROOT)/vignettes/$(notdir $(basename $(wildcard $(PKG_ROOT)/vignette-spinners/*.R))))
+VIGNETTES = $(wildcard $(PKG_ROOT)/vignettes/*.Rmd)
 
 README_RMD         = $(PKG_ROOT)/README.Rmd
 README_MD          = $(PKG_ROOT)/README.md
@@ -61,12 +61,6 @@ check: $(PKG_TARBALL)
 
 install: $(PKG_TARBALL)
 	$(RCMD) INSTALL $(INSTALL_OPTIONS) $(PKG_TARBALL)
-
-################################################################################
-# Recipes for Vignettes
-$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R
-	$(R) -e "knitr::spin(hair = '$<', knit = FALSE)"
-	mv $(basename $<).Rmd $@
 
 ################################################################################
 covr-report-%.html : $(PKG_TARBALL) .covr
