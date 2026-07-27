@@ -16,8 +16,15 @@
   and suspected infection.
 * Add `score_prepared_phoenix_data()` for scoring prepared longitudinal data
   within a user-defined observation window.  The default `jama2024` method
-  reproduces the Phoenix and Phoenix-8 score definitions, and alternate
-  exploratory scoring methods `alt1` and `alt2` are available.
+  reproduces the Phoenix and Phoenix-8 score definitions.  Exploratory
+  aggregation methods are available as `olm` (organ-level maxima), `ccd`
+  (organ-level maxima with cardiovascular component decoupling), and `fcd`
+  (full component decoupling).
+* `score_prepared_phoenix_data()` now returns organ dysfunction summary score
+  (ODSS) columns separately from Phoenix Sepsis Score (PSS) columns.  ODSS is
+  computed regardless of suspected infection status; PSS is the suspected
+  infection-gated score.  The returned data include the suspected infection
+  indicator used for the window.
 
 ## Other changes
 
@@ -31,6 +38,11 @@
   `mean_arterial_pressure()`, and the `map` argument remains available as a
   soft-deprecated alias for `mean_arterial_pressure` in
   `phoenix_cardiovascular()`, `phoenix()`, and `phoenix8()`.
+* Use more explicit names for respiratory preparation inputs that distinguish
+  mean airway pressure values from the invasive mechanical ventilation
+  indicator.
+* Change the default GCS carry-forward look-back in `prepare_phoenix_data()` to
+  720 minutes to match the operational definition.
 * Package now depends on R >= 4.0.0 due to the use of `deparse1()`
 * Add data.table, dplyr, tidyr, and tidyselect to suggested packages.  The
   operationalization helpers use guarded backend-aware paths for data.frames,
