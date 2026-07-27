@@ -471,6 +471,10 @@ otherwise it returns ``missing.'' This is how we prevent using values
 that are too old to reflect current physiology. The indicator
 $\mathbb{I}\{A\}$ then lets us convert logical statements (e.g.,
 ``lactate is at least 5'') into 0/1 points for scoring.
+Because $\mathbb{I}\{\mathrm{NA}\}=0,$ missing or unevaluable component
+criteria contribute zero points unless another available measurement establishes
+dysfunction. This is the minimum-score treatment of missing data used in the
+historical implementation.
 
 For potentially incomplete time-indexed function $f,$ extrema are evaluated over
 the available values of $f.$ Define:
@@ -884,7 +888,10 @@ diastolic values reported from the arterial line.
 \sbpa and \dbpa. If none of the arterial line values are
 available, then use values from a cuff preferentially taking a reported mean
 arterial pressure, \mapc, and lastly, approximate via \sbpc and
-\dbpc. That is, let
+\dbpc. The approximated MAP values use the separately carried-forward systolic
+and diastolic pressures within the blood-pressure look-back window; systolic and
+diastolic pressures are not required to have been recorded at the same time.
+That is, let
 \begin{equation}
   \label{eq:map-candidates}
   \begin{aligned}
@@ -1065,10 +1072,13 @@ where
 \end{equation}
 The use of $\mathcal{C}[\cdot](t;\infty)$ means ``carry forward the most recent value
 with no time limit.'' In practice, this is only applied when each of the
-three component scores has been observed at least once. So if the latest
-eye, verbal, and motor scores were recorded at different times, we take
-each component's most recent value and sum them to form a consistent
-total, even if those component timestamps are not identical.
+three component scores has been observed at least once. If no total GCS has
+been observed, this component-sum rule applies once all three components have
+been observed within the GCS look-back window. If the component sum and reported
+total GCS have the same effective timestamp, the component sum is used. So if
+the latest eye, verbal, and motor scores were recorded at different times, we
+take each component's most recent value and sum them to form a consistent total,
+even if those component timestamps are not identical.
 
 The score contribution from GCS is
 \begin{equation}
