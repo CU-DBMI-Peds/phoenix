@@ -17,7 +17,7 @@
 #' @param other_respiratory_support other respiratory support; numeric or integer vector, (0 = no support; 1 = support)
 #' @param vasoactives an integer vector, the number of systemic vasoactive medications being administered to the patient.  Six vasoactive medications are considered: dobutamine, dopamine, epinephrine, milrinone, norepinephrine, vasopressin.
 #' @param lactate numeric vector with the lactate value in mmol/L
-#' @param age numeric vector age in months
+#' @param age numeric vector age in months; valid range is [0, 216)
 #' @param mean_arterial_pressure numeric vector, mean arterial pressure in mmHg
 #' @param map soft-deprecated alias for \code{mean_arterial_pressure}
 #' @param platelets numeric vector for platelets counts in units of 1,000/uL (thousand per microliter)

@@ -19,7 +19,7 @@ phoenix_cardiovascular(
 
 \item{lactate}{numeric vector with the lactate value in mmol/L}
 
-\item{age}{numeric vector age in months}
+\item{age}{numeric vector age in months; valid range is [0, 216)}
 
 \item{mean_arterial_pressure}{numeric vector, mean arterial pressure in mmHg}
 

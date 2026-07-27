@@ -105,7 +105,7 @@ def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan,
 
         lactate : numeric vector with the lactate value in mmol/L
 
-        age : numeric vector age in months
+        age : numeric vector age in months; valid range is [0, 216)
 
         mean_arterial_pressure : numeric vector, mean arterial pressure in mmHg
 
@@ -119,9 +119,8 @@ def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan,
 
     mean_arterial_pressure = _resolve_mean_arterial_pressure(mean_arterial_pressure, map)
 
-    # for age and mean arterial pressure, if one is missing set both values so a score of 0 is
-    # returned.  use np.nan_to_num to copy the data before using [idx] to set al
-    # the missing values
+    # For age and mean arterial pressure, if one is missing set both values so a
+    # score of 0 is returned.
     age = np.nan_to_num(age, nan = 222)
     mean_arterial_pressure = np.nan_to_num(mean_arterial_pressure, nan = 100)
 
@@ -133,7 +132,7 @@ def phoenix_cardiovascular(vasoactives = np.nan, lactate = np.nan, age = np.nan,
             ((age >=  12) & (age <   24)).astype(int) * ((mean_arterial_pressure < 31).astype(int) + (mean_arterial_pressure < 44).astype(int)) +
             ((age >=  24) & (age <   60)).astype(int) * ((mean_arterial_pressure < 32).astype(int) + (mean_arterial_pressure < 45).astype(int)) +
             ((age >=  60) & (age <  144)).astype(int) * ((mean_arterial_pressure < 36).astype(int) + (mean_arterial_pressure < 49).astype(int)) +
-            ((age >= 144) & (age <= 216)).astype(int) * ((mean_arterial_pressure < 38).astype(int) + (mean_arterial_pressure < 52).astype(int))
+            ((age >= 144) & (age <  216)).astype(int) * ((mean_arterial_pressure < 38).astype(int) + (mean_arterial_pressure < 52).astype(int))
             )
 
     return np.array(vas_score + lct_score + map_score)
@@ -227,7 +226,7 @@ def phoenix_renal(creatinine = np.nan, age = np.nan):
     Parameters:
         creatinine : numeric vector; units of mg/dL
 
-        age : numeric vector age in months
+        age : numeric vector age in months; valid range is [0, 216)
 
     Returns:
         A np.array of integer values
@@ -240,7 +239,7 @@ def phoenix_renal(creatinine = np.nan, age = np.nan):
             ((age >=  12) & (age <   24)).astype(int) * (crt >= 0.4).astype(int) +
             ((age >=  24) & (age <   60)).astype(int) * (crt >= 0.6).astype(int) +
             ((age >=  60) & (age <  144)).astype(int) * (crt >= 0.7).astype(int) +
-            ((age >= 144) & (age <= 216)).astype(int) * (crt >= 1.0).astype(int)
+            ((age >= 144) & (age <  216)).astype(int) * (crt >= 1.0).astype(int)
           )
     return np.array(rtn)
 
@@ -291,7 +290,7 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilatio
 
         lactate : numeric vector with the lactate value in mmol/L
 
-        age : numeric vector age in months
+        age : numeric vector age in months; valid range is [0, 216)
 
         mean_arterial_pressure : numeric vector, mean arterial pressure in mmHg
 
@@ -363,7 +362,7 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilati
 
         lactate : numeric vector with the lactate value in mmol/L
 
-        age : numeric vector age in months
+        age : numeric vector age in months; valid range is [0, 216)
 
         mean_arterial_pressure : numeric vector, mean arterial pressure in mmHg
 

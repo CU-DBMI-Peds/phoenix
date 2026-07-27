@@ -40,16 +40,16 @@ Sepsis scoring rubric to your data sets.
 
 # Phoenix Sepsis and Septic Shock
 
-There are two sets of criteria, the Phoenix and Phoenix 8 criteria.  It was
+There are two sets of criteria: Phoenix and Phoenix-8.  It was
 determined during the development of the criteria that a score based on four
 organ systems was sufficient for diagnosis of sepsis and septic shock.  An
 extended score based on eight organ systems was reported as well.
 
-## Sepsis Definition:
+## Sepsis Definition
 
 A pediatric patient is to be diagnosed as having sepsis if:
 
-1. Suspected/Confirmed infection (receipt of systemic antimicrobials and
+1. Suspected or confirmed infection (receipt of systemic antimicrobials and
 microbiological testing within the first 24 hours of hospital presentation), and
 
 2. A total Phoenix Sepsis Score &geq; 2.  The score is the sum of the
@@ -61,16 +61,16 @@ microbiological testing within the first 24 hours of hospital presentation), and
 
 scores.
 
-## Septic Shock Definition:
+## Septic Shock Definition
 
 A patient is to be diagnosed as having septic shock if the patient meets the
 criteria for sepsis and has any cardiovascular dysfunction (cardiovascular
 score &geq; 1).
 
-## Phoenix-8 Score:
+## Phoenix-8 Score
 
-The research focused metric is the sum of the four organ dysfunction scores
-for Phoenix and
+The research-focused metric is the sum of the four organ dysfunction scores
+for Phoenix plus:
 
    5. endocrine,
    6. immunologic,
@@ -102,19 +102,19 @@ cat(ftnt, sep = "\n\n")
 
 Details on the development of the criteria are described in
 @sanchezpinto_2024_development and @schlapbach_2024_international and end users
-are encouraged to review these papers.  A couple quick notes about the data
-and use in general.  Some specific details will be provided in each of the
-sections for each organ system.
+are encouraged to review these papers.  A few general notes about the data and
+use follow.  Additional details are provided in the sections for each organ
+system.
 
 **Missing data = 0 points:** During the development of the Phoenix criteria
-missing data was mapped to zero points. This was done as it was reasonable to
+missing data were mapped to zero points. This was done as it was reasonable to
 assume that for some labs and metrics, missing data could indicate that there
 was no concern and the testing was not ordered.  Further, the Phoenix criteria
-was developed to be useful in both high, medium, and low resource settings
+were developed to be useful in high-, medium-, and low-resource settings
 where some labs and values might be uncommon or impossible to get.  As such,
-we encourage end users of this package to do the same - missing values are
+we encourage end users of this package to do the same: missing values are
 missing and should not be imputed.
-**__The Phoenix Criteria is valid on "known data."__**
+**__The Phoenix criteria are valid on "known data."__**
 
 **Worst in first 24 hours:** The score was developed on the worst measured
 value during the first 24 hours of a hospital encounter.
@@ -127,19 +127,19 @@ patient encounter and organ dysfunction scores:
 | 120            |  0   |  1   |  0   |   1   |  2    |
 | 720            |  0   |  0   |  0   |   1   |  1    |
 
-This patient never had a total score exceeding 2 during the first 720 minutes
+This patient never had a total score greater than 2 during the first 720 minutes
 of the encounter.  However, if we took the max score for the four components
-and summed them for the total then the resulting score would be 3.
+and summed them for the total, then the resulting score would be 3.
 
-The development of the Phoenix Criteria was based on the worst total score
-observed during the first 24 hours of an encounter.  The correct signal score
+The development of the Phoenix criteria was based on the worst total score
+observed during the first 24 hours of an encounter.  The correct score
 for the patient in the above example is 2, not 3.  Please keep this in mind
 when you are preparing your data sets.
 
 **Age Restrictions:**
-Age measurements are not adjusted for prematurity.  The Phoenix criteria was
-developed on non-birth hospitalizations (implication is age &gt; 0), children
-when gestational age &gt; 37 weeks; and those aged &leq; 216 months (18
+Age measurements are not adjusted for prematurity.  The Phoenix criteria were
+developed for non-birth hospitalizations, children with gestational age &gt; 37
+weeks, and patients aged from 0 months up to, but not including, 216 months (18
 years).
 
 # Package Use
@@ -156,26 +156,26 @@ will result in an error. If you wish to recycle an input of length greater
 than 1 and less than the max length of another, then wrap the shorter inputs
 in `rep()` for clarity.
 
-In the following subsections example use of the functions require the use of
-the provided example synthetic dataset `sepsis`. This data set has
+The following subsections demonstrate use of the functions with the provided
+synthetic example dataset `sepsis`. This data set has
 `r  nrow(sepsis)` rows and `r  ncol(sepsis)` variables. See
 `?sepsis` for more details.
 
 ## Respiratory
 
 ### Inputs:
-* `pf_ratio`: is the ratio of PaO<sub>2</sub> (partial pressure of oxygen in
+* `pf_ratio`: the ratio of PaO<sub>2</sub> (partial pressure of oxygen in
   arterial blood, units of mmHg) to FiO<sub>2</sub> (fraction of inspiratory
-  oxygen, values expected to be between 0.21 for room air, to 1.00).  Gathering
+  oxygen, values expected to be between 0.21 for room air and 1.00).  Gathering
   the PaO<sub>2</sub> is an invasive procedure.
 
 * `sf_ratio`: The SpO<sub>2</sub> (pulse oximetry) to FiO<sub>2</sub> ratio is a
   non-invasive surrogate for the PF ratio.  Important note: during the
-  development of the Phoenix criteria SF ratios were only valid to consider if
+  development of the Phoenix criteria, SF ratios were only considered valid if
   the SpO<sub>2</sub> is &leq; 97.
 
-* `invasive_mechanical_ventilation`: Invasive mechanical ventilation.  This is
-  an integer valued indicator variable: 0 = not intubated; 1 = intubated.
+* `invasive_mechanical_ventilation`: invasive mechanical ventilation.  This is
+  an integer-valued indicator variable: 0 = not intubated; 1 = intubated.
 
 * `other_respiratory_support`: Any oxygen support, e.g., high-flow, non-invasive
   positive pressure, or IMV.
@@ -239,7 +239,7 @@ phoenix_respiratory(
 Notice that the `pf_ratio` and `invasive_mechanical_ventilation` arguments have
 been omitted.  When an input is missing it is assumed to be `NA`.
 
-When your data is in a `data.frame` then:
+When your data are in a `data.frame`:
 
 ```{r}
 DF <- read.table(sep = "|", header = TRUE, text =
@@ -258,7 +258,7 @@ DF$resp_score <- phoenix_respiratory(pfr, sfr, invasive_mechanical_ventilation, 
 DF
 ```
 
-Another example using the provided example dataset `sepsis`. Here we have to
+Another example uses the provided example dataset `sepsis`. Here we have to
 construct a few variables as we only have information on FiO<sub>2</sub>,
 PaO<sub>2</sub>, SpO<sub>2</sub>, and invasive mechanical ventilation.
 
@@ -266,7 +266,7 @@ PaO<sub>2</sub>, SpO<sub>2</sub>, and invasive mechanical ventilation.
 resp_example <- sepsis[c("pid", "fio2", "pao2", "spo2", "vent")]
 ```
 
-Implied in this data is other respiratory support when FiO<sub>2</sub> is
+Other respiratory support is implied in these data when FiO<sub>2</sub> is
 greater than 0.21, the approximate fraction of oxygen in the atmosphere.
 
 <!--
@@ -292,14 +292,14 @@ knitr::kable(resp_example)
 
 ### Inputs
 
-* `vasoactives`: is an integer count of the number of systemic vasoactive
+* `vasoactives`: an integer count of the number of systemic vasoactive
   medications the patient is currently receiving.  During development of the
-  Phoenix criteria it was found that just the count of the medications was
-  sufficient to be useful, the dosage was not needed.  There were six
+  Phoenix criteria, it was found that the count of medications was sufficient;
+  the dosage was not needed.  There were six
   medications considered, dobutamine, dopamine, epinephrine, milrinone,
   norepinephrine, and vasopressin.  Again, it is systemic use of the medication
   that is important. For example, an injection of epinephrine to halt an
-  allergic reaction would not count, whereas having an epinephrine drip to treat
+  allergic reaction would not count, whereas an epinephrine drip to treat
   hypotension or bradycardia would count.
 
 * `lactate`: level of lactate in the blood, measured in mmol/L.
@@ -310,8 +310,8 @@ knitr::kable(resp_example)
   of the Phoenix criteria, mean arterial pressure, and blood pressure values in
   general, obtained from arterial measures were used preferentially over values
   obtained from cuffs.  Reported values were used preferentially over calculated
-  values.  If you need to calculate mean arterial pressure use DBP + (1/3) *
-  (SBP - DBP) where DBP is diastolic blood pressure (mmHg) and SBP is systemic
+  values.  If you need to calculate mean arterial pressure, use DBP + (1/3) *
+  (SBP - DBP), where DBP is diastolic blood pressure (mmHg) and SBP is systolic
   blood pressure (mmHg).
 
 ### Scores
@@ -326,7 +326,7 @@ knitr::kable(resp_example)
 DF <- expand.grid(vasoactives = 0:2,
                   lactate = seq(0, 15, by = 1),
                   age = seq(0, 18 * 12, by = 1),
-                  MAP = seq(00, 60, by = ))
+                  MAP = seq(0, 60, by = 1))
 DF$phoenix_cardiovascular_score <-
   factor(
     phoenix_cardiovascular(vasoactives, lactate, age, MAP, data = DF)
@@ -348,10 +348,10 @@ ggplot2::ggplot(DF) +
 
 ### Example Use
 
-Note: the mean arterial pressure can be approximated by 2/3*DBP + 1/3*SBP. To
+Note: mean arterial pressure can be approximated by 2/3 * DBP + 1/3 * SBP. To
 simplify the work and help reduce potential errors, the function
 `mean_arterial_pressure()` has been provided to estimate the mean arterial
-pressure given sbp and dbp.
+pressure given SBP and DBP.
 
 
 ```{r results = "hide"}
@@ -382,7 +382,7 @@ knitr::kable(card_example)
 
 * `platelets`: in units of 1,000/&mu;L.
 
-* `inr`: international normalized ratio; a metric for time require for blood to
+* `inr`: international normalized ratio; a metric for the time required for blood to
   clot.
 
 * `d_dimer`: in units of mg/L FEU.
@@ -467,7 +467,7 @@ knitr::kable(neuro_example)
 
 ## Endocrine
 
-The endocrine criteria is only applicable to the extended Phoenix-8 scoring.
+The endocrine score is only applicable to the extended Phoenix-8 scoring.
 
 ### Inputs
 * `glucose`: in mg/dL.
@@ -589,23 +589,23 @@ phoenix_scores <-
 
 str(phoenix_scores)
 ```
-The results as a easy to read table:
+The results as an easy-to-read table:
 ```{r echo = FALSE, results = "asis"}
 names(phoenix_scores) <- gsub("_", "\n", names(phoenix_scores))
 knitr::kable(phoenix_scores, format = "html", align = "c")
 ```
 
 
-## Phoenix 8
+## Phoenix-8
 
 `phoenix8()` returns a `data.frame` with all the columns that `phoenix()`
 returns, with the addition of columns for the endocrine, immunologic, renal,
 hepatic, and Phoenix-8 total score.
 
 ### Inputs
-All the same inputs as the individual organ dysfunction scoring functions.
+The inputs are the same as for the individual organ dysfunction scoring functions.
 The one minor caveat is that `age`
-is used in the cardiovascular and the renal scores and need only be provided
+is used in the cardiovascular and renal scores and needs to be provided only
 once when calling `phoenix8()`.
 
 ### Example Use
@@ -647,7 +647,7 @@ phoenix8_scores <-
 
 str(phoenix8_scores)
 ```
-The results as a easy to read table:
+The results as an easy-to-read table:
 ```{r echo = FALSE, results = "asis"}
 names(phoenix8_scores) <- gsub("_", "\n", names(phoenix8_scores))
 knitr::kable(phoenix8_scores, format = "html", align = "c")
@@ -656,7 +656,7 @@ knitr::kable(phoenix8_scores, format = "html", align = "c")
 # Clinical Vignettes
 
 These are taken from the supplemental material of
-[@sanchezpinto_2024_development](https://doi.org/10.1001/jama.2024.0196)
+[@sanchezpinto_2024_development](https://doi.org/10.1001/jama.2024.0196).
 
 ## Clinical Vignette 1
 
@@ -664,8 +664,8 @@ A previously healthy 3-year-old girl presents to an emergency department in
 Lima, Peru, with a temperature of 39&deg;C, tachycardia, and irritability. Blood
 pressure with an oscillometric device is 67/32 mmHg (mean arterial pressure of
 43 mmHg). She is given fluid resuscitation per local best practice guidelines,
-is started on broad spectrum antibiotics, and blood and urine cultures are sent.
-After an hour, she becomes hypotensive again and she is started on a
+is started on broad-spectrum antibiotics, and blood and urine cultures are sent.
+After an hour, she becomes hypotensive again and is started on a
 norepinephrine drip. A complete blood count reveals leukocytosis, mild anemia,
 and a platelet count of 95 K/&mu;L.
 
@@ -674,14 +674,14 @@ _Phoenix Sepsis Score:_
 * 0 respiratory points (no hypoxemia or respiratory support)
 * 2 cardiovascular points (1 for low mean arterial pressure for age, 1 for use
   of a vasoactive medication)
-* 1 coagulation points (for low platelet count)
+* 1 coagulation point (for low platelet count)
 * 0 neurologic points (irritability would result in a Glasgow Coma Scale of
   approximately 14)
 * total = 3 points.
 
 _Phoenix Sepsis Criteria:_
 The patient has suspected infection, &geq; 2 points of the Phoenix Sepsis Score,
-and &geq;1 cardiovascular points, so she meets criteria for septic shock.
+and &geq; 1 cardiovascular point, so she meets criteria for septic shock.
 
 
 ```{r}
@@ -706,7 +706,7 @@ ambulance. In the emergency department, a chest X-ray shows a consolidation in
 the left lower lobe and hazy bilateral lung opacities, so he is started on
 antibiotics for a suspected bacterial pneumonia. His respiratory status worsens,
 and he is started on non-invasive positive pressure ventilation. While awaiting
-to be admitted, his level of consciousness deteriorates rapidly: with nailbed
+admission, his level of consciousness deteriorates rapidly: with nailbed
 pressure he only opens his eyes briefly, moans in pain, and withdraws his hand
 (Glasgow Coma Scale: 2 for eye response + 2 for verbal response + 4 for motor
 response = 8). He is intubated using rapid sequence induction and placed on a
@@ -724,14 +724,14 @@ _Phoenix Sepsis Score:_
 
 * 2 respiratory points (for an S/F ratio &lt;292 on invasive mechanical
   ventilator)
-* 0 cardiovascular points (mean arterial pressure &gt;48 mmHg and Lactate level
+* 0 cardiovascular points (mean arterial pressure &gt; 48 mmHg and lactate level
   &lt;5 mmol/L)
 * 2 coagulation points (for high INR and D-Dimer)
 * 1 neurologic point (Glasgow Coma Scale &leq;10)
 * total = 5 points.
 
 _Phoenix Sepsis Criteria:_ The patient has a suspected
-infection, &geq;2 points of the Phoenix Sepsis Score, and 0 cardiovascular
+infection, &geq; 2 points of the Phoenix Sepsis Score, and 0 cardiovascular
 points, so he meets criteria for sepsis.
 
 
@@ -750,4 +750,3 @@ phoenix(
 
 # References
 <div id="refs"></div>
-

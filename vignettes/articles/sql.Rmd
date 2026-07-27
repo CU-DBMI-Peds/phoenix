@@ -148,13 +148,13 @@ points AS (
          WHEN (age >=  12 AND age <   24) AND (mean_arterial_pressure < 31) THEN 2
          WHEN (age >=  24 AND age <   60) AND (mean_arterial_pressure < 32) THEN 2
          WHEN (age >=  60 AND age <  144) AND (mean_arterial_pressure < 36) THEN 2
-         WHEN (age >= 144 AND age <= 216) AND (mean_arterial_pressure < 38) THEN 2
+         WHEN (age >= 144 AND age <  216) AND (mean_arterial_pressure < 38) THEN 2
          WHEN (age >=   0 AND age <    1) AND (mean_arterial_pressure < 31) THEN 1
          WHEN (age >=   1 AND age <   12) AND (mean_arterial_pressure < 39) THEN 1
          WHEN (age >=  12 AND age <   24) AND (mean_arterial_pressure < 44) THEN 1
          WHEN (age >=  24 AND age <   60) AND (mean_arterial_pressure < 45) THEN 1
          WHEN (age >=  60 AND age <  144) AND (mean_arterial_pressure < 49) THEN 1
-         WHEN (age >= 144 AND age <= 216) AND (mean_arterial_pressure < 52) THEN 1
+         WHEN (age >= 144 AND age <  216) AND (mean_arterial_pressure < 52) THEN 1
          ELSE 0 END AS map_points
   FROM vars
 )
@@ -334,7 +334,7 @@ SELECT
        WHEN (age >=  12 AND age <   24) AND (creatinine >= 0.4) THEN 1
        WHEN (age >=  24 AND age <   60) AND (creatinine >= 0.6) THEN 1
        WHEN (age >=  60 AND age <  144) AND (creatinine >= 0.7) THEN 1
-       WHEN (age >= 144 AND age <= 216) AND (creatinine >= 1.0) THEN 1
+       WHEN (age >= 144 AND age <  216) AND (creatinine >= 1.0) THEN 1
        ELSE 0 END AS phoenix_renal_score
 FROM sepsis
 ```

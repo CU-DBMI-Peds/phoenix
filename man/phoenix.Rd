@@ -52,7 +52,7 @@ phoenix(
 
 \item{fixed_pupils}{integer vector; 1 = bilaterally fixed pupil, 0 = otherwise}
 
-\item{age}{numeric vector age in months}
+\item{age}{numeric vector age in months; valid range is [0, 216)}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 

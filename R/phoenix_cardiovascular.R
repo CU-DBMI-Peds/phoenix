@@ -180,9 +180,9 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
   vas <- as.integer(replace(vas, which(is.na(vas)), 0))
   lct <- replace(lct, which(is.na(lct)), 0)
 
-  # if age is missing then the MAP can not be assessed.  So, set the age value
-  # more than 18 years _and_ mean arterial pressure to a high value too such that zero points
-  # will be scored
+  # If age is missing then the MAP cannot be assessed. Set age outside the
+  # valid [0, 216) month interval and MAP to a high value so MAP contributes
+  # zero points.
   missing_age_map <- which(is.na(age) | is.na(mean_arterial_pressure))
   age <- replace(age, missing_age_map, 222)
   mean_arterial_pressure <- replace(mean_arterial_pressure, missing_age_map, 100)

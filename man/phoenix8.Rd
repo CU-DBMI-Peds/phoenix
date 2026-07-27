@@ -70,7 +70,7 @@ phoenix8(
 
 \item{alt}{alanine aminotransferase; a numeric vector; units of IU/L}
 
-\item{age}{numeric vector age in months}
+\item{age}{numeric vector age in months; valid range is [0, 216)}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 

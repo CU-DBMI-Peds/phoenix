@@ -24,7 +24,7 @@ stopifnot(all(respiratory$expected_score %in% 0:3))
 cardiovascular <-
   expand.grid(vasos = c(NA, 0:6),
               lactate = c(NA, 3.2, 5, 7.8, 11, 14),
-              age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145),
+              age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145, 215.999, 216),
               mean_arterial_pressure = c(NA, 16:52))
 
 cardiovascular$vaso_score <- (cardiovascular$vasos > 0) + (cardiovascular$vasos > 1)
@@ -35,7 +35,7 @@ cardiovascular$map_score  <- with(cardiovascular, {
       (age >=  12 & age <  24) * ((mean_arterial_pressure < 31) + (mean_arterial_pressure < 44)) +
       (age >=  24 & age <  60) * ((mean_arterial_pressure < 32) + (mean_arterial_pressure < 45)) +
       (age >=  60 & age < 144) * ((mean_arterial_pressure < 36) + (mean_arterial_pressure < 49)) +
-      (age >= 144            ) * ((mean_arterial_pressure < 38) + (mean_arterial_pressure < 52))
+      (age >= 144 & age < 216) * ((mean_arterial_pressure < 38) + (mean_arterial_pressure < 52))
               })
 
 cardiovascular$vaso_score[is.na(cardiovascular$vaso_score)] <- 0
@@ -116,7 +116,7 @@ renal$expected_score[which(  1 <= renal$age & renal$age <  12 & renal$creatinine
 renal$expected_score[which( 12 <= renal$age & renal$age <  24 & renal$creatinine >= 0.4)] <- 1L
 renal$expected_score[which( 24 <= renal$age & renal$age <  60 & renal$creatinine >= 0.6)] <- 1L
 renal$expected_score[which( 60 <= renal$age & renal$age < 144 & renal$creatinine >= 0.7)] <- 1L
-renal$expected_score[which(144 <= renal$age                   & renal$creatinine >= 1.0)] <- 1L
+renal$expected_score[which(144 <= renal$age & renal$age < 216 & renal$creatinine >= 1.0)] <- 1L
 
 stopifnot(!any(is.na(renal$expected_score)))
 stopifnot(all(renal$expected_score %in% 0:1))
