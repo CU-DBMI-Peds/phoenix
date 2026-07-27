@@ -359,6 +359,36 @@ prepare_phoenix_data <-
   ##############################################################################
   ### Constructed variables
 
+  # Constructed-variable source clocks.
+  #
+  # The LOCF block above creates `<VARIABLE>_eclock` columns for observed EHR
+  # inputs.  The variables below are different: they are derived from one or
+  # more observed inputs.  For those derived values we still need a source clock
+  # so downstream sanity checks can distinguish "this variable was constructed
+  # from observed inputs" from "this variable has no supporting observations."
+  #
+  # The convention mirrors the original BigQuery timecourse SQL:
+  #
+  # * For a one-of-many constructed indicator, such as IMV, use the latest source
+  #   clock among the positive source conditions.  A row can satisfy IMV because
+  #   of a direct VENT indicator, mean airway pressure, HFOV pressure, or PEEP.
+  #   If more than one source supports IMV, the most recent supporting source is
+  #   the most specific statement of what is known at the current row.
+  #
+  # * For an all-required construction, such as bilateral fixed pupils inferred
+  #   from left and right pupil inputs, use the latest source clock among the
+  #   required components.  The bilateral state is only known once both sides
+  #   have been observed.
+  #
+  # The helper below applies that convention row-wise while preserving NA when a
+  # row has no supporting source clocks.  `pmax(..., na.rm = TRUE)` returns -Inf
+  # for rows where every candidate is NA, so those rows are converted back to NA.
+  latest_source_eclock <- function(...) {
+    x <- pmax(..., na.rm = TRUE)
+    x[is.infinite(x)] <- NA_real_
+    x
+  }
+
   # PaO2/FiO2 ratio.
   #
   # The oxygen value is only paired with an FiO2 that is at least as old as the
@@ -376,6 +406,13 @@ prepare_phoenix_data <-
       j = "PFR",
       value = (phxdata[["PAO2"]] / phxdata[["FIO2"]])[idx]
     )
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      i = idx,
+      j = "PFR_eclock",
+      value = phxdata[["PAO2_eclock"]][idx]
+    )
 
   # SpO2/FiO2 ratio.
   #
@@ -391,6 +428,13 @@ prepare_phoenix_data <-
       j = "SFR",
       value = (phxdata[["SPO2"]] / phxdata[["FIO2"]])[idx]
     )
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      i = idx,
+      j = "SFR_eclock",
+      value = phxdata[["SPO2_eclock"]][idx]
+    )
 
   # Invasive Mechanical Ventilation (IMV).
   #
@@ -398,8 +442,28 @@ prepare_phoenix_data <-
   # or if ventilator/airway-pressure settings imply invasive ventilation.  The
   # `VENT` column is an indicator.  `PAW_VENT`, `PAW_HFOV`, and `PAW_PEEP` are
   # airway-pressure measurements, not ventilation indicators.
+  #
+  # `IMV_eclock` records the latest source time among the positive source
+  # conditions.  If a data set does not provide direct VENT observations, the
+  # direct `VENT_eclock` column may be all missing, but IMV can still have a
+  # source clock from PAW_VENT, PAW_HFOV, or PAW_PEEP.
   # TeX: eq:imv and eq:imv-conditions.
   if (verbose) message("  Invasive Mechanical Ventilation...")
+  imv_vent <-
+    ifelse(phxdata[["VENT"]] %in% 1, phxdata[["VENT_eclock"]], NA_real_)
+  imv_paw_vent <-
+    ifelse((phxdata[["PAW_VENT"]] > 0) %in% TRUE,
+           phxdata[["PAW_VENT_eclock"]],
+           NA_real_)
+  imv_paw_hfov <-
+    ifelse((phxdata[["PAW_HFOV"]] > 0) %in% TRUE,
+           phxdata[["PAW_HFOV_eclock"]],
+           NA_real_)
+  imv_paw_peep <-
+    ifelse((phxdata[["PAW_PEEP"]] > 3) %in% TRUE,
+           phxdata[["PAW_PEEP_eclock"]],
+           NA_real_)
+
   phxdata <-
     phxdft_set(
       x = phxdata,
@@ -411,17 +475,54 @@ prepare_phoenix_data <-
         ((phxdata[["PAW_PEEP"]] > 3) %in% TRUE)
       )
     )
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "IMV_eclock",
+      value = latest_source_eclock(
+        imv_vent,
+        imv_paw_vent,
+        imv_paw_hfov,
+        imv_paw_peep
+      )
+    )
 
   # Other respiratory support is broader than IMV.  It is true when IMV is true,
   # when a non-invasive oxygen-support indicator is present, or when FiO2 is
   # above room air.
+  #
+  # `ORS_eclock` follows the same one-of-many rule as IMV.  A positive ORS value
+  # can be supported by IMV, a direct oxygen-support indicator, or FiO2 above
+  # room air.
   # TeX: eq:ors.
   if (verbose) message("  Other Respiratory Support...")
+  ors_imv <-
+    ifelse(phxdata[["IMV"]] %in% 1, phxdata[["IMV_eclock"]], NA_real_)
+  ors_o2support <-
+    ifelse(phxdata[["O2SUPPORT"]] %in% 1,
+           phxdata[["O2SUPPORT_eclock"]],
+           NA_real_)
+  ors_fio2 <-
+    ifelse((phxdata[["FIO2"]] > 0.21) %in% TRUE,
+           phxdata[["FIO2_eclock"]],
+           NA_real_)
+
   phxdata <-
     phxdft_set(
       x = phxdata,
       j = "ORS",
-      value = as.integer((phxdata[["IMV"]] == 1) | (phxdata[["O2SUPPORT"]] %in% 1) | ((phxdata[["FIO2"]] > 0.21) %in% TRUE))
+      value =
+        as.integer(
+          (phxdata[["IMV"]] == 1) |
+          (phxdata[["O2SUPPORT"]] %in% 1) |
+          ((phxdata[["FIO2"]] > 0.21) %in% TRUE)
+        )
+    )
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "ORS_eclock",
+      value = latest_source_eclock(ors_imv, ors_o2support, ors_fio2)
     )
 
   # Mean arterial pressure (MAP).
@@ -485,21 +586,69 @@ prepare_phoenix_data <-
 
   phxdata <- phxdft_set(phxdata, i = idx2, j = "GCS", value = gcstotal2[idx2])
   phxdata <- phxdft_set(phxdata, i = idx,  j = "GCS", value = phxdata[["GCSTOTAL"]][idx])
+  phxdata <- phxdft_set(phxdata, j = "GCS_eclock", value = NA_real_)
+  phxdata <-
+    phxdft_set(
+      phxdata,
+      i = idx2,
+      j = "GCS_eclock",
+      value = latest_source_eclock(
+        phxdata[["GCSEYE_eclock"]][idx2],
+        phxdata[["GCSVERBAL_eclock"]][idx2],
+        phxdata[["GCSMOTOR_eclock"]][idx2]
+      )
+    )
+  phxdata <-
+    phxdft_set(
+      phxdata,
+      i = idx,
+      j = "GCS_eclock",
+      value = phxdata[["GCSTOTAL_eclock"]][idx]
+    )
 
   # Fixed pupils.
   #
   # Some data sets report one combined pupil indicator.  Others report left and
   # right pupils separately.  A patient is treated as having fixed pupils if the
   # combined indicator is positive or both side-specific indicators are positive.
+  #
+  # `FIXEDPUPILS_eclock` uses the latest source time needed to support the
+  # constructed value.  For a positive combined PUPILS input, that is simply
+  # PUPILS_eclock.  For left/right inputs, bilateral fixed pupils are only known
+  # after both sides have been observed, so the source clock is the later of the
+  # left and right source clocks.  This follows the same reasoning as the old SQL
+  # GCS construction, where a component-derived total used the greatest component
+  # time.
   # TeX: eq:pupils.
+  fixed_pupils_combined <-
+    ifelse((phxdata[["PUPILS"]] > 0) %in% TRUE,
+           phxdata[["PUPILS_eclock"]],
+           NA_real_)
+  fixed_pupils_sides <-
+    ifelse(
+      (phxdata[["PUPILLEFT"]] + phxdata[["PUPILRIGHT"]]) == 2,
+      latest_source_eclock(
+        phxdata[["PUPILLEFT_eclock"]],
+        phxdata[["PUPILRIGHT_eclock"]]
+      ),
+      NA_real_
+    )
+
   phxdata <-
     phxdft_set(
       x = phxdata,
       j = "FIXEDPUPILS",
       value =
         as.integer(
-          (phxdata[["PUPILS"]] > 0) | ((phxdata[["PUPILLEFT"]] + phxdata[["PUPILRIGHT"]]) == 2)
+          (phxdata[["PUPILS"]] > 0) |
+          ((phxdata[["PUPILLEFT"]] + phxdata[["PUPILRIGHT"]]) == 2)
         )
+    )
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "FIXEDPUPILS_eclock",
+      value = latest_source_eclock(fixed_pupils_combined, fixed_pupils_sides)
     )
 
   # Suspected infection.
@@ -507,12 +656,34 @@ prepare_phoenix_data <-
   # The prepared longitudinal data keep suspected infection as a row-level
   # constructed variable.  The scoring step later collapses this to one
   # window-level indicator for each encounter.
+  #
+  # Suspected infection requires both antimicrobials and anti-infectious tests.
+  # Use the later of the two source clocks because the constructed state is only
+  # known once both pieces are available.
   # TeX: eq:suspected-infection.
   phxdata <-
     phxdft_set(
       x = phxdata,
       j = "SUSPECTED_INFECTION",
-      value = as.integer(phxdata[["ANTIMICROBIALS"]] * phxdata[["ANTIINFECTIOUSTESTS"]])
+      value =
+        as.integer(
+          phxdata[["ANTIMICROBIALS"]] *
+          phxdata[["ANTIINFECTIOUSTESTS"]]
+        )
+    )
+  phxdata <-
+    phxdft_set(
+      x = phxdata,
+      j = "SUSPECTED_INFECTION_eclock",
+      value =
+        ifelse(
+          phxdata[["SUSPECTED_INFECTION"]] == 1,
+          latest_source_eclock(
+            phxdata[["ANTIMICROBIALS_eclock"]],
+            phxdata[["ANTIINFECTIOUSTESTS_eclock"]]
+          ),
+          NA_real_
+        )
     )
 
   ##############################################################################

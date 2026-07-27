@@ -328,6 +328,109 @@ test_bad_lookback <-
 
 stopifnot(inherits(test_bad_lookback, "error"))
 
+###############################################################################
+# Constructed variables should carry source eclocks.  The source eclock is not
+# the row's time point; it is the time of the observed value that supports the
+# constructed variable after LOCF.  This mirrors the historical timecourse SQL.
+constructed_df <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = c(0, 30, 60, 90, 120, 150),
+    stringsAsFactors = FALSE
+  )
+
+prepared_paw_vent <-
+  prepare_mean_airway_pressure_ventilator(
+    x = transform(constructed_df[1, ], value = 5),
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+prepared_paw_hfov <-
+  prepare_mean_airway_pressure_hfov(
+    x = transform(constructed_df[2, ], value = 7),
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+prepared_peep <-
+  prepare_positive_end_expiratory_pressure(
+    x = transform(constructed_df[3, ], value = 6),
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+prepared_o2support <-
+  prepare_o2support(
+    x = transform(constructed_df[4, ], value = 1),
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+prepared_pupilleft <-
+  prepare_pupilleft(
+    x = transform(constructed_df[5, ], value = 1),
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+prepared_pupilright <-
+  prepare_pupilright(
+    x = transform(constructed_df[6, ], value = 1),
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+test_constructed_eclocks <-
+  prepare_phoenix_data(
+    mean_airway_pressure_ventilator = prepared_paw_vent,
+    mean_airway_pressure_hfov = prepared_paw_hfov,
+    positive_end_expiratory_pressure = prepared_peep,
+    o2support = prepared_o2support,
+    pupilleft = prepared_pupilleft,
+    pupilright = prepared_pupilright,
+    resp.lookback = 360,
+    pupil.lookback = 360,
+    verbose = FALSE
+  )
+test_constructed_eclocks <-
+  sort_phxdata(test_constructed_eclocks, id.vars = id.vars, eclock = eclock)
+
+stopifnot(
+  isTRUE(
+    all.equal(
+      test_constructed_eclocks[["IMV_eclock"]],
+      c(0, 30, 60, 60, 60, 60)
+    )
+  ),
+  isTRUE(
+    all.equal(
+      test_constructed_eclocks[["ORS_eclock"]],
+      c(0, 30, 60, 90, 90, 90)
+    )
+  ),
+  isTRUE(
+    all.equal(
+      test_constructed_eclocks[["FIXEDPUPILS_eclock"]],
+      c(NA, NA, NA, NA, NA, 150)
+    )
+  )
+)
+
 ################################################################################
 #                                 End of File                                  #
 ################################################################################
