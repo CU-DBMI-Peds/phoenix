@@ -293,23 +293,28 @@ prepare_age(
 )
 }
 \arguments{
-\item{x}{a data.frame, or object that inherits from a data.frame such as
-data.table or tibble.}
+\item{x}{a data.frame, or an object that inherits from a data.frame such as a
+data.table or tibble, containing one Phoenix input in long format.}
 
-\item{id.vars}{a character vector, expected to be a at least length 1, of the
-names of the columns of \code{x} to be used to identifiers, e.g., hospital
-id, patient id, encounter id.}
+\item{id.vars}{a character vector of one or more column names in \code{x}
+that identify the encounter. Common examples are site, patient, and
+encounter identifiers. The same \code{id.vars}, in the same order, must be
+used for all inputs that will be combined with
+\code{\link{prepare_phoenix_data}}.}
 
-\item{eclock}{A character vector of length 1, the name of the column in
-\code{x} denoting the time, in minutes, from admission start.}
+\item{eclock}{a character vector of length one naming the encounter-clock
+column in \code{x}. The encounter clock is expected to be numeric, usually
+minutes from encounter start, with 0 denoting the start of the encounter.
+Age is static for the encounter and ignores \code{eclock}.}
 
-\item{value.var}{A character vector of length 1, the name of the column in
-\code{x} containing the value for the observation, intervention, event,
-medication, or test.}
+\item{value.var}{a character vector of length one naming the column in
+\code{x} that contains the observed value for the Phoenix input being
+prepared.}
 
-\item{valid.range}{A numeric vector of length two defining an interval of
-valid values for \code{x[[value.var]]}. The defaults match the values used
-when developing the Phoenix Sepsis Criteria and can be modified by end users.}
+\item{valid.range}{a numeric vector of length two defining the allowable
+interval for \code{x[[value.var]]}. Defaults are input-specific and match
+the operational Phoenix definition. Users may pass a different interval when
+their source data require a different validation rule.}
 
 \item{valid.range.closed}{A logical vector of length one or two denoting
 whether the lower and upper bounds of \code{valid.range} are closed
@@ -318,10 +323,13 @@ bounds. Most inputs default to \code{c(TRUE, TRUE)}. \code{prepare_age()}
 defaults to \code{c(TRUE, FALSE)} to match the expected age interval of
 [0, 216) months.}
 
-\item{tie.breaker}{When \code{x[c(id.vars, eclock)]} is not unique this
-function is uses to aggregate \code{x[[value.var]]} into one value.}
+\item{tie.breaker}{a function used when more than one row has the same
+encounter identifier and encounter-clock value. The default is chosen
+separately for each Phoenix input so duplicate observations are resolved in
+the clinically conservative direction.}
 
-\item{verbose}{when \code{TRUE} print messages showing the progress}
+\item{verbose}{when \code{TRUE}, print messages describing validation,
+duplicate handling, and preparation progress.}
 }
 \description{
 Functions for checking the basic structure and values for the input data for
@@ -342,6 +350,17 @@ There is an expectation when going to Phoenix scoring that the
 \code{x[[c(id.vars, eclock)]]} are unique for each input.  These functions
 check this assumption and will aggregate, if needed, using the
 \code{tie.breaker} method.
+
+Every function below is a thin wrapper around `prepare_variable()`.  The
+wrapper's main job is to provide the Phoenix-internal variable name, the
+clinically expected range, and a duplicate-row tie breaker.  For example,
+`prepare_spo2()` maps a user-supplied value column to the internal column
+`SPO2`, checks that values are between 0 and 100, and uses the lower value
+when duplicate SpO2 values are reported for the same encounter/time.
+
+These wrappers are intentionally repetitive.  Keeping each input explicit
+makes it easier for analysts to confirm which raw EHR field maps to which
+Phoenix definition and TeX equation.
 
 Default values match the values used when developing the Phoenix Sepsis
 Criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024). End

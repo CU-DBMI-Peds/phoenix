@@ -23,27 +23,10 @@
 #' Default values are based on the values used when building the Phoenix
 #' criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024).
 #'
+#' @inheritParams prepare_variable
+#'
 #' @references See reference details in \code{\link{phoenix-package}} or by calling
 #' \code{citation('phoenix')}.
-#'
-#' @param x a data.frame, or object that inherits from a data.frame such as
-#' data.table or tibble.
-#'
-#' @param id.vars a character vector, expected to be a at least length 1, of the
-#' names of the columns of \code{x} to be used to identifiers, e.g., hospital
-#' id, patient id, encounter id.
-#'
-#' @param eclock A character vector of length 1, the name of the column in
-#' \code{x} denoting the time, in minutes, from admission start.
-#'
-#' @param value.var A character vector of length 1, the name of the column in
-#' \code{x} containing the value for the observation, intervention, event,
-#' medication, or test.
-#'
-#' @param tie.breaker When \code{x[c(id.vars, eclock)]} is not unique this
-#' function is uses to aggregate \code{x[[value.var]]} into one value.
-#'
-#' @param verbose when \code{TRUE} print messages showing the progress
 #'
 #' @name prepare_inputs_discrete
 NULL

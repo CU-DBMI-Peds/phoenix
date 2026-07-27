@@ -176,24 +176,31 @@ prepare_antiinfectioustests(
 )
 }
 \arguments{
-\item{x}{a data.frame, or object that inherits from a data.frame such as
-data.table or tibble.}
+\item{x}{a data.frame, or an object that inherits from a data.frame such as a
+data.table or tibble, containing one Phoenix input in long format.}
 
-\item{id.vars}{a character vector, expected to be a at least length 1, of the
-names of the columns of \code{x} to be used to identifiers, e.g., hospital
-id, patient id, encounter id.}
+\item{id.vars}{a character vector of one or more column names in \code{x}
+that identify the encounter. Common examples are site, patient, and
+encounter identifiers. The same \code{id.vars}, in the same order, must be
+used for all inputs that will be combined with
+\code{\link{prepare_phoenix_data}}.}
 
-\item{eclock}{A character vector of length 1, the name of the column in
-\code{x} denoting the time, in minutes, from admission start.}
+\item{eclock}{a character vector of length one naming the encounter-clock
+column in \code{x}. The encounter clock is expected to be numeric, usually
+minutes from encounter start, with 0 denoting the start of the encounter.
+Age is static for the encounter and ignores \code{eclock}.}
 
-\item{value.var}{A character vector of length 1, the name of the column in
-\code{x} containing the value for the observation, intervention, event,
-medication, or test.}
+\item{value.var}{a character vector of length one naming the column in
+\code{x} that contains the observed value for the Phoenix input being
+prepared.}
 
-\item{tie.breaker}{When \code{x[c(id.vars, eclock)]} is not unique this
-function is uses to aggregate \code{x[[value.var]]} into one value.}
+\item{tie.breaker}{a function used when more than one row has the same
+encounter identifier and encounter-clock value. The default is chosen
+separately for each Phoenix input so duplicate observations are resolved in
+the clinically conservative direction.}
 
-\item{verbose}{when \code{TRUE} print messages showing the progress}
+\item{verbose}{when \code{TRUE}, print messages describing validation,
+duplicate handling, and preparation progress.}
 }
 \description{
 Functions for checking the basic structure and values for Phoenix inputs with

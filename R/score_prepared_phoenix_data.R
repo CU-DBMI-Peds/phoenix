@@ -53,13 +53,28 @@
 #'
 #' @export
 score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd"), verbose = getOption("phoenix_verbose", interactive())) {
+  # This function scores the wide longitudinal data set returned by
+  # `prepare_phoenix_data()`.  It returns one row per encounter, not one row per
+  # encounter/time point.
+  #
+  # The important distinction is:
+  #   ODSS = organ dysfunction summary score, computed from physiology.
+  #   PSS  = Phoenix Sepsis Score, computed as suspected infection * ODSS.
+  #
+  # This means a patient without suspected infection can still have organ
+  # dysfunction.  The ODSS columns preserve that information.  The PSS and
+  # sepsis/septic-shock indicators are zero unless suspected infection is
+  # present in the scoring window.
+
   stopifnot(inherits(x, "prepared_phoenix_data"))
   stopifnot(length(sigma) == 1, length(kappa) == 1, is.numeric(sigma), is.numeric(kappa))
   aggregation <- match.arg(aggregation, several.ok = FALSE)
 
   if (verbose) message("Scoring prepared_phoenix_data...")
-  if (verbose) message("  identifying suspsected infections...")
-  # suspected infection is set for the id.var over the window of interest
+  if (verbose) message("  identifying suspected infections...")
+  # Build a row-level suspected infection indicator.  A row is positive only
+  # when both required components are present at that time after preparation:
+  # antimicrobials and an anti-infectious test.
   # TeX: eq:suspected-infection.
   si <-
     phxdft_set(
@@ -74,7 +89,9 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
         )
     )
 
-  # aggregate suspected infections to a 0/1 for the window of interest
+  # Collapse row-level suspected infection to one 0/1 value per encounter for
+  # the requested time window [T0, T1).  Any positive row in the window makes the
+  # encounter positive for suspected infection.
   si <-
     phxdft_subset(
       x = si,
@@ -97,6 +114,9 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
     phxdft_subset(x, i = which((x[[attr(x, "eclock")]] >= T0) & (x[[attr(x, "eclock")]] < T1)))
 
   if (verbose) message("  applying scoring...")
+  # Each aggregation helper below returns ODSS-type columns only.  The common
+  # PSS/sepsis/septic-shock logic is applied after the switch so the suspected
+  # infection gating is identical across aggregation schemes.
   ods <- phxdft_unique(phxdft_select(score_this, attr(x, "id.vars")))
   if (nrow(score_this) > 0L) {
     ods <-
@@ -109,14 +129,23 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
       )
   }
 
-  if (verbose) message("  building outout...")
+  if (verbose) message("  building output...")
+  # Start from all encounters in the prepared data, not only encounters with
+  # rows inside [T0, T1).  Encounters with no rows in the scoring window are kept
+  # and receive zero scores below.
   iddf <- phxdft_unique(phxdft_select(x, attr(x, "id.vars")))
   rtn <- phxdft_left_join(iddf, si, attr(x, "id.vars"))
   rtn <- phxdft_left_join(rtn, ods, attr(x, "id.vars"))
+
+  # No suspected-infection rows in the window means suspected infection is 0.
+  # This also handles encounters with no rows at all in the scoring window.
   suspected_infection <- rtn[["suspected_infection"]]
   suspected_infection[is.na(suspected_infection)] <- 0L
   rtn <- phxdft_set(rtn, j = "suspected_infection", value = suspected_infection)
 
+  # The aggregation helpers use different column prefixes, but the final gating
+  # logic is the same.  This lookup tells the shared code which columns belong to
+  # the selected aggregation.
   score_columns <-
     switch(
       aggregation,
@@ -158,6 +187,8 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
       )
     )
   for (col in c(score_columns[["ods4"]], score_columns[["shock_ods"]], score_columns[["ods8"]])) {
+    # Missing ODSS values mean there was no available dysfunction evidence in
+    # the requested window.  By definition, that contributes zero points.
     if (!col %in% names(rtn)) {
       rtn <- phxdft_set(rtn, j = col, value = 0L)
     } else {
@@ -168,6 +199,11 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   }
   # TeX: PSS is max_T SI times ODSS; sepsis and septic shock indicators are
   # thresholded PSS quantities.
+  #
+  # `shock_ods` is a temporary ODSS-like value that already includes the
+  # cardiovascular dysfunction requirement.  After it is gated by suspected
+  # infection and thresholded, the temporary column is removed from the returned
+  # data frame.
   pss4 <- rtn[["suspected_infection"]] * rtn[[score_columns[["ods4"]]]]
   pss8 <- rtn[["suspected_infection"]] * rtn[[score_columns[["ods8"]]]]
   septic_shock_score <- rtn[["suspected_infection"]] * rtn[[score_columns[["shock_ods"]]]]
@@ -190,13 +226,23 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # The scoring method used when Phoenix was developed and published in JAMA
   # (2024).
   #
-  # Overly simplified, the ODSS is max( resp + card + neuro + coag )
+  # At each time point, compute the organ scores first.  Then sum the organ
+  # scores at that same time point.  The four-organ ODSS is the largest
+  # time-aligned sum observed in the scoring window:
+  #
+  #   max_t(resp_t + card_t + neuro_t + coag_t)
+  #
+  # The eight-organ ODSS uses the same time-aligned rule but includes endocrine,
+  # immunologic, hepatic, and renal scores as well.  This method does not let
+  # organ systems peak at different times and then add those peaks together.
   #
   # TeX: eq:odss, eq:pss, eq:omega4, eq:omega8, eq:sepsis, and eq:septicshock in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
-  # find all the needed organ system scores at every moment in time
+  # Compute all organ system scores at every time point in the scoring window.
+  # The `phoenix_*()` functions return row-level organ scores.  They do not apply
+  # suspected-infection gating.
   respscore <-
     phoenix_respiratory(
       pf_ratio = x[["PFR"]],
@@ -286,7 +332,8 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
     )
 
   if (verbose) message("    aggregating....")
-  # find the max value of the scores
+  # Collapse from many time points per encounter to one row per encounter by
+  # taking the maximum time-aligned ODSS.
   oss <-
     #aggregate(
     #  x = phxdft_select(oss, c("phoenix_organ_dysfunction_score", "phoenix_septic_shock_organ_dysfunction_score", "phoenix8_organ_dysfunction_score")),
@@ -308,14 +355,21 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 1:
   #   Organ-Level Maxima (OLM)
   #
-  # Overly simplified, the ODSS is
-  #   max(resp) + max(card) + max(neuro) + max(coag)
+  # OLM scores each organ at each time point, then takes the maximum score for
+  # each organ separately.  The ODSS is the sum of those organ-level maxima:
+  #
+  #   max_t(resp_t) + max_t(card_t) + max_t(neuro_t) + max_t(coag_t)
+  #
+  # This can be larger than `jama2024` because respiratory dysfunction could
+  # peak at one time, cardiovascular dysfunction at another time, and both peaks
+  # would be counted.
   #
   # TeX: eq:odss-olm, eq:pss-olm, eq:sepsis-olm, and eq:septicshock-olm in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
-  # find all the needed organ system scores at every moment in time
+  # Compute row-level organ scores before aggregating.  The per-organ maximum is
+  # computed after all rows in the scoring window have been scored.
   respscore <-
     phoenix_respiratory(
       pf_ratio = x[["PFR"]],
@@ -434,14 +488,23 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 2:
   #   Organ-Level with Cardiovascular Component Decoupling.
   #
-  # Overly simplified, the ODSS is
-  #   max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
+  # CCD is like OLM, except the cardiovascular score is split into its three
+  # components before taking maxima:
+  #
+  #   max_t(resp_t) + max_t(vaso_t) + max_t(MAP_t) + max_t(lactate_t) +
+  #   max_t(neuro_t) + max_t(coag_t)
+  #
+  # This lets vasoactive medication use, MAP dysfunction, and lactate
+  # dysfunction peak at different times.  The other organ systems are still
+  # aggregated as whole organ scores.
   #
   # TeX: eq:odss-ccd, eq:pss-ccd, eq:card-component-set, eq:sepsis-ccd, and eq:septicshock-ccd in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   if (verbose) message("    building organ system scores...")
-  # find all the needed organ system scores at every moment in time
+  # Compute the row-level pieces that CCD will maximize separately.  Vasoactive
+  # medication use, lactate, and MAP are intentionally scored as separate
+  # cardiovascular components here.
   respscore <-
     phoenix_respiratory(
       pf_ratio = x[["PFR"]],
@@ -557,23 +620,34 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 3:
   #   Full Component Decoupling
   #
-  # Overly simplified, the ODSS is
-  #  max(IVM) * (PRF | SFR) + max(ORS) * (PRF | SFR) +  # respiratory
-  #  max(vaso) + max(MAP) + max(lactate) + # cardio
-  #  min( {2, max(GCS) + 2 * max(pupils) }) + # neuro
-  #  min(2, sum(platetes + INR + DDimer + Fibrinogen) )
+  # FCD decouples the individual scoring components as much as possible before
+  # recomputing Phoenix-8.  In plain language, it asks:
+  #
+  #   "What is the worst available value for each component anywhere in the
+  #    scoring window, and what score would those worst components produce?"
+  #
+  # Low values are worse for PF ratio, SF ratio, MAP, GCS, platelets,
+  # fibrinogen, ALC, ANC, and age-sensitive creatinine scoring.  High values are
+  # worse for IMV, other respiratory support, vasoactive medications, lactate,
+  # fixed pupils, INR, D-dimer, bilirubin, ALT, and creatinine.  Glucose is
+  # special because both low and high values can score endocrine dysfunction;
+  # see the glucose handling below.
   #
   # TeX: eq:resp-fcd, eq:resp-fcd-conditions, eq:odss-fcd, eq:omega4-fcd,
   # eq:vasos-fcd, eq:omega8-fcd, eq:sepsis-fcd, and eq:septicshock-fcd in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
-  # Aggregate
+  # Aggregate each component to one worst value per encounter before calling
+  # `phoenix8()`.  This is intentionally different from `jama2024`, which scores
+  # each time point first and only then takes the maximum summed score.
   if (verbose) message("    aggregating....")
 
-  # NOTE: glucose will results in endocrine points if too lower or too high.
-  # All other inputs are just too low or too high.  To make things easier, look
-  # for any value in the glucose that is over 150 and set to 0.150 and then take
-  # the min
+  # Glucose can be abnormal in either direction: low glucose or high glucose can
+  # contribute endocrine points.  Most other components have only one "bad"
+  # direction.  To use a single `min_available()` aggregation for glucose, encode
+  # high glucose values as 0.150 before taking the minimum.  This sentinel is
+  # below the low-glucose cut point, so `phoenix_endocrine()` will still score it
+  # as abnormal after aggregation.
   x[["GLUCOSE"]][ x[["GLUCOSE"]] > 150 ] <- 0.150
   min_available <- function(z) {
     if (all(is.na(z))) NA_real_ else min(z, na.rm = TRUE)
@@ -619,6 +693,9 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
   if (verbose) message("    scoring....")
   p8 <-
+    # After component-level aggregation, reuse `phoenix8()` to apply the same
+    # component cut points as the published score.  The difference is only when
+    # and how inputs are aggregated.
     # TeX: eq:odss-fcd applies phoenix8() after component-level min/max aggregation.
     phoenix8(
       # Respiratory
@@ -655,6 +732,9 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
   rtn <- phxdft_select(DF, cols = id.vars)
   # TeX: eq:odss-fcd and eq:septicshock-fcd.
+  # `phoenix8()` returns columns named for the public Phoenix scores.  In this
+  # helper those values are ODSS quantities because suspected infection gating is
+  # applied only in `score_prepared_phoenix_data()`.
   rtn <- phxdft_set(rtn, j = "fcd_organ_dysfunction_score", value = p8[["phoenix_sepsis_score"]])
   rtn <- phxdft_set(rtn, j = "fcd_septic_shock_organ_dysfunction_score", value = as.integer(p8[["phoenix_cardiovascular_score"]] >= kappa) * p8[["phoenix_sepsis_score"]])
   rtn <- phxdft_set(rtn, j = "fcd_8_organ_dysfunction_score", value = p8[["phoenix8_sepsis_score"]])

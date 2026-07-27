@@ -19,6 +19,17 @@
 #' check this assumption and will aggregate, if needed, using the
 #' \code{tie.breaker} method.
 #'
+#' Every function below is a thin wrapper around `prepare_variable()`.  The
+#' wrapper's main job is to provide the Phoenix-internal variable name, the
+#' clinically expected range, and a duplicate-row tie breaker.  For example,
+#' `prepare_spo2()` maps a user-supplied value column to the internal column
+#' `SPO2`, checks that values are between 0 and 100, and uses the lower value
+#' when duplicate SpO2 values are reported for the same encounter/time.
+#'
+#' These wrappers are intentionally repetitive.  Keeping each input explicit
+#' makes it easier for analysts to confirm which raw EHR field maps to which
+#' Phoenix definition and TeX equation.
+#'
 #' Default values match the values used when developing the Phoenix Sepsis
 #' Criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024). End
 #' users can modify these checks by passing a different \code{valid.range}.
@@ -26,35 +37,7 @@
 #' @references See reference details in \code{\link{phoenix-package}} or by calling
 #' \code{citation('phoenix')}.
 #'
-#' @param x a data.frame, or object that inherits from a data.frame such as
-#' data.table or tibble.
-#'
-#' @param id.vars a character vector, expected to be a at least length 1, of the
-#' names of the columns of \code{x} to be used to identifiers, e.g., hospital
-#' id, patient id, encounter id.
-#'
-#' @param eclock A character vector of length 1, the name of the column in
-#' \code{x} denoting the time, in minutes, from admission start.
-#'
-#' @param value.var A character vector of length 1, the name of the column in
-#' \code{x} containing the value for the observation, intervention, event,
-#' medication, or test.
-#'
-#' @param valid.range A numeric vector of length two defining an interval of
-#' valid values for \code{x[[value.var]]}. The defaults match the values used
-#' when developing the Phoenix Sepsis Criteria and can be modified by end users.
-#'
-#' @param valid.range.closed A logical vector of length one or two denoting
-#' whether the lower and upper bounds of \code{valid.range} are closed
-#' (inclusive) or open (exclusive). A length-one value is recycled for both
-#' bounds. Most inputs default to \code{c(TRUE, TRUE)}. \code{prepare_age()}
-#' defaults to \code{c(TRUE, FALSE)} to match the expected age interval of
-#' [0, 216) months.
-#'
-#' @param tie.breaker When \code{x[c(id.vars, eclock)]} is not unique this
-#' function is uses to aggregate \code{x[[value.var]]} into one value.
-#'
-#' @param verbose when \code{TRUE} print messages showing the progress
+#' @inheritParams prepare_variable
 #'
 #' @name prepare_inputs_range
 NULL

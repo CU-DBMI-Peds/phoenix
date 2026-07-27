@@ -118,6 +118,22 @@ prepare_phoenix_data <-
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
+  # Contributor notes:
+  #
+  # The `prepare_*()` functions each return one clinical input in a standard
+  # long format:
+  #   identifier columns + encounter clock + value + variable name.
+  #
+  # `prepare_phoenix_data()` is the step that combines those separate inputs
+  # into one longitudinal data set.  The output has one row per encounter/time
+  # point and one column per Phoenix input or constructed variable.  Later,
+  # `score_prepared_phoenix_data()` scores this prepared data over a time
+  # window such as the first 24 hours.
+  #
+  # The function is intentionally strict about class, identifier, and time-column
+  # attributes.  If two inputs were prepared using different ID columns or
+  # different encounter-clock columns, their rows cannot be safely aligned.
+
   stopifnot(is.numeric(resp.lookback)        && length(resp.lookback) == 1        && resp.lookback >= 0)
   stopifnot(is.numeric(vaso.lookback)        && length(vaso.lookback) == 1        && vaso.lookback >= 0)
   stopifnot(is.numeric(bp.lookback)          && length(bp.lookback) == 1          && bp.lookback >= 0)
@@ -175,7 +191,10 @@ prepare_phoenix_data <-
     )
   phxdata <- Filter(f = Negate(is.null), phxdata)
 
-  # verify that all the input data sets are either null or phoenix_prepared
+  # Verify that every supplied input came from the matching `prepare_*()`
+  # function.  This protects the rest of this function from raw data with
+  # unexpected column names, missing attributes, duplicate rows, or unvalidated
+  # values.
   input_names <- c(tolower(names(phxdata)), "age")
   input_classes <- paste0("phoenix_prepared_", input_names)
 
@@ -191,7 +210,9 @@ prepare_phoenix_data <-
     stop(msg, call. = FALSE)
   }
 
-  # check that all the inputs have the same id.vars and eclocks
+  # All prepared inputs must use the same encounter identifiers.  For example,
+  # a caller can use c("site", "encounter_id"), but every prepared input must
+  # use that same vector in the same order.
   if (!is.null(age)) {
     id.vars <- unique(lapply(c(phxdata, list(age = age)), attr, "id.vars"))
   } else {
@@ -203,13 +224,22 @@ prepare_phoenix_data <-
   }
   id.vars <- unlist(id.vars)
 
+  # Every time-varying input must also use the same encounter-clock column.  The
+  # exception is age: age is static for the encounter and therefore has no
+  # encounter-clock attribute.
   eclock <- unique(lapply(phxdata, attr, "eclock"))
   if (length(eclock) > 1L) {
     stop("All input data sets need to have the same eclock", call. = FALSE)
   }
   eclock <- unlist(eclock)
 
-  # stack, cast, and sort
+  # Stack, cast, and sort:
+  #
+  # 1. Stack all prepared inputs into one long data set.
+  # 2. Cast the long data set to wide form so each Phoenix variable has its own
+  #    column.
+  # 3. Sort by encounter ID and time.  The carry-forward code below depends on
+  #    observations for the same encounter appearing together and in time order.
   f <- sprintf("%s ~ variable", paste(c(id.vars, eclock), collapse = "+"))
   if (verbose) message("stacking data...")
   phxdata <- phxdft_rbindlist(x = phxdata)
@@ -218,7 +248,13 @@ prepare_phoenix_data <-
   if (verbose) message("sorting data...")
   phxdata <- phxdft_setorder(phxdata, c(id.vars, eclock))
 
-  # locf
+  # Last observation carried forward (LOCF).
+  #
+  # Clinical inputs are recorded irregularly.  At any row/time point, Phoenix
+  # scoring needs the most recent value for each input, as long as the value is
+  # not older than that input's look-back window.  This loop performs that
+  # carry-forward and also creates `<VARIABLE>_eclock` columns so later code can
+  # tell when the carried-forward value was originally observed.
   if (verbose) message("locf....")
 
   row <- seq_len(nrow(phxdata))
@@ -242,6 +278,9 @@ prepare_phoenix_data <-
   for (j in c(RESPVARS, CARDVARS, NEUROVARS, COAGVARS, ENDOVARS, IMMUNOVARS, HEPATICVARS, RENALVARS, SIVARS)) {
     if (verbose) message(sprintf("   %s...", j))
     if (j %in% names(phxdata)) {
+      # `last_obs` stores the row number of the most recent non-missing value
+      # seen so far.  The ID check prevents values from one encounter carrying
+      # into the next encounter after the data have been sorted.
       obs <- !is.na(phxdata[[j]])
       last_obs <- cummax(ifelse(obs, row, 0L))
       ok <- last_obs > 0L
@@ -285,18 +324,24 @@ prepare_phoenix_data <-
       } else {
         stop(sprintf("lookback not defined for %s", j), call. = FALSE)
       }
+      # After carrying values forward, remove values that are too old for this
+      # variable's look-back window.  Clearing both the value and its source time
+      # keeps downstream constructed-variable checks from using stale data.
       idx <- which((phxdata[[eclock]] - phxdata[[paste0(j, "_eclock")]]) > lookback)
       phxdata <- phxdft_set(phxdata, i = idx, j = j, value = NA)
       phxdata <- phxdft_set(phxdata, i = idx, j = paste0(j, "_eclock"), value = NA)
     } else {
-      # the variable is not in the data set, create it and the _eclock column so
-      # that the logic for the constructed variables will be simplier as all the
-      # needed inputs will exist
+      # If a caller did not provide a Phoenix input, create an all-missing value
+      # column and an all-missing source-time column.  This lets the constructed
+      # variable code below use the same column names for every data set instead
+      # of branching on which inputs were supplied.
       phxdata <- phxdft_set(x = phxdata, j = j, value = NA_real_)
       phxdata <- phxdft_set(x = phxdata, j = paste0(j, "_eclock"), value = NA_real_)
     }
 
-    # for indicator variables, we will replace NA values with 0s for simplicity
+    # For binary indicator inputs, missing means "no evidence of this condition"
+    # for the purpose of constructed variables.  Convert those NAs to 0 so sums
+    # and products behave like the indicator convention in the TeX definition.
     if (j %in% c(VASOVARS, PUPILVARS, SIVARS)) {
       idx <- which(is.na(phxdata[[j]]))
       phxdata <- phxdft_set(x = phxdata, i = idx, j = j, value = 0L)
@@ -314,7 +359,11 @@ prepare_phoenix_data <-
   ##############################################################################
   ### Constructed variables
 
-  # PFRatio: only valid if FIO2 is the same age, or older, than the PAO2 value.
+  # PaO2/FiO2 ratio.
+  #
+  # The oxygen value is only paired with an FiO2 that is at least as old as the
+  # blood gas value.  That avoids using a ventilator setting that was recorded
+  # after the oxygen measurement.
   # TeX: eq:pfr-validity and eq:pfr.
   if (verbose) message("Constructing and combining variables...")
 
@@ -328,8 +377,10 @@ prepare_phoenix_data <-
       value = (phxdata[["PAO2"]] / phxdata[["FIO2"]])[idx]
     )
 
-  # SFRatio: only valid if FIO2 is the same age or, or older, than the SPO2
-  # value and SPO2 <= 97.
+  # SpO2/FiO2 ratio.
+  #
+  # This uses the same timing rule as the PF ratio.  It also requires SpO2 <= 97
+  # because the SF ratio is less informative at high oxygen saturations.
   # TeX: eq:sfr-validity and eq:sfr.
   if (verbose) message("  SpO2/FiO2...")
   idx <- which((phxdata[["FIO2_eclock"]] <= phxdata[["SPO2_eclock"]]) & phxdata[["SPO2"]] <= 97)
@@ -341,10 +392,13 @@ prepare_phoenix_data <-
       value = (phxdata[["SPO2"]] / phxdata[["FIO2"]])[idx]
     )
 
-  # Invasive Mechanical Ventilation
+  # Invasive Mechanical Ventilation (IMV).
+  #
+  # IMV is true if the EHR directly says the patient was invasively ventilated,
+  # or if ventilator/airway-pressure settings imply invasive ventilation.  The
+  # `VENT` column is an indicator.  `PAW_VENT`, `PAW_HFOV`, and `PAW_PEEP` are
+  # airway-pressure measurements, not ventilation indicators.
   # TeX: eq:imv and eq:imv-conditions.
-  # if the inputs are not in the data set set them to NA, this will simplify the
-  # logic for flagging IMV overall.
   if (verbose) message("  Invasive Mechanical Ventilation...")
   phxdata <-
     phxdft_set(
@@ -358,7 +412,9 @@ prepare_phoenix_data <-
       )
     )
 
-  # Other Respiratory Support
+  # Other respiratory support is broader than IMV.  It is true when IMV is true,
+  # when a non-invasive oxygen-support indicator is present, or when FiO2 is
+  # above room air.
   # TeX: eq:ors.
   if (verbose) message("  Other Respiratory Support...")
   phxdata <-
@@ -368,11 +424,17 @@ prepare_phoenix_data <-
       value = as.integer((phxdata[["IMV"]] == 1) | (phxdata[["O2SUPPORT"]] %in% 1) | ((phxdata[["FIO2"]] > 0.21) %in% TRUE))
     )
 
-  # Mean Arterial Pressure
+  # Mean arterial pressure (MAP).
+  #
+  # Use the best available MAP source in priority order:
+  #   1. reported arterial MAP
+  #   2. calculated arterial MAP from carried-forward DBP/SBP
+  #   3. reported cuff MAP
+  #   4. calculated cuff MAP from carried-forward DBP/SBP
+  #
+  # Calculated MAP does not require SBP and DBP to have the same source time;
+  # each value has already passed the blood-pressure look-back rule above.
   # TeX: eq:map-candidates and eq:map-priority.
-  # if MAPA exists, use it, if not, then estimate from the sbp_arterial and dbp_arterial.  If
-  # both of those are missing, then use MAPC, and lastly estimate from sbp_cuff
-  # and dbp_cuff
   if (verbose) message("  Mean Arterial Pressure...")
   phxdata[["MAP"]] <-
     Reduce(function(a, b) ifelse(is.na(a), b, a),
@@ -384,11 +446,15 @@ prepare_phoenix_data <-
       )
     )
 
-  # GCS
+  # Glasgow Coma Scale (GCS).
+  #
+  # The EHR may contain either a total GCS or the three component scores.  When
+  # the component scores are more recent than the total score, use the component
+  # sum.  This handles common data where one component is updated while the
+  # total is not.  If no total GCS has been observed, use the component sum once
+  # all three components have been observed.  Ties favor the component sum to
+  # match the TeX definition.
   # TeX: eq:gcs and eq:gcs-components.
-  # if the GSCTOTAL_eclock > max compoent eclock, use GCSTOTAL
-  # if any of the components are younger than the total, use the sum of the
-  # compoents
   if (verbose) message("  GCS....")
   gcs_components <- phxdft_select(phxdata, c("GCSEYE", "GCSVERBAL", "GCSMOTOR"))
   gcstotal2 <- rowSums(gcs_components)
@@ -400,14 +466,16 @@ prepare_phoenix_data <-
 
   deltatotal <- phxdata[[eclock]] - phxdata[["GCSTOTAL_eclock"]]
 
-  # use gcstotal2
+  # Use the reconstructed component sum when it is complete, within the GCS
+  # look-back window, and at least as recent as the reported total.
   idx2 <-
     which(
       gcstotal2_complete &
       gcstotal2_delta <= gcs.lookback &
       (is.na(deltatotal) | gcstotal2_delta <= deltatotal)
     )
-  # use gcstotal
+  # Use the reported total when it is within the GCS look-back window and newer
+  # than the reconstructed component sum, or when a component sum is unavailable.
   idx <-
     which(
       !is.na(deltatotal) &
@@ -418,7 +486,11 @@ prepare_phoenix_data <-
   phxdata <- phxdft_set(phxdata, i = idx2, j = "GCS", value = gcstotal2[idx2])
   phxdata <- phxdft_set(phxdata, i = idx,  j = "GCS", value = phxdata[["GCSTOTAL"]][idx])
 
-  # FIXEDPUPILS
+  # Fixed pupils.
+  #
+  # Some data sets report one combined pupil indicator.  Others report left and
+  # right pupils separately.  A patient is treated as having fixed pupils if the
+  # combined indicator is positive or both side-specific indicators are positive.
   # TeX: eq:pupils.
   phxdata <-
     phxdft_set(
@@ -430,7 +502,11 @@ prepare_phoenix_data <-
         )
     )
 
-  # Suspected infection
+  # Suspected infection.
+  #
+  # The prepared longitudinal data keep suspected infection as a row-level
+  # constructed variable.  The scoring step later collapses this to one
+  # window-level indicator for each encounter.
   # TeX: eq:suspected-infection.
   phxdata <-
     phxdft_set(
