@@ -37,8 +37,8 @@ See Details.}
 \value{
 A scored data frame with one row per encounter identifier. The output
   always includes \code{suspected_infection}. For the selected aggregation it
-  includes four-organ ODS, four-organ PSS, sepsis and septic shock indicators,
-  eight-organ ODS, and eight-organ PSS. For example,
+  includes four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
+  eight-organ ODSS, and eight-organ PSS. For example,
   \code{aggregation = "jama2024"} returns
   \code{phoenix_organ_dysfunction_score},
   \code{phoenix_sepsis_score}, \code{phoenix_sepsis},
@@ -51,10 +51,10 @@ Apply the published and experimental aggregation schemes to prepared Phoenix
 data.
 }
 \details{
-Organ dysfunction scores (ODS) are computed for all encounters regardless of
+Organ dysfunction summary scores (ODSS) are computed for all encounters regardless of
 suspected infection status. Phoenix Sepsis Scores (PSS) are then computed as
-the product of the window-level suspected infection indicator and ODS. Thus,
-encounters without suspected infection can have positive ODS columns and zero
+the product of the window-level suspected infection indicator and ODSS. Thus,
+encounters without suspected infection can have positive ODSS columns and zero
 PSS columns.
 
 Aggregation schemes:

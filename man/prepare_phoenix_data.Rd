@@ -50,7 +50,7 @@ prepare_phoenix_data(
   vaso.lookback = 720,
   bp.lookback = 360,
   lac.lookback = 360,
-  gcs.lookback = 360,
+  gcs.lookback = 720,
   pupil.lookback = 720,
   coag.lookback = 1440,
   endocrine.lookback = 720,

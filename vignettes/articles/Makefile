@@ -1,5 +1,5 @@
 QUARTO ?= quarto # /usr/local/bin/quarto
-LATEXMK := latexmk 
+LATEXMK := latexmk
 LATEXMKPDF := latexmk -gg -pdf
 
 OPERATIONALPHX=operational-definition-phoenix-sepsis-criteria

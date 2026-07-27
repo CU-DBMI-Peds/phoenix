@@ -3,10 +3,10 @@
 #' Apply the published and experimental aggregation schemes to prepared Phoenix
 #' data.
 #'
-#' Organ dysfunction scores (ODS) are computed for all encounters regardless of
+#' Organ dysfunction summary scores (ODSS) are computed for all encounters regardless of
 #' suspected infection status. Phoenix Sepsis Scores (PSS) are then computed as
-#' the product of the window-level suspected infection indicator and ODS. Thus,
-#' encounters without suspected infection can have positive ODS columns and zero
+#' the product of the window-level suspected infection indicator and ODSS. Thus,
+#' encounters without suspected infection can have positive ODSS columns and zero
 #' PSS columns.
 #'
 #' Aggregation schemes:
@@ -36,8 +36,8 @@
 #'
 #' @return A scored data frame with one row per encounter identifier. The output
 #'   always includes \code{suspected_infection}. For the selected aggregation it
-#'   includes four-organ ODS, four-organ PSS, sepsis and septic shock indicators,
-#'   eight-organ ODS, and eight-organ PSS. For example,
+#'   includes four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
+#'   eight-organ ODSS, and eight-organ PSS. For example,
 #'   \code{aggregation = "jama2024"} returns
 #'   \code{phoenix_organ_dysfunction_score},
 #'   \code{phoenix_sepsis_score}, \code{phoenix_sepsis},
@@ -90,8 +90,8 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
     )
 
   if (verbose) message("  identifying records to score...")
-  # Organ dysfunction scores are computed for all records in [T0, T1).
-  # Suspected infection gates the Phoenix Sepsis Score, not the ODS.
+  # Organ dysfunction summary scores are computed for all records in [T0, T1).
+  # Suspected infection gates the Phoenix Sepsis Score, not the ODSS.
   # TeX: eq:odss and eq:pss.
   score_this <-
     phxdft_subset(x, i = which((x[[attr(x, "eclock")]] >= T0) & (x[[attr(x, "eclock")]] < T1)))
@@ -166,7 +166,7 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
       rtn <- phxdft_set(rtn, j = col, value = values)
     }
   }
-  # TeX: PSS is max_T SI times ODS; sepsis and septic shock indicators are
+  # TeX: PSS is max_T SI times ODSS; sepsis and septic shock indicators are
   # thresholded PSS quantities.
   pss4 <- rtn[["suspected_infection"]] * rtn[[score_columns[["ods4"]]]]
   pss8 <- rtn[["suspected_infection"]] * rtn[[score_columns[["ods8"]]]]
@@ -190,7 +190,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # The scoring method used when Phoenix was developed and published in JAMA
   # (2024).
   #
-  # Overly simplified, the ODS is max( resp + card + neuro + coag )
+  # Overly simplified, the ODSS is max( resp + card + neuro + coag )
   #
   # TeX: eq:odss, eq:pss, eq:omega4, eq:omega8, eq:sepsis, and eq:septicshock in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
@@ -308,7 +308,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 1:
   #   Organ-Level Maxima (OLM)
   #
-  # Overly simplified, the ODS is
+  # Overly simplified, the ODSS is
   #   max(resp) + max(card) + max(neuro) + max(coag)
   #
   # TeX: eq:odss-olm, eq:pss-olm, eq:sepsis-olm, and eq:septicshock-olm in
@@ -434,7 +434,7 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 2:
   #   Organ-Level with Cardiovascular Component Decoupling.
   #
-  # Overly simplified, the ODS is
+  # Overly simplified, the ODSS is
   #   max(resp) + max(vaso) + max(MAP) + max(lactate) + max(neuro) + max(coag)
   #
   # TeX: eq:odss-ccd, eq:pss-ccd, eq:card-component-set, eq:sepsis-ccd, and eq:septicshock-ccd in
@@ -557,7 +557,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 3:
   #   Full Component Decoupling
   #
-  # Overly simplified, the ODS is
+  # Overly simplified, the ODSS is
   #  max(IVM) * (PRF | SFR) + max(ORS) * (PRF | SFR) +  # respiratory
   #  max(vaso) + max(MAP) + max(lactate) + # cardio
   #  min( {2, max(GCS) + 2 * max(pupils) }) + # neuro
