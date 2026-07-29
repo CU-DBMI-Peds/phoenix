@@ -40,11 +40,11 @@ A scored data frame with one row per encounter identifier. The output
   includes four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
   eight-organ ODSS, and eight-organ PSS. For example,
   \code{aggregation = "jama2024"} returns
-  \code{phoenix_organ_dysfunction_score},
-  \code{phoenix_sepsis_score}, \code{phoenix_sepsis},
-  \code{phoenix_septic_shock},
-  \code{phoenix8_organ_dysfunction_score}, and
-  \code{phoenix8_sepsis_score}.
+  \code{odss_4},
+  \code{pss_4}, \code{sepsis},
+  \code{septic_shock},
+  \code{odss_8}, and
+  \code{pss_8}.
 }
 \description{
 Apply the published and experimental aggregation schemes to prepared Phoenix
