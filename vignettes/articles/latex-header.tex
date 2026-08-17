@@ -1,0 +1,102 @@
+% Shared LaTeX packages, notation, and colors for manuscript supplements.
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xparse}
+\usepackage{xspace}
+\usepackage[table]{xcolor}
+
+\newcommand{\SI}{\mathrm{SI}\left(T\right)}
+\newcommand{\m}[1]{m_{\mathrm{#1}}}
+\newcommand{\ORS}{\mathrm{ORS}\left(t; \m{resp}\right)}
+\newcommand{\IMV}{\mathrm{IMV}\left(t; \m{resp}\right)}
+\newcommand{\PFR}{\mathrm{PFR}\left(t; \m{resp}\right)}
+\newcommand{\SFR}{\mathrm{SFR}\left(t; \m{resp}\right)}
+\newcommand{\Ccard}{\boldsymbol{C}_{\mathrm{card}}}
+\newcommand{\Ccoag}{\boldsymbol{C}_{\mathrm{coag}}}
+
+\newcommand{\maxtinT}{\max_{t \in T}}
+\newcommand{\mintinT}{\min_{t \in T}}
+
+\NewDocumentCommand{\CF}{m O{\boldsymbol{m}}}{%
+  \mathcal{C}[\mathrm{ #1 }]\left(t; #2 \right)%
+}
+
+\NewDocumentCommand{\DS}{s m O{\boldsymbol{m}, \mathrm{Age}}}{%
+  \mathcal{D}
+  \left[%
+    \IfBooleanTF{#1}{#2}{\mathrm{#2}}%
+  \right]%
+  \left(t; #3 \right)%
+}
+
+\DeclareRobustCommand{\fiotwo}{\ensuremath{\mathrm{FiO}_{2}}\xspace}
+\DeclareRobustCommand{\paotwo}{\ensuremath{\mathrm{PaO}_{2}}\xspace}
+\DeclareRobustCommand{\spotwo}{\ensuremath{\mathrm{SpO}_{2}}\xspace}
+\DeclareRobustCommand{\pawvent}{%
+  \ensuremath{\mathrm{P}_{\mathrm{aw}}^{\mathrm{VENT}}}\xspace%
+}
+\DeclareRobustCommand{\pawpeep}{%
+  \ensuremath{\mathrm{P}_{\mathrm{aw}}^{\mathrm{PEEP}}}\xspace%
+}
+\DeclareRobustCommand{\pawhfov}{%
+  \ensuremath{\mathrm{P}_{\mathrm{aw}}^{\mathrm{HFOV}}}\xspace%
+}
+\DeclareRobustCommand{\otwosupport}{%
+  \ensuremath{\mathrm{O}_{2}\mathrm{Support}}\xspace%
+}
+\DeclareRobustCommand{\sbpc}{\ensuremath{\mathrm{SBP}_{\mathrm{c}}}\xspace}
+\DeclareRobustCommand{\sbpa}{\ensuremath{\mathrm{SBP}_{\mathrm{a}}}\xspace}
+\DeclareRobustCommand{\dbpc}{\ensuremath{\mathrm{DBP}_{\mathrm{c}}}\xspace}
+\DeclareRobustCommand{\dbpa}{\ensuremath{\mathrm{DBP}_{\mathrm{a}}}\xspace}
+\DeclareRobustCommand{\mapc}{\ensuremath{\mathrm{MAP}_{\mathrm{c}}}\xspace}
+\DeclareRobustCommand{\mapa}{\ensuremath{\mathrm{MAP}_{\mathrm{a}}}\xspace}
+\DeclareRobustCommand{\gcs}[1]{%
+  \ensuremath{\mathrm{GCS}_{\mathrm{#1}}}\xspace%
+}
+\DeclareRobustCommand{\GCS}{%
+  \ensuremath{\mathrm{GCS}\left(t; \m{gcs}\right)}\xspace%
+}
+
+\NewDocumentCommand{\PSS}{m o}{%
+  \ensuremath{%
+    \mathrm{PSS}_{#1}%
+    \IfValueT{#2}{^{\mathrm{#2}}}%
+    \left(T;\boldsymbol{m}, \mathrm{Age} \right)%
+  }%
+}
+
+\NewDocumentCommand{\ODSS}{m o}{%
+  \ensuremath{%
+    \mathrm{ODSS}_{#1}%
+    \IfValueT{#2}{^{\mathrm{#2}}}%
+    \left(T;\boldsymbol{m}, \mathrm{Age} \right)%
+  }%
+}
+
+\NewDocumentCommand{\Sepsis}{o}{%
+  \ensuremath{%
+    \mathrm{Sepsis}%
+    \IfValueT{#1}{^{\mathrm{#1}}}%
+    \left(T;\boldsymbol{m}, \mathrm{Age}, \sigma \right)%
+  }%
+}
+
+\NewDocumentCommand{\SepticShock}{o}{%
+  \ensuremath{%
+    \mathrm{SepticShock}%
+    \IfValueT{#1}{^{\mathrm{#1}}}%
+    \left(T;\boldsymbol{m}, \mathrm{Age}, \sigma, \kappa \right)%
+  }%
+}
+
+\definecolor{ink}{HTML}{1F2933}
+\definecolor{muted}{HTML}{52606D}
+\definecolor{rule}{HTML}{9AA5B1}
+
+\definecolor{phoenix}{HTML}{2F2763}
+\definecolor{olm}{HTML}{71BF44}
+\definecolor{ccd}{HTML}{00AEEF}
+\definecolor{fcd}{HTML}{F7941D}
+\definecolor{leftfill}{HTML}{E6F6F1}
+\definecolor{rightfill}{HTML}{FCEFE8}

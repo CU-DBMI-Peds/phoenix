@@ -1,87 +1,13 @@
 \documentclass[letterpaper,10pt]{article}
 \usepackage{fullpage}
-\usepackage{amsmath,amssymb,mathtools}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \usepackage{longtable,booktabs,array}
-\usepackage[table]{xcolor}
 \usepackage{hyperref}
 \usepackage{natbib}
 \usepackage{draftwatermark}
+\input{latex-header.tex}
 \bibliographystyle{plainnat}
 \SetWatermarkScale{5}
 \hypersetup{colorlinks=true, linkcolor={blue}, filecolor={Maroon}, citecolor={blue}, urlcolor={blue}}
-
-\newcommand{\SI}{\mathrm{SI}\left(T\right)}
-\newcommand{\m}[1]{m_{\mathrm{#1}}}
-\newcommand{\ORS}{\mathrm{ORS}\left(t; \m{resp}\right)}
-\newcommand{\IMV}{\mathrm{IMV}\left(t; \m{resp}\right)}
-\newcommand{\PFR}{\mathrm{PFR}\left(t; \m{resp}\right)}
-\newcommand{\SFR}{\mathrm{SFR}\left(t; \m{resp}\right)}
-\newcommand{\Ccard}{\boldsymbol{C}_{\mathrm{card}}}
-\newcommand{\Ccoag}{\boldsymbol{C}_{\mathrm{coag}}}
-
-\newcommand{\maxtinT}{\max_{t \in T}}
-\newcommand{\mintinT}{\min_{t \in T}}
-
-\NewDocumentCommand{\CF}{m O{\boldsymbol{m}}}{\mathcal{C}[\mathrm{ #1 }]\left(t; #2 \right)}
-
-\NewDocumentCommand{\DS}{s m O{\boldsymbol{m}, \mathrm{Age}}}{%
-  \mathcal{D}
-  \left[%
-    \IfBooleanTF{#1}{#2}{\mathrm{#2}}%
-  \right]%
-  \left(t; #3 \right)%
-}
-
-\usepackage{xspace}
-\DeclareRobustCommand{\fiotwo}{\ensuremath{\mathrm{FiO}_{2}}\xspace}
-\DeclareRobustCommand{\paotwo}{\ensuremath{\mathrm{PaO}_{2}}\xspace}
-\DeclareRobustCommand{\spotwo}{\ensuremath{\mathrm{SpO}_{2}}\xspace}
-\DeclareRobustCommand{\pawvent}{\ensuremath{\mathrm{P}_{\mathrm{aw}}^{\mathrm{VENT}}}\xspace}
-\DeclareRobustCommand{\pawpeep}{\ensuremath{\mathrm{P}_{\mathrm{aw}}^{\mathrm{PEEP}}}\xspace}
-\DeclareRobustCommand{\pawhfov}{\ensuremath{\mathrm{P}_{\mathrm{aw}}^{\mathrm{HFOV}}}\xspace}
-\DeclareRobustCommand{\otwosupport}{\ensuremath{\mathrm{O}_{2}\mathrm{Support}}\xspace}
-\DeclareRobustCommand{\sbpc}{\ensuremath{\mathrm{SBP}_{\mathrm{c}}}\xspace}
-\DeclareRobustCommand{\sbpa}{\ensuremath{\mathrm{SBP}_{\mathrm{a}}}\xspace}
-\DeclareRobustCommand{\dbpc}{\ensuremath{\mathrm{DBP}_{\mathrm{c}}}\xspace}
-\DeclareRobustCommand{\dbpa}{\ensuremath{\mathrm{DBP}_{\mathrm{a}}}\xspace}
-\DeclareRobustCommand{\mapc}{\ensuremath{\mathrm{MAP}_{\mathrm{c}}}\xspace}
-\DeclareRobustCommand{\mapa}{\ensuremath{\mathrm{MAP}_{\mathrm{a}}}\xspace}
-\DeclareRobustCommand{\gcs}[1]{\ensuremath{\mathrm{GCS}_{\mathrm{#1}}}\xspace}
-\DeclareRobustCommand{\GCS}{\ensuremath{\mathrm{GCS}\left(t; \m{gcs}\right)}\xspace}
-
-\NewDocumentCommand{\PSS}{m o}{%
-  \ensuremath{%
-    \mathrm{PSS}_{#1}%
-    \IfValueT{#2}{^{\mathrm{#2}}}%
-    \left(T;\boldsymbol{m}, \mathrm{Age} \right)%
-  }%
-}
-
-\NewDocumentCommand{\ODSS}{m o}{%
-  \ensuremath{%
-    \mathrm{ODSS}_{#1}%
-    \IfValueT{#2}{^{\mathrm{#2}}}%
-    \left(T;\boldsymbol{m}, \mathrm{Age} \right)%
-  }%
-}
-
-\NewDocumentCommand{\Sepsis}{o}{%
-  \ensuremath{%
-    \mathrm{Sepsis}%
-    \IfValueT{#1}{^{\mathrm{#1}}}%
-    \left(T;\boldsymbol{m}, \mathrm{Age}, \sigma \right)%
-  }%
-}
-
-\NewDocumentCommand{\SepticShock}{o}{%
-  \ensuremath{%
-    \mathrm{SepticShock}%
-    \IfValueT{#1}{^{\mathrm{#1}}}%
-    \left(T;\boldsymbol{m}, \mathrm{Age}, \sigma, \kappa \right)%
-  }%
-}
 
 \title{Operational Definition of the Phoenix Sepsis Score}
 %\author{Peter E. DeWitt, Ph.D}

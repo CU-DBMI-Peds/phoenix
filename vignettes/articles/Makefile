@@ -6,9 +6,9 @@ OPERATIONALPHX=operational-definition-phoenix-sepsis-criteria
 
 .PHONY: all clean
 
-all: $(OPERATIONALPHX).pdf ../references.bib
+all: $(OPERATIONALPHX).pdf
 
-%.pdf: %.tex
+%.pdf: %.tex ../references.bib latex-header.tex
 	$(LATEXMKPDF) $<
 
 clean:
