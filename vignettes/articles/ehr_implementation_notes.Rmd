@@ -16,7 +16,7 @@ an international data set of pediatric emergency department and hospital
 encounters by predicting encounter mortality among those with suspected
 infection using organ dysfunction-based data from the first 24 hours of the
 encounter. Please see the original manuscripts for details.
-[@sanchezpinto_2024_development;@schlapbach_2024_international].
+[@Sanchez-Pinto2024;@Schlapbach2024].
 
 The purpose of this document is to provide details about the expected inputs for
 the scoring in order to assist EHR implementation. The phoenix R package and

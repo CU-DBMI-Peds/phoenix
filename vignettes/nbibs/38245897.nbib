@@ -1,0 +1,291 @@
+
+PMID- 38245897
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20240228
+LR  - 20250927
+IS  - 1538-3598 (Electronic)
+IS  - 0098-7484 (Print)
+IS  - 0098-7484 (Linking)
+VI  - 331
+IP  - 8
+DP  - 2024 Feb 27
+TI  - Development and Validation of the Phoenix Criteria for Pediatric Sepsis and 
+      Septic Shock.
+PG  - 675-686
+LID - 10.1001/jama.2024.0196 [doi]
+AB  - IMPORTANCE: The Society of Critical Care Medicine Pediatric Sepsis Definition 
+      Task Force sought to develop and validate new clinical criteria for pediatric 
+      sepsis and septic shock using measures of organ dysfunction through a data-driven 
+      approach. OBJECTIVE: To derive and validate novel criteria for pediatric sepsis 
+      and septic shock across differently resourced settings. DESIGN, SETTING, AND 
+      PARTICIPANTS: Multicenter, international, retrospective cohort study in 10 health 
+      systems in the US, Colombia, Bangladesh, China, and Kenya, 3 of which were used 
+      as external validation sites. Data were collected from emergency and inpatient 
+      encounters for children (aged <18 years) from 2010 to 2019: 3 049 699 in the 
+      development (including derivation and internal validation) set and 581 317 in the 
+      external validation set. EXPOSURE: Stacked regression models to predict mortality 
+      in children with suspected infection were derived and validated using the 
+      best-performing organ dysfunction subscores from 8 existing scores. The final 
+      model was then translated into an integer-based score used to establish binary 
+      criteria for sepsis and septic shock. MAIN OUTCOMES AND MEASURES: The primary 
+      outcome for all analyses was in-hospital mortality. Model- and integer-based 
+      score performance measures included the area under the precision recall curve 
+      (AUPRC; primary) and area under the receiver operating characteristic curve 
+      (AUROC; secondary). For binary criteria, primary performance measures were 
+      positive predictive value and sensitivity. RESULTS: Among the 172 984 children 
+      with suspected infection in the first 24 hours (development set; 1.2% mortality), 
+      a 4-organ-system model performed best. The integer version of that model, the 
+      Phoenix Sepsis Score, had AUPRCs of 0.23 to 0.38 (95% CI range, 0.20-0.39) and 
+      AUROCs of 0.71 to 0.92 (95% CI range, 0.70-0.92) to predict mortality in the 
+      validation sets. Using a Phoenix Sepsis Score of 2 points or higher in children 
+      with suspected infection as criteria for sepsis and sepsis plus 1 or more 
+      cardiovascular point as criteria for septic shock resulted in a higher positive 
+      predictive value and higher or similar sensitivity compared with the 2005 
+      International Pediatric Sepsis Consensus Conference (IPSCC) criteria across 
+      differently resourced settings. CONCLUSIONS AND RELEVANCE: The novel Phoenix 
+      sepsis criteria, which were derived and validated using data from higher- and 
+      lower-resource settings, had improved performance for the diagnosis of pediatric 
+      sepsis and septic shock compared with the existing IPSCC criteria.
+FAU - Sanchez-Pinto, L Nelson
+AU  - Sanchez-Pinto LN
+AD  - Departments of Pediatrics (Critical Care) and Preventive Medicine (Health and 
+      Biomedical Informatics), Northwestern University Feinberg School of Medicine, and 
+      Ann and Robert H. Lurie Children's Hospital of Chicago, Chicago, Illinois.
+FAU - Bennett, Tellen D
+AU  - Bennett TD
+AD  - Departments of Biomedical Informatics and Pediatrics (Critical Care Medicine), 
+      University of Colorado School of Medicine, and Children's Hospital Colorado, 
+      Aurora.
+FAU - DeWitt, Peter E
+AU  - DeWitt PE
+AD  - Department of Biomedical Informatics, University of Colorado School of Medicine, 
+      Aurora.
+FAU - Russell, Seth
+AU  - Russell S
+AD  - Department of Biomedical Informatics, University of Colorado School of Medicine, 
+      Aurora.
+FAU - Rebull, Margaret N
+AU  - Rebull MN
+AD  - Department of Biomedical Informatics, University of Colorado School of Medicine, 
+      Aurora.
+FAU - Martin, Blake
+AU  - Martin B
+AD  - Departments of Biomedical Informatics and Pediatrics (Critical Care Medicine), 
+      University of Colorado School of Medicine, and Children's Hospital Colorado, 
+      Aurora.
+FAU - Akech, Samuel
+AU  - Akech S
+AD  - Kenya Medical Research Institute (KEMRI)-Wellcome Trust Research Programme, 
+      Nairobi, Kenya.
+FAU - Albers, David J
+AU  - Albers DJ
+AD  - Departments of Biomedical Informatics, Bioengineering, Biostatistics, and 
+      Informatics, University of Colorado School of Medicine, Aurora.
+AD  - Department of Biomedical Informatics, Columbia University, New York, New York.
+FAU - Alpern, Elizabeth R
+AU  - Alpern ER
+AD  - Division of Emergency Medicine, Department of Pediatrics, Ann and Robert H. Lurie 
+      Children's Hospital of Chicago, and Northwestern University Feinberg School of 
+      Medicine, Chicago, Illinois.
+FAU - Balamuth, Fran
+AU  - Balamuth F
+AD  - Department of Pediatrics, University of Pennsylvania, Perelman School of Medicine 
+      and Division of Emergency Medicine, Children's Hospital of Philadelphia, 
+      Philadelphia.
+FAU - Bembea, Melania
+AU  - Bembea M
+AD  - Department of Anesthesiology and Critical Care Medicine, Johns Hopkins University 
+      School of Medicine, Baltimore, Maryland.
+FAU - Chisti, Mohammod Jobayer
+AU  - Chisti MJ
+AD  - Intensive Care Unit, Dhaka Hospital, Nutrition Research Division, International 
+      Centre for Diarrhoeal Disease Research, Dhaka, Bangladesh.
+FAU - Evans, Idris
+AU  - Evans I
+AD  - Clinical Research, Investigation, and Systems Modeling of Acute Illness (CRISMA) 
+      Center, Department of Critical Care Medicine, University of Pittsburgh School of 
+      Medicine, Pittsburgh, Pennsylvania.
+FAU - Horvat, Christopher M
+AU  - Horvat CM
+AD  - Clinical Research, Investigation, and Systems Modeling of Acute Illness (CRISMA) 
+      Center, Department of Critical Care Medicine, University of Pittsburgh School of 
+      Medicine, Pittsburgh, Pennsylvania.
+FAU - Jaramillo-Bustamante, Juan Camilo
+AU  - Jaramillo-Bustamante JC
+AD  - Pediatric Intensive Care Unit, Hospital General de Medellin Luz Castro de 
+      Gutierrez and Hospital Pablo Tobon Uribe, and Red Colaborativa Pediatrica de 
+      Latinoamerica (LARed Network), Medellin, Colombia.
+FAU - Kissoon, Niranjan
+AU  - Kissoon N
+AD  - Department of Pediatrics, University of British Columbia, Vancouver, Canada.
+FAU - Menon, Kusum
+AU  - Menon K
+AD  - Department of Pediatrics, Children's Hospital of Eastern Ontario and University 
+      of Ottawa, Ottawa, Canada.
+FAU - Scott, Halden F
+AU  - Scott HF
+AD  - Department of Pediatrics (Pediatric Emergency Medicine), University of Colorado 
+      School of Medicine, and Children's Hospital Colorado, Aurora.
+FAU - Weiss, Scott L
+AU  - Weiss SL
+AD  - Division of Critical Care, Department of Pediatrics, Nemours Children's Health, 
+      Wilmington, Delaware.
+AD  - Sidney Kimmel Medical College at Thomas Jefferson University, Philadelphia, 
+      Pennsylvania.
+FAU - Wiens, Matthew O
+AU  - Wiens MO
+AD  - Department of Anesthesiology, Pharmacology, and Therapeutics, Faculty of 
+      Medicine, University of British Columbia, Vancouver, Canada.
+AD  - Institute for Global Health, BC Children's Hospital, Vancouver, British Columbia, 
+      Canada.
+AD  - Walimu, Kampala, Uganda.
+FAU - Zimmerman, Jerry J
+AU  - Zimmerman JJ
+AD  - Seattle Children's Hospital and Department of Pediatrics, University of 
+      Washington School of Medicine, Seattle.
+FAU - Argent, Andrew C
+AU  - Argent AC
+AD  - Paediatrics and Child Health, University of Cape Town Faculty of Health Sciences, 
+      Cape Town, South Africa.
+FAU - Sorce, Lauren R
+AU  - Sorce LR
+AD  - Department of Pediatrics, Northwestern University Feinberg School of Medicine, 
+      and Ann and Robert H. Lurie Children's Hospital of Chicago, Chicago, Illinois.
+FAU - Schlapbach, Luregn J
+AU  - Schlapbach LJ
+AD  - Department of Intensive Care and Neonatology, Children's Research Center, 
+      University Children's Hospital Zurich, University of Zurich, Zurich, Switzerland.
+AD  - Child Health Research Centre, The University of Queensland, Brisbane, Australia.
+FAU - Watson, R Scott
+AU  - Watson RS
+AD  - Department of Pediatrics, University of Washington, and Center for Child Health, 
+      Behavior, and Development and Pediatric Critical Care, Seattle Children's 
+      Hospital, Seattle.
+CN  - Society of Critical Care Medicine Pediatric Sepsis Definition Task Force
+FAU - Biban, Paolo
+AU  - Biban P
+AD  - Verona University Hospital, Verona, Italy.
+FAU - Carrol, Enitan
+AU  - Carrol E
+AD  - University of Liverpool, Liverpool, England.
+FAU - Chiotos, Kathleen
+AU  - Chiotos K
+AD  - Children's Hospital of Philadelphia, Philadelphia, Pennsylvania.
+FAU - Flauzino De Oliveira, Claudio
+AU  - Flauzino De Oliveira C
+AD  - Associacao de Medicina Intensiva Brasileira, Sao Paulo, Brazil.
+FAU - Hall, Mark W
+AU  - Hall MW
+AD  - Nationwide Children's Hospital, Columbus, Ohio.
+FAU - Inwald, David
+AU  - Inwald D
+AD  - Addenbrooke's Hospital, Cambridge University Hospital NHS Trust, Cambridge, 
+      England.
+FAU - Ishimine, Paul
+AU  - Ishimine P
+AD  - University of California, San Diego School of Medicine, La Jolla.
+FAU - Levin, Michael
+AU  - Levin M
+AD  - Imperial College London, London, England.
+FAU - Lodha, Rakesh
+AU  - Lodha R
+AD  - All India Institute of Medical Sciences, New Delhi, India.
+FAU - Nadel, Simon
+AU  - Nadel S
+AD  - St Mary's Hospital, London, England.
+FAU - Nakagawa, Satoshi
+AU  - Nakagawa S
+AD  - National Center for Child Health and Development, Tokyo, Japan.
+FAU - Peters, Mark J
+AU  - Peters MJ
+AD  - University College London Great Ormond Street Institute of Child Health, London, 
+      England.
+FAU - Randolph, Adrienne G
+AU  - Randolph AG
+AD  - Boston Children's Hospital, Boston, Massachusetts.
+FAU - Ranjit, Suchitra
+AU  - Ranjit S
+AD  - Apollo Children's Hospital, Chennai, India.
+FAU - Souza, Daniela Carla
+AU  - Souza DC
+AD  - University Hospital of the University of Sao Paulo, Sao Paulo, Brazil.
+FAU - Tissieres, Pierre
+AU  - Tissieres P
+AD  - Hopital de Bicetre, Paris, France.
+FAU - Wynn, James L
+AU  - Wynn JL
+AD  - University of Florida, Gainesville.
+LA  - eng
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+PL  - United States
+TA  - JAMA
+JT  - JAMA
+JID - 7501160
+SB  - IM
+CIN - JAMA. 2024 Feb 27;331(8):646-649. doi: 10.1001/jama.2023.27979. PMID: 38245890
+CIN - JAMA. 2024 Feb 27;331(8):650-651. doi: 10.1001/jama.2023.27988. PMID: 38245901
+CIN - JAMA. 2024 Jun 18;331(23):2049-2050. doi: 10.1001/jama.2024.8199. PMID: 38780925
+MH  - Humans
+MH  - Child
+MH  - *Shock, Septic/mortality
+MH  - Multiple Organ Failure
+MH  - Retrospective Studies
+MH  - Organ Dysfunction Scores
+MH  - *Sepsis/complications
+MH  - Hospital Mortality
+PMC - PMC10900964
+COIS- Conflict of Interest Disclosures: Dr Sanchez-Pinto reported receipt of grants 
+      from the National Institutes of Health (NIH)/National Institute of General 
+      Medical Sciences outside the submitted work. Dr Bennett reported receipt of 
+      grants from the NIH/National Center for Advancing Translational Sciences and 
+      NIH/National Heart, Lung, and Blood Institute (NHLBI) outside the submitted work. 
+      Dr Martin reported receipt of grants from the Eunice Kennedy Shriver National 
+      Institute of Child Health and Human Development (NICHD) and the Thrasher Research 
+      Fund outside the submitted work. Dr Balamuth reported receipt of grants from the 
+      NIH and various federal and foundation grants to study sepsis and other 
+      infectious emergencies outside the submitted work. Dr Bembea reported receipt of 
+      grants with funds paid to institution from the NIH/National Institute of 
+      Neurological Disorders and Stroke (NINDS), the NIH/NICHD, Grifols, the Department 
+      of Defense, and the NIH/NHLBI. Dr Horvat reported grants from the NICHD and NINDS 
+      outside the submitted work. Dr Zimmerman reported receipt of grants from 
+      Immunexpress and personal fees from Elsevier outside the submitted work. Dr 
+      Schlapbach reported receipt of grants from Medical Research Future Funds, the 
+      National Health and Medical Research Council, and the Swiss Personalized Health 
+      Network outside the submitted work. Dr Randolph reported receipt of grants to the 
+      institution from the NIH and the Centers for Disease Control and Prevention; 
+      receipt of personal fees from UpToDate; receipt of travel funds for advisory 
+      board meetings from Volition Inc, Thermo Fisher, and bioMerieux; and being a 
+      scientific advisor from Inotrem outside the submitted work. Dr Carrol reported 
+      being a specialist committee member, scientific advisory board member, and/or 
+      panel/group member for the UK National Institute for Health and Care Excellence 
+      (NICE) Diagnostics Advisory Committee, the NICE Sepsis Guideline Development 
+      Group, BioFire Diagnostics, the NICE Quality Standards Committee for Sepsis, the 
+      Surviving Sepsis Campaign Pediatrics Guideline Panel, and the Society of Critical 
+      Care Medicine Paediatric Sepsis Definition Task Force and an investigator in the 
+      UK National Institute for Health and Care Research (NIHR)-funded studies BATCH, 
+      PRONTO, and PEACH and the H2020-funded studies PERFORM and DIAMONDS. Dr Chiotos 
+      reported being a member of the Infectious Diseases Society of America Sepsis 
+      Taskforce. Dr Hall reported receipt of personal fees for serving as a data and 
+      safety monitoring board member from AbbVie and nonfinancial support from Partner 
+      Therapeutics and Sobi. Dr Inwald reported receipt of grants from the NIHR as 
+      chief investigator of the PRESSURE trial. Dr Peters reported receipt of grants 
+      from the NIHR outside the submitted work. Dr Tissieres reported receipt of grants 
+      from Baxter and personal fees from Baxter, Sanofi, Thermo Fisher, and Sedana. Dr 
+      Wynn reported receipt of personal fees from Sobi. No other disclosures were 
+      reported.
+EDAT- 2024/01/21 18:41
+MHDA- 2024/02/28 06:43
+PMCR- 2024/07/21
+CRDT- 2024/01/21 15:38
+PHST- 2024/02/28 06:43 [medline]
+PHST- 2024/01/21 18:41 [pubmed]
+PHST- 2024/01/21 15:38 [entrez]
+PHST- 2024/07/21 00:00 [pmc-release]
+AID - 2814296 [pii]
+AID - joi240003 [pii]
+AID - 10.1001/jama.2024.0196 [doi]
+PST - ppublish
+SO  - JAMA. 2024 Feb 27;331(8):675-686. doi: 10.1001/jama.2024.0196.

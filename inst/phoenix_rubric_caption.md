@@ -6,5 +6,5 @@ dysfunction. Sepsis is defined as a Phoenix Sepsis Score &geq; 2. Septic Shock
 is defined as sepsis with at least one cardiovascular point.  The limits
 reported in this table reflect the implementation of the criteria in software
 whereas the comparable published tables report the criteria from a clinical
-perspective.[@sanchezpinto_2024_development;@schlapback_2024_international] The
+perspective.[@Sanchez-Pinto2024;@Schlapbach2024] The
 two presentations of the criteria are consistent in practice.

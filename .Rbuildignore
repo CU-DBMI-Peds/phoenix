@@ -26,4 +26,6 @@
 ^python$
 ^vignette-spinners
 ^vignettes/articles$
+^vignettes/nbibs$
+^vignettes/nbib2bib\.bash$
 examples.R

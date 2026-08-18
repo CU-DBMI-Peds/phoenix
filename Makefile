@@ -15,22 +15,29 @@ RFILES    = $(wildcard $(PKG_ROOT)/R/*.R)
 TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
 RAWDATAR  = $(wildcard $(PKG_ROOT)/data-raw/*.R)
 VIGNETTES = $(wildcard $(PKG_ROOT)/vignettes/*.Rmd)
+NBIBS     = $(wildcard $(PKG_ROOT)/vignettes/nbibs/*.nbib)
 
 README_RMD         = $(PKG_ROOT)/README.Rmd
 README_MD          = $(PKG_ROOT)/README.md
 RBUILDIGNORE       = $(PKG_ROOT)/.Rbuildignore
+REFERENCES_BIB     = $(PKG_ROOT)/vignettes/references.bib
 CITATION           = $(PKG_ROOT)/inst/CITATION
 DOCUMENT_STAMP     = $(PKG_ROOT)/.document.Rout
 INSTALL_DEPS_STAMP = $(PKG_ROOT)/.install_dev_deps.Rout
 
-.PHONY: all check site install covr clean
+.PHONY: all check site install covr clean references
 
 all: $(PKG_TARBALL)
 
 ################################################################################
 # Build the package tarball.
-$(PKG_TARBALL): $(INSTALL_DEPS_STAMP) $(DOCUMENT_STAMP) $(TESTS) $(RBUILDIGNORE)
+$(PKG_TARBALL): $(INSTALL_DEPS_STAMP) $(DOCUMENT_STAMP) $(TESTS) $(RBUILDIGNORE) $(REFERENCES_BIB)
 	$(RCMD) build --md5 $(BUILD_OPTIONS) $(PKG_ROOT)
+
+references: $(REFERENCES_BIB)
+
+$(REFERENCES_BIB): $(PKG_ROOT)/vignettes/nbib2bib.bash $(NBIBS)
+	cd "$(PKG_ROOT)/vignettes" && ./nbib2bib.bash
 
 # Install/update dev dependencies; store console output in the stamp.
 $(INSTALL_DEPS_STAMP): $(PKG_ROOT)/DESCRIPTION
@@ -43,7 +50,7 @@ $(INSTALL_DEPS_STAMP): $(PKG_ROOT)/DESCRIPTION
 	  -e "pak::local_install_dev_deps(root = '$(PKG_ROOT)')" \
 	  > "$$tmp" 2>&1 && mv "$$tmp" "$@"
 
-$(DOCUMENT_STAMP): $(RFILES) $(SRC) $(RAWDATAR) $(VIGNETTES) $(PKG_ROOT)/DESCRIPTION $(README_MD) $(CITATION) $(INSTALL_DEPS_STAMP)
+$(DOCUMENT_STAMP): $(RFILES) $(SRC) $(RAWDATAR) $(VIGNETTES) $(PKG_ROOT)/DESCRIPTION $(README_MD) $(CITATION) $(INSTALL_DEPS_STAMP) $(REFERENCES_BIB)
 	if [ -e "$(PKG_ROOT)/data-raw/Makefile" ]; then \
 		$(MAKE) -C "$(PKG_ROOT)/data-raw/"; \
 	else \
@@ -84,7 +91,7 @@ covr: covr-report-all.html covr-report-tests.html covr-report-examples.html covr
 	  -e "if (!requireNamespace('htmltools', quietly=TRUE)) \
 	       install.packages('htmltools', repos='$(CRAN)')"
 
-site: $(PKG_TARBALL)
+site: $(PKG_TARBALL) $(REFERENCES_BIB)
 	$(MAKE) -C vignettes/articles
 	$(R) -e "pkgdown::build_site()"
 

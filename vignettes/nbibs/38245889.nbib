@@ -1,0 +1,340 @@
+
+PMID- 38245889
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20240228
+LR  - 20260518
+IS  - 1538-3598 (Electronic)
+IS  - 0098-7484 (Print)
+IS  - 0098-7484 (Linking)
+VI  - 331
+IP  - 8
+DP  - 2024 Feb 27
+TI  - International Consensus Criteria for Pediatric Sepsis and Septic Shock.
+PG  - 665-674
+LID - 10.1001/jama.2024.0179 [doi]
+AB  - IMPORTANCE: Sepsis is a leading cause of death among children worldwide. Current 
+      pediatric-specific criteria for sepsis were published in 2005 based on expert 
+      opinion. In 2016, the Third International Consensus Definitions for Sepsis and 
+      Septic Shock (Sepsis-3) defined sepsis as life-threatening organ dysfunction 
+      caused by a dysregulated host response to infection, but it excluded children. 
+      OBJECTIVE: To update and evaluate criteria for sepsis and septic shock in 
+      children. EVIDENCE REVIEW: The Society of Critical Care Medicine (SCCM) convened 
+      a task force of 35 pediatric experts in critical care, emergency medicine, 
+      infectious diseases, general pediatrics, nursing, public health, and neonatology 
+      from 6 continents. Using evidence from an international survey, systematic review 
+      and meta-analysis, and a new organ dysfunction score developed based on more than 
+      3 million electronic health record encounters from 10 sites on 4 continents, a 
+      modified Delphi consensus process was employed to develop criteria. FINDINGS: 
+      Based on survey data, most pediatric clinicians used sepsis to refer to infection 
+      with life-threatening organ dysfunction, which differed from prior pediatric 
+      sepsis criteria that used systemic inflammatory response syndrome (SIRS) 
+      criteria, which have poor predictive properties, and included the redundant term, 
+      severe sepsis. The SCCM task force recommends that sepsis in children be 
+      identified by a Phoenix Sepsis Score of at least 2 points in children with 
+      suspected infection, which indicates potentially life-threatening dysfunction of 
+      the respiratory, cardiovascular, coagulation, and/or neurological systems. 
+      Children with a Phoenix Sepsis Score of at least 2 points had in-hospital 
+      mortality of 7.1% in higher-resource settings and 28.5% in lower-resource 
+      settings, more than 8 times that of children with suspected infection not meeting 
+      these criteria. Mortality was higher in children who had organ dysfunction in at 
+      least 1 of 4-respiratory, cardiovascular, coagulation, and/or neurological-organ 
+      systems that was not the primary site of infection. Septic shock was defined as 
+      children with sepsis who had cardiovascular dysfunction, indicated by at least 1 
+      cardiovascular point in the Phoenix Sepsis Score, which included severe 
+      hypotension for age, blood lactate exceeding 5 mmol/L, or need for vasoactive 
+      medication. Children with septic shock had an in-hospital mortality rate of 10.8% 
+      and 33.5% in higher- and lower-resource settings, respectively. CONCLUSIONS AND 
+      RELEVANCE: The Phoenix sepsis criteria for sepsis and septic shock in children 
+      were derived and validated by the international SCCM Pediatric Sepsis Definition 
+      Task Force using a large international database and survey, systematic review and 
+      meta-analysis, and modified Delphi consensus approach. A Phoenix Sepsis Score of 
+      at least 2 identified potentially life-threatening organ dysfunction in children 
+      younger than 18 years with infection, and its use has the potential to improve 
+      clinical care, epidemiological assessment, and research in pediatric sepsis and 
+      septic shock around the world.
+FAU - Schlapbach, Luregn J
+AU  - Schlapbach LJ
+AD  - Department of Intensive Care and Neonatology, and Children's Research Center, 
+      University Children's Hospital Zurich, University of Zurich, Zurich, Switzerland.
+AD  - Child Health Research Centre, University of Queensland, Brisbane, Australia.
+FAU - Watson, R Scott
+AU  - Watson RS
+AD  - Department of Pediatrics, University of Washington, Seattle.
+AD  - Seattle Children's Research Institute and Pediatric Critical Care, Seattle 
+      Children's, Seattle, Washington.
+FAU - Sorce, Lauren R
+AU  - Sorce LR
+AD  - Ann & Robert H. Lurie Children's Hospital, Chicago, Illinois.
+AD  - Department of Pediatrics, Northwestern University Feinberg School of Medicine, 
+      Chicago, Illinois.
+FAU - Argent, Andrew C
+AU  - Argent AC
+AD  - Department of Paediatrics and Child Health, Red Cross War Memorial Children's 
+      Hospital, Cape Town, South Africa.
+AD  - University of Cape Town, Cape Town, South Africa.
+FAU - Menon, Kusum
+AU  - Menon K
+AD  - Department of Pediatrics, Children's Hospital of Eastern Ontario, Canada.
+AD  - University of Ottawa, Ontario, Canada.
+FAU - Hall, Mark W
+AU  - Hall MW
+AD  - Division of Critical Care Medicine, Nationwide Children's Hospital, Columbus, 
+      Ohio.
+AD  - The Ohio State University College of Medicine, Columbus, Ohio.
+FAU - Akech, Samuel
+AU  - Akech S
+AD  - Kenya Medical Research Institute (KEMRI)-Wellcome Trust Research Programme, 
+      Nairobi, Kenya.
+FAU - Albers, David J
+AU  - Albers DJ
+AD  - Departments of Biomedical Informatics, Bioengineering, Biostatistics and 
+      Informatics, University of Colorado School of Medicine, Aurora.
+AD  - Department of Biomedical Informatics, Columbia University, New York, New York.
+FAU - Alpern, Elizabeth R
+AU  - Alpern ER
+AD  - Ann & Robert H. Lurie Children's Hospital, Chicago, Illinois.
+AD  - Department of Pediatrics, Division of Emergency Medicine, Northwestern University 
+      Feinberg School of Medicine, Chicago, Illinois.
+FAU - Balamuth, Fran
+AU  - Balamuth F
+AD  - Department of Pediatrics, University of Pennsylvania, Perelman School of 
+      Medicine, Philadelphia.
+AD  - Division of Emergency Medicine, Children's Hospital of Philadelphia, 
+      Philadelphia, Pennsylvania.
+FAU - Bembea, Melania
+AU  - Bembea M
+AD  - Department of Anesthesiology and Critical Care Medicine, Johns Hopkins University 
+      School of Medicine, Baltimore, Maryland.
+FAU - Biban, Paolo
+AU  - Biban P
+AD  - Pediatric Intensive Care Unit, Verona University Hospital, Verona, Italy.
+FAU - Carrol, Enitan D
+AU  - Carrol ED
+AD  - University of Liverpool, Department of Clinical Infection, Microbiology and 
+      Immunology, Institute of Infection, Veterinary and Ecological Sciences, 
+      Liverpool, United Kingdom.
+FAU - Chiotos, Kathleen
+AU  - Chiotos K
+AD  - Department of Anesthesiology and Critical Care, Perelman School of Medicine at 
+      the University of Pennsylvania, Philadelphia.
+AD  - Divisions of Critical Care Medicine and Infectious Diseases, Children's Hospital 
+      of Philadelphia, Philadelphia, Pennsylvania.
+FAU - Chisti, Mohammod Jobayer
+AU  - Chisti MJ
+AD  - Intensive Care Unit, Dhaka Hospital, Nutrition Research Division, International 
+      Centre for Diarrhoeal Disease Research, Bangladesh (icddr,b), Dhaka, Bangladesh.
+FAU - DeWitt, Peter E
+AU  - DeWitt PE
+AD  - Department of Biomedical Informatics, University of Colorado School of Medicine, 
+      Aurora.
+FAU - Evans, Idris
+AU  - Evans I
+AD  - Department of Critical Care Medicine, University of Pittsburgh School of 
+      Medicine, Pittsburgh, Pennsylvania.
+AD  - Clinical Research, Investigation, and Systems Modeling of Acute Illness (CRISMA) 
+      Center, Pittsburgh, Pennsylvania.
+FAU - Flauzino de Oliveira, Claudio
+AU  - Flauzino de Oliveira C
+AD  - AMIB-Associacao de Medicina Intensiva Brasileira, Sao Paulo, Brazil.
+AD  - LASI-Latin American Institute of Sepsis, Sao Paulo, Brazil.
+FAU - Horvat, Christopher M
+AU  - Horvat CM
+AD  - Department of Critical Care Medicine, University of Pittsburgh School of 
+      Medicine, Pittsburgh, Pennsylvania.
+AD  - Clinical Research, Investigation, and Systems Modeling of Acute Illness (CRISMA) 
+      Center, Pittsburgh, Pennsylvania.
+FAU - Inwald, David
+AU  - Inwald D
+AD  - Paediatric Intensive Care, Cambridge University Hospitals NHS Foundation Trust, 
+      Cambridge, United Kingdom.
+FAU - Ishimine, Paul
+AU  - Ishimine P
+AD  - Departments of Emergency Medicine and Pediatrics, University of California, San 
+      Diego School of Medicine, La Jolla.
+FAU - Jaramillo-Bustamante, Juan Camilo
+AU  - Jaramillo-Bustamante JC
+AD  - PICU Hospital General de Medellin "Luz Castro de Gutierrez" and Hospital Pablo 
+      Tobon Uribe, Medellin, Colombia.
+AD  - Red Colaborativa Pediatrica de Latinoamerica (LARed Network).
+FAU - Levin, Michael
+AU  - Levin M
+AD  - Section of Paediatric Infectious Diseases, Department of Infectious Diseases, 
+      Imperial College London, London, United Kingdom.
+AD  - Department of Paediatrics, St Mary's Hospital, Imperial College Healthcare NHS 
+      Trust, London, United Kingdom.
+FAU - Lodha, Rakesh
+AU  - Lodha R
+AD  - Department of Pediatrics, All India Institute of Medical Sciences, New Delhi, 
+      India.
+FAU - Martin, Blake
+AU  - Martin B
+AD  - Departments of Biomedical Informatics and Pediatrics (Division of Critical Care 
+      Medicine), University of Colorado School of Medicine and Pediatric Intensive Care 
+      Unit, Children's Hospital Colorado, Aurora.
+AD  - Pediatric Intensive Care Unit, Children's Hospital Colorado, Aurora.
+FAU - Nadel, Simon
+AU  - Nadel S
+AD  - Paediatric Intensive Care, St Mary's Hospital, London, United Kingdom.
+AD  - Imperial College London, London, United Kingdom.
+FAU - Nakagawa, Satoshi
+AU  - Nakagawa S
+AD  - Critical Care Medicine, National Center for Child Health and Development, Tokyo, 
+      Japan.
+FAU - Peters, Mark J
+AU  - Peters MJ
+AD  - University College London Great Ormond Street Institute of Child Health, London, 
+      United Kingdom.
+AD  - Great Ormond Street Hospital for Children NHS Foundation Trust and NIHR 
+      Biomedical Research Centre, London, United Kingdom.
+FAU - Randolph, Adrienne G
+AU  - Randolph AG
+AD  - Department of Anesthesiology, Critical Care and Pain Medicine, Boston Children's 
+      Hospital, Boston, Massachusetts.
+AD  - Departments of Anaesthesia and Pediatrics, Harvard Medical School, Boston, 
+      Massachusetts.
+FAU - Ranjit, Suchitra
+AU  - Ranjit S
+AD  - Pediatric Intensive Care Unit, Apollo Children's Hospital, Chennai, India.
+FAU - Rebull, Margaret N
+AU  - Rebull MN
+AD  - Department of Biomedical Informatics, University of Colorado School of Medicine, 
+      Aurora.
+FAU - Russell, Seth
+AU  - Russell S
+AD  - Department of Biomedical Informatics, University of Colorado School of Medicine, 
+      Aurora.
+FAU - Scott, Halden F
+AU  - Scott HF
+AD  - Section of Pediatric Emergency Medicine, Department of Pediatrics, University of 
+      Colorado School of Medicine, Aurora.
+AD  - Emergency Department, Children's Hospital Colorado, Aurora.
+FAU - de Souza, Daniela Carla
+AU  - de Souza DC
+AD  - LASI-Latin American Institute of Sepsis, Sao Paulo, Brazil.
+AD  - Department of Pediatrics (PICU), Hospital Universitario of the University of Sao 
+      Paulo, Sao Paulo, Brazil.
+AD  - Department of Pediatrics (PICU), Hospital Sirio Libanes, Sao Paulo, Brazil.
+FAU - Tissieres, Pierre
+AU  - Tissieres P
+AD  - Pediatric Intensive Care, AP-HP Paris Saclay University, Bicetre Hospital, Le 
+      Kremlin-Bicetre, France.
+FAU - Weiss, Scott L
+AU  - Weiss SL
+AD  - Division of Critical Care, Department of Pediatrics, Nemours Children's Health, 
+      Wilmington, Delaware.
+AD  - Sidney Kimmel Medical College at Thomas Jefferson University, Philadelphia, 
+      Pennsylvania.
+FAU - Wiens, Matthew O
+AU  - Wiens MO
+AD  - Department of Anesthesiology, Pharmacology and Therapeutics, Faculty of Medicine, 
+      University of British Columbia, Vancouver, Canada.
+AD  - Institute for Global Health, BC Children's Hospital, Vancouver, Canada and 
+      Walimu, Uganda.
+FAU - Wynn, James L
+AU  - Wynn JL
+AD  - Department of Pediatrics, University of Florida, Gainesville.
+FAU - Kissoon, Niranjan
+AU  - Kissoon N
+AD  - Department of Pediatrics, University of British Columbia, Vancouver, Canada.
+FAU - Zimmerman, Jerry J
+AU  - Zimmerman JJ
+AD  - Department of Pediatrics, University of Washington, Seattle.
+AD  - Seattle Children's Research Institute and Pediatric Critical Care, Seattle 
+      Children's, Seattle, Washington.
+FAU - Sanchez-Pinto, L Nelson
+AU  - Sanchez-Pinto LN
+AD  - Ann & Robert H. Lurie Children's Hospital, Chicago, Illinois.
+AD  - Department of Pediatrics, Division of Critical Care, and Department of Preventive 
+      Medicine, Division of Health & Biomedical Informatics, Northwestern University 
+      Feinberg School of Medicine, Chicago, Illinois.
+FAU - Bennett, Tellen D
+AU  - Bennett TD
+AD  - Departments of Biomedical Informatics and Pediatrics (Division of Critical Care 
+      Medicine), University of Colorado School of Medicine and Pediatric Intensive Care 
+      Unit, Children's Hospital Colorado, Aurora.
+CN  - Society of Critical Care Medicine Pediatric Sepsis Definition Task Force
+LA  - eng
+GR  - WT_/Wellcome Trust/United Kingdom
+PT  - Consensus Statement
+PT  - Journal Article
+PT  - Research Support, N.I.H., Extramural
+PT  - Research Support, Non-U.S. Gov't
+PL  - United States
+TA  - JAMA
+JT  - JAMA
+JID - 7501160
+SB  - IM
+CIN - JAMA. 2024 Feb 27;331(8):646-649. doi: 10.1001/jama.2023.27979. PMID: 38245890
+CIN - JAMA. 2024 Feb 27;331(8):650-651. doi: 10.1001/jama.2023.27988. PMID: 38245901
+CIN - JAMA. 2024 Jun 25;331(24):2134. doi: 10.1001/jama.2024.8441. PMID: 38814623
+CIN - JAMA. 2024 Jun 25;331(24):2134-2135. doi: 10.1001/jama.2024.8444. PMID: 38814630
+MH  - Humans
+MH  - Child
+MH  - *Shock, Septic/mortality
+MH  - Multiple Organ Failure/diagnosis/etiology
+MH  - *Sepsis/mortality
+MH  - Systemic Inflammatory Response Syndrome/diagnosis
+MH  - Organ Dysfunction Scores
+PMC - PMC10900966
+COIS- Conflict of Interest Disclosures: Dr Schlapbach reported receiving grants from 
+      Medical Research Future Funds (MRFF), National Health and Research Council 
+      (NHMRC), NOMIS Foundation, and Swiss Personalized Health Network (SPHN) outside 
+      the submitted work. Dr Watson reported receiving support to his institution from 
+      the National Institutes of Health (NIH) and nonfinancial support from the SCCM 
+      during the conduct of the study. Dr Argent reported receiving payments for 
+      providing expert evidence for medicolegal matters in South Africa. Dr Menon 
+      reported receiving grants from the Canadian Institutes of Health Research (CIHR) 
+      funding outside the submitted work. Dr Hall reported serving on the data and 
+      safety monitoring board for Abbvie and on a subboard of the American Board of 
+      Pediatrics; receiving nonfinancial support from Sobi and Partner Therapeutics and 
+      personal fees from Kiadis Licensing that is unrelated to the submitted work. Dr 
+      Balamuth reported receiving grants from the NIH and the Children's Hospital of 
+      Philadelphia Research Institute, Global Lyme Alliance, and the Kleberg 
+      Foundation. Dr Bembea reported receiving grants from the National Institute of 
+      Child Health and Human Development (NICHD), Grifols Research, Department of 
+      Defense, and the National Heart, Lung, and Blood Institute (NHLBI) to her 
+      institution outside the submitted work. Dr Carrol reported serving on the 
+      committee for UK National Institute for Health and Care Excellence (NICE) sepsis 
+      guidelines 2016 and SCCM International guidelines for pediatric sepsis. Dr 
+      Chiotos reported receiving grants from Centers for Disease Control and Prevention 
+      (CDC) and the Agency for Healthcare Research and Quality (AHRQ) outside the 
+      submitted work and serving as a member of the Infectious Diseases Society of 
+      America (IDSA) Sepsis Taskforce. Dr Horvat reported receiving grants from the 
+      NICHD and grants from National Institute of Neurological Disorders and Stroke 
+      (NINDS) outside the submitted work. Dr Martin reported receiving grants from the 
+      Thrasher Research Fund outside the submitted work. Dr Nakagawa reported receiving 
+      grants from the Japan Blood Products Organization outside the submitted work. Dr 
+      Peters reported receiving grants from the National Institute of Health and Care 
+      Research UK for clinical trials from the Heath Technology Assessment, Research 
+      for Patient Benefit, and Programme Grants for Applied Research programmes outside 
+      of the submitted work. Dr Randolph reported serving as the chair of the 
+      International Sepsis Forum; receiving institutional grants from the CDC, NIH, and 
+      NIAID; serving as a section editor of UpToDate and on the advisory board of 
+      ThermoFisher Pediatric; attending a scientific advisory meeting for Volition Inc; 
+      and receiving nonfinancial support from Illumina Inc in the form of reagents to 
+      Boston Children's Hospital outside the submitted work. Dr Scott reported 
+      receiving grants from AHRQ outside the submitted work. Dr Tissieres reported 
+      receiving grants from Baxter, honoraria from a Baxter symposium, advisory fees 
+      from Sedana, ThermoFisher, and Sanofi outside the submitted work. Dr Wynn 
+      reported serving as a consultant to Sobi outside the submitted work. Dr Zimmerman 
+      reported receiving grants from Immunexpress, research funding and personal fees 
+      and royalties from Elsevier Publishing, and royalties outside the submitted work. 
+      Dr Bennett reported receiving grants from the National Center for Advancing 
+      Translational Sciences and the NHLBI outside the submitted work. No other 
+      disclosures were reported.
+FIR - Bubeck Wardenburg, Juliane
+IR  - Bubeck Wardenburg J
+EDAT- 2024/01/21 18:41
+MHDA- 2024/02/28 06:44
+PMCR- 2024/07/21
+CRDT- 2024/01/21 15:37
+PHST- 2024/02/28 06:44 [medline]
+PHST- 2024/01/21 18:41 [pubmed]
+PHST- 2024/01/21 15:37 [entrez]
+PHST- 2024/07/21 00:00 [pmc-release]
+AID - 2814297 [pii]
+AID - joi240002 [pii]
+AID - 10.1001/jama.2024.0179 [doi]
+PST - ppublish
+SO  - JAMA. 2024 Feb 27;331(8):665-674. doi: 10.1001/jama.2024.0179.

@@ -1,0 +1,100 @@
+
+PMID- 39784114
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20250502
+LR  - 20250515
+IS  - 1525-1489 (Electronic)
+IS  - 0885-0666 (Linking)
+VI  - 40
+IP  - 5
+DP  - 2025 May
+TI  - Validation of Pediatric Sequential Organ Failure Assessment (pSOFA) Scores to 
+      Predict Critical Events in the Pediatric Intensive Care Unit.
+PG  - 565-570
+LID - 10.1177/08850666241307630 [doi]
+AB  - Objective: To determine the prognostic value of the Pediatric Sequential Organ 
+      Failure Assessment (pSOFA) to discriminate critical events, including code events 
+      and intubations, in the pediatric intensive care unit (PICU). Methods: We 
+      performed an observational cohort study of all critical events in a quaternary 
+      care PICU between 5/2020 and 4/2023. Critical events were extracted from our 
+      hospital communications platform and from the electronic health record (EHR). The 
+      pediatric sequential organ failure assessment (pSOFA) scores were prospectively 
+      calculated in real-time in our EHR every 15 min during the study period for 
+      data-driven situational awareness and were retrospectively analyzed for this 
+      study. Each encounter was divided into 6-h time blocks and we assessed the 
+      performance of the highest pSOFA score in each block at discriminating the 
+      occurrence of a critical event in the subsequent block. Results:There were 5687 
+      unique patient encounters included in the analysis. Critical events were 
+      identified in 578 out of 169 486 time blocks (prevalence 0.3%), which included 
+      103 code events and 498 intubation events, in 392 unique PICU encounters. The 
+      total pSOFA score in a 6-h time block was significantly associated with a 
+      subsequent code event (odds ratio [OR] 1.19, 95% CI 1.13-1.24) or intubation (OR 
+      1.13, 95% CI 1.10-1.15). Several organ-specific pSOFA subscores were also 
+      significantly associated with the outcomes. Area under the receiver operating 
+      characteristic curve (AUROC) for the total pSOFA score was 0.67 for a code event 
+      and 0.65 for intubation. Using a pSOFA score cutoff of >/=8, the positive 
+      predictive value was 0.8% and the negative predictive value was 99.7% for any 
+      critical event. Conclusions: The pSOFA score is significantly associated with 
+      critical events in the PICU, however, it does not have adequate performance to be 
+      used for situational awareness by itself.
+FAU - Badke, Colleen M
+AU  - Badke CM
+AUID- ORCID: 0000-0002-7822-1669
+AD  - Division of Critical Care Medicine, Department of Pediatrics, Ann & Robert H. 
+      Lurie Children's Hospital of Chicago, Chicago, IL, USA.
+AD  - Stanley Manne Children's Research Institute, Chicago, IL, USA.
+FAU - Wang, Austin
+AU  - Wang A
+AD  - Northwestern University Feinberg School of Medicine, Chicago, IL, USA.
+FAU - Daniels, Latasha A
+AU  - Daniels LA
+AD  - Division of Critical Care Medicine, Department of Pediatrics, Ann & Robert H. 
+      Lurie Children's Hospital of Chicago, Chicago, IL, USA.
+FAU - Sanchez-Pinto, L Nelson
+AU  - Sanchez-Pinto LN
+AD  - Division of Critical Care Medicine, Department of Pediatrics, Ann & Robert H. 
+      Lurie Children's Hospital of Chicago, Chicago, IL, USA.
+AD  - Stanley Manne Children's Research Institute, Chicago, IL, USA.
+LA  - eng
+PT  - Journal Article
+PT  - Observational Study
+PT  - Validation Study
+DEP - 20250109
+PL  - United States
+TA  - J Intensive Care Med
+JT  - Journal of intensive care medicine
+JID - 8610344
+SB  - IM
+MH  - Humans
+MH  - *Intensive Care Units, Pediatric/statistics & numerical data
+MH  - *Organ Dysfunction Scores
+MH  - Female
+MH  - Male
+MH  - Child, Preschool
+MH  - Retrospective Studies
+MH  - Infant
+MH  - Child
+MH  - Prognosis
+MH  - Predictive Value of Tests
+MH  - *Critical Illness
+MH  - *Multiple Organ Failure/diagnosis
+MH  - ROC Curve
+OTO - NOTNLM
+OT  - cardiac arrest
+OT  - critical care
+OT  - intubation
+OT  - organ dysfunction
+OT  - pediatric
+COIS- The authors declared no potential conflicts of interest with respect to the 
+      research, authorship, and/or publication of this article.
+EDAT- 2025/01/09 16:58
+MHDA- 2025/05/02 12:31
+CRDT- 2025/01/09 08:23
+PHST- 2025/05/02 12:31 [medline]
+PHST- 2025/01/09 16:58 [pubmed]
+PHST- 2025/01/09 08:23 [entrez]
+AID - 10.1177/08850666241307630 [doi]
+PST - ppublish
+SO  - J Intensive Care Med. 2025 May;40(5):565-570. doi: 10.1177/08850666241307630. 
+      Epub 2025 Jan 9.

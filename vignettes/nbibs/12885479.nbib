@@ -1,0 +1,111 @@
+
+PMID- 12885479
+OWN - NLM
+STAT- MEDLINE
+DCOM- 20030814
+LR  - 20220330
+IS  - 1474-547X (Electronic)
+IS  - 0140-6736 (Linking)
+VI  - 362
+IP  - 9379
+DP  - 2003 Jul 19
+TI  - Validation of the paediatric logistic organ dysfunction (PELOD) score: 
+      prospective, observational, multicentre study.
+PG  - 192-7
+AB  - BACKGROUND: Multiple organ dysfunction syndrome is more frequent than death in 
+      paediatric intensive care units. Estimation of the severity of this syndrome 
+      could be a useful additional outcome measure in clinical trials in such units. We 
+      aimed to validate the paediatric logistic organ dysfunction (PELOD) score and 
+      estimate its validity when recorded daily (dPELOD). METHODS: We did a 
+      prospective, observational, multicentre cohort study in seven multidisciplinary, 
+      tertiary-care paediatric intensive care units of university-affiliated hospitals 
+      (two French, three Canadian, and two Swiss). We included 1806 consecutive 
+      patients (median age 24 months; IQR 5-90). PELOD score includes six organ 
+      dysfunctions and 12 variables and was recorded daily. For each variable, the most 
+      abnormal value each day and during the whole stay were used in calculating the 
+      dPELOD and PELOD scores, respectively. Outcome was vital status at discharge. We 
+      used Hosmer-Lemeshow goodness-of-fit tests to evaluate calibration and areas 
+      under receiver operating characteristic curve (AUC) to estimate discrimination. 
+      FINDINGS: 370 (21%) patients had no organ dysfunction, 471 (26%) had one, 457 
+      (25%) had two, and 508 (28%) had three or more. Case fatality rate was 6.4% (115 
+      deaths). PELOD score was significantly higher in non-survivors (mean 31.0 [SE 
+      1.2]) than survivors (9.4 [0.2]; p<0.0001). Calibration (p=0.54) and 
+      discrimination (AUC=0.91, SE=0.01) of PELOD and dPELOD (p> or =0.39; AUC> or 
+      =0.79) scores were good. INTERPRETATION: PELOD and dPELOD scores are valid 
+      outcome measures of the severity of multiple organ dysfunction syndrome in 
+      paediatric intensive care units; their use should significantly reduce the sample 
+      size required to complete clinical trials in critically ill children.
+FAU - Leteurtre, Stephane
+AU  - Leteurtre S
+AD  - Paediatric Intensive Care Unit, Jeanne de Flandre University Hospital, Lille, 
+      France.
+FAU - Martinot, Alain
+AU  - Martinot A
+FAU - Duhamel, Alain
+AU  - Duhamel A
+FAU - Proulx, Francois
+AU  - Proulx F
+FAU - Grandbastien, Bruno
+AU  - Grandbastien B
+FAU - Cotting, Jacques
+AU  - Cotting J
+FAU - Gottesman, Ronald
+AU  - Gottesman R
+FAU - Joffe, Ari
+AU  - Joffe A
+FAU - Pfenninger, Jurg
+AU  - Pfenninger J
+FAU - Hubert, Philippe
+AU  - Hubert P
+FAU - Lacroix, Jacques
+AU  - Lacroix J
+FAU - Leclerc, Francis
+AU  - Leclerc F
+LA  - eng
+PT  - Comparative Study
+PT  - Journal Article
+PT  - Multicenter Study
+PT  - Research Support, Non-U.S. Gov't
+PL  - England
+TA  - Lancet
+JT  - Lancet (London, England)
+JID - 2985213R
+SB  - IM
+EIN - Lancet. 2006 Mar 18;367(9514):902
+CIN - Lancet. 2003 Jul 19;362(9379):180-1. doi: 10.1016/S0140-6736(03)13948-7. PMID: 
+      12885473
+CIN - Lancet. 2006 Mar 18;367(9514):897; author reply 900-2. doi: 
+      10.1016/S0140-6736(06)68371-2. PMID: 16546531
+EIN - Lancet. 2006 Mar 18;367(9514):897; author reply 900-2. doi: 
+      10.1016/S0140-6736(06)68371-2. PMID: 16546531
+CIN - Lancet. 2006 Sep 30;368(9542):1151; author reply 1151-2. doi: 
+      10.1016/S0140-6736(06)69464-6. PMID: 17011936
+MH  - Adolescent
+MH  - Child
+MH  - Child, Preschool
+MH  - Female
+MH  - Glasgow Coma Scale
+MH  - Hospital Mortality
+MH  - Humans
+MH  - Infant
+MH  - Infant, Newborn
+MH  - Intensive Care Units, Pediatric/*statistics & numerical data
+MH  - Logistic Models
+MH  - Male
+MH  - Medical Records, Problem-Oriented/statistics & numerical data
+MH  - Multiple Organ Failure/*classification/diagnosis/mortality
+MH  - Outcome Assessment, Health Care/methods/statistics & numerical data
+MH  - Physical Examination/statistics & numerical data
+MH  - Prospective Studies
+MH  - Reproducibility of Results
+MH  - Severity of Illness Index
+EDAT- 2003/07/30 05:00
+MHDA- 2003/08/15 05:00
+CRDT- 2003/07/30 05:00
+PHST- 2003/07/30 05:00 [pubmed]
+PHST- 2003/08/15 05:00 [medline]
+PHST- 2003/07/30 05:00 [entrez]
+AID - S0140-6736(03)13908-6 [pii]
+AID - 10.1016/S0140-6736(03)13908-6 [doi]
+PST - ppublish
+SO  - Lancet. 2003 Jul 19;362(9379):192-7. doi: 10.1016/S0140-6736(03)13908-6.

@@ -38,8 +38,8 @@
 \section{Objective}\label{sec:objective}
 
 Provide formal notation for the operational definition of the Phoenix
-Sepsis Score as published in \citet{sanchezpinto_2024_development} and
-\citet{schlapbach_2024_international} along with several exploratory aggregation schemes.  The different
+Sepsis Score as published in \citet{Sanchez-Pinto2024} and
+\citet{Schlapbach2024} along with several exploratory aggregation schemes.  The different
 scoring methods are based on when and how data is aggregated.  The differences
 in the aggregation methods can dramatically change the Phoenix score and the
 published cut point of two or more points for sepsis may not be applicable to
@@ -580,9 +580,9 @@ value is reported at the same time as the \fiotwo or after.
 \end{equation}
 
 Additionally, the SF ratio is valid if the $\spotwo \leq 97.$ This requirement is
-based on the PODIUM~\citep{bembea2022podium,yehya2022podium_respiratory} organ
+based on the PODIUM~\citep{Bembea2022,Yehya2022} organ
 dysfunction scoring, and is an additional requirement on the
-pSOFA~\citep{matics2017psofa} cut points in
+pSOFA~\citep{Matics2017} cut points in
 the scoring.
 \begin{equation}
   \label{eq:sfr}
@@ -624,8 +624,8 @@ where
 
 The PEEP limit of 3~cm H$_2$O is used to limit false positives while limiting false
 negatives.  Similar limits have been used in other criteria.  For example, the
-lung injury score~\citep{martin2001airway} uses a PEEP of 5~cm H$_2$O for 0 points
-and 6-8~cm H$_2$O.  Further, \cite{martin2001airway} states a PEEP of 5~cm H$_2$O and
+lung injury score~\citep{Martin2001} uses a PEEP of 5~cm H$_2$O for 0 points
+and 6-8~cm H$_2$O.  Further, \cite{Martin2001} states a PEEP of 5~cm H$_2$O and
 $\fiotwo < 0.5$ as part of the criteria for identifying patients ready to accept a
 trial of spontaneous breathing.
 
@@ -649,7 +649,7 @@ Then other respiratory support is defined by \eqref{eq:imv-conditions} and \eqre
 \subsubsection{Respiratory Organ Dysfunction Score}\label{sec:resp-odss}
 
 In the development of Phoenix, we used pSOFA respiratory
-scoring\citep{matics2017psofa}. The pSOFA respiratory
+scoring\citep{Matics2017}. The pSOFA respiratory
 scoring does not explicitly require respiratory support to score 1
 point, however, for the Phoenix definition the requirement of some respiratory
 support was made explicit.  It is extremely unlikely that a patient with SFR or
@@ -790,7 +790,7 @@ medications is:
 \end{equation}
 
 This was based on the use of the vasoactive inotrope score
-(VIS)\citep{haque2015association}.  The VIS used the same six vasoactive
+(VIS)\citep{Haque2015}.  The VIS used the same six vasoactive
 medications and based the score on the dosage.  During the development of the
 Phoenix criteria we found some lower resourced sites did not have all six
 medications.  As such, patients at these lower resourced sites had a ceiling on
@@ -1448,7 +1448,7 @@ The ODSS permits organ-dysfunction burden to be summarized independently of
 suspected infection status. However, ODSS is introduced here as a convenience
 measure and has not been evaluated as a standalone clinical score; the Phoenix
 development work evaluated the underlying organ dysfunction score in conjunction
-with suspected infection~\citep{sanchezpinto_2024_development,schlapbach_2024_international}.
+with suspected infection~\citep{Sanchez-Pinto2024,Schlapbach2024}.
 \begin{equation}
   \label{eq:odss}
   % R: score_prepared_phoenix_data(..., aggregation = "jama2024") computes window-level ODSS.
@@ -1499,7 +1499,7 @@ cardiovascular dysfunction in the window $T.$  It must occur with the organ
 dysfunction associated with reaching the sepsis score threshold.
 
 For the published Phoenix Sepsis Criteria
-\citep{sanchezpinto_2024_development,schlapbach_2024_international} the
+\citep{Sanchez-Pinto2024,Schlapbach2024} the
 following parameter values in Table~\ref{tab:phoenix-parameters} were used:
 
 \begin{longtable}{lrl}
@@ -1562,7 +1562,7 @@ underlying data. For any $t \in T$, the carry-forward operator
 $\mathcal{C}[\cdot](t;m)$ can still use measurements recorded before $T$ (even
 at negative times) as long as they fall within the look-back window $m$.
 Conceptually, the ODSS corresponding to the published
-aggregation~\citep{sanchezpinto_2024_development,schlapbach_2024_international}
+aggregation~\citep{Sanchez-Pinto2024,Schlapbach2024}
 is time-aligned: at each time $t$ we sum the organ dysfunction components
 evaluated at that same time, then take the maximum of that sum over $T$. This
 preserves temporal alignment across organ systems, so a high score reflects
@@ -1576,7 +1576,7 @@ PELOD/qPELOD and pSOFA), which motivates the time-decoupled exploratory
 aggregation schemes below. See, for example, daily PELOD scoring using the most
 abnormal value each day and pSOFA evaluations that use maximum/mean daily scores
 or the highest score in fixed time blocks.
-\citep{leteurtre2003pelod,bestati2010pelod,matics2017psofa,badke2025psofa}
+\citep{Leteurtre2003,Bestati2010,Matics2017,Badke2025}
 
 \subsection{Organ-Level Maxima}\label{sec:olm}
 

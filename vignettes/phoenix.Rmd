@@ -30,10 +30,10 @@ packageVersion("phoenix")
 # Development and International Consensus
 
 Details on the development of the diagnostic Phoenix Sepsis Criteria are in
-[@sanchezpinto_2024_development](https://doi.org/10.1001/jama.2024.0196).  This
+[@Sanchez-Pinto2024](https://doi.org/10.1001/jama.2024.0196).  This
 manuscript covers the data-driven and modified Delphi process leading to an
 international consensus for the criteria
-([@schlapbach_2024_international](https://doi.org/10.1001/jama.2024.0179)).
+([@Schlapbach2024](https://doi.org/10.1001/jama.2024.0179)).
 
 This R package provides utilities to quickly and easily apply the Phoenix
 Sepsis scoring rubric to your data sets.
@@ -101,7 +101,7 @@ cat(ftnt, sep = "\n\n")
 # Development of the Criteria
 
 Details on the development of the criteria are described in
-@sanchezpinto_2024_development and @schlapbach_2024_international and end users
+@Sanchez-Pinto2024 and @Schlapbach2024 and end users
 are encouraged to review these papers.  A few general notes about the data and
 use follow.  Additional details are provided in the sections for each organ
 system.
@@ -656,7 +656,7 @@ knitr::kable(phoenix8_scores, format = "html", align = "c")
 # Clinical Vignettes
 
 These are taken from the supplemental material of
-[@sanchezpinto_2024_development](https://doi.org/10.1001/jama.2024.0196).
+[@Sanchez-Pinto2024](https://doi.org/10.1001/jama.2024.0196).
 
 ## Clinical Vignette 1
 
