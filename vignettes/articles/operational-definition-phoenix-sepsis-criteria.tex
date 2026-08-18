@@ -242,15 +242,16 @@ Detailed definitions for the functions will follow in
 
     $\Delta_X(t)$ &
     Staleness of measurement for variable $X$. &
-    $\Delta_X(t)$ is the elapsed time since $\tau_X(t)$.
+    $\Delta_X(t)$ is the elapsed time since $\tau_X(t)$, or $\infty$
+    if $X$ has not been observed.
     Defined in \eqref{eq:staleness}.\\
 
     \rowcolor{gray!20}
     $\mathcal{C}[X](t;m)$ &
     Carry-forward operator returning the most recent value of $X$
     within $m$ minutes of time $t$. &
-    Returns the last observed value of $X$ if $\Delta_X(t) \le m$,
-    otherwise $\mathrm{NA}$.
+    Returns the last observed value of $X$ if $\tau_X(t) \ne
+    \mathrm{NA}$ and $\Delta_X(t) \le m$, otherwise $\mathrm{NA}$.
     Defined in \eqref{eq:carry-forward}.\\
     \\
 
@@ -291,7 +292,6 @@ Detailed definitions for the functions will follow in
     Defined as $\mathrm{SI}(T)\mathrm{ODSS}_{d}
     (T;\boldsymbol{m},\mathrm{Age})$.
     \\
-
 \end{longtable}
 
 Two points are especially important for reading the rest of the
@@ -355,8 +355,10 @@ For any variable $X,$ define the last observation time prior to or at
 $t$ as:
 \begin{equation}
   \label{eq:tau}
-  \tau_{X}(t) \coloneqq \max\left\{s \leq t : X(s) \text{ observed or reported}\right\}, \quad \max \emptyset = \mathrm{NA}.
+  \tau_{X}(t) \coloneqq \max\left\{s \leq t : X(s) \in \boldsymbol{D}\right\},
+  \quad \max \emptyset = \mathrm{NA},
 \end{equation}
+where $\boldsymbol{D}$ is a set, or interval, of valid values.
 
 Define the staleness of the measurement:
 \begin{equation}
@@ -364,7 +366,7 @@ Define the staleness of the measurement:
   \Delta_{X}(t) \coloneqq
     \begin{cases}
       t - \tau_{X}(t) & \tau_X(t) \neq \mathrm{NA} \\
-      \mathrm{NA} & \text{otherwise.}
+      \infty & \text{otherwise.}
     \end{cases}
 \end{equation}
 
@@ -373,9 +375,13 @@ carry-forward when working retrospectively and a look-back limit when working
 prospectively or in real time. For $m \geq 0$ minutes,
 \begin{equation}
   \label{eq:carry-forward}
+  % The explicit tau_X(t) check is needed because some definitions use
+  % m = \infty. For finite m, Delta_X(t) <= m would be sufficient when
+  % missing deltas are defined as \infty.
   \mathcal{C}\left[X\right](t;m)\coloneqq
     \begin{cases}
-      X\left(\tau_{X}(t)\right) & \Delta_{X}(t) \leq m \\
+      X\left(\tau_{X}(t)\right) &
+      \tau_{X}(t) \neq \mathrm{NA} \wedge \Delta_{X}(t) \leq m \\
       \mathrm{NA} & \text{otherwise.}
     \end{cases}
 \end{equation}
@@ -391,10 +397,11 @@ We will use an indicator function that returns 1 or 0:
 \end{equation}
 
 In words: $\tau_X(t)$ tells you when the last measurement happened,
-$\Delta_X(t)$ tells you how old it is, and $\mathcal{C}[X](t;m)$
-returns that last value if it is recent enough (within $m$ minutes);
-otherwise it returns ``missing.'' This is how we prevent using values
-that are too old to reflect current physiology. The indicator
+$\Delta_X(t)$ tells you how old it is, with unobserved values treated as
+infinitely stale, and $\mathcal{C}[X](t;m)$ returns that last value if it
+exists and is recent enough (within $m$ minutes); otherwise it returns
+``missing.'' This is how we prevent using values that are too old to
+reflect current physiology. The indicator
 $\mathbb{I}\{A\}$ then lets us convert logical statements (e.g.,
 ``lactate is at least 5'') into 0/1 points for scoring.
 Because $\mathbb{I}\{\mathrm{NA}\}=0,$ missing or unevaluable component
@@ -438,9 +445,9 @@ time-stamped data, you should arrive at the same score.
 
 The listed patient, laboratory, observation, event, and medication fields are as
 we expect them to appear in the electronic health record. These are inputs, not
-judgments about clinical severity.  We define a domain for the variable. These
-domains are intentionally broad (wider than clinically plausible values) to keep
-data validation separate from scoring.
+judgments about clinical severity.  We define valid values for each variable.
+These valid-value ranges are intentionally broad (wider than clinically
+plausible values) to keep data validation separate from scoring.
 
 \subsection{Respiratory}\label{sec:resp}
 
@@ -470,7 +477,7 @@ Table~\ref{tab:resp-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -549,9 +556,11 @@ both \fiotwo and \paotwo and the relative look-back between the two.
 Specifically, the PFR is only valid when
 \begin{equation}
   \label{eq:pfr-validity}
-  \tau_{\fiotwo}(t) \leq \tau_{\paotwo}(t) \quad \equiv \quad \Delta_{\fiotwo}(t) \geq
+  \tau_{\fiotwo}(t) \leq \tau_{\paotwo}(t).
   \Delta_{\paotwo}(t).
 \end{equation}
+When both measurements have been observed, this is equivalent to
+$\Delta_{\fiotwo}(t) \geq \Delta_{\paotwo}(t)$.
 Conceptually, this restriction is in place to protect from using a
 \paotwo value which was taken \emph{before} the most current \fiotwo
 value. That is, PFR is only valid if the \paotwo value is reported at
@@ -575,9 +584,11 @@ Like the PF ratio, we only consider the SF ratio valid if the \spotwo
 value is reported at the same time as the \fiotwo or after.
 \begin{equation}
   \label{eq:sfr-validity}
-  \tau_{\fiotwo}(t) \leq \tau_{\spotwo}(t) \quad \equiv \quad
+  \tau_{\fiotwo}(t) \leq \tau_{\spotwo}(t).
   \Delta_{\fiotwo}(t) \geq \Delta_{\spotwo}(t).
 \end{equation}
+When both measurements have been observed, this is equivalent to
+$\Delta_{\fiotwo}(t) \geq \Delta_{\spotwo}(t)$.
 
 Additionally, the SF ratio is valid if the $\spotwo \leq 97.$ This requirement is
 based on the PODIUM~\citep{Bembea2022,Yehya2022} organ
@@ -673,9 +684,9 @@ where
   \end{aligned}
 \end{equation}
 
-The domain for the respiratory organ dysfunction score is
+The valid values for the respiratory organ dysfunction score are
 \begin{equation}
-  \label{eq:resp-domain}
+  \label{eq:resp-valid-values}
   \DS{Resp}[\m{resp}] \in \{0, 1, 2, 3\} \quad \forall \m{resp}, t.
 \end{equation}
 
@@ -703,7 +714,7 @@ pressure thresholds). See Table~\ref{tab:card-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -782,10 +793,10 @@ regardless of dose, with a cap of 2 points.
   \mathbb{I}\left\{\mathcal{C}[v](t;\m{vaso}) = 1\right\} \right\}.
 \end{equation}
 
-The domain for the contribution to the cardiovascular score from vasoactive
-medications is:
+The valid values for the contribution to the cardiovascular score from
+vasoactive medications are:
 \begin{equation}
-  \label{eq:vasos-domain}
+  \label{eq:vasos-valid-values}
   \DS{Vasos}[\m{vaso}] \in \{0,1,2\} \quad \forall \m{vaso},t
 \end{equation}
 
@@ -870,6 +881,118 @@ and
     \end{cases}
 \end{equation}
 
+\textcolor{cyan}{
+  \textbf{Possible New Definition}:
+  Use the youngest, within a window, mean arterial pressure.
+  When candidate sources have the same effective timestamp, the prior source
+  hierarchy is used: arterial-line MAP, arterial-line SBP/DBP, cuff MAP, then
+  cuff SBP/DBP. Let
+  \begin{equation}
+    \label{eq:map-current-candidates}
+    \begin{aligned}
+      \widehat{\mathrm{MAP}}_{1}(t; \m{bp})
+        &\coloneqq \mathcal{C}[\mapa](t;\m{bp}), \\
+      \widehat{\mathrm{MAP}}_{2}(t; \m{bp})
+        &\coloneqq
+        \begin{cases}
+          \frac{1}{3}\mathcal{C}[\sbpa](t;\m{bp})
+          + \frac{2}{3}\mathcal{C}[\dbpa](t;\m{bp}) &
+          \begin{aligned}
+            &\mathcal{C}[\sbpa](t;\m{bp}) \ne \mathrm{NA}
+            \wedge \\
+            &\mathcal{C}[\dbpa](t;\m{bp}) \ne \mathrm{NA}
+            \wedge \\
+            &\left\lvert
+            \Delta_{\sbpa}(t) - \Delta_{\dbpa}(t)
+            \right\rvert \leq m_{sbp/dbp}
+          \end{aligned} \\
+          \mathrm{NA} & \text{otherwise,}
+        \end{cases} \\
+      \widehat{\mathrm{MAP}}_{3}(t; \m{bp})
+        &\coloneqq \mathcal{C}[\mapc](t;\m{bp}), \text{ and} \\
+      \widehat{\mathrm{MAP}}_{4}(t; \m{bp})
+        &\coloneqq
+        \begin{cases}
+          \frac{1}{3}\mathcal{C}[\sbpc](t;\m{bp})
+          + \frac{2}{3}\mathcal{C}[\dbpc](t;\m{bp}) &
+          \begin{aligned}
+            &\mathcal{C}[\sbpc](t;\m{bp}) \ne \mathrm{NA}
+            \wedge \\
+            &\mathcal{C}[\dbpc](t;\m{bp}) \ne \mathrm{NA}
+            \wedge \\
+            &\left\lvert
+            \Delta_{\sbpc}(t) - \Delta_{\dbpc}(t)
+            \right\rvert \leq m_{sbp/dbp}
+          \end{aligned} \\
+          \mathrm{NA} & \text{otherwise,}
+        \end{cases}
+    \end{aligned}
+  \end{equation}
+  where $m_{sbp/dbp}$ is a time, in minutes.
+  The effective staleness of each MAP candidate is
+  \begin{equation}
+    \label{eq:map-current-candidate-staleness}
+    \begin{aligned}
+      \delta_{1}(t) &\coloneqq
+        \begin{cases}
+          \Delta_{\mapa}(t) &
+          \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) \ne \mathrm{NA} \\
+          \infty & \text{otherwise,}
+        \end{cases} \\
+      \delta_{2}(t) &\coloneqq
+        \begin{cases}
+          \min\{\Delta_{\sbpa}(t), \Delta_{\dbpa}(t)\} &
+          \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) \ne \mathrm{NA} \\
+          \infty & \text{otherwise,}
+        \end{cases} \\
+      \delta_{3}(t) &\coloneqq
+        \begin{cases}
+          \Delta_{\mapc}(t) &
+          \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) \ne \mathrm{NA} \\
+          \infty & \text{otherwise,}
+        \end{cases} \\
+      \delta_{4}(t) &\coloneqq
+        \begin{cases}
+          \min\{\Delta_{\sbpc}(t), \Delta_{\dbpc}(t)\} &
+          \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) \ne \mathrm{NA} \\
+          \infty & \text{otherwise.}
+        \end{cases}
+    \end{aligned}
+  \end{equation}
+  Then,
+  \begin{equation}
+    \label{eq:map-priority}
+    \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
+    \begin{cases}
+      \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) &
+      \begin{aligned}
+        &\delta_{1}(t) < \infty \quad \wedge \\
+        &\delta_{1}(t) \leq
+        \min\{\delta_{2}(t), \delta_{3}(t), \delta_{4}(t)\} + m_{sbp/dbp}
+      \end{aligned} \\[2.5em]
+      \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) &
+      \begin{aligned}
+        &\delta_{2}(t) < \infty \quad \wedge \\
+        &\delta_{2}(t) < \delta_{1}(t) + m_{sbp/dbp} \quad \wedge \\
+        &\delta_{2}(t) \leq \min\{\delta_{3}(t), \delta_{4}(t)\} + m_{sbp/dbp}
+      \end{aligned} \\[2.5em]
+      \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) &
+      \begin{aligned}
+        &\delta_{3}(t) < \infty \quad \wedge \\
+        &\delta_{3}(t) < \min\{\delta_{1}(t), \delta_{2}(t)\} + m_{sbp/dbp} \quad \wedge \\
+        &\delta_{3}(t) \leq \delta_{4}(t) + m_{sbp/dbp}
+      \end{aligned} \\[2.5em]
+      \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) &
+      \begin{aligned}
+        &\delta_{4}(t) < \infty \quad \wedge \\
+        &\delta_{4}(t) <
+        \min\{\delta_{1}(t), \delta_{2}(t), \delta_{3}(t)\} + m_{sbp/dbp}
+      \end{aligned} \\[2.5em]
+      \mathrm{NA} & \text{otherwise.}
+    \end{cases}
+  \end{equation}
+}
+
 Then, the part of the cardiovascular score based on MAP is:
 \begin{equation}
   \label{eq:map}
@@ -878,9 +1001,9 @@ Then, the part of the cardiovascular score based on MAP is:
     \mathbb{I}\left\{\mathrm{MAP}^{\star}(t; \m{bp}) < \theta_{2}(\mathrm{Age})\right\} +
     \mathbb{I}\left\{\mathrm{MAP}^{\star}(t; \m{bp}) < \theta_{1}(\mathrm{Age})\right\}.
 \end{equation}
-The domain for this component of the cardiovascular dysfunction score is
+The valid values for this component of the cardiovascular dysfunction score are
 \begin{equation}
-  \label{eq:map-domain}
+  \label{eq:map-valid-values}
   \DS{MAP}[\m{bp}, \mathrm{Age}] \in \{0, 1, 2\} \quad \forall \m{bp},t.
 \end{equation}
 
@@ -897,10 +1020,10 @@ used in the cardiovascular dysfunction score is:
     \mathbb{I}\left\{\mathcal{C}[\mathrm{Lactate}](t;\m{lac}) \geq 11\right\}.
 \end{equation}
 That is, one point for a lactate value of at least 5 mmol/L; two points for a
-lactate value of at least 11 mmol/L. The domain for the contribution of lactate
-to the cardiovascular dysfunction score is:
+lactate value of at least 11 mmol/L. The valid values for the contribution of
+lactate to the cardiovascular dysfunction score are:
 \begin{equation}
-  \label{eq:lactate-domain}
+  \label{eq:lactate-valid-values}
   \DS{Lactate}[\m{lac}] \in \{0, 1, 2\} \quad \forall \m{lac},t.
 \end{equation}
 
@@ -918,9 +1041,9 @@ where
   \label{eq:card-component-set}
   \Ccard \coloneqq \left\{\mathrm{Vasos}, \mathrm{MAP}, \mathrm{Lactate}\right\}.
 \end{equation}
-The domain for the cardiovascular dysfunction score is
+The valid values for the cardiovascular dysfunction score are
 \begin{equation}
-  \label{eq:card-domain}
+  \label{eq:card-valid-values}
   \DS{Card}[\m{vaso}, \m{bp}, \m{lac}, \mathrm{Age}]
   \in \{0, 1, 2, 3, 4, 5, 6\} \quad \forall \boldsymbol{m},t.
 \end{equation}
@@ -946,7 +1069,7 @@ and the presence of bilaterally fixed pupils. See Table~\ref{tab:neuro-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
     % R: prepare_gcsmotor()
     \gcs{motor} & Glasgow Coma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ \\
@@ -985,7 +1108,13 @@ artificially lowering the score when only one component is updated.
     \mathcal{C}[\gcs{total}](t;\m{gcs}) & \Delta_{\gcs{total}}(t) < \min_{i \in \boldsymbol{G}} \Delta_{\gcs{i}}(t) \\ \\
     \sum_{i \in \boldsymbol{G}} \mathcal{C}[\gcs{i}](t;\infty) &
     \begin{aligned}
-      & \left[  \Delta_{\gcs{total}}(t) = \mathrm{NA} \vee \min_{i \in \boldsymbol{G}} \Delta_{\gcs{i}}(t) \leq \Delta_{\gcs{total}}(t) \right] \wedge \\
+      & \left[
+        \Delta_{\gcs{total}}(t) = \infty \vee
+        \min_{i \in \boldsymbol{G}} \Delta_{\gcs{i}}(t)
+        \leq \Delta_{\gcs{total}}(t)
+        \right] \wedge \\
+      & \max_{i \in \boldsymbol{G}} \Delta_{\gcs{i}}(t) < \infty
+        \wedge \\
       & \min_{i \in \boldsymbol{G}} \Delta_{\gcs{i}}(t) \leq \m{gcs}
     \end{aligned} \\ \\
     \mathrm{NA} & \text{otherwise,}
@@ -1073,7 +1202,7 @@ platelets, INR, D-dimer, and fibrinogen. See Table~\ref{tab:coag-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
     % R: prepare_platelets()
     Platelets  & Platelets  & Real & 1000 / $\mu$L & $[0, \infty)$ \\
@@ -1149,7 +1278,7 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -1176,9 +1305,9 @@ range contribute zero points.
   \DS{Endo}[\m{endo}] \coloneqq
   \mathbb{I}\left\{\CF{Glucose}[\m{endo}] < 50 \vee \CF{Glucose}[\m{endo}] > 150 \right\}
 \end{equation}
-The domain for the endocrine score is
+The valid values for the endocrine score are
 \begin{equation}
-  \label{eq:endo-domain}
+  \label{eq:endo-valid-values}
   \DS{Endo}[\m{endo}] \in \left\{0, 1\right\}, \quad
   \forall \m{endo}, t.
 \end{equation}
@@ -1201,7 +1330,7 @@ cubic millimeter. See Table~\ref{tab:immu-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -1253,9 +1382,9 @@ Then
   \DS{ANC}[\m{immu}]
     \right\}.
 \end{equation}
-The domain for the immunologic score is
+The valid values for the immunologic score are
 \begin{equation}
-  \label{eq:immu-domain}
+  \label{eq:immu-valid-values}
   \DS{Immu}[\m{immu}] \in \left\{0, 1\right\}, \quad
   \forall \m{immu}, t.
 \end{equation}
@@ -1281,7 +1410,7 @@ Table~\ref{tab:hepatic-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -1332,9 +1461,9 @@ Then
     \DS{ALT}[\m{hepatic}]
     \right\}.
 \end{equation}
-The domain for the hepatic score is
+The valid values for the hepatic score are
 \begin{equation}
-  \label{eq:hepatic-domain}
+  \label{eq:hepatic-valid-values}
   \DS{Hepatic}[\m{hepatic}] \in \left\{0, 1\right\}, \quad
   \forall \m{hepatic}, t.
 \end{equation}
@@ -1359,7 +1488,7 @@ See Table~\ref{tab:renal-ehr}.
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Domain} \\
+    \textbf{Valid values} \\
     \midrule
 
     \rowcolor{gray!20}
