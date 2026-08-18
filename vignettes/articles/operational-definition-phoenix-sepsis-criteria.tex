@@ -351,6 +351,24 @@ i.e., $t=0$ denotes encounter start, $t=32$ is 32 minutes into the encounter,
 and $t=-12$ is 12 minutes before encounter start. The negative times represent
 measurements recorded before encounter start, such as EMS data.
 
+The notation $X(t)$ assumes that $X$ has a single value at each encounter time.
+Raw EHR extracts do not always satisfy this assumption. More than one row may
+exist for the same patient encounter, Phoenix input, and encounter-clock time,
+for example because values were received from multiple source tables or because
+an interface reported an amended value with the same timestamp.
+
+Before the carry-forward definitions below are applied, duplicate raw rows for
+the same Phoenix input and same encounter-clock time are collapsed to one value:
+\begin{equation}
+  \label{eq:duplicate-resolution}
+  X(t) \coloneqq g_X\left(\left\{x : x \text{ was reported for input } X
+  \text{ at time } t\right\}\right),
+\end{equation}
+where $g_X$ is the input-specific duplicate-resolution function. The default
+duplicate-resolution functions are listed with each organ-system EHR input
+table below. Choosing a different $g_X$ changes the operational definition
+of the prepared input stream.
+
 For any variable $X,$ define the last observation time prior to or at
 $t$ as:
 \begin{equation}
@@ -471,41 +489,49 @@ Table~\ref{tab:resp-ehr}.
   \centering
   \caption{EHR Inputs for Respiratory Organ Dysfunction Scoring.}
   \label{tab:resp-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{p{0.8in}p{1.6in}p{0.55in}p{0.55in}p{0.8in}p{0.45in}}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
 
     \rowcolor{gray!20}
+    % R: prepare_fio2()
     \fiotwo &
     Fraction of Inspired Oxygen &
     Real &
     unitless &
-    $[0.21, 1.00]$ \\
+    $[0.21, 1.00]$ &
+    $\max$ \\
 
+    % R: prepare_spo2()
     \spotwo &
     Pulse oximetry oxygen saturation &
     Integer &
     unitless &
-    $\{0, 1, \ldots, 100\}$ \\
+    $\{0, 1, \ldots, 100\}$ &
+    $\min$ \\
 
     \rowcolor{gray!20}
+    % R: prepare_pao2()
     \paotwo &
     Arterial oxygen pressure &
     Real &
     mmHg &
-    $[0, \infty)$ \\
-
+    $[0, \infty)$ &
+    $\min$ \\
     % R: prepare_mean_airway_pressure_ventilator()
     \pawvent &
     Mean Airway Pressure, from a ventilator &
     Real &
     cm H$_2$O &
-    $[0, \infty)$ \\
+    $[0, \infty)$ &
+    $\max$ \\
 
     \rowcolor{gray!20}
     % R: prepare_mean_airway_pressure_hfov()
@@ -513,15 +539,16 @@ Table~\ref{tab:resp-ehr}.
     Mean Airway Pressure, from a HFOV &
     Real &
     cm H$_2$O &
-    $[0, \infty)$ \\
-
+    $[0, \infty)$ &
+    $\max$ \\
     % R: prepare_positive_end_expiratory_pressure()
     \pawpeep &
     Positive end-expiratory pressure &
     Real &
     cm
     H$_2$O &
-    $[0, \infty)$ \\
+    $[0, \infty)$ &
+    $\max$ \\
 
     \rowcolor{gray!20}
     % R: prepare_invasive_mechanical_ventilation_indicator()
@@ -529,13 +556,16 @@ Table~\ref{tab:resp-ehr}.
     Indicator for invasive mechanical ventilation &
     Integer &
     &
-    $\{0, 1\}$ \\
+    $\{0, 1\}$ &
+    $\max$ \\
 
+    % R: prepare_o2support()
     \otwosupport &
     Any non-invasive oxygen support &
     Integer &
     &
-    $\{0, 1\}$ \\
+    $\{0, 1\}$ &
+    $\max$ \\
 
     \bottomrule
   \end{tabular}
@@ -708,53 +738,55 @@ pressure thresholds). See Table~\ref{tab:card-ehr}.
   \centering
   \caption{EHR Inputs for Cardiovascular Organ Dysfunction Scoring.}
   \label{tab:card-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{p{1.0in}p{1.4in}p{0.55in}p{0.55in}p{0.8in}p{0.45in}}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
 
     \rowcolor{gray!20}
     % R: prepare_dobutamine()
-    Dobutamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    Dobutamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ & $\max$ \\
     % R: prepare_dopamine()
-    Dopamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    Dopamine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ & $\max$ \\
     \rowcolor{gray!20}
     % R: prepare_epinephrine()
-    Epinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    Epinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ & $\max$ \\
     % R: prepare_milrinone()
-    Milrinone & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    Milrinone & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ & $\max$ \\
     \rowcolor{gray!20}
     % R: prepare_norepinephrine()
-    Norepinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    Norepinephrine & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ & $\max$ \\
     % R: prepare_vasopressin()
-    Vasopressin & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ \\
+    Vasopressin & Indicator of systemic use of vasoactive medication & Integer & -- & $\{0, 1\}$ & $\max$ \\
 
     \rowcolor{gray!20}
     % R: prepare_lactate()
-    Lactate & Lactate & Real & mmol / L & $[0, \infty)$ \\
+    Lactate & Lactate & Real & mmol / L & $[0, \infty)$ & $\max$ \\
 
     % R: prepare_sbp_cuff()
-    \sbpc & systolic blood pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
+    \sbpc & systolic blood pressure reported from a cuff & Real & mmHg & $[0, \infty)$ & $\max$ \\
     \rowcolor{gray!20}
     % R: prepare_dbp_cuff()
-    \dbpc & diastolic blood pressure reported from a cuff & Real & mmHg & $[1, 200]$ \\
+    \dbpc & diastolic blood pressure reported from a cuff & Real & mmHg & $[1, 200]$ & $\max$ \\
     % R: prepare_mean_arterial_pressure_cuff()
-    \mapc & mean arterial pressure reported from a cuff & Real & mmHg & $[0, \infty)$ \\
+    \mapc & mean arterial pressure reported from a cuff & Real & mmHg & $[0, \infty)$ & $\max$ \\
     \rowcolor{gray!20}
     % R: prepare_sbp_arterial()
-    \sbpa & systolic blood pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
+    \sbpa & systolic blood pressure reported from arterial line & Real & mmHg & $[0, \infty)$ & $\max$ \\
     % R: prepare_dbp_arterial()
-    \dbpa & diastolic blood pressure reported from arterial line & Real & mmHg & $[1, 200]$ \\
+    \dbpa & diastolic blood pressure reported from arterial line & Real & mmHg & $[1, 200]$ & $\max$ \\
     \rowcolor{gray!20}
     % R: prepare_mean_arterial_pressure_arterial()
-    \mapa & mean arterial pressure reported from arterial line & Real & mmHg & $[0, \infty)$ \\
+    \mapa & mean arterial pressure reported from arterial line & Real & mmHg & $[0, \infty)$ & $\max$ \\
 
     % R: prepare_age()
-    Age & Patient's age & Real & months & $[0, 216)$ \\
+    Age & Patient's age & Real & months & $[0, 216)$ & $\min$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -961,7 +993,7 @@ and
   \end{equation}
   Then,
   \begin{equation}
-    \label{eq:map-priority}
+    \label{eq:map-current-priority}
     \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
     \begin{cases}
       \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) &
@@ -1063,24 +1095,26 @@ and the presence of bilaterally fixed pupils. See Table~\ref{tab:neuro-ehr}.
   \centering
   \caption{EHR Inputs for Neurological Organ Dysfunction Scoring.}
   \label{tab:neuro-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{llllll}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
     % R: prepare_gcsmotor()
-    \gcs{motor} & Glasgow Coma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ \\
+    \gcs{motor} & Glasgow Coma Motor Score & Integer & unitless & $\{1, 2, 3, 4, 5, 6\}$ & $\max$ \\
     % R: prepare_gcseye()
-    \gcs{eye} & Glasgow Coma Eye Score & Integer & unitless & $\{1, 2, 3, 4\}$ \\
+    \gcs{eye} & Glasgow Coma Eye Score & Integer & unitless & $\{1, 2, 3, 4\}$ & $\max$ \\
     % R: prepare_gcsverbal()
-    \gcs{verbal} & Glasgow Coma Verbal Score & Integer & unitless & $\{1, 2, 3, 4, 5\}$ \\
+    \gcs{verbal} & Glasgow Coma Verbal Score & Integer & unitless & $\{1, 2, 3, 4, 5\}$ & $\max$ \\
     % R: prepare_gcstotal()
-    \gcs{total} & Total Glasgow Coma Score & Integer & unitless & $\{3, 4, \ldots, 15\}$ \\
+    \gcs{total} & Total Glasgow Coma Score & Integer & unitless & $\{3, 4, \ldots, 15\}$ & $\max$ \\
     % R: prepare_pupils(); prepare_pupilleft() and prepare_pupilright() can also construct FIXEDPUPILS in prepare_phoenix_data().
-    Pupils & Bilaterally fixed pupils & Integer & & $\{0, 1\}$ \\
+    Pupils & Bilaterally fixed pupils & Integer & & $\{0, 1\}$ & $\max$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1196,22 +1230,24 @@ platelets, INR, D-dimer, and fibrinogen. See Table~\ref{tab:coag-ehr}.
   \centering
   \caption{EHR Inputs for Coagulation Organ Dysfunction Scoring.}
   \label{tab:coag-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{llllll}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
     % R: prepare_platelets()
-    Platelets  & Platelets  & Real & 1000 / $\mu$L & $[0, \infty)$ \\
+    Platelets  & Platelets  & Real & 1000 / $\mu$L & $[0, \infty)$ & $\max$ \\
     % R: prepare_inr()
-    INR        & INR        & Real & unitless      & $[0, \infty)$ \\
+    INR        & INR        & Real & unitless      & $[0, \infty)$ & $\max$ \\
     % R: prepare_ddimer()
-    DDimer     & D-Dimer    & Real & mg/L (FEU)    & $[0, \infty)$ \\
+    DDimer     & D-Dimer    & Real & mg/L (FEU)    & $[0, \infty)$ & $\max$ \\
     % R: prepare_fibrinogen()
-    Fibrinogen & Fibrinogen & Real & mg/dL         & $[0, \infty)$ \\
+    Fibrinogen & Fibrinogen & Real & mg/dL         & $[0, \infty)$ & $\max$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1272,13 +1308,15 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
   \centering
   \caption{EHR Inputs for Endocrine Organ Dysfunction Scoring.}
   \label{tab:endo-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{llllll}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -1287,7 +1325,8 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
     Blood Glucose &
     Real &
     mg/dL &
-    $[0, \infty)$ \\
+    $[0, \infty)$ &
+    $\max$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1324,13 +1363,15 @@ cubic millimeter. See Table~\ref{tab:immu-ehr}.
   \centering
   \caption{EHR Inputs for Immunologic Organ Dysfunction Scoring.}
   \label{tab:immu-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{llllll}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -1339,14 +1380,15 @@ cubic millimeter. See Table~\ref{tab:immu-ehr}.
     Absolute neutrophil count &
     Real &
     1000 cells / mm$^3$ &
-    $[0, \infty)$ \\
-
+    $[0, \infty)$ &
+    $\min$ \\
     % R: prepare_alc()
     ALC &
     Absolute lymphocyte count &
     Real &
     1000 cells / mm$^3$ &
-    $[0, \infty)$ \\
+    $[0, \infty)$ &
+    $\min$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1404,13 +1446,15 @@ Table~\ref{tab:hepatic-ehr}.
   \centering
   \caption{EHR Inputs for Hepatic Organ Dysfunction Scoring.}
   \label{tab:hepatic-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{llllll}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -1419,14 +1463,15 @@ Table~\ref{tab:hepatic-ehr}.
     Total bilirubin &
     Real &
     mg/dL &
-    $[0, \infty)$ \\
-
+    $[0, \infty)$ &
+    $\max$ \\
     % R: prepare_alt()
     ALT &
     Alanine aminotransferase &
     Real &
     IU / L &
-    $[0, \infty)$ \\
+    $[0, \infty)$ &
+    $\max$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1482,13 +1527,15 @@ See Table~\ref{tab:renal-ehr}.
   \centering
   \caption{EHR Inputs for Renal Organ Dysfunction Scoring.}
   \label{tab:renal-ehr}
-  \begin{tabular}{lllll}
+  \small
+  \begin{tabular}{llllll}
     \toprule
     \textbf{Variable} &
     \textbf{Description} &
     \textbf{Type} &
     \textbf{Units} &
-    \textbf{Valid values} \\
+    \textbf{Valid values} &
+    \textbf{$g_X$} \\
     \midrule
 
     \rowcolor{gray!20}
@@ -1497,10 +1544,10 @@ See Table~\ref{tab:renal-ehr}.
     Creatinine &
     Real &
     mg / dL &
-    $[0, \infty)$ \\
-
+    $[0, \infty)$ &
+    $\max$ \\
     % R: prepare_age()
-    Age & Patient's age & Real & months & $[0, 216)$ \\
+    Age & Patient's age & Real & months & $[0, 216)$ & $\min$ \\
     \bottomrule
   \end{tabular}
 \end{table}
