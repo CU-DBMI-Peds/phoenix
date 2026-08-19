@@ -257,6 +257,148 @@ stopifnot(
 )
 
 ###############################################################################
+# MAP selection should preserve the original source-priority behavior by default,
+# but allow freshness-first selection and SBP/DBP pairing limits when requested.
+map_base <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = 0,
+    value = 40,
+    stringsAsFactors = FALSE
+  )
+map_newer <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = 50,
+    value = 60,
+    stringsAsFactors = FALSE
+  )
+
+mapa_df <- map_base
+mapc_df <- map_newer
+names(mapa_df)[names(mapa_df) == "value"] <- "mapa"
+names(mapc_df)[names(mapc_df) == "value"] <- "mapc"
+
+prepared_mapa <-
+  prepare_mean_arterial_pressure_arterial(
+    x = mapa_df,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "mapa",
+    verbose = FALSE
+  )
+prepared_mapc <-
+  prepare_mean_arterial_pressure_cuff(
+    x = mapc_df,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "mapc",
+    verbose = FALSE
+  )
+
+map_original <-
+  prepare_phoenix_data(
+    mean_arterial_pressure_arterial = prepared_mapa,
+    mean_arterial_pressure_cuff = prepared_mapc,
+    bp.lookback = 360,
+    verbose = FALSE
+  )
+map_original <-
+  sort_phxdata(map_original, id.vars = id.vars, eclock = eclock)
+idx_50 <- which(map_original[[eclock]] == 50)
+stopifnot(
+  identical(map_original[["MAP"]][idx_50], 40),
+  identical(map_original[["MAP_source"]][idx_50], "MAPA"),
+  isTRUE(all.equal(map_original[["MAP_eclock"]][idx_50], 0))
+)
+
+map_fresh <-
+  prepare_phoenix_data(
+    mean_arterial_pressure_arterial = prepared_mapa,
+    mean_arterial_pressure_cuff = prepared_mapc,
+    bp.lookback = 360,
+    map.delta = 0,
+    verbose = FALSE
+  )
+map_fresh <- sort_phxdata(map_fresh, id.vars = id.vars, eclock = eclock)
+idx_50 <- which(map_fresh[[eclock]] == 50)
+stopifnot(
+  identical(map_fresh[["MAP"]][idx_50], 60),
+  identical(map_fresh[["MAP_source"]][idx_50], "MAPC"),
+  isTRUE(all.equal(map_fresh[["MAP_eclock"]][idx_50], 50))
+)
+
+sbp_df <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = 10,
+    sbpa = 90,
+    stringsAsFactors = FALSE
+  )
+dbp_df <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = 50,
+    dbpa = 30,
+    stringsAsFactors = FALSE
+  )
+prepared_sbpa <-
+  prepare_sbp_arterial(
+    x = sbp_df,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "sbpa",
+    verbose = FALSE
+  )
+prepared_dbpa <-
+  prepare_dbp_arterial(
+    x = dbp_df,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "dbpa",
+    verbose = FALSE
+  )
+
+map_from_old_pair <-
+  prepare_phoenix_data(
+    sbp_arterial = prepared_sbpa,
+    dbp_arterial = prepared_dbpa,
+    bp.lookback = 360,
+    verbose = FALSE
+  )
+map_from_old_pair <-
+  sort_phxdata(map_from_old_pair, id.vars = id.vars, eclock = eclock)
+idx_50 <- which(map_from_old_pair[[eclock]] == 50)
+stopifnot(
+  isTRUE(all.equal(map_from_old_pair[["MAP"]][idx_50], 50)),
+  identical(map_from_old_pair[["MAP_source"]][idx_50], "SBPA_DBPA")
+)
+
+map_reject_old_pair <-
+  prepare_phoenix_data(
+    sbp_arterial = prepared_sbpa,
+    dbp_arterial = prepared_dbpa,
+    bp.lookback = 360,
+    map.sdbp.delta = 0,
+    verbose = FALSE
+  )
+map_reject_old_pair <-
+  sort_phxdata(map_reject_old_pair, id.vars = id.vars, eclock = eclock)
+idx_50 <- which(map_reject_old_pair[[eclock]] == 50)
+stopifnot(
+  is.na(map_reject_old_pair[["MAP"]][idx_50]),
+  is.na(map_reject_old_pair[["MAP_source"]][idx_50])
+)
+
+###############################################################################
 # All prepared inputs must agree on id.vars.
 mismatch_id_source <- spo2_df
 mismatch_id_prepared <-

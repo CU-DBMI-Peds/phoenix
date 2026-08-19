@@ -586,8 +586,8 @@ both \fiotwo and \paotwo and the relative look-back between the two.
 Specifically, the PFR is only valid when
 \begin{equation}
   \label{eq:pfr-validity}
-  \tau_{\fiotwo}(t) \leq \tau_{\paotwo}(t).
-  \Delta_{\paotwo}(t).
+  \tau_{\fiotwo}(t) \leq \tau_{\paotwo}(t) \quad \equiv \quad
+  \Delta_{\fiotwo}(t) \geq \Delta_{\paotwo}(t).
 \end{equation}
 When both measurements have been observed, this is equivalent to
 $\Delta_{\fiotwo}(t) \geq \Delta_{\paotwo}(t)$.
@@ -614,7 +614,7 @@ Like the PF ratio, we only consider the SF ratio valid if the \spotwo
 value is reported at the same time as the \fiotwo or after.
 \begin{equation}
   \label{eq:sfr-validity}
-  \tau_{\fiotwo}(t) \leq \tau_{\spotwo}(t).
+  \tau_{\fiotwo}(t) \leq \tau_{\spotwo}(t) \quad \equiv \quad
   \Delta_{\fiotwo}(t) \geq \Delta_{\spotwo}(t).
 \end{equation}
 When both measurements have been observed, this is equivalent to
@@ -844,45 +844,205 @@ and low- resourced sites.
 
 \paragraph{Mean Arterial Pressure (MAP)}
 
-Mean arterial pressure (MAP) is non-trivial to define. We have limits
-based on age (in months) and a hierarchy for the preferable source of
-information used to define the MAP. In practice, MAP may be recorded
-directly or inferred from systolic and diastolic pressures. We
-prioritize arterial line measurements when available because they are
-more reliable in unstable patients, then fall back to cuff measurements.
+Mean arterial pressure (MAP) is non-trivial to define. We have limits based on
+age (in months) and a hierarchy for the preferable source of information used to
+define the MAP. In practice, MAP may be recorded directly or inferred from
+systolic and diastolic pressures. We prioritize youngest measurements, within a
+tolerance, and prioritize arterial line measurements when available because they
+are more reliable in unstable patients, then fall back to cuff measurements.
 
-The hierarchy for the pressure: use the MAP from an arterial line
-(\mapa) first. If that is not available, then approximate using systolic and
-diastolic values reported from the arterial line.
-\sbpa and \dbpa. If none of the arterial line values are
-available, then use values from a cuff preferentially taking a reported mean
-arterial pressure, \mapc, and lastly, approximate via \sbpc and
-\dbpc. The approximated MAP values use the separately carried-forward systolic
-and diastolic pressures within the blood-pressure look-back window; systolic and
-diastolic pressures are not required to have been recorded at the same time.
-That is, let
-\begin{equation}
-  \label{eq:map-candidates}
-  \begin{aligned}
-    \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) &\coloneqq \mathcal{C}[\mapa](t;\m{bp}), \\
-    \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) &\coloneqq \frac{1}{3}\mathcal{C}[\sbpa](t;\m{bp}) + \frac{2}{3}\mathcal{C}[\dbpa](t;\m{bp}), \\
-    \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) &\coloneqq \mathcal{C}[\mapc](t;\m{bp}), \text{ and} \\
-    \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) &\coloneqq \frac{1}{3}\mathcal{C}[\sbpc](t;\m{bp}) + \frac{2}{3}\mathcal{C}[\dbpc](t;\m{bp}).
+%%% NOTE: The following was the write up for the way MAP was dealt with when
+%%% building Phoenix.  The updated method allows for additional flexability and
+%%% prospective/real-time use.
+%%%
+%%% The hierarchy for the pressure: use the MAP from an arterial line
+%%% (\mapa) first. If that is not available, then approximate using systolic and
+%%% diastolic values reported from the arterial line.
+%%% \sbpa and \dbpa. If none of the arterial line values are
+%%% available, then use values from a cuff preferentially taking a reported mean
+%%% arterial pressure, \mapc, and lastly, approximate via \sbpc and
+%%% \dbpc. The approximated MAP values use the separately carried-forward systolic
+%%% and diastolic pressures within the blood-pressure look-back window; systolic and
+%%% diastolic pressures are not required to have been recorded at the same time.
+%%% That is, let
+%%% \begin{equation}
+%%%   \label{eq:map-candidates}
+%%%   \begin{aligned}
+%%%     \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) &\coloneqq \mathcal{C}[\mapa](t;\m{bp}), \\
+%%%     \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) &\coloneqq \frac{1}{3}\mathcal{C}[\sbpa](t;\m{bp}) + \frac{2}{3}\mathcal{C}[\dbpa](t;\m{bp}), \\
+%%%     \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) &\coloneqq \mathcal{C}[\mapc](t;\m{bp}), \text{ and} \\
+%%%     \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) &\coloneqq \frac{1}{3}\mathcal{C}[\sbpc](t;\m{bp}) + \frac{2}{3}\mathcal{C}[\dbpc](t;\m{bp}).
+%%%   \end{aligned}
+%%% \end{equation}
+%%% Then
+%%% \begin{equation}
+%%%   \label{eq:map-priority}
+%%%   \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
+%%%   \begin{cases}
+%%%     \widehat{\mathrm{MAP}}_{i^{\ast}}(t; \m{bp}) &
+%%%     \begin{aligned}
+%%%       & \text{if } \exists i^{\ast} \in \left\{1, 2, 3, 4\right\} \text{ where} \\
+%%%       & i^{\ast} \coloneqq \min \left\{i \in \left\{1, 2, 3, 4\right\}: \widehat{\mathrm{MAP}}_{i}(t; \m{bp}) \ne \mathrm{NA} \right\} \\
+%%%     \end{aligned} \\
+%%%     \mathrm{NA} & \text{otherwise.}
+%%%   \end{cases}
+%%% \end{equation}
+
+Use the youngest, within a window, mean arterial pressure.
+  \begin{equation}
+    \label{eq:map-current-candidates}
+    % R: prepare_phoenix_data(..., map.sdbp.delta) constructs candidate MAP
+    %    values in select_map_candidate().
+    \begin{aligned}
+    \widehat{\mathrm{MAP}}_{1}(t; \m{bp})
+      &\coloneqq \mathcal{C}[\mapa](t;\m{bp}), \\
+    \widehat{\mathrm{MAP}}_{2}(t; \m{bp})
+      &\coloneqq
+      \begin{cases}
+        \frac{1}{3}\mathcal{C}[\sbpa](t;\m{bp})
+        + \frac{2}{3}\mathcal{C}[\dbpa](t;\m{bp}) &
+        \begin{aligned}
+          &\mathcal{C}[\sbpa](t;\m{bp}) \ne \mathrm{NA}
+          \wedge \\
+          &\mathcal{C}[\dbpa](t;\m{bp}) \ne \mathrm{NA}
+          \wedge \\
+          &\left\lvert
+          \Delta_{\sbpa}(t) - \Delta_{\dbpa}(t)
+          \right\rvert \leq \delta_{\mathrm{sdbp}}
+        \end{aligned} \\
+        \mathrm{NA} & \text{otherwise,}
+      \end{cases} \\
+    \widehat{\mathrm{MAP}}_{3}(t; \m{bp})
+      &\coloneqq \mathcal{C}[\mapc](t;\m{bp}), \text{ and} \\
+    \widehat{\mathrm{MAP}}_{4}(t; \m{bp})
+      &\coloneqq
+      \begin{cases}
+        \frac{1}{3}\mathcal{C}[\sbpc](t;\m{bp})
+        + \frac{2}{3}\mathcal{C}[\dbpc](t;\m{bp}) &
+        \begin{aligned}
+          &\mathcal{C}[\sbpc](t;\m{bp}) \ne \mathrm{NA}
+          \wedge \\
+          &\mathcal{C}[\dbpc](t;\m{bp}) \ne \mathrm{NA}
+          \wedge \\
+          &\left\lvert
+          \Delta_{\sbpc}(t) - \Delta_{\dbpc}(t)
+          \right\rvert \leq \delta_{\mathrm{sdbp}}
+        \end{aligned} \\
+        \mathrm{NA} & \text{otherwise,}
+      \end{cases}
   \end{aligned}
 \end{equation}
-Then
-\begin{equation}
-  \label{eq:map-priority}
-  \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
-  \begin{cases}
-    \widehat{\mathrm{MAP}}_{i^{\ast}}(t; \m{bp}) &
+where $\delta_{\mathrm{sdbp}}$ is the maximum allowed time difference, in
+minutes, between systolic and diastolic pressures used to estimate MAP.
+The effective staleness of each MAP candidate is
+  \begin{equation}
+    \label{eq:map-current-candidate-staleness}
+    % R: prepare_phoenix_data() computes eta_i(t) as candidate effective
+    %    staleness in select_map_candidate().
     \begin{aligned}
-      & \text{if } \exists i^{\ast} \in \left\{1, 2, 3, 4\right\} \text{ where} \\
-      & i^{\ast} \coloneqq \min \left\{i \in \left\{1, 2, 3, 4\right\}: \widehat{\mathrm{MAP}}_{i}(t; \m{bp}) \ne \mathrm{NA} \right\} \\
-    \end{aligned} \\
+    \eta_{1}(t) &\coloneqq
+      \begin{cases}
+        \Delta_{\mapa}(t) &
+        \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) \ne \mathrm{NA} \\
+        \infty & \text{otherwise,}
+      \end{cases} \\
+    \eta_{2}(t) &\coloneqq
+      \begin{cases}
+        \min\{\Delta_{\sbpa}(t), \Delta_{\dbpa}(t)\} &
+        \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) \ne \mathrm{NA} \\
+        \infty & \text{otherwise,}
+      \end{cases} \\
+    \eta_{3}(t) &\coloneqq
+      \begin{cases}
+        \Delta_{\mapc}(t) &
+        \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) \ne \mathrm{NA} \\
+        \infty & \text{otherwise,}
+      \end{cases} \\
+    \eta_{4}(t) &\coloneqq
+      \begin{cases}
+        \min\{\Delta_{\sbpc}(t), \Delta_{\dbpc}(t)\} &
+        \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) \ne \mathrm{NA} \\
+        \infty & \text{otherwise.}
+      \end{cases}
+  \end{aligned}
+\end{equation}
+Then, let $\delta_{\mathrm{MAP}}$ denote the MAP candidate freshness value, in
+minutes, used to decide when candidate sources are treated as having similar
+freshness and the source hierarchy should break the tie.
+  \begin{equation}
+    \label{eq:map-current-priority}
+    % R: prepare_phoenix_data(..., map.delta) chooses MAP-star in
+    %    select_map_candidate().
+    \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
+  \begin{cases}
+    \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) &
+    \begin{aligned}
+      &\eta_{1}(t) < \infty \quad \wedge \\
+      &\eta_{1}(t) \leq
+      \min\{\eta_{2}(t), \eta_{3}(t), \eta_{4}(t)\} + \delta_{\mathrm{MAP}}
+    \end{aligned} \\[2.5em]
+    \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) &
+    \begin{aligned}
+      &\eta_{2}(t) < \infty \quad \wedge \\
+      &\eta_{2}(t) < \eta_{1}(t) + \delta_{\mathrm{MAP}} \quad \wedge \\
+      &\eta_{2}(t) \leq \min\{\eta_{3}(t), \eta_{4}(t)\} + \delta_{\mathrm{MAP}}
+    \end{aligned} \\[2.5em]
+    \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) &
+    \begin{aligned}
+      &\eta_{3}(t) < \infty \quad \wedge \\
+      &\eta_{3}(t) < \min\{\eta_{1}(t), \eta_{2}(t)\} + \delta_{\mathrm{MAP}} \quad \wedge \\
+      &\eta_{3}(t) \leq \eta_{4}(t) + \delta_{\mathrm{MAP}}
+    \end{aligned} \\[2.5em]
+    \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) &
+    \begin{aligned}
+      &\eta_{4}(t) < \infty \quad \wedge \\
+      &\eta_{4}(t) <
+      \min\{\eta_{1}(t), \eta_{2}(t), \eta_{3}(t)\} + \delta_{\mathrm{MAP}}
+    \end{aligned} \\[2.5em]
     \mathrm{NA} & \text{otherwise.}
   \end{cases}
 \end{equation}
+\subparagraph{Plain English}
+  Goal: At one score time, choose one MAP value to use for Phoenix scoring.
+  MAP can come from four places:
+  \begin{enumerate}
+    \item Arterial-line MAP measured directly.
+    \item Arterial-line MAP calculated from arterial SBP and DBP.
+    \item Cuff MAP measured directly.
+    \item Cuff MAP calculated from cuff SBP and DBP.
+  \end{enumerate}
+
+%%% NOTE:  The step-by-step is part needs clean up.  Keep here for now as a
+%%%        comment.  If this goes in here, more step-by-step sections will need
+%%%        to be writen.
+%%%
+%%% Step-By-Step Instructions:
+%%% \begin{enumerate}
+%%%   \item Pick the score time. Example: ``We are scoring the patient at 10:15.''
+%%%   \item Look back only as far as the blood-pressure look-back window allows. For published Phoenix, this is 6 hours.
+%%%   \item Find the most recent arterial-line MAP within that window. If there is one, call it Candidate 1.
+%%%   \item Find the most recent arterial-line SBP and arterial-line DBP within that window.
+%%%   \item Only use arterial SBP and DBP to calculate MAP if they were recorded close enough together. If they are too far apart in time, do not use them together.
+%%%   \item If arterial SBP and DBP can be used together, calculate: MAP = one third SBP + two thirds DBP. Call this Candidate 2.
+%%%   \item Find the most recent cuff MAP within the window. If there is one, call it Candidate 3.
+%%%   \item Find the most recent cuff SBP and cuff DBP within the window.
+%%%   \item Only use cuff SBP and DBP to calculate MAP if they were recorded close enough together. If they are too far apart in time, do not use them together.
+%%%   \item If cuff SBP and DBP can be used together, calculate: MAP = one third SBP + two thirds DBP. Call this Candidate 4.
+%%%   \item For each candidate, figure out how old it is at the score time.
+%%%   \item Ignore any candidate that does not exist.
+%%%   \item Choose the candidate that is newest.
+%%%   \item If two candidates are equally new, or close enough to be treated as equally new, use this tie-breaker order:
+%%%     \begin{enumerate}
+%%%       \item Arterial-line MAP measured directly.
+%%%       \item Arterial-line MAP calculated from arterial SBP and DBP.
+%%%       \item Cuff MAP measured directly.
+%%%       \item Cuff MAP calculated from cuff SBP and DBP.
+%%%     \end{enumerate}
+%%%   \item The winner is the MAP value used for Phoenix scoring.
+%%%   \item If there are no usable candidates, then MAP is missing and gives 0 MAP points.
+%%% \end{enumerate}
+%%% Simple Rule To Remember: Use the newest usable MAP. If there is a tie, or a near-tie within the chosen freshness tolerance, prefer arterial over cuff, and
+%%% prefer directly measured MAP over calculated MAP.
 
 The limits for the MAP are based on age (in months). Age-based
 thresholds reflect pediatric physiology: younger patients have lower
@@ -913,117 +1073,6 @@ and
     \end{cases}
 \end{equation}
 
-\textcolor{cyan}{
-  \textbf{Possible New Definition}:
-  Use the youngest, within a window, mean arterial pressure.
-  When candidate sources have the same effective timestamp, the prior source
-  hierarchy is used: arterial-line MAP, arterial-line SBP/DBP, cuff MAP, then
-  cuff SBP/DBP. Let
-  \begin{equation}
-    \label{eq:map-current-candidates}
-    \begin{aligned}
-      \widehat{\mathrm{MAP}}_{1}(t; \m{bp})
-        &\coloneqq \mathcal{C}[\mapa](t;\m{bp}), \\
-      \widehat{\mathrm{MAP}}_{2}(t; \m{bp})
-        &\coloneqq
-        \begin{cases}
-          \frac{1}{3}\mathcal{C}[\sbpa](t;\m{bp})
-          + \frac{2}{3}\mathcal{C}[\dbpa](t;\m{bp}) &
-          \begin{aligned}
-            &\mathcal{C}[\sbpa](t;\m{bp}) \ne \mathrm{NA}
-            \wedge \\
-            &\mathcal{C}[\dbpa](t;\m{bp}) \ne \mathrm{NA}
-            \wedge \\
-            &\left\lvert
-            \Delta_{\sbpa}(t) - \Delta_{\dbpa}(t)
-            \right\rvert \leq m_{sbp/dbp}
-          \end{aligned} \\
-          \mathrm{NA} & \text{otherwise,}
-        \end{cases} \\
-      \widehat{\mathrm{MAP}}_{3}(t; \m{bp})
-        &\coloneqq \mathcal{C}[\mapc](t;\m{bp}), \text{ and} \\
-      \widehat{\mathrm{MAP}}_{4}(t; \m{bp})
-        &\coloneqq
-        \begin{cases}
-          \frac{1}{3}\mathcal{C}[\sbpc](t;\m{bp})
-          + \frac{2}{3}\mathcal{C}[\dbpc](t;\m{bp}) &
-          \begin{aligned}
-            &\mathcal{C}[\sbpc](t;\m{bp}) \ne \mathrm{NA}
-            \wedge \\
-            &\mathcal{C}[\dbpc](t;\m{bp}) \ne \mathrm{NA}
-            \wedge \\
-            &\left\lvert
-            \Delta_{\sbpc}(t) - \Delta_{\dbpc}(t)
-            \right\rvert \leq m_{sbp/dbp}
-          \end{aligned} \\
-          \mathrm{NA} & \text{otherwise,}
-        \end{cases}
-    \end{aligned}
-  \end{equation}
-  where $m_{sbp/dbp}$ is a time, in minutes.
-  The effective staleness of each MAP candidate is
-  \begin{equation}
-    \label{eq:map-current-candidate-staleness}
-    \begin{aligned}
-      \delta_{1}(t) &\coloneqq
-        \begin{cases}
-          \Delta_{\mapa}(t) &
-          \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) \ne \mathrm{NA} \\
-          \infty & \text{otherwise,}
-        \end{cases} \\
-      \delta_{2}(t) &\coloneqq
-        \begin{cases}
-          \min\{\Delta_{\sbpa}(t), \Delta_{\dbpa}(t)\} &
-          \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) \ne \mathrm{NA} \\
-          \infty & \text{otherwise,}
-        \end{cases} \\
-      \delta_{3}(t) &\coloneqq
-        \begin{cases}
-          \Delta_{\mapc}(t) &
-          \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) \ne \mathrm{NA} \\
-          \infty & \text{otherwise,}
-        \end{cases} \\
-      \delta_{4}(t) &\coloneqq
-        \begin{cases}
-          \min\{\Delta_{\sbpc}(t), \Delta_{\dbpc}(t)\} &
-          \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) \ne \mathrm{NA} \\
-          \infty & \text{otherwise.}
-        \end{cases}
-    \end{aligned}
-  \end{equation}
-  Then,
-  \begin{equation}
-    \label{eq:map-current-priority}
-    \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
-    \begin{cases}
-      \widehat{\mathrm{MAP}}_{1}(t; \m{bp}) &
-      \begin{aligned}
-        &\delta_{1}(t) < \infty \quad \wedge \\
-        &\delta_{1}(t) \leq
-        \min\{\delta_{2}(t), \delta_{3}(t), \delta_{4}(t)\} + m_{sbp/dbp}
-      \end{aligned} \\[2.5em]
-      \widehat{\mathrm{MAP}}_{2}(t; \m{bp}) &
-      \begin{aligned}
-        &\delta_{2}(t) < \infty \quad \wedge \\
-        &\delta_{2}(t) < \delta_{1}(t) + m_{sbp/dbp} \quad \wedge \\
-        &\delta_{2}(t) \leq \min\{\delta_{3}(t), \delta_{4}(t)\} + m_{sbp/dbp}
-      \end{aligned} \\[2.5em]
-      \widehat{\mathrm{MAP}}_{3}(t; \m{bp}) &
-      \begin{aligned}
-        &\delta_{3}(t) < \infty \quad \wedge \\
-        &\delta_{3}(t) < \min\{\delta_{1}(t), \delta_{2}(t)\} + m_{sbp/dbp} \quad \wedge \\
-        &\delta_{3}(t) \leq \delta_{4}(t) + m_{sbp/dbp}
-      \end{aligned} \\[2.5em]
-      \widehat{\mathrm{MAP}}_{4}(t; \m{bp}) &
-      \begin{aligned}
-        &\delta_{4}(t) < \infty \quad \wedge \\
-        &\delta_{4}(t) <
-        \min\{\delta_{1}(t), \delta_{2}(t), \delta_{3}(t)\} + m_{sbp/dbp}
-      \end{aligned} \\[2.5em]
-      \mathrm{NA} & \text{otherwise.}
-    \end{cases}
-  \end{equation}
-}
 
 Then, the part of the cardiovascular score based on MAP is:
 \begin{equation}

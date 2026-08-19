@@ -56,6 +56,8 @@
 #' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: bilirubin (total), ALT
 #' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine
 #' @param si.lookback The number of minutes to look back in an encounter for carry-forward of suspected infection variables: antimicrobials medications, and anti-infectious tests.
+#' @param map.sdbp.delta The maximum allowed difference, in minutes, between the source times for systolic and diastolic blood pressures used to estimate MAP. The default, \code{Inf}, allows any SBP/DBP pair that has already passed the blood-pressure look-back rule.
+#' @param map.delta The MAP candidate freshness value, in minutes. Candidate MAP sources with effective staleness within \code{map.delta} are treated as having similar freshness, and the MAP source hierarchy breaks the tie. The default, \code{Inf}, preserves the original source-priority behavior.
 #'
 #' @param verbose when \code{TRUE} print messages showing the progress
 #'
@@ -115,6 +117,8 @@ prepare_phoenix_data <-
     hepatic.lookback     = 1440,
     renal.lookback       = 1440,
     si.lookback          = Inf,
+    map.sdbp.delta       = Inf,
+    map.delta            = Inf,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
 
@@ -145,6 +149,8 @@ prepare_phoenix_data <-
   stopifnot(is.numeric(hepatic.lookback)     && length(hepatic.lookback) == 1     && hepatic.lookback >= 0)
   stopifnot(is.numeric(renal.lookback)       && length(renal.lookback) == 1       && renal.lookback >= 0)
   stopifnot(is.numeric(si.lookback)          && length(si.lookback) == 1          && si.lookback >= 0)
+  stopifnot(is.numeric(map.sdbp.delta)       && length(map.sdbp.delta) == 1       && map.sdbp.delta >= 0)
+  stopifnot(is.numeric(map.delta)            && length(map.delta) == 1            && map.delta >= 0)
 
   phxdata <-
     list(
@@ -389,6 +395,97 @@ prepare_phoenix_data <-
     x
   }
 
+  # Select MAP from direct and calculated candidates.
+  #
+  # TeX cross-reference:
+  #   * candidate construction: eq:map-current-candidates
+  #   * effective staleness:    eq:map-current-candidate-staleness
+  #   * source priority:        eq:map-current-priority
+  #
+  # `map.sdbp.delta` implements \delta_{\mathrm{sdbp}}.  It controls whether
+  # SBP and DBP source times are close enough to estimate MAP.  `map.delta`
+  # implements \delta_{\mathrm{MAP}}.  It controls how much newer a lower
+  # priority source must be before it outranks the MAP source hierarchy.
+  select_map_candidate <- function(x) {
+    arterial_pair_ok <-
+      !is.na(x[["SBPA"]]) &
+      !is.na(x[["DBPA"]]) &
+      abs(x[["SBPA_eclock"]] - x[["DBPA_eclock"]]) <= map.sdbp.delta
+    cuff_pair_ok <-
+      !is.na(x[["SBPC"]]) &
+      !is.na(x[["DBPC"]]) &
+      abs(x[["SBPC_eclock"]] - x[["DBPC_eclock"]]) <= map.sdbp.delta
+
+    m1 <- x[["MAPA"]]
+    m2 <- ifelse(
+      arterial_pair_ok,
+      mean_arterial_pressure(x[["SBPA"]], x[["DBPA"]]),
+      NA_real_
+    )
+    m3 <- x[["MAPC"]]
+    m4 <- ifelse(
+      cuff_pair_ok,
+      mean_arterial_pressure(x[["SBPC"]], x[["DBPC"]]),
+      NA_real_
+    )
+
+    eta1 <- x[[eclock]] - x[["MAPA_eclock"]]
+    eta2 <- x[[eclock]] - pmax(x[["SBPA_eclock"]], x[["DBPA_eclock"]])
+    eta3 <- x[[eclock]] - x[["MAPC_eclock"]]
+    eta4 <- x[[eclock]] - pmax(x[["SBPC_eclock"]], x[["DBPC_eclock"]])
+    eta1[is.na(m1)] <- Inf
+    eta2[is.na(m2)] <- Inf
+    eta3[is.na(m3)] <- Inf
+    eta4[is.na(m4)] <- Inf
+
+    use1 <-
+      eta1 < Inf &
+      eta1 <= pmin(eta2, eta3, eta4) + map.delta
+    use2 <-
+      !use1 &
+      eta2 < Inf &
+      eta2 < eta1 + map.delta &
+      eta2 <= pmin(eta3, eta4) + map.delta
+    use3 <-
+      !use1 &
+      !use2 &
+      eta3 < Inf &
+      eta3 < pmin(eta1, eta2) + map.delta &
+      eta3 <= eta4 + map.delta
+    use4 <-
+      !use1 &
+      !use2 &
+      !use3 &
+      eta4 < Inf &
+      eta4 < pmin(eta1, eta2, eta3) + map.delta
+
+    map <- rep(NA_real_, nrow(x))
+    map[use1] <- m1[use1]
+    map[use2] <- m2[use2]
+    map[use3] <- m3[use3]
+    map[use4] <- m4[use4]
+
+    map_eclock <- rep(NA_real_, nrow(x))
+    map_eclock[use1] <- x[["MAPA_eclock"]][use1]
+    map_eclock[use2] <-
+      latest_source_eclock(x[["SBPA_eclock"]][use2], x[["DBPA_eclock"]][use2])
+    map_eclock[use3] <- x[["MAPC_eclock"]][use3]
+    map_eclock[use4] <-
+      latest_source_eclock(x[["SBPC_eclock"]][use4], x[["DBPC_eclock"]][use4])
+
+    map_source <- rep(NA_character_, nrow(x))
+    map_source[use1] <- "MAPA"
+    map_source[use2] <- "SBPA_DBPA"
+    map_source[use3] <- "MAPC"
+    map_source[use4] <- "SBPC_DBPC"
+
+    list(
+      MAP = map,
+      MAP_eclock = map_eclock,
+      MAP_source = map_source
+    )
+  }
+
   # PaO2/FiO2 ratio.
   #
   # The oxygen value is only paired with an FiO2 that is at least as old as the
@@ -527,24 +624,28 @@ prepare_phoenix_data <-
 
   # Mean arterial pressure (MAP).
   #
-  # Use the best available MAP source in priority order:
-  #   1. reported arterial MAP
-  #   2. calculated arterial MAP from carried-forward DBP/SBP
-  #   3. reported cuff MAP
-  #   4. calculated cuff MAP from carried-forward DBP/SBP
+  # Build the four MAP candidates described in the TeX supplement, then choose
+  # the usable candidate with the MAP freshness rule.  The default
+  # `map.sdbp.delta = Inf` and `map.delta = Inf` preserves the original
+  # implementation: calculate MAP from any carried-forward SBP/DBP pair and
+  # prefer arterial sources over cuff sources whenever available.
   #
-  # Calculated MAP does not require SBP and DBP to have the same source time;
-  # each value has already passed the blood-pressure look-back rule above.
-  # TeX: eq:map-candidates and eq:map-priority.
+  # TeX: eq:map-current-candidates, eq:map-current-candidate-staleness, and
+  # eq:map-current-priority.
   if (verbose) message("  Mean Arterial Pressure...")
-  phxdata[["MAP"]] <-
-    Reduce(function(a, b) ifelse(is.na(a), b, a),
-      list(
-        m1 = phxdata[["MAPA"]],
-        m2 = 2/3 * phxdata[["DBPA"]] + 1/3 * phxdata[["SBPA"]],
-        m3 = phxdata[["MAPC"]],
-        m4 = 2/3 * phxdata[["DBPC"]] + 1/3 * phxdata[["SBPC"]]
-      )
+  map_selection <- select_map_candidate(phxdata)
+  phxdata <- phxdft_set(phxdata, j = "MAP", value = map_selection[["MAP"]])
+  phxdata <-
+    phxdft_set(
+      phxdata,
+      j = "MAP_eclock",
+      value = map_selection[["MAP_eclock"]]
+    )
+  phxdata <-
+    phxdft_set(
+      phxdata,
+      j = "MAP_source",
+      value = map_selection[["MAP_source"]]
     )
 
   # Glasgow Coma Scale (GCS).

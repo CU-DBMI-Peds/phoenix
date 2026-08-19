@@ -58,6 +58,8 @@ prepare_phoenix_data(
   hepatic.lookback = 1440,
   renal.lookback = 1440,
   si.lookback = Inf,
+  map.sdbp.delta = Inf,
+  map.delta = Inf,
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -167,6 +169,10 @@ prepare_phoenix_data(
 \item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine}
 
 \item{si.lookback}{The number of minutes to look back in an encounter for carry-forward of suspected infection variables: antimicrobials medications, and anti-infectious tests.}
+
+\item{map.sdbp.delta}{The maximum allowed difference, in minutes, between the source times for systolic and diastolic blood pressures used to estimate MAP. The default, \code{Inf}, allows any SBP/DBP pair that has already passed the blood-pressure look-back rule.}
+
+\item{map.delta}{The MAP candidate freshness value, in minutes. Candidate MAP sources with effective staleness within \code{map.delta} are treated as having similar freshness, and the MAP source hierarchy breaks the tie. The default, \code{Inf}, preserves the original source-priority behavior.}
 
 \item{verbose}{when \code{TRUE} print messages showing the progress}
 }
