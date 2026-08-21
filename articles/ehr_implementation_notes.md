@@ -435,6 +435,117 @@ Expected metadata:
       of (SBP - DBP) ≥ 1
   - Look back: 6 hours
 
+**Step-By-Step Instructions:** NOTE: these instructions are intended for
+prospective or real-time assessments and extends the logic from the
+retrospective data analysis used to develop the Phoenix criteria.
+
+1.  Pick the score time. Example: \`\`We are scoring the patient at
+    10:15.’’
+2.  Look back only as far as the blood-pressure look-back window allows.
+    For published Phoenix, this is 6 hours.
+3.  Define 4 candidate estimators:
+    1.  Define Candidate 1.
+        1.  Find the most recent arterial-line MAP within that window.
+        2.  If one exists this is Candidate 1; otherwise Candidate 1 is
+            missing.
+    2.  Define Candidate 2.
+        1.  Find the most recent arterial-line SBP and arterial-line DBP
+            within that window.
+        2.  Only use arterial SBP and DBP to calculate MAP if they were
+            recorded close enough together (*within 10 minutes of each
+            other*). If they are too far apart in time, do not use them
+            together.
+        3.  If arterial SBP and DBP can be used together, calculate: MAP
+            = one third SBP + two thirds DBP. Call this Candidate 2.
+    3.  Define Candidate 3.
+        1.  Find the most recent cuff MAP within the window.
+        2.  If one exists this is Candidate 3; otherwise Candidate 3 is
+            missing.
+    4.  Define Candidate 4.
+        1.  Find the most recent cuff SBP and cuff DBP within the
+            window.
+        2.  Only use cuff SBP and DBP to calculate MAP if they were
+            recorded close enough together (*within 10 minutes of each
+            other*). If they are too far apart in time, do not use them
+            together.
+        3.  If cuff SBP and DBP can be used together, calculate: MAP =
+            one third SBP + two thirds DBP. Call this Candidate 4.
+4.  For each candidate, figure out how old it is at the score time.
+    1.  Ignore any candidate that does not exist.
+    2.  Choose the candidate that is newest.
+        1.  Candidate 1 and Candidate 3 have the same age as the
+            reported value
+        2.  Candidate 2 and 4: these are as old as the youngest
+            component. Example: SBP most recent reported value at 10:08;
+            DBP last reported value at 10:03. Then the Candidate will be
+            considered to have reported time of 10:08.
+5.  If two candidates are equally new (*within one minute*), use this
+    tie-breaker order:
+    1.  Arterial-line MAP measured directly: Candidate 1.
+    2.  Arterial-line MAP calculated from arterial SBP and DBP:
+        Candidate 2.
+    3.  Cuff MAP measured directly: Candidate 3.
+    4.  Cuff MAP calculated from cuff SBP and DBP: Candidate 4.
+6.  Use the Candidate selected in step 5 to assess the Phoenix score. If
+    there are no usable candidates, then MAP is missing and gives 0 MAP
+    points.
+
+Simple Rule To Remember: Use the newest usable MAP. If there is a tie,
+prefer arterial over cuff, and prefer directly measured MAP over
+calculated MAP.
+
+**Example:** The candidate columns have the MAP value and the (value
+age: how old is the value, in minutes).
+
+| Time | Arterial MAP | Cuff SBP | Cuff DBP | Candidate 1: (age) | Candidate 4: (age) | Selected Candidate | Note |
+|---:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| 10:00 |  |  |  |  |  |  |  |
+| 10:01 | 55 |  |  | 55 (0) |  | 1 | 1\. |
+| 10:02 | 56 |  |  | 56 (0) |  | 1 | 1\. |
+| 10:03 | 58 |  |  | 58 (0) |  | 1 | 1\. |
+| 10:04 |  | 63 | 47 | 58 (1) | 52.33 (0) | 1 | 2\. |
+| 10:05 |  |  |  | 58 (2) | 52.33 (1) | 1 | 2\. |
+| 10:06 |  |  |  | 58 (3) | 52.33 (2) | 1 | 2\. |
+| 10:07 |  | 64 | 46 | 58 (4) | 52 (0) | 4 | 3\. |
+| 10:08 | 57 |  |  | 57 (0) | 52 (1) | 1 | 4\. |
+| 10:09 |  |  |  | 57 (1) | 52 (2) | 1 | 4\. |
+| 10:10 |  |  |  | 57 (2) | 52 (3) | 1 | 4\. |
+| 10:11 |  | 63 |  | 57 (3) | 51.67 (0) | 4 | 5\. |
+| 10:12 |  |  |  | 57 (4) | 51.67 (1) | 4 | 5\. |
+| 10:13 |  |  |  | 57 (5) | 51.67 (2) | 4 | 5\. |
+| 10:14 |  |  |  | 57 (6) | 51.67 (3) | 4 | 5\. |
+| 10:15 |  |  |  | 57 (7) | 51.67 (4) | 4 | 5\. |
+| 10:16 |  |  |  | 57 (8) | 51.67 (5) | 4 | 5\. |
+| 10:17 |  |  |  | 57 (9) | 51.67 (6) | 4 | 5\. |
+| 10:18 |  |  |  | 57 (10) | 51.67 (7) | 4 | 5\. |
+| 10:19 |  | 62 |  | 57 (11) | —- | 1 | 6\. |
+
+Notes:
+
+1.  The arterial MAP is the selected candidate because it is the only
+    candidate and is aged zero minutes, well within in the look back
+    window of six hours.
+2.  The selected candidate for use in the Phoenix scoring is Candidate
+    1, arterial MAP. Although Candidate 4, the MAP approximated by cuff
+    SBP and DBP, is younger, it is only younger by one minute. The age
+    of measurement difference being only one minute, the two candidates
+    are conceptually considered to be the same age and thus the
+    Candidate 1, the arterial MAP is used when assessing Phoenix.
+3.  Candidate 4 is used here because the approximated MAP from cuff SBP
+    and DBP is zero minutes old verse the four minute old arterial MAP.
+4.  Candidate 1 is used because it is the youngest and the preferable
+    data source.
+5.  SBP was updated, DBP was not. The approximate MAP based on cuff
+    values can use the older DBP because it is within 10 minutes of the
+    current SBP value. The approximate MAP gets the same age as the
+    youngest input, here the SBP. This results in the cuff MAP being the
+    youngest value by more than one minute and thus is the candidate
+    used in the Phoenix assessment.
+6.  SBP was updated, DBP was not. Because the SBP and DBP values are
+    more than 10 minutes apart the estimated MAP is not to be used. As
+    such, Candidate 1, the arterial MAP is used based on data source
+    preference and it is within the look back window.
+
 ### Scoring
 
 Up to six points can be earned from cardiovascular dysfunction. Up to

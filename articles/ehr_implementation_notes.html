@@ -897,6 +897,338 @@ hierarchy for which value to use in the scoring.</p>
 </ul>
 </li>
 </ul>
+<p><strong>Step-By-Step Instructions:</strong> NOTE: these instructions
+are intended for prospective or real-time assessments and extends the
+logic from the retrospective data analysis used to develop the Phoenix
+criteria.</p>
+<ol style="list-style-type: decimal">
+<li>Pick the score time. Example: ``We are scoring the patient at
+10:15.’’</li>
+<li>Look back only as far as the blood-pressure look-back window allows.
+For published Phoenix, this is 6 hours.</li>
+<li>Define 4 candidate estimators:
+<ol style="list-style-type: lower-alpha">
+<li>Define Candidate 1.
+<ol style="list-style-type: lower-roman">
+<li>Find the most recent arterial-line MAP within that window.</li>
+<li>If one exists this is Candidate 1; otherwise Candidate 1 is
+missing.</li>
+</ol>
+</li>
+<li>Define Candidate 2.
+<ol style="list-style-type: lower-roman">
+<li>Find the most recent arterial-line SBP and arterial-line DBP within
+that window.</li>
+<li>Only use arterial SBP and DBP to calculate MAP if they were recorded
+close enough together (<em>within 10 minutes of each other</em>). If
+they are too far apart in time, do not use them together.</li>
+<li>If arterial SBP and DBP can be used together, calculate: MAP = one
+third SBP + two thirds DBP. Call this Candidate 2.</li>
+</ol>
+</li>
+<li>Define Candidate 3.
+<ol style="list-style-type: lower-roman">
+<li>Find the most recent cuff MAP within the window.</li>
+<li>If one exists this is Candidate 3; otherwise Candidate 3 is
+missing.</li>
+</ol>
+</li>
+<li>Define Candidate 4.
+<ol style="list-style-type: lower-roman">
+<li>Find the most recent cuff SBP and cuff DBP within the window.</li>
+<li>Only use cuff SBP and DBP to calculate MAP if they were recorded
+close enough together (<em>within 10 minutes of each other</em>). If
+they are too far apart in time, do not use them together.</li>
+<li>If cuff SBP and DBP can be used together, calculate: MAP = one third
+SBP + two thirds DBP. Call this Candidate 4.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>For each candidate, figure out how old it is at the score time.
+<ol style="list-style-type: lower-alpha">
+<li>Ignore any candidate that does not exist.</li>
+<li>Choose the candidate that is newest.
+<ol style="list-style-type: lower-roman">
+<li>Candidate 1 and Candidate 3 have the same age as the reported
+value</li>
+<li>Candidate 2 and 4: these are as old as the youngest component.
+Example: SBP most recent reported value at 10:08; DBP last reported
+value at 10:03. Then the Candidate will be considered to have reported
+time of 10:08.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>If two candidates are equally new (<em>within one minute</em>), use
+this tie-breaker order:
+<ol style="list-style-type: lower-alpha">
+<li>Arterial-line MAP measured directly: Candidate 1.</li>
+<li>Arterial-line MAP calculated from arterial SBP and DBP: Candidate
+2.</li>
+<li>Cuff MAP measured directly: Candidate 3.</li>
+<li>Cuff MAP calculated from cuff SBP and DBP: Candidate 4.</li>
+</ol>
+</li>
+<li>Use the Candidate selected in step 5 to assess the Phoenix score. If
+there are no usable candidates, then MAP is missing and gives 0 MAP
+points.</li>
+</ol>
+<p>Simple Rule To Remember: Use the newest usable MAP. If there is a
+tie, prefer arterial over cuff, and prefer directly measured MAP over
+calculated MAP.</p>
+<p><strong>Example:</strong> The candidate columns have the MAP value
+and the (value age: how old is the value, in minutes).</p>
+<table class="table">
+<colgroup>
+<col width="12%">
+<col width="12%">
+<col width="12%">
+<col width="12%">
+<col width="15%">
+<col width="15%">
+<col width="10%">
+<col width="10%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">Time</th>
+<th align="center">Arterial MAP</th>
+<th align="center">Cuff SBP</th>
+<th align="center">Cuff DBP</th>
+<th align="center">Candidate 1: (age)</th>
+<th align="center">Candidate 4: (age)</th>
+<th align="center">Selected Candidate</th>
+<th align="center">Note</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">10:00</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="right">10:01</td>
+<td align="center">55</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">55 (0)</td>
+<td align="center"></td>
+<td align="center">1</td>
+<td align="center">1.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:02</td>
+<td align="center">56</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">56 (0)</td>
+<td align="center"></td>
+<td align="center">1</td>
+<td align="center">1.</td>
+</tr>
+<tr class="even">
+<td align="right">10:03</td>
+<td align="center">58</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">58 (0)</td>
+<td align="center"></td>
+<td align="center">1</td>
+<td align="center">1.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:04</td>
+<td align="center"></td>
+<td align="center">63</td>
+<td align="center">47</td>
+<td align="center">58 (1)</td>
+<td align="center">52.33 (0)</td>
+<td align="center">1</td>
+<td align="center">2.</td>
+</tr>
+<tr class="even">
+<td align="right">10:05</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">58 (2)</td>
+<td align="center">52.33 (1)</td>
+<td align="center">1</td>
+<td align="center">2.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:06</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">58 (3)</td>
+<td align="center">52.33 (2)</td>
+<td align="center">1</td>
+<td align="center">2.</td>
+</tr>
+<tr class="even">
+<td align="right">10:07</td>
+<td align="center"></td>
+<td align="center">64</td>
+<td align="center">46</td>
+<td align="center">58 (4)</td>
+<td align="center">52 (0)</td>
+<td align="center">4</td>
+<td align="center">3.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:08</td>
+<td align="center">57</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (0)</td>
+<td align="center">52 (1)</td>
+<td align="center">1</td>
+<td align="center">4.</td>
+</tr>
+<tr class="even">
+<td align="right">10:09</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (1)</td>
+<td align="center">52 (2)</td>
+<td align="center">1</td>
+<td align="center">4.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (2)</td>
+<td align="center">52 (3)</td>
+<td align="center">1</td>
+<td align="center">4.</td>
+</tr>
+<tr class="even">
+<td align="right">10:11</td>
+<td align="center"></td>
+<td align="center">63</td>
+<td align="center"></td>
+<td align="center">57 (3)</td>
+<td align="center">51.67 (0)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:12</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (4)</td>
+<td align="center">51.67 (1)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="even">
+<td align="right">10:13</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (5)</td>
+<td align="center">51.67 (2)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:14</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (6)</td>
+<td align="center">51.67 (3)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="even">
+<td align="right">10:15</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (7)</td>
+<td align="center">51.67 (4)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:16</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (8)</td>
+<td align="center">51.67 (5)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="even">
+<td align="right">10:17</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (9)</td>
+<td align="center">51.67 (6)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">10:18</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">57 (10)</td>
+<td align="center">51.67 (7)</td>
+<td align="center">4</td>
+<td align="center">5.</td>
+</tr>
+<tr class="even">
+<td align="right">10:19</td>
+<td align="center"></td>
+<td align="center">62</td>
+<td align="center"></td>
+<td align="center">57 (11)</td>
+<td align="center">—-</td>
+<td align="center">1</td>
+<td align="center">6.</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol style="list-style-type: decimal">
+<li>The arterial MAP is the selected candidate because it is the only
+candidate and is aged zero minutes, well within in the look back window
+of six hours.</li>
+<li>The selected candidate for use in the Phoenix scoring is Candidate
+1, arterial MAP. Although Candidate 4, the MAP approximated by cuff SBP
+and DBP, is younger, it is only younger by one minute. The age of
+measurement difference being only one minute, the two candidates are
+conceptually considered to be the same age and thus the Candidate 1, the
+arterial MAP is used when assessing Phoenix.</li>
+<li>Candidate 4 is used here because the approximated MAP from cuff SBP
+and DBP is zero minutes old verse the four minute old arterial MAP.</li>
+<li>Candidate 1 is used because it is the youngest and the preferable
+data source.</li>
+<li>SBP was updated, DBP was not. The approximate MAP based on cuff
+values can use the older DBP because it is within 10 minutes of the
+current SBP value. The approximate MAP gets the same age as the youngest
+input, here the SBP. This results in the cuff MAP being the youngest
+value by more than one minute and thus is the candidate used in the
+Phoenix assessment.</li>
+<li>SBP was updated, DBP was not. Because the SBP and DBP values are
+more than 10 minutes apart the estimated MAP is not to be used. As such,
+Candidate 1, the arterial MAP is used based on data source preference
+and it is within the look back window.</li>
+</ol>
 </div>
 </div>
 <div class="section level3">
