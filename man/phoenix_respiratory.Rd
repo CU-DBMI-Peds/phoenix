@@ -10,6 +10,10 @@ phoenix_respiratory(
   invasive_mechanical_ventilation = NA_integer_,
   other_respiratory_support = NA_integer_,
   data = parent.frame(),
+  pf_ratio_eclock = NULL,
+  sf_ratio_eclock = NULL,
+  eclock = NULL,
+  pao2.spo2.delta = NULL,
   ...,
   imv = NULL
 )
@@ -24,6 +28,16 @@ phoenix_respiratory(
 \item{other_respiratory_support}{other respiratory support; numeric or integer vector, (0 = no support; 1 = support)}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
+
+\item{pf_ratio_eclock, sf_ratio_eclock, eclock}{Optional encounter-clock
+vectors used to compare P/F and S/F source times when
+\code{pao2.spo2.delta} is finite.}
+
+\item{pao2.spo2.delta}{Optional maximum allowed difference, in minutes, by
+which the PaO2 source time for P/F ratio may be older than the SpO2 source
+time for S/F ratio before S/F is selected. A value of \code{Inf} uses P/F
+whenever both ratios are available. A value of \code{NULL} uses the
+historical rule where either abnormal P/F or abnormal S/F can contribute.}
 
 \item{...}{pass through}
 
@@ -48,6 +62,13 @@ Phoenix 8 Sepsis criteria.
 \code{sf_ratio} is a non-invasive surrogate for \code{pf_ratio} using pulse
 oximetry (SpO2) instead of invasive PaO2.
 
+\code{pao2.spo2.delta} defines a source-time selector between P/F and S/F
+ratios. P/F is used when it is the only available ratio or when PaO2 is no
+older than SpO2 by more than \code{pao2.spo2.delta} minutes. Otherwise S/F is
+used. With \code{pao2.spo2.delta = Inf}, P/F is selected whenever both ratios
+are available. If \code{pao2.spo2.delta = NULL}, the historical Phoenix rule
+scores either an abnormal P/F or abnormal S/F ratio.
+
 Important Note: when the Phoenix Sepsis criteria was developed there is
 a requirement that SpO2 <= 97 in order for the \code{sf_ratio} to be valid.
 That assumption is not checked in this code and it is left to the end user to
@@ -64,10 +85,10 @@ high-flow, non-invasive positive pressure, or invasive mechanical ventilation.
 
 \tabular{llll}{
 0 points \tab 1 point \tab 2 points \tab 3 points \cr
-pf_ratio >= 400 and sf_ratio >= 292 \tab
-(pf_ratio < 400 or sf_ratio < 292) and any respiratory support \tab
-(pf_ratio < 200 or sf_ratio < 220) and invasive mechanical ventilation \tab
-(pf_ratio < 100 or sf_ratio < 148) and invasive mechanical ventilation \cr
+selected oxygenation ratio above score threshold \tab
+selected oxygenation ratio below 1-point threshold and any respiratory support \tab
+selected oxygenation ratio below 2-point threshold and invasive mechanical ventilation \tab
+selected oxygenation ratio below 3-point threshold and invasive mechanical ventilation \cr
 }
 }
 
@@ -96,6 +117,9 @@ phoenix_respiratory(
 DF <- expand.grid(
   pfr = c(NA, 500, 400, 350, 200, 187, 100, 56),
   sfr = c(NA, 300, 292, 254, 220, 177, 148, 76),
+  pfr_time = 120,
+  sfr_time = 90,
+  score_time = 120,
   vent = c(NA, 0, 1),
   o2  = c(NA, 0, 1)
 )
@@ -103,6 +127,10 @@ DF <- expand.grid(
 phoenix_respiratory(
   pf_ratio = pfr,
   sf_ratio = sfr,
+  pf_ratio_eclock = pfr_time,
+  sf_ratio_eclock = sfr_time,
+  eclock = score_time,
+  pao2.spo2.delta = Inf,
   invasive_mechanical_ventilation = vent,
   other_respiratory_support = o2,
   data = DF

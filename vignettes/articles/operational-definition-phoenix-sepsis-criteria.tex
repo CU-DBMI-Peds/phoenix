@@ -700,19 +700,40 @@ dysfunction would not have at the very least supplemental oxygen.
   \label{eq:resp}
   % R: phoenix_respiratory()
   \DS{Resp}[\m{resp}] \coloneqq
-    \ORS \mathbb{I} \left\{B_1\left(t; \m{resp}\right)\right\}
+    \ORS B_1\left(t; \m{resp}\right)
     +
-    \IMV \sum_{i=2}^{3} \mathbb{I}\left\{B_i\left(t; \m{resp}\right)\right\}
+    \IMV \sum_{i=2}^{3} B_i\left(t; \m{resp}\right)
 \end{equation}
 where
 \begin{equation}
   \label{eq:resp-conditions}
   \begin{aligned}
-    B_1\left(t; \m{resp}\right) &\coloneqq \PFR < 400 \vee \SFR < 292 \\
-    B_2\left(t; \m{resp}\right) &\coloneqq \PFR < 200 \vee \SFR < 220 \\
-    B_3\left(t; \m{resp}\right) &\coloneqq \PFR < 100 \vee \SFR < 148.
+    B_1\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 400 \right\} \\
+                                &\phantom{\coloneqq}+ \left(1 - Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \right) \mathbb{I}\left\{\SFR < 292\right\}, \\[2ex]
+    B_2\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 200 \right\} \\
+                                &\phantom{\coloneqq}+ \left(1 - Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \right) \mathbb{I}\left\{\SFR < 220\right\}, \\[2ex]
+    B_3\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 100 \right\} \\
+                                &\phantom{\coloneqq}+ \left(1 - Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \right) \mathbb{I}\left\{\SFR < 148\right\},
   \end{aligned}
 \end{equation}
+and
+\begin{equation}
+  \label{eq:pfr-sfr-selector}
+  % R: phoenix_respiratory(..., pao2.spo2.delta)
+  Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \coloneqq
+  \begin{cases}
+    1 & \PFR \ne \mathrm{NA} \wedge \SFR = \mathrm{NA} \\[1.0ex]
+    0 & \PFR = \mathrm{NA} \wedge \SFR \ne \mathrm{NA} \\[2.0ex]
+    1 & \begin{aligned} & \PFR \ne \mathrm{NA} \wedge \SFR \ne \mathrm{NA} \wedge \\ & \Delta_{\paotwo}\left(t\right) \leq \Delta_{\spotwo}\left(t\right) + \delta_{\paotwo,\spotwo} \end{aligned} \\[4.0ex]
+    0 & \begin{aligned} & \PFR \ne \mathrm{NA} \wedge \SFR \ne \mathrm{NA} \wedge \\ & \Delta_{\paotwo}\left(t\right) >    \Delta_{\spotwo}\left(t\right) + \delta_{\paotwo,\spotwo} \end{aligned} \\[3.0ex]
+    0 & \PFR = \mathrm{NA} \wedge \SFR = \mathrm{NA}
+  \end{cases}
+\end{equation}
+The parameter $\delta_{\paotwo,\spotwo}$ is a relative staleness value, in
+minutes, between the $\paotwo$ and $\spotwo$ measurement times.  When both the
+PFR and SFR are known at time $t$ within the carry-forward (look-back)
+window $m_{\mathrm{resp}}$ then the PFR is taken preferentially over SFR unless
+SFR is sufficiently younger than the PFR.
 
 The valid values for the respiratory organ dysfunction score are
 \begin{equation}
@@ -1725,7 +1746,13 @@ dysfunction associated with reaching the sepsis score threshold.
 
 For the published Phoenix Sepsis Criteria
 \citep{Sanchez-Pinto2024,Schlapbach2024} the
-following parameter values in Table~\ref{tab:phoenix-parameters} were used:
+following parameter values in Table~\ref{tab:phoenix-parameters} were used.
+The freshness and relative staleness parameters are introduced in this document
+to help guide prospective or real-time assessments.  The published respiratory
+oxygenation rule did not use $\delta_{\paotwo,\spotwo}$; instead, either an
+abnormal PFR or an abnormal SFR could contribute to the respiratory score.  For
+blood pressure, default values of $\infty$ preserve definitions used when
+Phoenix was developed.
 
 \begin{longtable}{lrl}
   \caption{Parameter values defining time windows, look-backs, and thresholds
@@ -1779,7 +1806,15 @@ following parameter values in Table~\ref{tab:phoenix-parameters} were used:
     ~~$\m{immu}$  & 1440 minutes & ANC and ALC \\
     ~~$\m{hepatic}$  & 1440 minutes & ALT and Total bilirubin \\
   \rowcolor{gray!20}
-    ~~$\m{renal}$  & 1440 minutes & creatinine
+    ~~$\m{renal}$  & 1440 minutes & creatinine \\
+
+  \multicolumn{3}{l}{\textbf{Freshness / Relative Staleness Parameters}} \\
+  \rowcolor{gray!20}
+    ~~$\delta_{\paotwo,\spotwo}$ & Not used & Published criteria used PFR-or-SFR rule \\
+    ~~$\delta_{\mathrm{sdbp}}$ & $\infty$   & Introduced for prospective implementations \\
+  \rowcolor{gray!20}
+    ~~$\delta_{\mathrm{MAP}}$ & $\infty$ &    Introduced for prospective implementations \\
+
 \end{longtable}
 
 Importantly, restricting the maximization to $t \in T$ does not truncate the

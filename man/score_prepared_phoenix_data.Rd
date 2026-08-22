@@ -11,6 +11,7 @@ score_prepared_phoenix_data(
   sigma = 2,
   kappa = 1,
   aggregation = c("jama2024", "olm", "ccd", "fcd"),
+  pao2.spo2.delta = NULL,
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -31,6 +32,12 @@ to flag septic shock.}
 \item{aggregation}{The aggregation approach to apply to the data.  Default is
 "jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
 See Details.}
+
+\item{pao2.spo2.delta}{Optional maximum allowed difference, in minutes, by
+which the PaO2 source time for P/F ratio may be older than the SpO2 source
+time for S/F ratio before S/F is selected. A value of \code{Inf} uses P/F
+whenever both ratios are available. A value of \code{NULL} uses the
+historical rule where either abnormal P/F or abnormal S/F can contribute.}
 
 \item{verbose}{when \code{TRUE}, display progress messages}
 }

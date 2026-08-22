@@ -10,6 +10,12 @@
 #' scoring for each of the eight component organ systems are found in the
 #' respective manual files.
 #'
+#' Like \code{\link{phoenix}}, the direct \code{phoenix8()} wrapper uses the
+#' original respiratory P/F-or-S/F threshold logic by default. Set
+#' \code{pao2.spo2.delta} to use the P/F versus S/F source-time selector in
+#' \code{\link{phoenix_respiratory}}.
+#'
+#' @inheritParams phoenix_respiratory
 #' @param pf_ratio numeric vector for the PaO2/FiO2 ratio; PaO2 = arterial oxygen pressure; FiO2 = fraction of inspired oxygen;  PaO2 is measured in mmHg and FiO2 is from 0.21 (room air) to 1.00.
 #' @param sf_ratio numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92\% oxygen saturation on room air is 92/0.21 = 438.0952.
 #' @param invasive_mechanical_ventilation invasive mechanical ventilation; numeric or integer vector, (0 = not intubated; 1 = intubated)
@@ -131,7 +137,8 @@ phoenix8 <- function(
                     creatinine,  #age
                     bilirubin, alt,
                     age,
-                    data = parent.frame(), ..., imv = NULL, map = NULL) {
+                    data = parent.frame(), pao2.spo2.delta = NULL,
+                    ..., imv = NULL, map = NULL) {
 
   cl <- as.list(match.call())
   if ("imv" %in% names(cl) && "invasive_mechanical_ventilation" %in% names(cl)) {
@@ -150,6 +157,9 @@ phoenix8 <- function(
     cl[["mean_arterial_pressure"]] <- cl[["map"]]
     cl[["map"]] <- NULL
   }
+  # Direct phoenix()/phoenix8() calls preserve the original PFR-or-SFR logic by
+  # default. Prepared-data scoring uses its own default for eq:pfr-sfr-selector.
+  cl[["pao2.spo2.delta"]] <- pao2.spo2.delta
   cl$data <- NULL
 
   cl[[1]] <- get("phoenix", mode = "function")

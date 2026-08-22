@@ -174,5 +174,49 @@ stopifnot(
 )
 
 ################################################################################
+# verify source-time selector for PFR versus SFR
+selector_data <-
+  data.frame(
+    pfr = c(500, 500, NA, 80, NA, 500),
+    sfr = c(100, 100, 100, NA, NA, 100),
+    pfr_time = c(100, 0, NA, 100, NA, 0),
+    sfr_time = c(100, 100, 100, NA, NA, 100),
+    score_time = 100,
+    vent = 1L,
+    o2 = 1L
+  )
+
+selector_scores <-
+  phoenix_respiratory(
+    pf_ratio = pfr,
+    sf_ratio = sfr,
+    pf_ratio_eclock = pfr_time,
+    sf_ratio_eclock = sfr_time,
+    eclock = score_time,
+    pao2.spo2.delta = 0,
+    invasive_mechanical_ventilation = vent,
+    other_respiratory_support = o2,
+    data = selector_data
+  )
+
+selector_inf_scores <-
+  phoenix_respiratory(
+    pf_ratio = pfr,
+    sf_ratio = sfr,
+    pf_ratio_eclock = pfr_time,
+    sf_ratio_eclock = sfr_time,
+    eclock = score_time,
+    pao2.spo2.delta = Inf,
+    invasive_mechanical_ventilation = vent,
+    other_respiratory_support = o2,
+    data = selector_data
+  )
+
+stopifnot(
+  identical(selector_scores, c(0L, 3L, 3L, 3L, 0L, 3L)),
+  identical(selector_inf_scores, c(0L, 0L, 3L, 3L, 0L, 0L))
+)
+
+################################################################################
 #                                 End of File                                  #
 ################################################################################

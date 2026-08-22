@@ -20,6 +20,7 @@ phoenix(
   fixed_pupils,
   age,
   data = parent.frame(),
+  pao2.spo2.delta = NULL,
   ...,
   imv = NULL,
   map = NULL
@@ -56,6 +57,12 @@ phoenix(
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
 
+\item{pao2.spo2.delta}{Optional maximum allowed difference, in minutes, by
+which the PaO2 source time for P/F ratio may be older than the SpO2 source
+time for S/F ratio before S/F is selected. A value of \code{Inf} uses P/F
+whenever both ratios are available. A value of \code{NULL} uses the
+historical rule where either abnormal P/F or abnormal S/F can contribute.}
+
 \item{...}{pass through}
 
 \item{imv}{soft-deprecated alias for \code{invasive_mechanical_ventilation}}
@@ -86,6 +93,10 @@ scores, respiratory, cardiovascular, coagulation, and neurologic.  A score of
 \details{
 The details of each of the four component scores are found in their
 respective help files.
+
+The direct \code{phoenix()} wrapper uses the original respiratory P/F-or-S/F
+threshold logic by default. Set \code{pao2.spo2.delta} to use the P/F versus
+S/F source-time selector in \code{\link{phoenix_respiratory}}.
 }
 \examples{
 

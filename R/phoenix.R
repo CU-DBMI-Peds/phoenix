@@ -7,7 +7,12 @@
 #' The details of each of the four component scores are found in their
 #' respective help files.
 #'
+#' The direct \code{phoenix()} wrapper uses the original respiratory P/F-or-S/F
+#' threshold logic by default. Set \code{pao2.spo2.delta} to use the P/F versus
+#' S/F source-time selector in \code{\link{phoenix_respiratory}}.
+#'
 #' @inheritParams phoenix8
+#' @inheritParams phoenix_respiratory
 #'
 #' @return A \code{data.frame} with seven columns:
 #' \enumerate{
@@ -84,7 +89,8 @@ phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_r
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
                     age,
-                    data = parent.frame(), ..., imv = NULL, map = NULL) {
+                    data = parent.frame(), pao2.spo2.delta = NULL,
+                    ..., imv = NULL, map = NULL) {
 
   cl <- as.list(match.call())
   if ("imv" %in% names(cl) && "invasive_mechanical_ventilation" %in% names(cl)) {
@@ -103,6 +109,9 @@ phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_r
     cl[["mean_arterial_pressure"]] <- cl[["map"]]
     cl[["map"]] <- NULL
   }
+  # Direct phoenix()/phoenix8() calls preserve the original PFR-or-SFR logic by
+  # default. Prepared-data scoring uses its own default for eq:pfr-sfr-selector.
+  cl[["pao2.spo2.delta"]] <- pao2.spo2.delta
   cl[["data"]] <- NULL
 
   cl[[1]] <- get("phoenix_respiratory", mode = "function")

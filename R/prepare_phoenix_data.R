@@ -491,7 +491,8 @@ prepare_phoenix_data <-
   # The oxygen value is only paired with an FiO2 that is at least as old as the
   # blood gas value.  That avoids using a ventilator setting that was recorded
   # after the oxygen measurement.
-  # TeX: eq:pfr-validity and eq:pfr.
+  # TeX: eq:pfr-validity and eq:pfr. `PFR_eclock` is used later by
+  # `phoenix_respiratory(..., pao2.spo2.delta)` for eq:pfr-sfr-selector.
   if (verbose) message("Constructing and combining variables...")
 
   if (verbose) message("  PaO2/FiO2...")
@@ -515,7 +516,8 @@ prepare_phoenix_data <-
   #
   # This uses the same timing rule as the PF ratio.  It also requires SpO2 <= 97
   # because the SF ratio is less informative at high oxygen saturations.
-  # TeX: eq:sfr-validity and eq:sfr.
+  # TeX: eq:sfr-validity and eq:sfr. `SFR_eclock` is used later by
+  # `phoenix_respiratory(..., pao2.spo2.delta)` for eq:pfr-sfr-selector.
   if (verbose) message("  SpO2/FiO2...")
   idx <- which((phxdata[["FIO2_eclock"]] <= phxdata[["SPO2_eclock"]]) & phxdata[["SPO2"]] <= 97)
   phxdata <-
