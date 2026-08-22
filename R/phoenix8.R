@@ -15,6 +15,12 @@
 #' \code{pao2.spo2.delta} to use the P/F versus S/F source-time selector in
 #' \code{\link{phoenix_respiratory}}.
 #'
+#' For scheduled or row-level EHR scoring, callers may either provide a final
+#' \code{mean_arterial_pressure} value or pass raw arterial/cuff MAP and SBP/DBP
+#' candidates through \code{...}; those cardiovascular arguments are forwarded
+#' to \code{\link{phoenix_cardiovascular}}. See that help file for the candidate
+#' names and the \code{map.sdbp.delta} and \code{map.delta} freshness controls.
+#'
 #' @inheritParams phoenix_respiratory
 #' @param pf_ratio numeric vector for the PaO2/FiO2 ratio; PaO2 = arterial oxygen pressure; FiO2 = fraction of inspired oxygen;  PaO2 is measured in mmHg and FiO2 is from 0.21 (room air) to 1.00.
 #' @param sf_ratio numeric vector for the SpO2/FiO2 ratio; SpO2 = oxygen saturation, measured in a percent; ratio for 92\% oxygen saturation on room air is 92/0.21 = 438.0952.
@@ -129,7 +135,7 @@
 #' @export
 phoenix8 <- function(
                     pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support,
-                    vasoactives, lactate, mean_arterial_pressure, #age
+                    vasoactives, lactate, mean_arterial_pressure = NA_real_, #age
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
                     glucose,

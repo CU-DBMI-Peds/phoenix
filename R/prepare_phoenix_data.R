@@ -395,97 +395,6 @@ prepare_phoenix_data <-
     x
   }
 
-  # Select MAP from direct and calculated candidates.
-  #
-  # TeX cross-reference:
-  #   * candidate construction: eq:map-current-candidates
-  #   * effective staleness:    eq:map-current-candidate-staleness
-  #   * source priority:        eq:map-current-priority
-  #
-  # `map.sdbp.delta` implements \delta_{\mathrm{sdbp}}.  It controls whether
-  # SBP and DBP source times are close enough to estimate MAP.  `map.delta`
-  # implements \delta_{\mathrm{MAP}}.  It controls how much newer a lower
-  # priority source must be before it outranks the MAP source hierarchy.
-  select_map_candidate <- function(x) {
-    arterial_pair_ok <-
-      !is.na(x[["SBPA"]]) &
-      !is.na(x[["DBPA"]]) &
-      abs(x[["SBPA_eclock"]] - x[["DBPA_eclock"]]) <= map.sdbp.delta
-    cuff_pair_ok <-
-      !is.na(x[["SBPC"]]) &
-      !is.na(x[["DBPC"]]) &
-      abs(x[["SBPC_eclock"]] - x[["DBPC_eclock"]]) <= map.sdbp.delta
-
-    m1 <- x[["MAPA"]]
-    m2 <- ifelse(
-      arterial_pair_ok,
-      mean_arterial_pressure(x[["SBPA"]], x[["DBPA"]]),
-      NA_real_
-    )
-    m3 <- x[["MAPC"]]
-    m4 <- ifelse(
-      cuff_pair_ok,
-      mean_arterial_pressure(x[["SBPC"]], x[["DBPC"]]),
-      NA_real_
-    )
-
-    eta1 <- x[[eclock]] - x[["MAPA_eclock"]]
-    eta2 <- x[[eclock]] - pmax(x[["SBPA_eclock"]], x[["DBPA_eclock"]])
-    eta3 <- x[[eclock]] - x[["MAPC_eclock"]]
-    eta4 <- x[[eclock]] - pmax(x[["SBPC_eclock"]], x[["DBPC_eclock"]])
-    eta1[is.na(m1)] <- Inf
-    eta2[is.na(m2)] <- Inf
-    eta3[is.na(m3)] <- Inf
-    eta4[is.na(m4)] <- Inf
-
-    use1 <-
-      eta1 < Inf &
-      eta1 <= pmin(eta2, eta3, eta4) + map.delta
-    use2 <-
-      !use1 &
-      eta2 < Inf &
-      eta2 < eta1 + map.delta &
-      eta2 <= pmin(eta3, eta4) + map.delta
-    use3 <-
-      !use1 &
-      !use2 &
-      eta3 < Inf &
-      eta3 < pmin(eta1, eta2) + map.delta &
-      eta3 <= eta4 + map.delta
-    use4 <-
-      !use1 &
-      !use2 &
-      !use3 &
-      eta4 < Inf &
-      eta4 < pmin(eta1, eta2, eta3) + map.delta
-
-    map <- rep(NA_real_, nrow(x))
-    map[use1] <- m1[use1]
-    map[use2] <- m2[use2]
-    map[use3] <- m3[use3]
-    map[use4] <- m4[use4]
-
-    map_eclock <- rep(NA_real_, nrow(x))
-    map_eclock[use1] <- x[["MAPA_eclock"]][use1]
-    map_eclock[use2] <-
-      latest_source_eclock(x[["SBPA_eclock"]][use2], x[["DBPA_eclock"]][use2])
-    map_eclock[use3] <- x[["MAPC_eclock"]][use3]
-    map_eclock[use4] <-
-      latest_source_eclock(x[["SBPC_eclock"]][use4], x[["DBPC_eclock"]][use4])
-
-    map_source <- rep(NA_character_, nrow(x))
-    map_source[use1] <- "MAPA"
-    map_source[use2] <- "SBPA_DBPA"
-    map_source[use3] <- "MAPC"
-    map_source[use4] <- "SBPC_DBPC"
-
-    list(
-      MAP = map,
-      MAP_eclock = map_eclock,
-      MAP_source = map_source
-    )
-  }
-
   # PaO2/FiO2 ratio.
   #
   # The oxygen value is only paired with an FiO2 that is at least as old as the
@@ -635,7 +544,24 @@ prepare_phoenix_data <-
   # TeX: eq:map-current-candidates, eq:map-current-candidate-staleness, and
   # eq:map-current-priority.
   if (verbose) message("  Mean Arterial Pressure...")
-  map_selection <- select_map_candidate(phxdata)
+  map_selection <-
+    select_map_candidate(
+      mean_arterial_pressure_arterial = phxdata[["MAPA"]],
+      mean_arterial_pressure_arterial_eclock = phxdata[["MAPA_eclock"]],
+      sbp_arterial = phxdata[["SBPA"]],
+      sbp_arterial_eclock = phxdata[["SBPA_eclock"]],
+      dbp_arterial = phxdata[["DBPA"]],
+      dbp_arterial_eclock = phxdata[["DBPA_eclock"]],
+      mean_arterial_pressure_cuff = phxdata[["MAPC"]],
+      mean_arterial_pressure_cuff_eclock = phxdata[["MAPC_eclock"]],
+      sbp_cuff = phxdata[["SBPC"]],
+      sbp_cuff_eclock = phxdata[["SBPC_eclock"]],
+      dbp_cuff = phxdata[["DBPC"]],
+      dbp_cuff_eclock = phxdata[["DBPC_eclock"]],
+      eclock = phxdata[[eclock]],
+      map.sdbp.delta = map.sdbp.delta,
+      map.delta = map.delta
+    )
   phxdata <- phxdft_set(phxdata, j = "MAP", value = map_selection[["MAP"]])
   phxdata <-
     phxdft_set(

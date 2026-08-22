@@ -176,6 +176,110 @@ stopifnot(
   identical(legacy_alias_warning, "`map` is deprecated; use `mean_arterial_pressure` instead.")
 )
 
+################################################################################
+# verify direct MAP/BP candidate selection matches the operational hierarchy
+map_candidate_data <-
+  data.frame(
+    vasoactives = 0L,
+    lactate = 0,
+    age = 24,
+    eclock = 100,
+    mapa = c(60, NA, NA),
+    mapa_time = c(0, NA, NA),
+    mapc = c(40, 50, NA),
+    mapc_time = c(100, 100, NA),
+    sbpa = c(NA, 60, 60),
+    sbpa_time = c(NA, 100, 100),
+    dbpa = c(NA, 30, 30),
+    dbpa_time = c(NA, 100, 80),
+    sbpc = c(NA, NA, 90),
+    sbpc_time = c(NA, NA, 100),
+    dbpc = c(NA, NA, 60),
+    dbpc_time = c(NA, NA, 100)
+  )
+
+map_candidate_scores_default <-
+  phoenix_cardiovascular(
+    vasoactives = vasoactives,
+    lactate = lactate,
+    age = age,
+    mean_arterial_pressure_arterial = mapa,
+    mean_arterial_pressure_arterial_eclock = mapa_time,
+    mean_arterial_pressure_cuff = mapc,
+    mean_arterial_pressure_cuff_eclock = mapc_time,
+    sbp_arterial = sbpa,
+    sbp_arterial_eclock = sbpa_time,
+    dbp_arterial = dbpa,
+    dbp_arterial_eclock = dbpa_time,
+    sbp_cuff = sbpc,
+    sbp_cuff_eclock = sbpc_time,
+    dbp_cuff = dbpc,
+    dbp_cuff_eclock = dbpc_time,
+    eclock = eclock,
+    data = map_candidate_data
+  )
+
+map_candidate_scores_limited <-
+  phoenix_cardiovascular(
+    vasoactives = vasoactives,
+    lactate = lactate,
+    age = age,
+    mean_arterial_pressure_arterial = mapa,
+    mean_arterial_pressure_arterial_eclock = mapa_time,
+    mean_arterial_pressure_cuff = mapc,
+    mean_arterial_pressure_cuff_eclock = mapc_time,
+    sbp_arterial = sbpa,
+    sbp_arterial_eclock = sbpa_time,
+    dbp_arterial = dbpa,
+    dbp_arterial_eclock = dbpa_time,
+    sbp_cuff = sbpc,
+    sbp_cuff_eclock = sbpc_time,
+    dbp_cuff = dbpc,
+    dbp_cuff_eclock = dbpc_time,
+    eclock = eclock,
+    map.sdbp.delta = 10,
+    map.delta = 1,
+    data = map_candidate_data
+  )
+
+stopifnot(
+  identical(map_candidate_scores_default, c(0L, 1L, 1L)),
+  identical(map_candidate_scores_limited, c(1L, 1L, 0L))
+)
+
+map_candidate_missing_time_score <-
+  phoenix_cardiovascular(
+    vasoactives = 0,
+    lactate = 0,
+    age = 24,
+    mean_arterial_pressure_arterial = 40,
+    eclock = 100
+  )
+
+stopifnot(identical(map_candidate_missing_time_score, 0L))
+
+candidate_conflict_error <-
+  tryCatch(
+    phoenix_cardiovascular(
+      vasoactives = 0,
+      lactate = 0,
+      age = 24,
+      mean_arterial_pressure = 60,
+      mean_arterial_pressure_arterial = 40,
+      mean_arterial_pressure_arterial_eclock = 100,
+      eclock = 100
+    ),
+    error = function(e) e
+  )
+
+stopifnot(
+  inherits(candidate_conflict_error, "error"),
+  identical(
+    candidate_conflict_error$message,
+    "Use either `mean_arterial_pressure` or raw MAP/BP candidates, not both."
+  )
+)
+
 
 ################################################################################
 #                                 End of File                                  #

@@ -10,6 +10,21 @@ phoenix_cardiovascular(
   age = NA_real_,
   mean_arterial_pressure = NA_real_,
   data = parent.frame(),
+  mean_arterial_pressure_arterial = NULL,
+  mean_arterial_pressure_arterial_eclock = NULL,
+  sbp_arterial = NULL,
+  sbp_arterial_eclock = NULL,
+  dbp_arterial = NULL,
+  dbp_arterial_eclock = NULL,
+  mean_arterial_pressure_cuff = NULL,
+  mean_arterial_pressure_cuff_eclock = NULL,
+  sbp_cuff = NULL,
+  sbp_cuff_eclock = NULL,
+  dbp_cuff = NULL,
+  dbp_cuff_eclock = NULL,
+  eclock = NULL,
+  map.sdbp.delta = Inf,
+  map.delta = Inf,
   ...,
   map = NULL
 )
@@ -24,6 +39,29 @@ phoenix_cardiovascular(
 \item{mean_arterial_pressure}{numeric vector, mean arterial pressure in mmHg}
 
 \item{data}{a \code{list}, \code{data.frame}, or \code{environment} containing the input vectors}
+
+\item{mean_arterial_pressure_arterial, mean_arterial_pressure_cuff}{Optional
+direct arterial and cuff MAP candidates, in mmHg.}
+
+\item{mean_arterial_pressure_arterial_eclock, mean_arterial_pressure_cuff_eclock}{Optional source encounter-clock values for direct arterial and cuff MAP
+candidates.}
+
+\item{sbp_arterial, dbp_arterial, sbp_cuff, dbp_cuff}{Optional arterial and cuff
+systolic/diastolic blood pressure candidates, in mmHg, used to estimate MAP.}
+
+\item{sbp_arterial_eclock, dbp_arterial_eclock, sbp_cuff_eclock, dbp_cuff_eclock}{Optional source encounter-clock values for SBP/DBP candidates.}
+
+\item{eclock}{Optional row encounter-clock values. Required when raw MAP/BP
+candidates are supplied.}
+
+\item{map.sdbp.delta}{The maximum allowed difference, in minutes, between the
+source times for systolic and diastolic blood pressures used to estimate
+MAP. The default, \code{Inf}, allows any SBP/DBP pair.}
+
+\item{map.delta}{The MAP candidate freshness value, in minutes. Candidate MAP
+sources with effective staleness within \code{map.delta} are treated as
+having similar freshness, and the MAP source hierarchy breaks the tie. The
+default, \code{Inf}, preserves the original source-priority behavior.}
 
 \item{...}{pass through}
 
@@ -50,6 +88,12 @@ from arterial measurement, then cuff measures, and provided values before
 approximating mean arterial pressure from blood pressure values via DBP + 1/3 (SBP - DBP),
 where DBP is the diastolic blood pressure and SBP is the systolic blood
 pressure.
+
+Direct calls can either provide a final \code{mean_arterial_pressure} value
+or provide raw arterial/cuff MAP and SBP/DBP candidates with source times.
+When raw candidates are supplied, \code{phoenix_cardiovascular()} applies the
+same MAP freshness and source-priority logic used by
+\code{\link{prepare_phoenix_data}}.
 }
 \section{Phoenix Cardiovascular Scoring}{
 

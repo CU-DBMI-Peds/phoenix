@@ -11,7 +11,7 @@ phoenix(
   other_respiratory_support,
   vasoactives,
   lactate,
-  mean_arterial_pressure,
+  mean_arterial_pressure = NA_real_,
   platelets,
   inr,
   d_dimer,
@@ -97,6 +97,12 @@ respective help files.
 The direct \code{phoenix()} wrapper uses the original respiratory P/F-or-S/F
 threshold logic by default. Set \code{pao2.spo2.delta} to use the P/F versus
 S/F source-time selector in \code{\link{phoenix_respiratory}}.
+
+For scheduled or row-level EHR scoring, callers may either provide a final
+\code{mean_arterial_pressure} value or pass raw arterial/cuff MAP and SBP/DBP
+candidates through \code{...}; those cardiovascular arguments are forwarded
+to \code{\link{phoenix_cardiovascular}}. See that help file for the candidate
+names and the \code{map.sdbp.delta} and \code{map.delta} freshness controls.
 }
 \examples{
 

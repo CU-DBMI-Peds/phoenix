@@ -1,4 +1,4 @@
-# Version 1.1.3.9006
+# Version 1.1.3.9007
 
 ## New Features
 
@@ -25,6 +25,27 @@
   computed regardless of suspected infection status; PSS is the suspected
   infection-gated score.  The returned data include the suspected infection
   indicator used for the window.
+* Add optional respiratory oxygenation source-time selection through
+  `pao2.spo2.delta`.  The default value `NULL` preserves the published
+  PFR-or-SFR threshold logic.  Non-`NULL` values select between PFR and SFR
+  using their source times; `Inf` prefers PFR whenever both ratios are
+  available, and finite values use SFR only when the SpO2 source is sufficiently
+  newer than the PaO2 source.
+* Expose `pao2.spo2.delta` on `phoenix_respiratory()`, `phoenix()`,
+  `phoenix8()`, and `score_prepared_phoenix_data()`.  The direct `phoenix()`
+  and `phoenix8()` wrappers default to the original PFR-or-SFR logic, while
+  callers may opt into source-time selection explicitly.
+* Add MAP freshness controls to `prepare_phoenix_data()`: `map.sdbp.delta`
+  limits how far apart paired SBP/DBP source times may be when estimating MAP,
+  and `map.delta` controls when newer lower-priority MAP candidates can override
+  the source-priority hierarchy.  Defaults preserve the original MAP source
+  priority behavior.
+* Expose the same MAP candidate-selection logic through
+  `phoenix_cardiovascular()`, `phoenix()`, and `phoenix8()` for scheduled
+  row-level scoring.  Direct callers may still provide a final
+  `mean_arterial_pressure`, or they may provide raw arterial/cuff MAP and
+  SBP/DBP candidates with source times and let the package apply the documented
+  freshness rules.
 
 ## Other changes
 
@@ -43,6 +64,9 @@
   indicator.
 * Change the default GCS carry-forward look-back in `prepare_phoenix_data()` to
   720 minutes to match the operational definition.
+* Add source-time columns for derived PFR and SFR values in prepared Phoenix
+  data, enabling respiratory source-time sensitivity analyses without
+  rebuilding prepared inputs.
 * Package now depends on R >= 4.0.0 due to the use of `deparse1()`
 * Add data.table, dplyr, tidyr, and tidyselect to suggested packages.  The
   operationalization helpers use guarded backend-aware paths for data.frames,
@@ -51,6 +75,9 @@
 * Update package build tooling, data generation Make targets, pkgdown reference
   sections, R examples, Python examples, and SQL examples for the new
   operationalization workflow and renamed arguments.
+* Update the operational-definition article with implementation crosswalk
+  comments that map respiratory oxygenation selection and MAP freshness
+  notation to the corresponding R code paths.
 
 ## Bug Fixes
 

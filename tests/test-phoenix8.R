@@ -322,6 +322,87 @@ stopifnot(
   identical(legacy_map8_warning, "`map` is deprecated; use `mean_arterial_pressure` instead.")
 )
 
+wrapper_map_candidate_data <-
+  data.frame(
+    pfr = 500,
+    sfr = 500,
+    vent = 0L,
+    o2 = 0L,
+    vasos = 0L,
+    lactate = 0,
+    mapc = 40,
+    mapc_time = 100,
+    eclock = 100,
+    plts = 200,
+    inr = 1,
+    ddmr = 1,
+    fib = 200,
+    gcs = 15,
+    pupils = 0L,
+    glc = 100,
+    anc = 2,
+    alc = 2,
+    creatinine = 0.2,
+    bil = 0.5,
+    alt = 30,
+    age = 24
+  )
+
+wrapper_map_candidate_phoenix <-
+  phoenix(
+    pf_ratio = pfr,
+    sf_ratio = sfr,
+    invasive_mechanical_ventilation = vent,
+    other_respiratory_support = o2,
+    vasoactives = vasos,
+    lactate = lactate,
+    mean_arterial_pressure_cuff = mapc,
+    mean_arterial_pressure_cuff_eclock = mapc_time,
+    eclock = eclock,
+    platelets = plts,
+    inr = inr,
+    d_dimer = ddmr,
+    fibrinogen = fib,
+    gcs = gcs,
+    fixed_pupils = pupils,
+    age = age,
+    data = wrapper_map_candidate_data
+  )
+
+wrapper_map_candidate_phoenix8 <-
+  phoenix8(
+    pf_ratio = pfr,
+    sf_ratio = sfr,
+    invasive_mechanical_ventilation = vent,
+    other_respiratory_support = o2,
+    vasoactives = vasos,
+    lactate = lactate,
+    mean_arterial_pressure_cuff = mapc,
+    mean_arterial_pressure_cuff_eclock = mapc_time,
+    eclock = eclock,
+    platelets = plts,
+    inr = inr,
+    d_dimer = ddmr,
+    fibrinogen = fib,
+    gcs = gcs,
+    fixed_pupils = pupils,
+    glucose = glc,
+    anc = anc,
+    alc = alc,
+    creatinine = creatinine,
+    bilirubin = bil,
+    alt = alt,
+    age = age,
+    data = wrapper_map_candidate_data
+  )
+
+stopifnot(
+  identical(wrapper_map_candidate_phoenix[["phoenix_cardiovascular_score"]], 1L),
+  identical(wrapper_map_candidate_phoenix[["phoenix_sepsis_score"]], 1L),
+  identical(wrapper_map_candidate_phoenix8[["phoenix_cardiovascular_score"]], 1L),
+  identical(wrapper_map_candidate_phoenix8[["phoenix8_sepsis_score"]], 1L)
+)
+
 x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
 x5 <- DF$vasos; x6 <- DF$lactate; x7 <- DF$mean_arterial_pressure
 x8 <- DF$plts; x9 <- DF$inr; x10 <- DF$ddmr; x11 <- DF$fib;

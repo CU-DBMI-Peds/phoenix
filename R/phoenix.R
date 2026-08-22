@@ -11,6 +11,12 @@
 #' threshold logic by default. Set \code{pao2.spo2.delta} to use the P/F versus
 #' S/F source-time selector in \code{\link{phoenix_respiratory}}.
 #'
+#' For scheduled or row-level EHR scoring, callers may either provide a final
+#' \code{mean_arterial_pressure} value or pass raw arterial/cuff MAP and SBP/DBP
+#' candidates through \code{...}; those cardiovascular arguments are forwarded
+#' to \code{\link{phoenix_cardiovascular}}. See that help file for the candidate
+#' names and the \code{map.sdbp.delta} and \code{map.delta} freshness controls.
+#'
 #' @inheritParams phoenix8
 #' @inheritParams phoenix_respiratory
 #'
@@ -85,7 +91,7 @@
 #'
 #' @export
 phoenix <- function(pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support,
-                    vasoactives, lactate, mean_arterial_pressure, # age at the end to be consistent with phoenix8
+                    vasoactives, lactate, mean_arterial_pressure = NA_real_, # age at the end to be consistent with phoenix8
                     platelets, inr, d_dimer, fibrinogen,
                     gcs, fixed_pupils,
                     age,

@@ -13,6 +13,12 @@
 #' where DBP is the diastolic blood pressure and SBP is the systolic blood
 #' pressure.
 #'
+#' Direct calls can either provide a final \code{mean_arterial_pressure} value
+#' or provide raw arterial/cuff MAP and SBP/DBP candidates with source times.
+#' When raw candidates are supplied, \code{phoenix_cardiovascular()} applies the
+#' same MAP freshness and source-priority logic used by
+#' \code{\link{prepare_phoenix_data}}.
+#'
 #' @section Phoenix Cardiovascular Scoring:
 #' The Phoenix Cardiovascular score ranges from 0 to 6 points; 0, 1, or 2 points
 #' for each of systemic vasoactive medications, lactate, and MAP.
@@ -60,6 +66,24 @@
 #'  }
 #'
 #' @inheritParams phoenix8
+#' @param mean_arterial_pressure_arterial,mean_arterial_pressure_cuff Optional
+#'   direct arterial and cuff MAP candidates, in mmHg.
+#' @param sbp_arterial,dbp_arterial,sbp_cuff,dbp_cuff Optional arterial and cuff
+#'   systolic/diastolic blood pressure candidates, in mmHg, used to estimate MAP.
+#' @param mean_arterial_pressure_arterial_eclock,mean_arterial_pressure_cuff_eclock
+#'   Optional source encounter-clock values for direct arterial and cuff MAP
+#'   candidates.
+#' @param sbp_arterial_eclock,dbp_arterial_eclock,sbp_cuff_eclock,dbp_cuff_eclock
+#'   Optional source encounter-clock values for SBP/DBP candidates.
+#' @param eclock Optional row encounter-clock values. Required when raw MAP/BP
+#'   candidates are supplied.
+#' @param map.sdbp.delta The maximum allowed difference, in minutes, between the
+#'   source times for systolic and diastolic blood pressures used to estimate
+#'   MAP. The default, \code{Inf}, allows any SBP/DBP pair.
+#' @param map.delta The MAP candidate freshness value, in minutes. Candidate MAP
+#'   sources with effective staleness within \code{map.delta} are treated as
+#'   having similar freshness, and the MAP source hierarchy breaks the tie. The
+#'   default, \code{Inf}, preserves the original source-priority behavior.
 #'
 #' @return a integer vector with values 0, 1, 2, 3, 4, 5, or 6.
 #'
@@ -130,7 +154,31 @@
 #' identical(DF2$card, DF3$card)
 #'
 #' @export
-phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_, age = NA_real_, mean_arterial_pressure = NA_real_, data = parent.frame(), ..., map = NULL) {
+phoenix_cardiovascular <-
+  function(
+    vasoactives = NA_integer_,
+    lactate = NA_real_,
+    age = NA_real_,
+    mean_arterial_pressure = NA_real_,
+    data = parent.frame(),
+    mean_arterial_pressure_arterial = NULL,
+    mean_arterial_pressure_arterial_eclock = NULL,
+    sbp_arterial = NULL,
+    sbp_arterial_eclock = NULL,
+    dbp_arterial = NULL,
+    dbp_arterial_eclock = NULL,
+    mean_arterial_pressure_cuff = NULL,
+    mean_arterial_pressure_cuff_eclock = NULL,
+    sbp_cuff = NULL,
+    sbp_cuff_eclock = NULL,
+    dbp_cuff = NULL,
+    dbp_cuff_eclock = NULL,
+    eclock = NULL,
+    map.sdbp.delta = Inf,
+    map.delta = Inf,
+    ...,
+    map = NULL
+  ) {
   if (is.environment(data) && identical(parent.env(data), emptyenv())) {
     stop(
       "`data` is an environment with parent `emptyenv()`, so expressions ",
@@ -158,10 +206,90 @@ phoenix_cardiovascular <- function(vasoactives = NA_integer_, lactate = NA_real_
     mean_arterial_pressure_expr <- substitute(mean_arterial_pressure)
   }
 
+  map_candidate_exprs <-
+    list(
+      mean_arterial_pressure_arterial =
+        substitute(mean_arterial_pressure_arterial),
+      mean_arterial_pressure_arterial_eclock =
+        substitute(mean_arterial_pressure_arterial_eclock),
+      sbp_arterial = substitute(sbp_arterial),
+      sbp_arterial_eclock = substitute(sbp_arterial_eclock),
+      dbp_arterial = substitute(dbp_arterial),
+      dbp_arterial_eclock = substitute(dbp_arterial_eclock),
+      mean_arterial_pressure_cuff =
+        substitute(mean_arterial_pressure_cuff),
+      mean_arterial_pressure_cuff_eclock =
+        substitute(mean_arterial_pressure_cuff_eclock),
+      sbp_cuff = substitute(sbp_cuff),
+      sbp_cuff_eclock = substitute(sbp_cuff_eclock),
+      dbp_cuff = substitute(dbp_cuff),
+      dbp_cuff_eclock = substitute(dbp_cuff_eclock),
+      eclock = substitute(eclock)
+    )
+  map_candidate_values <-
+    lapply(
+      map_candidate_exprs,
+      eval,
+      envir = data,
+      enclos = parent.frame()
+    )
+  use_map_candidates <-
+    any(
+      !vapply(
+        map_candidate_values[names(map_candidate_values) != "eclock"],
+        is.null,
+        logical(1L)
+      )
+    )
+
+  if (use_map_candidates && has_mean_arterial_pressure) {
+    stop(
+      "Use either `mean_arterial_pressure` or raw MAP/BP candidates, not both.",
+      call. = FALSE
+    )
+  }
+
   vas <- eval(expr = substitute(vasoactives), envir = data, enclos = parent.frame())
   lct <- eval(expr = substitute(lactate), envir = data, enclos = parent.frame())
   age <- eval(expr = substitute(age), envir = data, enclos = parent.frame())
-  mean_arterial_pressure <- eval(expr = mean_arterial_pressure_expr, envir = data, enclos = parent.frame())
+
+  if (use_map_candidates) {
+    if (is.null(map_candidate_values[["eclock"]])) {
+      stop(
+        "`eclock` is required when raw MAP/BP candidates are supplied.",
+        call. = FALSE
+      )
+    }
+    mean_arterial_pressure <-
+      select_map_candidate(
+        mean_arterial_pressure_arterial =
+          map_candidate_values[["mean_arterial_pressure_arterial"]],
+        mean_arterial_pressure_arterial_eclock =
+          map_candidate_values[["mean_arterial_pressure_arterial_eclock"]],
+        sbp_arterial = map_candidate_values[["sbp_arterial"]],
+        sbp_arterial_eclock = map_candidate_values[["sbp_arterial_eclock"]],
+        dbp_arterial = map_candidate_values[["dbp_arterial"]],
+        dbp_arterial_eclock = map_candidate_values[["dbp_arterial_eclock"]],
+        mean_arterial_pressure_cuff =
+          map_candidate_values[["mean_arterial_pressure_cuff"]],
+        mean_arterial_pressure_cuff_eclock =
+          map_candidate_values[["mean_arterial_pressure_cuff_eclock"]],
+        sbp_cuff = map_candidate_values[["sbp_cuff"]],
+        sbp_cuff_eclock = map_candidate_values[["sbp_cuff_eclock"]],
+        dbp_cuff = map_candidate_values[["dbp_cuff"]],
+        dbp_cuff_eclock = map_candidate_values[["dbp_cuff_eclock"]],
+        eclock = map_candidate_values[["eclock"]],
+        map.sdbp.delta = map.sdbp.delta,
+        map.delta = map.delta
+      )[["MAP"]]
+  } else {
+    mean_arterial_pressure <-
+      eval(
+        expr = mean_arterial_pressure_expr,
+        envir = data,
+        enclos = parent.frame()
+      )
+  }
 
   lngths <- c(length(vas), length(lct), length(age), length(mean_arterial_pressure))
   n <- max(lngths)
@@ -224,3 +352,164 @@ map_score <- function(map, age) {
   rtn[is.na(rtn)] <- 0L
   rtn
 }
+
+latest_source_eclock <- function(...) {
+  x <- pmax(..., na.rm = TRUE)
+  x[is.infinite(x)] <- NA_real_
+  x
+}
+
+standardize_map_candidate <- function(x, n) {
+  if (is.null(x)) {
+    rep(NA_real_, n)
+  } else if (length(x) == 1L) {
+    rep(x, n)
+  } else {
+    x
+  }
+}
+
+select_map_candidate <-
+  function(
+    mean_arterial_pressure_arterial = NULL,
+    mean_arterial_pressure_arterial_eclock = NULL,
+    sbp_arterial = NULL,
+    sbp_arterial_eclock = NULL,
+    dbp_arterial = NULL,
+    dbp_arterial_eclock = NULL,
+    mean_arterial_pressure_cuff = NULL,
+    mean_arterial_pressure_cuff_eclock = NULL,
+    sbp_cuff = NULL,
+    sbp_cuff_eclock = NULL,
+    dbp_cuff = NULL,
+    dbp_cuff_eclock = NULL,
+    eclock,
+    map.sdbp.delta = Inf,
+    map.delta = Inf
+  ) {
+    # TeX cross-reference:
+    #   * candidate construction: eq:map-current-candidates
+    #   * effective staleness:    eq:map-current-candidate-staleness
+    #   * source priority:        eq:map-current-priority
+    #
+    # `map.sdbp.delta` implements \delta_{\mathrm{sdbp}}. It controls whether
+    # SBP and DBP source times are close enough to estimate MAP. `map.delta`
+    # implements \delta_{\mathrm{MAP}}. It controls how much newer a lower
+    # priority source must be before it outranks the MAP source hierarchy.
+    stopifnot(
+      is.numeric(map.sdbp.delta),
+      length(map.sdbp.delta) == 1,
+      map.sdbp.delta >= 0
+    )
+    stopifnot(
+      is.numeric(map.delta),
+      length(map.delta) == 1,
+      map.delta >= 0
+    )
+
+    lengths <-
+      c(
+        length(eclock),
+        length(mean_arterial_pressure_arterial),
+        length(mean_arterial_pressure_arterial_eclock),
+        length(sbp_arterial),
+        length(sbp_arterial_eclock),
+        length(dbp_arterial),
+        length(dbp_arterial_eclock),
+        length(mean_arterial_pressure_cuff),
+        length(mean_arterial_pressure_cuff_eclock),
+        length(sbp_cuff),
+        length(sbp_cuff_eclock),
+        length(dbp_cuff),
+        length(dbp_cuff_eclock)
+      )
+    lengths <- lengths[lengths > 0L]
+    n <- max(lengths)
+    stopifnot(all(lengths %in% c(1L, n)))
+
+    MAPA <- standardize_map_candidate(mean_arterial_pressure_arterial, n)
+    MAPA_eclock <-
+      standardize_map_candidate(mean_arterial_pressure_arterial_eclock, n)
+    SBPA <- standardize_map_candidate(sbp_arterial, n)
+    SBPA_eclock <- standardize_map_candidate(sbp_arterial_eclock, n)
+    DBPA <- standardize_map_candidate(dbp_arterial, n)
+    DBPA_eclock <- standardize_map_candidate(dbp_arterial_eclock, n)
+    MAPC <- standardize_map_candidate(mean_arterial_pressure_cuff, n)
+    MAPC_eclock <-
+      standardize_map_candidate(mean_arterial_pressure_cuff_eclock, n)
+    SBPC <- standardize_map_candidate(sbp_cuff, n)
+    SBPC_eclock <- standardize_map_candidate(sbp_cuff_eclock, n)
+    DBPC <- standardize_map_candidate(dbp_cuff, n)
+    DBPC_eclock <- standardize_map_candidate(dbp_cuff_eclock, n)
+    eclock <- standardize_map_candidate(eclock, n)
+
+    arterial_pair_ok <-
+      !is.na(SBPA) &
+      !is.na(DBPA) &
+      abs(SBPA_eclock - DBPA_eclock) <= map.sdbp.delta
+    cuff_pair_ok <-
+      !is.na(SBPC) &
+      !is.na(DBPC) &
+      abs(SBPC_eclock - DBPC_eclock) <= map.sdbp.delta
+
+    m1 <- MAPA
+    m2 <- ifelse(arterial_pair_ok, mean_arterial_pressure(SBPA, DBPA), NA_real_)
+    m3 <- MAPC
+    m4 <- ifelse(cuff_pair_ok, mean_arterial_pressure(SBPC, DBPC), NA_real_)
+
+    eta1 <- eclock - MAPA_eclock
+    eta2 <- eclock - pmax(SBPA_eclock, DBPA_eclock)
+    eta3 <- eclock - MAPC_eclock
+    eta4 <- eclock - pmax(SBPC_eclock, DBPC_eclock)
+    eta1[is.na(m1) | is.na(eta1)] <- Inf
+    eta2[is.na(m2) | is.na(eta2)] <- Inf
+    eta3[is.na(m3) | is.na(eta3)] <- Inf
+    eta4[is.na(m4) | is.na(eta4)] <- Inf
+
+    use1 <-
+      eta1 < Inf &
+      eta1 <= pmin(eta2, eta3, eta4) + map.delta
+    use2 <-
+      !use1 &
+      eta2 < Inf &
+      eta2 < eta1 + map.delta &
+      eta2 <= pmin(eta3, eta4) + map.delta
+    use3 <-
+      !use1 &
+      !use2 &
+      eta3 < Inf &
+      eta3 < pmin(eta1, eta2) + map.delta &
+      eta3 <= eta4 + map.delta
+    use4 <-
+      !use1 &
+      !use2 &
+      !use3 &
+      eta4 < Inf &
+      eta4 < pmin(eta1, eta2, eta3) + map.delta
+
+    map <- rep(NA_real_, n)
+    map[use1] <- m1[use1]
+    map[use2] <- m2[use2]
+    map[use3] <- m3[use3]
+    map[use4] <- m4[use4]
+
+    map_eclock <- rep(NA_real_, n)
+    map_eclock[use1] <- MAPA_eclock[use1]
+    map_eclock[use2] <-
+      latest_source_eclock(SBPA_eclock[use2], DBPA_eclock[use2])
+    map_eclock[use3] <- MAPC_eclock[use3]
+    map_eclock[use4] <-
+      latest_source_eclock(SBPC_eclock[use4], DBPC_eclock[use4])
+
+    map_source <- rep(NA_character_, n)
+    map_source[use1] <- "MAPA"
+    map_source[use2] <- "SBPA_DBPA"
+    map_source[use3] <- "MAPC"
+    map_source[use4] <- "SBPC_DBPC"
+
+    list(
+      MAP = map,
+      MAP_eclock = map_eclock,
+      MAP_source = map_source
+    )
+  }
