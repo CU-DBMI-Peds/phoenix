@@ -44,7 +44,7 @@ greater than 102 IU/L.
 #   alt: IU/L
 
 hep_example       <- sepsis[c("pid", "bilirubin", "alt")]
-hep_example$score <- phoenix_hepatic(bilirubin, alt, sepsis)
+hep_example[["score"]] <- phoenix_hepatic(bilirubin, alt, sepsis)
 hep_example
 
 # example data set with all possilbe hepatic scores

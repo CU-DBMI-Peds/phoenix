@@ -31,21 +31,21 @@ DF <- expand.grid(
         dbp = 20:100  # expected units of mmHg
       )
 
-DF$mean_arterial_pressure <- with(DF, mean_arterial_pressure(sbp, dbp))
+DF[["mean_arterial_pressure"]] <- with(DF, mean_arterial_pressure(sbp, dbp))
 with(DF, plot(sbp, dbp, col = mean_arterial_pressure))
-DF$mean_arterial_pressure[DF$sbp < DF$dbp] <- NA
+DF[["mean_arterial_pressure"]][DF[["sbp"]] < DF[["dbp"]]] <- NA
 
-z <- matrix(DF$mean_arterial_pressure, nrow = length(unique(DF$sbp)), ncol = length(unique(DF$dbp)))
+z <- matrix(DF[["mean_arterial_pressure"]], nrow = length(unique(DF[["sbp"]])), ncol = length(unique(DF[["dbp"]])))
 
 image(
-  x = unique(DF$sbp),
-  y = unique(DF$dbp),
+  x = unique(DF[["sbp"]]),
+  y = unique(DF[["dbp"]]),
   z = z,
   col = hcl.colors(100, palette = "RdBu"),
   xlab = "SBP (mmHg)",
   ylab = "DBP (mmHg)",
   main = "Estimated Mean Arterial Pressure"
 )
-contour(x = unique(DF$sbp), y = unique(DF$dbp), z = z, add = TRUE)
+contour(x = unique(DF[["sbp"]]), y = unique(DF[["dbp"]]), z = z, add = TRUE)
 
 }

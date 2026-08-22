@@ -177,25 +177,25 @@ phoenix8 <- function(
   # Direct phoenix()/phoenix8() calls preserve the original PFR-or-SFR logic by
   # default. Prepared-data scoring uses its own default for eq:pfr-sfr-selector.
   cl[["pao2.spo2.delta"]] <- pao2.spo2.delta
-  cl$data <- NULL
+  cl[["data"]] <- NULL
 
   cl[[1]] <- get("phoenix", mode = "function")
   rtn <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- get("phoenix_endocrine", mode = "function")
-  rtn$phoenix_endocrine_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  rtn[["phoenix_endocrine_score"]] <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- get("phoenix_immunologic", mode = "function")
-  rtn$phoenix_immunologic_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  rtn[["phoenix_immunologic_score"]] <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- get("phoenix_renal", mode = "function")
-  rtn$phoenix_renal_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  rtn[["phoenix_renal_score"]] <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   cl[[1]] <- get("phoenix_hepatic", mode = "function")
-  rtn$phoenix_hepatic_score <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  rtn[["phoenix_hepatic_score"]] <- eval(as.call(cl), envir = data, enclos = parent.frame())
 
   # TeX: row-level sum over eq:omega8 used in eq:odss.
-  rtn$phoenix8_sepsis_score <-
+  rtn[["phoenix8_sepsis_score"]] <-
     rtn[["phoenix_sepsis_score"]] +
     rtn[["phoenix_endocrine_score"]] +
     rtn[["phoenix_immunologic_score"]] +

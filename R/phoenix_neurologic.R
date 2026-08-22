@@ -77,11 +77,11 @@
 #'
 #' # build an example data set with all possible neurologic scores
 #' DF <- expand.grid(gcs = c(3:15, NA), pupils = c(0, 1, NA))
-#' DF$target <- 0L
-#' DF$target[DF$gcs <= 10] <- 1L
-#' DF$target[DF$pupils == 1] <- 2L
-#' DF$current <- phoenix_neurologic(gcs, pupils, DF)
-#' stopifnot(identical(DF$target, DF$current))
+#' DF[["target"]] <- 0L
+#' DF[["target"]][DF[["gcs"]] <= 10] <- 1L
+#' DF[["target"]][DF[["pupils"]] == 1] <- 2L
+#' DF[["current"]] <- phoenix_neurologic(gcs, pupils, DF)
+#' stopifnot(identical(DF[["target"]], DF[["current"]]))
 #' DF
 #'
 #' @export

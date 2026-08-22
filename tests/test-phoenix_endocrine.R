@@ -78,7 +78,7 @@ test_bad_env_result <- tryCatch(
 stopifnot(
   inherits(test_bad_env_result, "error"),
   identical(
-    test_bad_env_result$message,
+    test_bad_env_result[["message"]],
     paste0(
       "`data` is an environment with parent `emptyenv()`, so expressions ",
       "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",

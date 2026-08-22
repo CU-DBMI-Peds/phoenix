@@ -496,7 +496,7 @@ l <- data.frame(
   stringsAsFactors = FALSE
 )
 outDF <- getFromNamespace(x = "phxdft_left_join", ns = "phoenix")(r, l, by = "x1", suffixes = c(".right", ".left"))
-outDF <- outDF[order(outDF$x1), ]
+outDF <- outDF[order(outDF[["x1"]]), ]
 rownames(outDF) <- NULL
 stopifnot(identical(outDF, expected_df))
 
@@ -511,7 +511,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   expected_dt <- expected_df
 }
 outDT <- getFromNamespace(x = "phxdft_left_join", ns = "phoenix")(r, l, by = "x1", suffixes = c(".right", ".left"))
-outDT <- outDT[order(outDT$x1), ]
+outDT <- outDT[order(outDT[["x1"]]), ]
 rownames(outDT) <- NULL
 stopifnot(identical(outDT, expected_dt))
 
@@ -525,7 +525,7 @@ if (requireNamespace("dplyr", quietly = TRUE)) {
   expected_tb <- expected_df
 }
 outTBL <- getFromNamespace(x = "phxdft_left_join", ns = "phoenix")(r, l, by = "x1", suffixes = c(".right", ".left"))
-outTBL <- outTBL[order(outTBL$x1), ]
+outTBL <- outTBL[order(outTBL[["x1"]]), ]
 rownames(outTBL) <- NULL
 stopifnot(identical(outTBL, expected_tb))
 
@@ -548,7 +548,7 @@ l <- data.frame(
   stringsAsFactors = FALSE
 )
 outDF <- getFromNamespace(x = "phxdft_left_join", ns = "phoenix")(r, l, by.x = "x1", by.y = "l1", suffixes = c(".right", ".left"))
-outDF <- outDF[order(outDF$x1), ]
+outDF <- outDF[order(outDF[["x1"]]), ]
 rownames(outDF) <- NULL
 stopifnot(identical(outDF, expected_df))
 
@@ -563,7 +563,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   expected_dt <- expected_df
 }
 outDT <- getFromNamespace(x = "phxdft_left_join", ns = "phoenix")(r, l, by.x = "x1", by.y = "l1", suffixes = c(".right", ".left"))
-outDT <- outDT[order(outDT$x1), ]
+outDT <- outDT[order(outDT[["x1"]]), ]
 rownames(outDT) <- NULL
 stopifnot(identical(outDT, expected_dt))
 
@@ -577,7 +577,7 @@ if (requireNamespace("dplyr", quietly = TRUE)) {
   expected_tb <- expected_df
 }
 outTBL <- getFromNamespace(x = "phxdft_left_join", ns = "phoenix")(r, l, by.x = "x1", by.y = "l1", suffixes = c(".right", ".left"))
-outTBL <- outTBL[order(outTBL$x1), ]
+outTBL <- outTBL[order(outTBL[["x1"]]), ]
 rownames(outTBL) <- NULL
 stopifnot(identical(outTBL, expected_tb))
 
@@ -601,7 +601,7 @@ l <- data.frame(
   stringsAsFactors = FALSE
 )
 outDF <- getFromNamespace(x = "phxdft_full_outer_join", ns = "phoenix")(r, l)
-outDF <- outDF[order(outDF$x1), ]
+outDF <- outDF[order(outDF[["x1"]]), ]
 rownames(outDF) <- NULL
 stopifnot(identical(outDF, expected_df))
 
@@ -616,7 +616,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   expected_dt <- expected_df
 }
 outDT <- getFromNamespace(x = "phxdft_full_outer_join", ns = "phoenix")(r, l)
-outDT <- outDT[order(outDT$x1), ]
+outDT <- outDT[order(outDT[["x1"]]), ]
 rownames(outDT) <- NULL
 stopifnot(identical(outDT, expected_dt))
 
@@ -630,7 +630,7 @@ if (requireNamespace("dplyr", quietly = TRUE)) {
   expected_tb <- expected_df
 }
 outTBL <- getFromNamespace(x = "phxdft_full_outer_join", ns = "phoenix")(r, l)
-outTBL <- outTBL[order(outTBL$x1), ]
+outTBL <- outTBL[order(outTBL[["x1"]]), ]
 rownames(outTBL) <- NULL
 stopifnot(identical(outTBL, expected_tb))
 
@@ -653,7 +653,7 @@ l <- data.frame(
   stringsAsFactors = FALSE
 )
 outDF <- getFromNamespace(x = "phxdft_full_outer_join", ns = "phoenix")(r, l, by = "x1", suffixes = c(".right", ".left"))
-outDF <- outDF[order(outDF$x1), ]
+outDF <- outDF[order(outDF[["x1"]]), ]
 rownames(outDF) <- NULL
 stopifnot(identical(outDF, expected_df))
 
@@ -668,7 +668,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   expected_dt <- expected_df
 }
 outDT <- getFromNamespace(x = "phxdft_full_outer_join", ns = "phoenix")(r, l, by = "x1", suffixes = c(".right", ".left"))
-outDT <- outDT[order(outDT$x1), ]
+outDT <- outDT[order(outDT[["x1"]]), ]
 rownames(outDT) <- NULL
 stopifnot(identical(outDT, expected_dt))
 
@@ -682,7 +682,7 @@ if (requireNamespace("dplyr", quietly = TRUE)) {
   expected_tb <- expected_df
 }
 outTBL <- getFromNamespace(x = "phxdft_full_outer_join", ns = "phoenix")(r, l, by = "x1", suffixes = c(".right", ".left"))
-outTBL <- outTBL[order(outTBL$x1), ]
+outTBL <- outTBL[order(outTBL[["x1"]]), ]
 rownames(outTBL) <- NULL
 stopifnot(identical(outTBL, expected_tb))
 

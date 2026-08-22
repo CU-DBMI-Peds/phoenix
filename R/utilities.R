@@ -240,19 +240,19 @@ phxdft_left_join <- function(x, y, ...) {
   if (requireNamespace(package = "dplyr", quietly = TRUE) && inherits(x, "tbl_df")) {
     lj <- getExportedValue(name = "left_join", ns = "dplyr")
     dots <- list(...)
-    if (!is.null(dots$by.x) & !is.null(dots$by.y)) {
-      by <- stats::setNames(dots$by.y, dots$by.x)
-      dots$by.x <- NULL
-      dots$by.y <- NULL
-    } else if (!is.null(dots$by)) {
-      by <- dots$by
-      dots$by   <- NULL
+    if (!is.null(dots[["by.x"]]) & !is.null(dots[["by.y"]])) {
+      by <- stats::setNames(dots[["by.y"]], dots[["by.x"]])
+      dots[["by.x"]] <- NULL
+      dots[["by.y"]] <- NULL
+    } else if (!is.null(dots[["by"]])) {
+      by <- dots[["by"]]
+      dots[["by"]]   <- NULL
     } else {
       by <- NULL
     }
-    if (!is.null(dots$suffixes)) {
-      suffix <- dots$suffixes
-      dots$suffixes <- NULL
+    if (!is.null(dots[["suffixes"]])) {
+      suffix <- dots[["suffixes"]]
+      dots[["suffixes"]] <- NULL
     } else {
       suffix <- c(".x", ".y")
     }
@@ -278,19 +278,19 @@ phxdft_full_outer_join <- function(x, y, ...) {
   if (requireNamespace(package = "dplyr", quietly = TRUE) && inherits(x, "tbl_df")) {
     fj <- getExportedValue(name = "full_join", ns = "dplyr")
     dots <- list(...)
-    if (!is.null(dots$by.x) & !is.null(dots$by.y)) {
-      by <- stats::setNames(dots$by.y, dots$by.x)
-      dots$by.x <- NULL
-      dots$by.y <- NULL
-    } else if (!is.null(dots$by)) {
-      by <- dots$by
-      dots$by   <- NULL
+    if (!is.null(dots[["by.x"]]) & !is.null(dots[["by.y"]])) {
+      by <- stats::setNames(dots[["by.y"]], dots[["by.x"]])
+      dots[["by.x"]] <- NULL
+      dots[["by.y"]] <- NULL
+    } else if (!is.null(dots[["by"]])) {
+      by <- dots[["by"]]
+      dots[["by"]]   <- NULL
     } else {
       by <- NULL
     }
-    if (!is.null(dots$suffixes)) {
-      suffix <- dots$suffixes
-      dots$suffixes <- NULL
+    if (!is.null(dots[["suffixes"]])) {
+      suffix <- dots[["suffixes"]]
+      dots[["suffixes"]] <- NULL
     } else {
       suffix <- c(".x", ".y")
     }
@@ -316,19 +316,19 @@ phxdft_inner_join <- function(x, y, ...) {
   if (requireNamespace(package = "dplyr", quietly = TRUE) && inherits(x, "tbl_df")) {
     ij <- getExportedValue(name = "inner_join", ns = "dplyr")
     dots <- list(...)
-    if (!is.null(dots$by.x) & !is.null(dots$by.y)) {
-      by <- stats::setNames(dots$by.y, dots$by.x)
-      dots$by.x <- NULL
-      dots$by.y <- NULL
-    } else if (!is.null(dots$by)) {
-      by <- dots$by
-      dots$by   <- NULL
+    if (!is.null(dots[["by.x"]]) & !is.null(dots[["by.y"]])) {
+      by <- stats::setNames(dots[["by.y"]], dots[["by.x"]])
+      dots[["by.x"]] <- NULL
+      dots[["by.y"]] <- NULL
+    } else if (!is.null(dots[["by"]])) {
+      by <- dots[["by"]]
+      dots[["by"]]   <- NULL
     } else {
       by <- NULL
     }
-    if (!is.null(dots$suffixes)) {
-      suffix <- dots$suffixes
-      dots$suffixes <- NULL
+    if (!is.null(dots[["suffixes"]])) {
+      suffix <- dots[["suffixes"]]
+      dots[["suffixes"]] <- NULL
     } else {
       suffix <- c(".x", ".y")
     }

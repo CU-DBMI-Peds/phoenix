@@ -115,7 +115,7 @@ test_bad_env_result <- tryCatch(
 stopifnot(
   inherits(test_bad_env_result, "error"),
   identical(
-    test_bad_env_result$message,
+    test_bad_env_result[["message"]],
     paste0(
       "`data` is an environment with parent `emptyenv()`, so expressions ",
       "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",
@@ -143,14 +143,14 @@ stopifnot(
   )
 )
 stopifnot(identical(
-  x$message,
+  x[["message"]],
  "All inputs need to either have the same length or have length 1. Length of vasoactives is 0; Length of lactate is 1; Length of age is 1; Length of mean_arterial_pressure is 1."
 ))
 
 x <- tryCatch(phoenix_cardiovascular(vasoactives = c(NA, NA), age = c(NA, NA, NA)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))
 stopifnot(identical(
-  x$message,
+  x[["message"]],
  "All inputs need to either have the same length or have length 1. Length of vasoactives is 2; Length of lactate is 1; Length of age is 3; Length of mean_arterial_pressure is 1."
 ))
 
@@ -275,7 +275,7 @@ candidate_conflict_error <-
 stopifnot(
   inherits(candidate_conflict_error, "error"),
   identical(
-    candidate_conflict_error$message,
+    candidate_conflict_error[["message"]],
     "Use either `mean_arterial_pressure` or raw MAP/BP candidates, not both."
   )
 )

@@ -35,7 +35,7 @@ on blood glucose with one point for levels < 50 mg/dL or > 150 mg/dL.
 # recall glucose is expected to have units of mg/dL
 
 endo_example       <- sepsis[c("pid", "glucose")]
-endo_example$score <- phoenix_endocrine(glucose, data = sepsis)
+endo_example[["score"]] <- phoenix_endocrine(glucose, data = sepsis)
 endo_example
 
 # example data set to get all the possible endocrine scores

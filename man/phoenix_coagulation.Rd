@@ -62,7 +62,7 @@ DF <-
               ddmr = c(NA, 1.7, 2.0, 2.8),
               fib  = c(NA, 88, 100, 120))
 
-DF$coag <- phoenix_coagulation(plts, inr, ddmr, fib, DF)
+DF[["coag"]] <- phoenix_coagulation(plts, inr, ddmr, fib, DF)
 DF
 
 }

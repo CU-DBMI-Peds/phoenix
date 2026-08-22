@@ -78,7 +78,7 @@ test_bad_env_result <- tryCatch(
 stopifnot(
   inherits(test_bad_env_result, "error"),
   identical(
-    test_bad_env_result$message,
+    test_bad_env_result[["message"]],
     paste0(
       "`data` is an environment with parent `emptyenv()`, so expressions ",
       "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",
@@ -92,14 +92,14 @@ stopifnot(
 x <- tryCatch(phoenix_renal(creatinine = numeric(0)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))
 stopifnot(identical(
-  x$message,
+  x[["message"]],
  "All inputs need to either have the same length or have length 1. Length of creatinine is 0; Length of age is 1."
 ))
 
 x <- tryCatch(phoenix_renal(creatinine = c(NA, NA), age = c(NA, NA, NA)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))
 stopifnot(identical(
-  x$message,
+  x[["message"]],
  "All inputs need to either have the same length or have length 1. Length of creatinine is 2; Length of age is 3."
 ))
 

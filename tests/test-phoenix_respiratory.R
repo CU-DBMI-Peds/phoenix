@@ -126,7 +126,7 @@ test_bad_env_result <- tryCatch(
 stopifnot(
   inherits(test_bad_env_result, "error"),
   identical(
-    test_bad_env_result$message,
+    test_bad_env_result[["message"]],
     paste0(
       "`data` is an environment with parent `emptyenv()`, so expressions ",
       "cannot resolve base functions/operators. Use `baseenv()` as the parent, ",
@@ -140,14 +140,14 @@ stopifnot(
 x <- tryCatch(phoenix_respiratory(pf_ratio = numeric(0)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))
 stopifnot(identical(
-  x$message,
+  x[["message"]],
  "All inputs need to either have the same length or have length 1. Length of pf_ratio is 0; Length of sf_ratio is 1; Length of invasive_mechanical_ventilation is 1; Length of other_respiratory_support is 1."
 ))
 
 x <- tryCatch(phoenix_respiratory(pf_ratio = c(NA, NA), invasive_mechanical_ventilation = c(NA, NA, NA)), error = function(e) e)
 stopifnot(inherits(x, "simpleError"))
 stopifnot(identical(
-  x$message,
+  x[["message"]],
  "All inputs need to either have the same length or have length 1. Length of pf_ratio is 2; Length of sf_ratio is 1; Length of invasive_mechanical_ventilation is 3; Length of other_respiratory_support is 1."
 ))
 

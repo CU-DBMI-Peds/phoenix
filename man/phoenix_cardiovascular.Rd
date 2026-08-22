@@ -160,7 +160,7 @@ DF <-
               lactate = c(NA, 3.2, 5, 7.8, 11, 14), # units of mmol/L
               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145), # months
               mean_arterial_pressure = c(NA, 16:52)) # mmHg
-DF$card <- phoenix_cardiovascular(vasos, lactate, age, mean_arterial_pressure, DF)
+DF[["card"]] <- phoenix_cardiovascular(vasos, lactate, age, mean_arterial_pressure, DF)
 head(DF)
 
 # what if lactate is unknown for all records? - set the value either in the
@@ -169,16 +169,16 @@ DF2 <-
   expand.grid(vasos = c(NA, 0:6),
               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145), # months
               mean_arterial_pressure = c(NA, 16:52)) # mmHg
-DF2$card <- phoenix_cardiovascular(vasos, lactate = NA, age, mean_arterial_pressure, DF2)
+DF2[["card"]] <- phoenix_cardiovascular(vasos, lactate = NA, age, mean_arterial_pressure, DF2)
 
 DF3 <-
   expand.grid(vasos = c(NA, 0:6),
               lactate = NA, # mmol/L
               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145), # months
               mean_arterial_pressure = c(NA, 16:52)) # mmHg
-DF3$card <- phoenix_cardiovascular(vasos, lactate, age, mean_arterial_pressure, DF3)
+DF3[["card"]] <- phoenix_cardiovascular(vasos, lactate, age, mean_arterial_pressure, DF3)
 
-identical(DF2$card, DF3$card)
+identical(DF2[["card"]], DF3[["card"]])
 
 }
 \references{

@@ -37,7 +37,7 @@ part of Phoenix-8 and not Phoenix.
 # Expected units for ALC and ANC are 1000 cells per cubic millimeter
 
 immu_example <- sepsis[c("pid", "anc", "alc")]
-immu_example$score <- phoenix_immunologic(anc, alc, sepsis)
+immu_example[["score"]] <- phoenix_immunologic(anc, alc, sepsis)
 immu_example
 
 # example data set with all possilbe immunologic scores

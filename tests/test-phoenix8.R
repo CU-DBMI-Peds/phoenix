@@ -10,14 +10,14 @@ respiratory <- expand.grid(
   vent = c(0:1, NA),
   o2   = c(0:1, NA)
 )
-respiratory$expected_score <- 0L
-respiratory$expected_score[respiratory$vent == 0 & respiratory$o2 == 0] <- 0L
-respiratory$expected_score[(respiratory$vent == 1 | respiratory$o2 == 1) & (respiratory$pfr < 400 | respiratory$sfr < 292)] <- 1L
-respiratory$expected_score[(respiratory$vent == 1) & ((respiratory$pfr >= 100 & respiratory$pfr < 200) | (respiratory$sfr >= 148 & respiratory$sfr < 220))] <- 2L
-respiratory$expected_score[(respiratory$vent == 1) & (respiratory$pfr < 100 | respiratory$sfr < 148)] <- 3L
+respiratory[["expected_score"]] <- 0L
+respiratory[["expected_score"]][respiratory[["vent"]] == 0 & respiratory[["o2"]] == 0] <- 0L
+respiratory[["expected_score"]][(respiratory[["vent"]] == 1 | respiratory[["o2"]] == 1) & (respiratory[["pfr"]] < 400 | respiratory[["sfr"]] < 292)] <- 1L
+respiratory[["expected_score"]][(respiratory[["vent"]] == 1) & ((respiratory[["pfr"]] >= 100 & respiratory[["pfr"]] < 200) | (respiratory[["sfr"]] >= 148 & respiratory[["sfr"]] < 220))] <- 2L
+respiratory[["expected_score"]][(respiratory[["vent"]] == 1) & (respiratory[["pfr"]] < 100 | respiratory[["sfr"]] < 148)] <- 3L
 
-stopifnot(!any(is.na(respiratory$expected_score)))
-stopifnot(all(respiratory$expected_score %in% 0:3))
+stopifnot(!any(is.na(respiratory[["expected_score"]])))
+stopifnot(all(respiratory[["expected_score"]] %in% 0:3))
 
 ################################################################################
 # cardiovascular
@@ -27,9 +27,9 @@ cardiovascular <-
               age = c(NA, 0.4, 1, 3, 12, 18, 24, 45, 60, 61, 144, 145, 215.999, 216),
               mean_arterial_pressure = c(NA, 16:52))
 
-cardiovascular$vaso_score <- (cardiovascular$vasos > 0) + (cardiovascular$vasos > 1)
-cardiovascular$lact_score <- (cardiovascular$lactate >= 5) + (cardiovascular$lactate >= 11)
-cardiovascular$map_score  <- with(cardiovascular, {
+cardiovascular[["vaso_score"]] <- (cardiovascular[["vasos"]] > 0) + (cardiovascular[["vasos"]] > 1)
+cardiovascular[["lact_score"]] <- (cardiovascular[["lactate"]] >= 5) + (cardiovascular[["lactate"]] >= 11)
+cardiovascular[["map_score"]]  <- with(cardiovascular, {
       (             age <   1) * ((mean_arterial_pressure < 17) + (mean_arterial_pressure < 31)) +
       (age >=   1 & age <  12) * ((mean_arterial_pressure < 25) + (mean_arterial_pressure < 39)) +
       (age >=  12 & age <  24) * ((mean_arterial_pressure < 31) + (mean_arterial_pressure < 44)) +
@@ -38,17 +38,17 @@ cardiovascular$map_score  <- with(cardiovascular, {
       (age >= 144 & age < 216) * ((mean_arterial_pressure < 38) + (mean_arterial_pressure < 52))
               })
 
-cardiovascular$vaso_score[is.na(cardiovascular$vaso_score)] <- 0
-cardiovascular$lact_score[is.na(cardiovascular$lact_score)] <- 0
-cardiovascular$map_score[is.na(cardiovascular$map_score)] <- 0
+cardiovascular[["vaso_score"]][is.na(cardiovascular[["vaso_score"]])] <- 0
+cardiovascular[["lact_score"]][is.na(cardiovascular[["lact_score"]])] <- 0
+cardiovascular[["map_score"]][is.na(cardiovascular[["map_score"]])] <- 0
 
-cardiovascular$expected_score <-
+cardiovascular[["expected_score"]] <-
   with(cardiovascular, {
     as.integer(vaso_score + lact_score + map_score)
   })
 
-stopifnot(!any(is.na(cardiovascular$expected_score)))
-stopifnot(all(cardiovascular$expected_score %in% 0:6))
+stopifnot(!any(is.na(cardiovascular[["expected_score"]])))
+stopifnot(all(cardiovascular[["expected_score"]] %in% 0:6))
 
 ################################################################################
 # coagulation
@@ -59,112 +59,112 @@ coagulation <-
               ddmr = c(NA, 1.7, 2.0, 2.8),
               fib  = c(NA, 88, 100, 120))
 
-coagulation$expected_score <- 0L
-coagulation$expected_score[which(coagulation$plts < 100)] <-
-  coagulation$expected_score[which(coagulation$plts < 100)] + 1L
-coagulation$expected_score[which(coagulation$inr > 1.3)] <-
-  coagulation$expected_score[which(coagulation$inr > 1.3)] + 1L
-coagulation$expected_score[which(coagulation$ddmr > 2)] <-
-  coagulation$expected_score[which(coagulation$ddmr > 2)] + 1L
-coagulation$expected_score[which(coagulation$fib < 100)] <-
-  coagulation$expected_score[which(coagulation$fib < 100)] + 1L
-coagulation$expected_score <- pmin(coagulation$expected_score, 2L)
+coagulation[["expected_score"]] <- 0L
+coagulation[["expected_score"]][which(coagulation[["plts"]] < 100)] <-
+  coagulation[["expected_score"]][which(coagulation[["plts"]] < 100)] + 1L
+coagulation[["expected_score"]][which(coagulation[["inr"]] > 1.3)] <-
+  coagulation[["expected_score"]][which(coagulation[["inr"]] > 1.3)] + 1L
+coagulation[["expected_score"]][which(coagulation[["ddmr"]] > 2)] <-
+  coagulation[["expected_score"]][which(coagulation[["ddmr"]] > 2)] + 1L
+coagulation[["expected_score"]][which(coagulation[["fib"]] < 100)] <-
+  coagulation[["expected_score"]][which(coagulation[["fib"]] < 100)] + 1L
+coagulation[["expected_score"]] <- pmin(coagulation[["expected_score"]], 2L)
 
-stopifnot(!any(is.na(coagulation$expected_score)))
-stopifnot(all(coagulation$expected_score %in% 0:2))
+stopifnot(!any(is.na(coagulation[["expected_score"]])))
+stopifnot(all(coagulation[["expected_score"]] %in% 0:2))
 
 ################################################################################
 # neurologic
 neurologic <- expand.grid(gcs = c(3:15, NA), pupils = c(0, 1, NA))
-neurologic$expected_score <- 0L
-neurologic$expected_score[which(neurologic$gcs <= 10)] <- 1L
-neurologic$expected_score[which(neurologic$pupils == 1)] <- 2L
+neurologic[["expected_score"]] <- 0L
+neurologic[["expected_score"]][which(neurologic[["gcs"]] <= 10)] <- 1L
+neurologic[["expected_score"]][which(neurologic[["pupils"]] == 1)] <- 2L
 
-stopifnot(!any(is.na(neurologic$expected_score)))
-stopifnot(all(neurologic$expected_score %in% 0:2))
+stopifnot(!any(is.na(neurologic[["expected_score"]])))
+stopifnot(all(neurologic[["expected_score"]] %in% 0:2))
 
 ################################################################################
 # endocrine
 endocrine <- data.frame(glc = c(NA, 12, 50, 55, 100, 150, 178))
-endocrine$expected_score <- 0L
-endocrine$expected_score[which(endocrine$glc > 150)] <- 1L
-endocrine$expected_score[which(endocrine$glc <  50)] <- 1L
+endocrine[["expected_score"]] <- 0L
+endocrine[["expected_score"]][which(endocrine[["glc"]] > 150)] <- 1L
+endocrine[["expected_score"]][which(endocrine[["glc"]] <  50)] <- 1L
 
-stopifnot(!any(is.na(endocrine$expected_score)))
-stopifnot(all(endocrine$expected_score %in% 0:1))
+stopifnot(!any(is.na(endocrine[["expected_score"]])))
+stopifnot(all(endocrine[["expected_score"]] %in% 0:1))
 
 ################################################################################
 # immunolgic
 # Recall that the expected units for ANC and ALC are 1000 cells/mm^3
 immunolgic <- expand.grid(anc = c(NA, 0.200, 0.500, 0.600),
                           alc = c(NA, 0.500, 1.000, 2.000))
-immunolgic$expected_score <- 0L
-immunolgic$expected_score[which(immunolgic$anc < 0.500)] <- 1L
-immunolgic$expected_score[which(immunolgic$alc < 1.000)] <- 1L
+immunolgic[["expected_score"]] <- 0L
+immunolgic[["expected_score"]][which(immunolgic[["anc"]] < 0.500)] <- 1L
+immunolgic[["expected_score"]][which(immunolgic[["alc"]] < 1.000)] <- 1L
 
-stopifnot(!any(is.na(immunolgic$expected_score)))
-stopifnot(all(immunolgic$expected_score %in% 0:1))
+stopifnot(!any(is.na(immunolgic[["expected_score"]])))
+stopifnot(all(immunolgic[["expected_score"]] %in% 0:1))
 
 ################################################################################
 # renal
 renal <- expand.grid(
-              age = cardiovascular$age,
+              age = cardiovascular[["age"]],
               creatinine = c(NA, seq(0.0, 1.1, by = 0.1)))
-renal$expected_score <- 0L
-renal$expected_score[which(                   renal$age <   1 & renal$creatinine >= 0.8)] <- 1L
-renal$expected_score[which(  1 <= renal$age & renal$age <  12 & renal$creatinine >= 0.3)] <- 1L
-renal$expected_score[which( 12 <= renal$age & renal$age <  24 & renal$creatinine >= 0.4)] <- 1L
-renal$expected_score[which( 24 <= renal$age & renal$age <  60 & renal$creatinine >= 0.6)] <- 1L
-renal$expected_score[which( 60 <= renal$age & renal$age < 144 & renal$creatinine >= 0.7)] <- 1L
-renal$expected_score[which(144 <= renal$age & renal$age < 216 & renal$creatinine >= 1.0)] <- 1L
+renal[["expected_score"]] <- 0L
+renal[["expected_score"]][which(                   renal[["age"]] <   1 & renal[["creatinine"]] >= 0.8)] <- 1L
+renal[["expected_score"]][which(  1 <= renal[["age"]] & renal[["age"]] <  12 & renal[["creatinine"]] >= 0.3)] <- 1L
+renal[["expected_score"]][which( 12 <= renal[["age"]] & renal[["age"]] <  24 & renal[["creatinine"]] >= 0.4)] <- 1L
+renal[["expected_score"]][which( 24 <= renal[["age"]] & renal[["age"]] <  60 & renal[["creatinine"]] >= 0.6)] <- 1L
+renal[["expected_score"]][which( 60 <= renal[["age"]] & renal[["age"]] < 144 & renal[["creatinine"]] >= 0.7)] <- 1L
+renal[["expected_score"]][which(144 <= renal[["age"]] & renal[["age"]] < 216 & renal[["creatinine"]] >= 1.0)] <- 1L
 
-stopifnot(!any(is.na(renal$expected_score)))
-stopifnot(all(renal$expected_score %in% 0:1))
+stopifnot(!any(is.na(renal[["expected_score"]])))
+stopifnot(all(renal[["expected_score"]] %in% 0:1))
 
 ################################################################################
 # hepatic
 hepatic <- expand.grid(bil = c(NA, 3.2, 4.0, 4.3), alt = c(NA, 99, 102, 106))
-hepatic$expected_score <- 0L
-hepatic$expected_score[which(hepatic$bil >= 4)] <- 1L
-hepatic$expected_score[which(hepatic$alt > 102)] <- 1L
+hepatic[["expected_score"]] <- 0L
+hepatic[["expected_score"]][which(hepatic[["bil"]] >= 4)] <- 1L
+hepatic[["expected_score"]][which(hepatic[["alt"]] > 102)] <- 1L
 
-stopifnot(!any(is.na(hepatic$expected_score)))
-stopifnot(all(hepatic$expected_score %in% 0:1))
+stopifnot(!any(is.na(hepatic[["expected_score"]])))
+stopifnot(all(hepatic[["expected_score"]] %in% 0:1))
 
 ################################################################################
 # Verify each component score
-respiratory$phoenix_resp <-
+respiratory[["phoenix_resp"]] <-
   phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, data = respiratory)
 
-cardiovascular$phoenix_card <-
+cardiovascular[["phoenix_card"]] <-
   phoenix_cardiovascular(vasoactives = vasos, lactate = lactate, age = age, mean_arterial_pressure = mean_arterial_pressure, data = cardiovascular)
 
-coagulation$phoenix_coag <-
+coagulation[["phoenix_coag"]] <-
   phoenix_coagulation(platelets = plts, inr = inr, d_dimer = ddmr, fibrinogen = fib, data = coagulation)
 
-neurologic$phoenix_neur <-
+neurologic[["phoenix_neur"]] <-
   phoenix_neurologic(gcs = gcs, fixed_pupils = pupils, data = neurologic)
 
-endocrine$phoenix_endo <-
+endocrine[["phoenix_endo"]] <-
   phoenix_endocrine(glucose = glc, data = endocrine)
 
-immunolgic$phoenix_immu <-
+immunolgic[["phoenix_immu"]] <-
   phoenix_immunologic(anc = anc, alc = alc, data = immunolgic)
 
-renal$phoenix_renal <-
+renal[["phoenix_renal"]] <-
   phoenix_renal(creatinine = creatinine, age = age, data = renal)
 
-hepatic$phoenix_hep <-
+hepatic[["phoenix_hep"]] <-
   phoenix_hepatic(bilirubin = bil, alt = alt, data = hepatic)
 
-stopifnot(identical(respiratory$expected_score, respiratory$phoenix_resp))
-stopifnot(identical(cardiovascular$expected_score, cardiovascular$phoenix_card))
-stopifnot(identical(coagulation$expected_score, coagulation$phoenix_coag))
-stopifnot(identical(neurologic$expected_score, neurologic$phoenix_neur))
-stopifnot(identical(endocrine$expected_score, endocrine$phoenix_endo))
-stopifnot(identical(immunolgic$expected_score, immunolgic$phoenix_immu))
-stopifnot(identical(renal$expected_score, renal$phoenix_renal))
-stopifnot(identical(hepatic$expected_score, hepatic$phoenix_hep))
+stopifnot(identical(respiratory[["expected_score"]], respiratory[["phoenix_resp"]]))
+stopifnot(identical(cardiovascular[["expected_score"]], cardiovascular[["phoenix_card"]]))
+stopifnot(identical(coagulation[["expected_score"]], coagulation[["phoenix_coag"]]))
+stopifnot(identical(neurologic[["expected_score"]], neurologic[["phoenix_neur"]]))
+stopifnot(identical(endocrine[["expected_score"]], endocrine[["phoenix_endo"]]))
+stopifnot(identical(immunolgic[["expected_score"]], immunolgic[["phoenix_immu"]]))
+stopifnot(identical(renal[["expected_score"]], renal[["phoenix_renal"]]))
+stopifnot(identical(hepatic[["expected_score"]], hepatic[["phoenix_hep"]]))
 
 ################################################################################
 # test the total score
@@ -185,30 +185,30 @@ DF <-
          })
 DF <- do.call(cbind, args = DF)
 
-DF$creatinine <- NA
-DF$phoenix_renal <- NA
+DF[["creatinine"]] <- NA
+DF[["phoenix_renal"]] <- NA
 
-for (a in unique(DF$age)) {
-  temp_renal <- renal[renal$age %in% a, c("creatinine", "phoenix_renal")]
-  temp_renal <- temp_renal[sample(1:nrow(temp_renal), size = sum(a %in% DF$age), replace = TRUE), ]
-  DF$creatinine[DF$age %in% a] <- temp_renal$creatinine
-  DF$phoenix_renal[DF$age %in% a] <- temp_renal$phoenix_renal
+for (a in unique(DF[["age"]])) {
+  temp_renal <- renal[renal[["age"]] %in% a, c("creatinine", "phoenix_renal")]
+  temp_renal <- temp_renal[sample(1:nrow(temp_renal), size = sum(a %in% DF[["age"]]), replace = TRUE), ]
+  DF[["creatinine"]][DF[["age"]] %in% a] <- temp_renal[["creatinine"]]
+  DF[["phoenix_renal"]][DF[["age"]] %in% a] <- temp_renal[["phoenix_renal"]]
 }
 
 expected_phoenix8 <-
-  data.frame(phoenix_respiratory_score = DF$phoenix_resp,
-             phoenix_cardiovascular_score = DF$phoenix_card,
-             phoenix_coagulation_score = DF$phoenix_coag,
-             phoenix_neurologic_score = DF$phoenix_neur,
-             phoenix_sepsis_score = DF$phoenix_resp + DF$phoenix_card + DF$phoenix_coag + DF$phoenix_neur,
-             phoenix_sepsis = as.integer(DF$phoenix_resp + DF$phoenix_card + DF$phoenix_coag + DF$phoenix_neur > 1),
-             phoenix_septic_shock = as.integer((DF$phoenix_card > 0) & (DF$phoenix_resp + DF$phoenix_card + DF$phoenix_coag + DF$phoenix_neur > 1)),
-             phoenix_endocrine_score = DF$phoenix_endo,
-             phoenix_immunologic_score = DF$phoenix_immu,
-             phoenix_renal_score = DF$phoenix_renal,
-             phoenix_hepatic_score = DF$phoenix_hep,
-             phoenix8_sepsis_score = DF$phoenix_resp + DF$phoenix_card + DF$phoenix_coag + DF$phoenix_neur +
-                                     DF$phoenix_endo + DF$phoenix_immu + DF$phoenix_renal + DF$phoenix_hep
+  data.frame(phoenix_respiratory_score = DF[["phoenix_resp"]],
+             phoenix_cardiovascular_score = DF[["phoenix_card"]],
+             phoenix_coagulation_score = DF[["phoenix_coag"]],
+             phoenix_neurologic_score = DF[["phoenix_neur"]],
+             phoenix_sepsis_score = DF[["phoenix_resp"]] + DF[["phoenix_card"]] + DF[["phoenix_coag"]] + DF[["phoenix_neur"]],
+             phoenix_sepsis = as.integer(DF[["phoenix_resp"]] + DF[["phoenix_card"]] + DF[["phoenix_coag"]] + DF[["phoenix_neur"]] > 1),
+             phoenix_septic_shock = as.integer((DF[["phoenix_card"]] > 0) & (DF[["phoenix_resp"]] + DF[["phoenix_card"]] + DF[["phoenix_coag"]] + DF[["phoenix_neur"]] > 1)),
+             phoenix_endocrine_score = DF[["phoenix_endo"]],
+             phoenix_immunologic_score = DF[["phoenix_immu"]],
+             phoenix_renal_score = DF[["phoenix_renal"]],
+             phoenix_hepatic_score = DF[["phoenix_hep"]],
+             phoenix8_sepsis_score = DF[["phoenix_resp"]] + DF[["phoenix_card"]] + DF[["phoenix_coag"]] + DF[["phoenix_neur"]] +
+                                     DF[["phoenix_endo"]] + DF[["phoenix_immu"]] + DF[["phoenix_renal"]] + DF[["phoenix_hep"]]
   )
 
 realized_phoenix <-
@@ -285,7 +285,7 @@ stopifnot(
 # verify that the result are the same when called differently
 resp_a <- phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2, data = DF)
 resp_b <- with(DF, phoenix_respiratory(pf_ratio = pfr, sf_ratio = sfr, invasive_mechanical_ventilation = vent, other_respiratory_support = o2))
-x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
+x1 <- DF[["pfr"]]; x2 <- DF[["sfr"]]; x3 <- DF[["vent"]]; x4 <- DF[["o2"]]
 resp_c <- phoenix_respiratory(x1, x2, x3, x4)
 stopifnot(identical(resp_a, resp_b))
 stopifnot(identical(resp_a, resp_c))
@@ -403,12 +403,12 @@ stopifnot(
   identical(wrapper_map_candidate_phoenix8[["phoenix8_sepsis_score"]], 1L)
 )
 
-x1 <- DF$pfr; x2 <- DF$sfr; x3 <- DF$vent; x4 <- DF$o2
-x5 <- DF$vasos; x6 <- DF$lactate; x7 <- DF$mean_arterial_pressure
-x8 <- DF$plts; x9 <- DF$inr; x10 <- DF$ddmr; x11 <- DF$fib;
-x12 <- DF$gcs; x13 <- DF$pupils;
-x14 <- DF$glc; x15 <- DF$anc; x16 <- DF$alc; x17 <- DF$creatinine;
-x18 <- DF$bil; x19 <- DF$alt; x20 <- DF$age
+x1 <- DF[["pfr"]]; x2 <- DF[["sfr"]]; x3 <- DF[["vent"]]; x4 <- DF[["o2"]]
+x5 <- DF[["vasos"]]; x6 <- DF[["lactate"]]; x7 <- DF[["mean_arterial_pressure"]]
+x8 <- DF[["plts"]]; x9 <- DF[["inr"]]; x10 <- DF[["ddmr"]]; x11 <- DF[["fib"]];
+x12 <- DF[["gcs"]]; x13 <- DF[["pupils"]];
+x14 <- DF[["glc"]]; x15 <- DF[["anc"]]; x16 <- DF[["alc"]]; x17 <- DF[["creatinine"]];
+x18 <- DF[["bil"]]; x19 <- DF[["alt"]]; x20 <- DF[["age"]]
 
 p_c <- phoenix(x1, x2, x3, x4,
                x5, x6, x7,
