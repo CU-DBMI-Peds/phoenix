@@ -425,6 +425,21 @@ stopifnot(identical(p_a, p8_a[, 1:7]))
 stopifnot(identical(p_a, p8_b[, 1:7]))
 stopifnot(identical(p_a, p8_c[, 1:7]))
 
+sparse_phoenix <- phoenix()
+sparse_phoenix8 <- phoenix8()
+
+stopifnot(
+  identical(nrow(sparse_phoenix), 1L),
+  identical(nrow(sparse_phoenix8), 1L),
+  identical(sparse_phoenix[["phoenix_sepsis_score"]], 0L),
+  identical(sparse_phoenix[["phoenix_sepsis"]], 0L),
+  identical(sparse_phoenix[["phoenix_septic_shock"]], 0L),
+  identical(sparse_phoenix8[["phoenix_sepsis_score"]], 0L),
+  identical(sparse_phoenix8[["phoenix8_sepsis_score"]], 0L),
+  identical(sparse_phoenix8[["phoenix_sepsis"]], 0L),
+  identical(sparse_phoenix8[["phoenix_septic_shock"]], 0L)
+)
+
 ################################################################################
 # verify namespace-loaded, package-detached usage
 phoenix_fun <- getExportedValue("phoenix", "phoenix")

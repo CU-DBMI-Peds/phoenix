@@ -46,6 +46,10 @@
   `mean_arterial_pressure`, or they may provide raw arterial/cuff MAP and
   SBP/DBP candidates with source times and let the package apply the documented
   freshness rules.
+* Give all clinical input arguments in `phoenix()` and `phoenix8()` typed
+  missing-value defaults.  This makes sparse row-level scoring calls consistent
+  with the organ-level scoring functions, where omitted or missing inputs map to
+  zero contribution for that component.
 
 ## Other changes
 

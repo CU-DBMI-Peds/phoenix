@@ -134,15 +134,26 @@
 #'
 #' @export
 phoenix8 <- function(
-                    pf_ratio, sf_ratio, invasive_mechanical_ventilation, other_respiratory_support,
-                    vasoactives, lactate, mean_arterial_pressure = NA_real_, #age
-                    platelets, inr, d_dimer, fibrinogen,
-                    gcs, fixed_pupils,
-                    glucose,
-                    anc, alc,
-                    creatinine,  #age
-                    bilirubin, alt,
-                    age,
+                    pf_ratio = NA_real_,
+                    sf_ratio = NA_real_,
+                    invasive_mechanical_ventilation = NA_integer_,
+                    other_respiratory_support = NA_integer_,
+                    vasoactives = NA_integer_,
+                    lactate = NA_real_,
+                    mean_arterial_pressure = NA_real_,
+                    platelets = NA_real_,
+                    inr = NA_real_,
+                    d_dimer = NA_real_,
+                    fibrinogen = NA_real_,
+                    gcs = NA_integer_,
+                    fixed_pupils = NA_integer_,
+                    glucose = NA_real_,
+                    anc = NA_real_,
+                    alc = NA_real_,
+                    creatinine = NA_real_,
+                    bilirubin = NA_real_,
+                    alt = NA_real_,
+                    age = NA_real_,
                     data = parent.frame(), pao2.spo2.delta = NULL,
                     ..., imv = NULL, map = NULL) {
 
