@@ -235,12 +235,13 @@ phoenix_respiratory <-
   ors <- pmax(invasive_mechanical_ventilation, ors)
 
   if (is.null(pao2.spo2.delta)) {
-    # TeX: historical published rule, prior to eq:pfr-sfr-selector.
+    # TeX: published/default rule in eq:resp and eq:resp-conditions.
     b1 <- (pfr < 400) | (sfr < 292)
     b2 <- (pfr < 200) | (sfr < 220)
     b3 <- (pfr < 100) | (sfr < 148)
   } else {
-    # TeX: eq:pfr-sfr-selector. `use_pfr` is Q(t; m_resp, delta_paO2,SpO2).
+    # TeX: eq:resp-selector, eq:resp-conditions-selector, and
+    # eq:pfr-sfr-selector. `use_pfr` is Q(t; m_resp, delta_paO2,SpO2).
     if (selector_has_times) {
       pfr_delta <- score_eclock - pfr_eclock
       sfr_delta <- score_eclock - sfr_eclock

@@ -58,6 +58,7 @@ prepare_phoenix_data(
   hepatic.lookback = 1440,
   renal.lookback = 1440,
   si.lookback = Inf,
+  pao2.spo2.delta = NULL,
   map.sdbp.delta = Inf,
   map.delta = Inf,
   verbose = getOption("phoenix_verbose", interactive())
@@ -169,6 +170,15 @@ prepare_phoenix_data(
 \item{renal.lookback}{The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine}
 
 \item{si.lookback}{The number of minutes to look back in an encounter for carry-forward of suspected infection variables: antimicrobials medications, and anti-infectious tests.}
+
+\item{pao2.spo2.delta}{Optional maximum allowed difference, in minutes, by
+which the PaO2 source time can be older than the SpO2 source time when
+selecting the row-level respiratory oxygenation ratio. The default,
+\code{NULL}, preserves the published PFR-or-SFR threshold logic by copying
+both independently constructed ratios to the row-level respiratory scoring
+columns. Non-\code{NULL} values select either PFR or SFR for row-level
+respiratory scoring. The independent \code{PFR} and \code{SFR} columns are
+retained for full component decoupling.}
 
 \item{map.sdbp.delta}{The maximum allowed difference, in minutes, between the source times for systolic and diastolic blood pressures used to estimate MAP. The default, \code{Inf}, allows any SBP/DBP pair that has already passed the blood-pressure look-back rule.}
 

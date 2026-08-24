@@ -696,30 +696,60 @@ point, however, for the Phoenix definition the requirement of some respiratory
 support was made explicit.  It is extremely unlikely that a patient with SFR or
 PFR values sufficiently low enough to score at least one point for respiratory
 dysfunction would not have at the very least supplemental oxygen.
+The original Phoenix development \citep{Sanchez-Pinto2024,Schlapbach2024} used
+a simpler logic for the retrospective work. This is the published Phoenix
+respiratory score and is the default scoring behavior in the \texttt{phoenix}
+package.
 \begin{equation}
   \label{eq:resp}
-  % R: phoenix_respiratory()
-  \DS{Resp}[\m{resp}] \coloneqq
-    \ORS B_1\left(t; \m{resp}\right)
-    +
-    \IMV \sum_{i=2}^{3} B_i\left(t; \m{resp}\right)
+  % R: phoenix_respiratory() with pao2.spo2.delta = NULL
+  \begin{aligned}
+  \DS{Resp}[\m{resp}] &\equiv \DS{Resp}^{\mathrm{pub}}[\m{resp}] \\
+  &\coloneqq
+      \ORS B_1\left(t; \m{resp}\right)
+      +
+      \IMV \sum_{i=2}^{3} B_i\left(t; \m{resp}\right)
+  \end{aligned}
 \end{equation}
 where
 \begin{equation}
   \label{eq:resp-conditions}
   \begin{aligned}
-    B_1\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 400 \right\} \\
+    B_1\left(t; \m{resp}\right) &\coloneqq \mathbb{I}\left\{\PFR < 400 \vee \SFR < 292\right\} \\
+    B_2\left(t; \m{resp}\right) &\coloneqq \mathbb{I}\left\{\PFR < 200 \vee \SFR < 220\right\} \\
+    B_3\left(t; \m{resp}\right) &\coloneqq \mathbb{I}\left\{\PFR < 100 \vee \SFR < 148\right\}.
+  \end{aligned}
+\end{equation}
+
+For prospective scoring and sensitivity analyses, the \texttt{phoenix} package
+also supports an explicit source-time selector between PFR and SFR.  This
+selector-based respiratory score is
+\begin{equation}
+  \label{eq:resp-selector}
+  % R: prepare_phoenix_data(..., pao2.spo2.delta) for prepared data;
+  %    phoenix_respiratory() with non-NULL pao2.spo2.delta for direct calls
+  \DS{Resp}^{\star}[\m{resp}] \coloneqq
+    \ORS B_1^{\star}\left(t; \m{resp}\right)
+    +
+    \IMV \sum_{i=2}^{3} B_i^{\star}\left(t; \m{resp}\right)
+\end{equation}
+where
+\begin{equation}
+  \label{eq:resp-conditions-selector}
+  \begin{aligned}
+    B_1^{\star}\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 400 \right\} \\
                                 &\phantom{\coloneqq}+ \left(1 - Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \right) \mathbb{I}\left\{\SFR < 292\right\}, \\[2ex]
-    B_2\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 200 \right\} \\
+    B_2^{\star}\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 200 \right\} \\
                                 &\phantom{\coloneqq}+ \left(1 - Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \right) \mathbb{I}\left\{\SFR < 220\right\}, \\[2ex]
-    B_3\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 100 \right\} \\
+    B_3^{\star}\left(t; \m{resp}\right) &\coloneqq Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \mathbb{I}\left\{\PFR < 100 \right\} \\
                                 &\phantom{\coloneqq}+ \left(1 - Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \right) \mathbb{I}\left\{\SFR < 148\right\},
   \end{aligned}
 \end{equation}
 and
 \begin{equation}
   \label{eq:pfr-sfr-selector}
-  % R: phoenix_respiratory(..., pao2.spo2.delta)
+  % R: prepare_phoenix_data(..., pao2.spo2.delta) for prepared data;
+  %    phoenix_respiratory(..., pao2.spo2.delta) for direct calls
   Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \coloneqq
   \begin{cases}
     1 & \PFR \ne \mathrm{NA} \wedge \SFR = \mathrm{NA} \\[1.0ex]
@@ -735,10 +765,12 @@ PFR and SFR are known at time $t$ within the carry-forward (look-back)
 window $m_{\mathrm{resp}}$ then the PFR is taken preferentially over SFR unless
 SFR is sufficiently younger than the PFR.
 
-The valid values for the respiratory organ dysfunction score are
+Regardless of the implementation, the valid values for the respiratory organ
+dysfunction score are
 \begin{equation}
   \label{eq:resp-valid-values}
-  \DS{Resp}[\m{resp}] \in \{0, 1, 2, 3\} \quad \forall \m{resp}, t.
+  \DS{Resp}[\m{resp}], \DS{Resp}^{\star}[\m{resp}]
+  \in \{0, 1, 2, 3\} \quad \forall \m{resp}, t.
 \end{equation}
 
 \subsection{Cardiovascular}\label{sec:card}
@@ -1963,19 +1995,23 @@ within T.
   % R: score_prepared_phoenix_data(..., aggregation = "fcd"); fcd()
   \begin{split}
     \mathrm{Resp}^{\mathrm{FCD}}\left(T;\m{resp}\right) \coloneqq{}
-    & \maxtinT \left( \IMV \right) \times \left(\mathbb{I}\{B_3(T; \m{resp})\} + \mathbb{I}\{B_2(T; \m{resp})\}\right) \\
-    &+ \maxtinT \left(\ORS\right) \times \mathbb{I}\{B_1(T; \m{resp})\},
+    & \maxtinT \left( \IMV \right) \times \left(B_3(T; \m{resp}) + B_2(T; \m{resp})\right) \\
+    &+ \maxtinT \left(\ORS\right) \times B_1(T; \m{resp}),
   \end{split}
 \end{equation}
 where
 \begin{equation}
   \label{eq:resp-fcd-conditions}
 \begin{aligned}
-  B_1(T; \m{resp}) &\coloneqq \mintinT \PFR < 400 \vee \mintinT \SFR < 292, \\
-  B_2(T; \m{resp}) &\coloneqq \mintinT \PFR < 200 \vee \mintinT \SFR < 220, \\
-  B_3(T; \m{resp}) &\coloneqq \mintinT \PFR < 100 \vee \mintinT \SFR < 148.
+  B_1(T; \m{resp}) &\coloneqq \mathbb{I}\left\{\mintinT \PFR < 400 \vee \mintinT \SFR < 292\right\}, \\
+  B_2(T; \m{resp}) &\coloneqq \mathbb{I}\left\{\mintinT \PFR < 200 \vee \mintinT \SFR < 220\right\}, \\
+  B_3(T; \m{resp}) &\coloneqq \mathbb{I}\left\{\mintinT \PFR < 100 \vee \mintinT \SFR < 148\right\}.
 \end{aligned}
 \end{equation}
+Because FCD aggregates PFR and SFR independently over the full analysis interval
+$T,$ the row-level source-time selector in \eqref{eq:pfr-sfr-selector} is not
+applied to \eqref{eq:resp-fcd-conditions}. The PFR and SFR minima may therefore
+come from different rows.
 
 For vasoactive medications, each individual medication indicator is maximized
 independently resulting in:

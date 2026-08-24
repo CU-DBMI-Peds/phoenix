@@ -56,6 +56,14 @@
 #' @param hepatic.lookback The number of minutes to look back in an encounter for carry-forward of hepatic variables: bilirubin (total), ALT
 #' @param renal.lookback The number of minutes to look back in an encounter for carry-forward of renal variables: creatinine
 #' @param si.lookback The number of minutes to look back in an encounter for carry-forward of suspected infection variables: antimicrobials medications, and anti-infectious tests.
+#' @param pao2.spo2.delta Optional maximum allowed difference, in minutes, by
+#'   which the PaO2 source time can be older than the SpO2 source time when
+#'   selecting the row-level respiratory oxygenation ratio. The default,
+#'   \code{NULL}, preserves the published PFR-or-SFR threshold logic by copying
+#'   both independently constructed ratios to the row-level respiratory scoring
+#'   columns. Non-\code{NULL} values select either PFR or SFR for row-level
+#'   respiratory scoring. The independent \code{PFR} and \code{SFR} columns are
+#'   retained for full component decoupling.
 #' @param map.sdbp.delta The maximum allowed difference, in minutes, between the source times for systolic and diastolic blood pressures used to estimate MAP. The default, \code{Inf}, allows any SBP/DBP pair that has already passed the blood-pressure look-back rule.
 #' @param map.delta The MAP candidate freshness value, in minutes. Candidate MAP sources with effective staleness within \code{map.delta} are treated as having similar freshness, and the MAP source hierarchy breaks the tie. The default, \code{Inf}, preserves the original source-priority behavior.
 #'
@@ -117,6 +125,7 @@ prepare_phoenix_data <-
     hepatic.lookback     = 1440,
     renal.lookback       = 1440,
     si.lookback          = Inf,
+    pao2.spo2.delta      = NULL,
     map.sdbp.delta       = Inf,
     map.delta            = Inf,
     verbose = getOption("phoenix_verbose", interactive())
@@ -149,6 +158,14 @@ prepare_phoenix_data <-
   stopifnot(is.numeric(hepatic.lookback)     && length(hepatic.lookback) == 1     && hepatic.lookback >= 0)
   stopifnot(is.numeric(renal.lookback)       && length(renal.lookback) == 1       && renal.lookback >= 0)
   stopifnot(is.numeric(si.lookback)          && length(si.lookback) == 1          && si.lookback >= 0)
+  stopifnot(
+    is.null(pao2.spo2.delta) ||
+      (
+        is.numeric(pao2.spo2.delta) &&
+        length(pao2.spo2.delta) == 1 &&
+        pao2.spo2.delta >= 0
+      )
+  )
   stopifnot(is.numeric(map.sdbp.delta)       && length(map.sdbp.delta) == 1       && map.sdbp.delta >= 0)
   stopifnot(is.numeric(map.delta)            && length(map.delta) == 1            && map.delta >= 0)
 
@@ -400,8 +417,7 @@ prepare_phoenix_data <-
   # The oxygen value is only paired with an FiO2 that is at least as old as the
   # blood gas value.  That avoids using a ventilator setting that was recorded
   # after the oxygen measurement.
-  # TeX: eq:pfr-validity and eq:pfr. `PFR_eclock` is used later by
-  # `phoenix_respiratory(..., pao2.spo2.delta)` for eq:pfr-sfr-selector.
+  # TeX: eq:pfr-validity and eq:pfr.
   if (verbose) message("Constructing and combining variables...")
 
   if (verbose) message("  PaO2/FiO2...")
@@ -425,8 +441,7 @@ prepare_phoenix_data <-
   #
   # This uses the same timing rule as the PF ratio.  It also requires SpO2 <= 97
   # because the SF ratio is less informative at high oxygen saturations.
-  # TeX: eq:sfr-validity and eq:sfr. `SFR_eclock` is used later by
-  # `phoenix_respiratory(..., pao2.spo2.delta)` for eq:pfr-sfr-selector.
+  # TeX: eq:sfr-validity and eq:sfr.
   if (verbose) message("  SpO2/FiO2...")
   idx <- which((phxdata[["FIO2_eclock"]] <= phxdata[["SPO2_eclock"]]) & phxdata[["SPO2"]] <= 97)
   phxdata <-
@@ -443,6 +458,47 @@ prepare_phoenix_data <-
       j = "SFR_eclock",
       value = phxdata[["SPO2_eclock"]][idx]
     )
+
+  # Respiratory scoring ratios.
+  #
+  # `PFR` and `SFR` remain the independently constructed ratios for FCD, where
+  # PFR and SFR are aggregated independently over the full scoring interval.
+  # `PFR_RESP` and `SFR_RESP` are the row-level respiratory scoring inputs used
+  # by jama2024, OLM, and CCD. With `pao2.spo2.delta = NULL`, both ratios pass
+  # through unchanged and the published PFR-or-SFR threshold logic is retained.
+  # With non-NULL `pao2.spo2.delta`, only the selected row-level ratio is kept.
+  # TeX: eq:pfr-sfr-selector.
+  if (verbose) message("  Respiratory oxygenation selector...")
+  pfr_resp <- phxdata[["PFR"]]
+  sfr_resp <- phxdata[["SFR"]]
+  pfr_resp_eclock <- phxdata[["PFR_eclock"]]
+  sfr_resp_eclock <- phxdata[["SFR_eclock"]]
+
+  if (!is.null(pao2.spo2.delta)) {
+    pfr_missing <- is.na(pfr_resp)
+    sfr_missing <- is.na(sfr_resp)
+    pfr_delta <- phxdata[[eclock]] - pfr_resp_eclock
+    sfr_delta <- phxdata[[eclock]] - sfr_resp_eclock
+    pfr_delta <- replace(pfr_delta, which(!is.finite(pfr_delta)), Inf)
+    sfr_delta <- replace(sfr_delta, which(!is.finite(sfr_delta)), Inf)
+
+    use_pfr <-
+      (!pfr_missing & sfr_missing) |
+      (
+        !pfr_missing & !sfr_missing &
+        pfr_delta <= sfr_delta + pao2.spo2.delta
+      )
+
+    pfr_resp[!use_pfr] <- NA_real_
+    pfr_resp_eclock[!use_pfr] <- NA_real_
+    sfr_resp[use_pfr] <- NA_real_
+    sfr_resp_eclock[use_pfr] <- NA_real_
+  }
+
+  phxdata <- phxdft_set(phxdata, j = "PFR_RESP", value = pfr_resp)
+  phxdata <- phxdft_set(phxdata, j = "SFR_RESP", value = sfr_resp)
+  phxdata <- phxdft_set(phxdata, j = "PFR_RESP_eclock", value = pfr_resp_eclock)
+  phxdata <- phxdft_set(phxdata, j = "SFR_RESP_eclock", value = sfr_resp_eclock)
 
   # Invasive Mechanical Ventilation (IMV).
   #

@@ -1,4 +1,19 @@
-# Version 1.1.3.9007
+# Version 1.1.3.9008
+
+## API Changes
+
+* Move the prepared-data respiratory PFR/SFR source-time selector from
+  `score_prepared_phoenix_data()` to `prepare_phoenix_data()`. The MAP
+  freshness controls and respiratory freshness control now live in the same
+  preparation call: `map.sdbp.delta`, `map.delta`, and `pao2.spo2.delta`.
+* Add `PFR_RESP`, `SFR_RESP`, `PFR_RESP_eclock`, and `SFR_RESP_eclock` to
+  prepared Phoenix data. These columns are the row-level respiratory scoring
+  inputs used by the `jama2024`, `olm`, and `ccd` aggregation schemes. The
+  independent `PFR` and `SFR` columns are retained for FCD, where PFR and SFR
+  are aggregated independently over the scoring interval.
+* Simplify `score_prepared_phoenix_data()` by removing the
+  `pao2.spo2.delta` argument. Scoring now consumes the respiratory input
+  selection already encoded in the prepared data.
 
 ## New Features
 
@@ -32,9 +47,9 @@
   available, and finite values use SFR only when the SpO2 source is sufficiently
   newer than the PaO2 source.
 * Expose `pao2.spo2.delta` on `phoenix_respiratory()`, `phoenix()`,
-  `phoenix8()`, and `score_prepared_phoenix_data()`.  The direct `phoenix()`
-  and `phoenix8()` wrappers default to the original PFR-or-SFR logic, while
-  callers may opt into source-time selection explicitly.
+  `phoenix8()`, and `prepare_phoenix_data()`.  The direct `phoenix()` and
+  `phoenix8()` wrappers default to the original PFR-or-SFR logic, while callers
+  may opt into source-time selection explicitly.
 * Add MAP freshness controls to `prepare_phoenix_data()`: `map.sdbp.delta`
   limits how far apart paired SBP/DBP source times may be when estimating MAP,
   and `map.delta` controls when newer lower-priority MAP candidates can override
@@ -69,8 +84,8 @@
 * Change the default GCS carry-forward look-back in `prepare_phoenix_data()` to
   720 minutes to match the operational definition.
 * Add source-time columns for derived PFR and SFR values in prepared Phoenix
-  data, enabling respiratory source-time sensitivity analyses without
-  rebuilding prepared inputs.
+  data, enabling respiratory source-time selection during prepared-data
+  construction.
 * Package now depends on R >= 4.0.0 due to the use of `deparse1()`
 * Add data.table, dplyr, tidyr, and tidyselect to suggested packages.  The
   operationalization helpers use guarded backend-aware paths for data.frames,

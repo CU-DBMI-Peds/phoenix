@@ -257,6 +257,109 @@ stopifnot(
 )
 
 ###############################################################################
+# The row-level respiratory selector should be applied during data preparation.
+# The independent PFR/SFR columns are retained for FCD, while PFR_RESP/SFR_RESP
+# are the selected row-level respiratory scoring inputs.
+selector_fio2_df <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = 0,
+    fio2 = 0.50,
+    stringsAsFactors = FALSE
+  )
+selector_pao2_df <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = 50,
+    pao2 = 100,
+    stringsAsFactors = FALSE
+  )
+selector_spo2_df <-
+  data.frame(
+    hospital = "H1",
+    patient = "P1",
+    encounter = "E1",
+    minutes_from_admission = 55,
+    spo2 = 90,
+    stringsAsFactors = FALSE
+  )
+
+selector_fio2 <-
+  prepare_fio2(
+    x = selector_fio2_df,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "fio2",
+    verbose = FALSE
+  )
+selector_pao2 <-
+  prepare_pao2(
+    x = selector_pao2_df,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "pao2",
+    verbose = FALSE
+  )
+selector_spo2 <-
+  prepare_spo2(
+    x = selector_spo2_df,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "spo2",
+    verbose = FALSE
+  )
+
+selector_default <-
+  prepare_phoenix_data(
+    fio2 = selector_fio2,
+    pao2 = selector_pao2,
+    spo2 = selector_spo2,
+    verbose = FALSE
+  )
+selector_default <-
+  sort_phxdata(selector_default, id.vars = id.vars, eclock = eclock)
+idx_55 <- which(selector_default[[eclock]] == 55)
+
+selector_finite <-
+  prepare_phoenix_data(
+    fio2 = selector_fio2,
+    pao2 = selector_pao2,
+    spo2 = selector_spo2,
+    pao2.spo2.delta = 1,
+    verbose = FALSE
+  )
+selector_finite <-
+  sort_phxdata(selector_finite, id.vars = id.vars, eclock = eclock)
+
+selector_pfr_preferred <-
+  prepare_phoenix_data(
+    fio2 = selector_fio2,
+    pao2 = selector_pao2,
+    spo2 = selector_spo2,
+    pao2.spo2.delta = Inf,
+    verbose = FALSE
+  )
+selector_pfr_preferred <-
+  sort_phxdata(selector_pfr_preferred, id.vars = id.vars, eclock = eclock)
+
+stopifnot(
+  isTRUE(all.equal(selector_default[["PFR"]][idx_55], 200)),
+  isTRUE(all.equal(selector_default[["SFR"]][idx_55], 180)),
+  isTRUE(all.equal(selector_default[["PFR_RESP"]][idx_55], 200)),
+  isTRUE(all.equal(selector_default[["SFR_RESP"]][idx_55], 180)),
+  isTRUE(all.equal(selector_finite[["PFR"]][idx_55], 200)),
+  isTRUE(all.equal(selector_finite[["SFR"]][idx_55], 180)),
+  is.na(selector_finite[["PFR_RESP"]][idx_55]),
+  isTRUE(all.equal(selector_finite[["SFR_RESP"]][idx_55], 180)),
+  isTRUE(all.equal(selector_pfr_preferred[["PFR_RESP"]][idx_55], 200)),
+  is.na(selector_pfr_preferred[["SFR_RESP"]][idx_55])
+)
+
+###############################################################################
 # MAP selection should preserve the original source-priority behavior by default,
 # but allow freshness-first selection and SBP/DBP pairing limits when requested.
 map_base <-

@@ -32,7 +32,6 @@
 #' @param aggregation The aggregation approach to apply to the data.  Default is
 #'   "jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
 #'   See Details.
-#' @inheritParams phoenix_respiratory
 #' @param verbose when \code{TRUE}, display progress messages
 #'
 #' @return A scored data frame with one row per encounter identifier. The output
@@ -53,7 +52,7 @@
 #' \code{citation('phoenix')}.
 #'
 #' @export
-score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd"), pao2.spo2.delta = NULL, verbose = getOption("phoenix_verbose", interactive())) {
+score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd"), verbose = getOption("phoenix_verbose", interactive())) {
   # This function scores the wide longitudinal data set returned by
   # `prepare_phoenix_data()`.  It returns one row per encounter, not one row per
   # encounter/time point.
@@ -69,14 +68,6 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
 
   stopifnot(inherits(x, "prepared_phoenix_data"))
   stopifnot(length(sigma) == 1, length(kappa) == 1, is.numeric(sigma), is.numeric(kappa))
-  stopifnot(
-    is.null(pao2.spo2.delta) ||
-      (
-        is.numeric(pao2.spo2.delta) &&
-        length(pao2.spo2.delta) == 1 &&
-        pao2.spo2.delta >= 0
-      )
-  )
   aggregation <- match.arg(aggregation, several.ok = FALSE)
 
   if (verbose) message("Scoring prepared_phoenix_data...")
@@ -131,9 +122,9 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
     ods <-
       switch(
         aggregation,
-        jama2024 = jama2024(x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, pao2.spo2.delta = pao2.spo2.delta, verbose = verbose),
-        olm     = olm(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, pao2.spo2.delta = pao2.spo2.delta, verbose = verbose),
-        ccd     = ccd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, pao2.spo2.delta = pao2.spo2.delta, verbose = verbose),
+        jama2024 = jama2024(x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+        olm     = olm(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
+        ccd     = ccd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
         fcd     = fcd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
       )
   }
@@ -245,7 +236,15 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   rtn
 }
 
-jama2024 <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose) {
+respiratory_pf_col <- function(x) {
+  if ("PFR_RESP" %in% names(x)) "PFR_RESP" else "PFR"
+}
+
+respiratory_sf_col <- function(x) {
+  if ("SFR_RESP" %in% names(x)) "SFR_RESP" else "SFR"
+}
+
+jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # The scoring method used when Phoenix was developed and published in JAMA
   # (2024).
   #
@@ -266,15 +265,12 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose)
   # Compute all organ system scores at every time point in the scoring window.
   # The `phoenix_*()` functions return row-level organ scores.  They do not apply
   # suspected-infection gating.
-  # TeX: eq:pfr-sfr-selector selects between row-level PFR and SFR.
+  # `prepare_phoenix_data()` applies eq:pfr-sfr-selector, when requested, by
+  # creating the row-level PFR_RESP and SFR_RESP scoring columns.
   respscore <-
     phoenix_respiratory(
-      pf_ratio = x[["PFR"]],
-      sf_ratio = x[["SFR"]],
-      pf_ratio_eclock = x[["PFR_eclock"]],
-      sf_ratio_eclock = x[["SFR_eclock"]],
-      eclock = x[[eclock]],
-      pao2.spo2.delta = pao2.spo2.delta,
+      pf_ratio = x[[respiratory_pf_col(x)]],
+      sf_ratio = x[[respiratory_sf_col(x)]],
       invasive_mechanical_ventilation = x[["IMV"]],
       other_respiratory_support = x[["ORS"]]
     )
@@ -379,7 +375,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose)
 
 }
 
-olm <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose) {
+olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 1:
   #   Organ-Level Maxima (OLM)
   #
@@ -398,15 +394,12 @@ olm <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose) {
   if (verbose) message("    building organ system scores...")
   # Compute row-level organ scores before aggregating.  The per-organ maximum is
   # computed after all rows in the scoring window have been scored.
-  # TeX: eq:pfr-sfr-selector selects between row-level PFR and SFR.
+  # `prepare_phoenix_data()` applies eq:pfr-sfr-selector, when requested, by
+  # creating the row-level PFR_RESP and SFR_RESP scoring columns.
   respscore <-
     phoenix_respiratory(
-      pf_ratio = x[["PFR"]],
-      sf_ratio = x[["SFR"]],
-      pf_ratio_eclock = x[["PFR_eclock"]],
-      sf_ratio_eclock = x[["SFR_eclock"]],
-      eclock = x[[eclock]],
-      pao2.spo2.delta = pao2.spo2.delta,
+      pf_ratio = x[[respiratory_pf_col(x)]],
+      sf_ratio = x[[respiratory_sf_col(x)]],
       invasive_mechanical_ventilation = x[["IMV"]],
       other_respiratory_support = x[["ORS"]]
     )
@@ -517,7 +510,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose) {
 
 }
 
-ccd <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose) {
+ccd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Exploratory Aggregation Schema 2:
   #   Organ-Level with Cardiovascular Component Decoupling.
   #
@@ -538,15 +531,12 @@ ccd <- function(x, id.vars, eclock, sigma, kappa, pao2.spo2.delta, verbose) {
   # Compute the row-level pieces that CCD will maximize separately.  Vasoactive
   # medication use, lactate, and MAP are intentionally scored as separate
   # cardiovascular components here.
-  # TeX: eq:pfr-sfr-selector selects between row-level PFR and SFR.
+  # `prepare_phoenix_data()` applies eq:pfr-sfr-selector, when requested, by
+  # creating the row-level PFR_RESP and SFR_RESP scoring columns.
   respscore <-
     phoenix_respiratory(
-      pf_ratio = x[["PFR"]],
-      sf_ratio = x[["SFR"]],
-      pf_ratio_eclock = x[["PFR_eclock"]],
-      sf_ratio_eclock = x[["SFR_eclock"]],
-      eclock = x[[eclock]],
-      pao2.spo2.delta = pao2.spo2.delta,
+      pf_ratio = x[[respiratory_pf_col(x)]],
+      sf_ratio = x[[respiratory_sf_col(x)]],
       invasive_mechanical_ventilation = x[["IMV"]],
       other_respiratory_support = x[["ORS"]]
     )
