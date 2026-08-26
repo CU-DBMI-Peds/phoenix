@@ -1,3 +1,26 @@
+################################################################################
+# file:
+#   sepsis.R
+#
+# objective:
+#   create an example data set for the phoenix R package
+#
+# inputs:
+#   none
+#
+# outputs:
+#   <project_root>/data/sepsis.rda
+#
+# Assumptions:
+#   This script is evaluated from the working directory
+#   <project_root>/data-raw/ via the Makefile therein.
+#
+# Notes:
+#   This data set has one row per patient id.  This can be thought of as a
+#   point-in-time data set, or a worse-value-in-a-window.  For a longitudinal
+#   record, the phx data set will be useful with EHR like records for three
+#   synthetic patients.
+################################################################################
 sepsis <-
   read.table(sep = ",", header = TRUE, strip.white = TRUE, text =
 '
@@ -25,4 +48,8 @@ pid , age   , fio2 , pao2 , spo2 , vent , gcs_total , pupil         , platelets 
 '
 )
 
-save(sepsis, file = "../data/sepsis.rda")
+save(sepsis, file = file.path("..", "data", "sepsis.rda"))
+
+################################################################################
+#                                 End of File
+################################################################################
