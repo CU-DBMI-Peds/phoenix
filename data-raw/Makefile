@@ -1,4 +1,8 @@
 include ../Makevars
 
-$(REPO_ROOT)/data/sepsis.rda: sepsis.R
+RDAS := $(REPO_ROOT)/data/sepsis.rda $(REPO_ROOT)/data/phx.rda
+
+all: $(RDAS)
+
+$(REPO_ROOT)/data/%.rda: %.R
 	$(RSCRIPT) $<

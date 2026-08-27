@@ -41,7 +41,7 @@ a data.frame with 20 rows and 27 columns
 sepsis
 }
 \description{
-A fully synthetic data set with variables needed for examples and documentation
+A fully synthetic dataset with variables needed for examples and documentation
 of the Phoenix Sepsis Criteria.
 }
 \keyword{datasets}
