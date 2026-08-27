@@ -1,7 +1,7 @@
 library(phoenix)
 
 # Verify the input data structure.  If these tests fail and need to be updated
-# there is almost certainly documentation that will nedd to be updated too. See
+# there is almost certainly documentation that will need to be updated too. See
 # R/data-sets.R.
 stopifnot(
   exists(x = "phx"),
@@ -37,7 +37,7 @@ expected_variables <-
     "glasgow_coma_scale_verbal",
     "glucose",
     "infectious_test",
-    "internation_normalized_ratio", #INR
+    "international_normalized_ratio", #INR
     "lactate",
     "left_pupil_fixed",
     "mean_airway_pressure_ventilator",
@@ -67,6 +67,27 @@ common_args <-
     eclock = "encounter_clock",
     value.var = "value"
   )
+
+# The oxygen_flow is in L/min, and not an indicator. As such, using it directly
+# should result in an error. An indicator version needs to be built to go
+# through the prepare_o2support call.
+t <- tryCatch(
+      do.call(
+        what = prepare_o2support,
+        args = c(
+          common_args,
+          list(x = subset(phx, variable == "oxygen_flow"))
+        )
+      ),
+    error = function(e) e
+    )
+stopifnot(isTRUE(inherits(t, "error")))
+
+O2SUPPORT <- subset(phx, variable == "oxygen_flow")
+O2SUPPORT[["value"]] <- as.integer(O2SUPPORT[["value"]] > 0)
+
+
+
 
 prepared_input_data <-
   list(
@@ -208,7 +229,7 @@ prepared_input_data <-
         what = prepare_inr,
         args = c(
           common_args,
-          list(x = subset(phx, variable == "internation_normalized_ratio"))
+          list(x = subset(phx, variable == "international_normalized_ratio"))
         )
       ),
     lactate =
@@ -256,7 +277,7 @@ prepared_input_data <-
         what = prepare_o2support,
         args = c(
           common_args,
-          list(x = subset(phx, variable == "oxygen_flow"))
+          list(x = O2SUPPORT)
         )
       ),
     pao2 =
@@ -468,4 +489,3 @@ stopifnot(
 ################################################################################
 #                                 End of File
 ################################################################################
-

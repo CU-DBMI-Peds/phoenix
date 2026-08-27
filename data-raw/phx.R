@@ -17,7 +17,8 @@
 #
 # Notes:
 #   The input csv file was built by perturbing the data from three subjects in
-#   the R01 data set.
+#   the R01 data set.  This data is intended only for examples and tests, not
+#   for analysis or validation.
 ################################################################################
 phx <- read.csv(
   file = "phx.csv",
@@ -57,7 +58,7 @@ variable_name_mapping <-
     "GCS_TOTAL" = "glasgow_coma_scale_total",
     "GCS_VERBAL" = "glasgow_coma_scale_verbal",
     "GLUCOSE" = "glucose",
-    "INR" = "internation_normalized_ratio",
+    "INR" = "international_normalized_ratio",
     "LACTATE" = "lactate",
     "MILRINONE" = "systemic_vasoactive_milrinone",
     "INFECTIOUS_TEST" = "infectious_test",

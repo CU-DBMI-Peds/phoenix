@@ -17,6 +17,8 @@
 
 ## New Features
 
+* Add the `phx` dataset for examples of the operationalized methods.
+
 ### Operationalize Phoenix
 
 * Add `prepare_<input>()` functions for transforming long-format clinical data
