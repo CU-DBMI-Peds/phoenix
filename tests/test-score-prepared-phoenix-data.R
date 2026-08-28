@@ -137,18 +137,18 @@ assert_end_to_end <- function(backend) {
     inherits(scored, "scored_prepared_phoenix_data"),
     inherits(scored, expected_prepared_class(backend)),
     identical(scored[["suspected_infection"]], c(1L, 0L)),
-    isTRUE(all.equal(scored[["odss_4"]][1], 5)),
-    isTRUE(all.equal(scored[["pss_4"]][1], 5)),
-    isTRUE(all.equal(scored[["sepsis"]][1], 1)),
-    isTRUE(all.equal(scored[["septic_shock"]][1], 1)),
-    isTRUE(all.equal(scored[["odss_8"]][1], 9)),
-    isTRUE(all.equal(scored[["pss_8"]][1], 9)),
-    isTRUE(all.equal(scored[["odss_4"]][2], 1)),
-    isTRUE(all.equal(scored[["pss_4"]][2], 0)),
-    isTRUE(all.equal(scored[["sepsis"]][2], 0)),
-    isTRUE(all.equal(scored[["septic_shock"]][2], 0)),
-    isTRUE(all.equal(scored[["odss_8"]][2], 1)),
-    isTRUE(all.equal(scored[["pss_8"]][2], 0))
+    isTRUE(all.equal(scored[["odss_4_jama2024"]][1], 5)),
+    isTRUE(all.equal(scored[["pss_4_jama2024"]][1], 5)),
+    isTRUE(all.equal(scored[["sepsis_jama2024"]][1], 1)),
+    isTRUE(all.equal(scored[["septic_shock_jama2024"]][1], 1)),
+    isTRUE(all.equal(scored[["odss_8_jama2024"]][1], 9)),
+    isTRUE(all.equal(scored[["pss_8_jama2024"]][1], 9)),
+    isTRUE(all.equal(scored[["odss_4_jama2024"]][2], 1)),
+    isTRUE(all.equal(scored[["pss_4_jama2024"]][2], 0)),
+    isTRUE(all.equal(scored[["sepsis_jama2024"]][2], 0)),
+    isTRUE(all.equal(scored[["septic_shock_jama2024"]][2], 0)),
+    isTRUE(all.equal(scored[["odss_8_jama2024"]][2], 1)),
+    isTRUE(all.equal(scored[["pss_8_jama2024"]][2], 0))
   )
 
   olm <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "olm", verbose = FALSE)

@@ -268,7 +268,7 @@ prepare_sbp_cuff <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: cardiovascular EHR input \sbpc; used in eq:map-candidates.
+  # TeX: cardiovascular EHR input \sbpc; used in eq:map-current-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -298,7 +298,7 @@ prepare_sbp_arterial <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: cardiovascular EHR input \sbpa; used in eq:map-candidates.
+  # TeX: cardiovascular EHR input \sbpa; used in eq:map-current-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -328,7 +328,7 @@ prepare_dbp_cuff <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: cardiovascular EHR input \dbpc; used in eq:map-candidates.
+  # TeX: cardiovascular EHR input \dbpc; used in eq:map-current-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -358,7 +358,7 @@ prepare_dbp_arterial <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: cardiovascular EHR input \dbpa; used in eq:map-candidates.
+  # TeX: cardiovascular EHR input \dbpa; used in eq:map-current-candidates.
   rtn <-
     prepare_variable(
       x = x,
@@ -388,7 +388,8 @@ prepare_mean_arterial_pressure_cuff <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: cardiovascular EHR input \mapc; used in eq:map-candidates and eq:map-priority.
+  # TeX: cardiovascular EHR input \mapc; used in
+  # eq:map-current-candidates and eq:map-current-priority.
   rtn <-
     prepare_variable(
       x = x,
@@ -418,7 +419,8 @@ prepare_mean_arterial_pressure_arterial <-
     tie.breaker = max,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
-  # TeX: cardiovascular EHR input \mapa; used in eq:map-candidates and eq:map-priority.
+  # TeX: cardiovascular EHR input \mapa; used in
+  # eq:map-current-candidates and eq:map-current-priority.
   rtn <-
     prepare_variable(
       x = x,

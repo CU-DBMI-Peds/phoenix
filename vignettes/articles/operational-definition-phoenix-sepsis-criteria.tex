@@ -703,6 +703,8 @@ package.
 \begin{equation}
   \label{eq:resp}
   % R: phoenix_respiratory() with pao2.spo2.delta = NULL
+  %    score_prepared_phoenix_data() uses this rule when prepared PFR_RESP/SFR_RESP
+  %    columns retain both PFR and SFR.
   \begin{aligned}
   \DS{Resp}[\m{resp}] &\equiv \DS{Resp}^{\mathrm{pub}}[\m{resp}] \\
   &\coloneqq
@@ -727,6 +729,7 @@ selector-based respiratory score is
 \begin{equation}
   \label{eq:resp-selector}
   % R: prepare_phoenix_data(..., pao2.spo2.delta) for prepared data;
+  %    score_prepared_phoenix_data() consumes the prepared PFR_RESP/SFR_RESP columns;
   %    phoenix_respiratory() with non-NULL pao2.spo2.delta for direct calls
   \DS{Resp}^{\star}[\m{resp}] \coloneqq
     \ORS B_1^{\star}\left(t; \m{resp}\right)
@@ -749,6 +752,8 @@ and
 \begin{equation}
   \label{eq:pfr-sfr-selector}
   % R: prepare_phoenix_data(..., pao2.spo2.delta) for prepared data;
+  %    score_prepared_phoenix_data(..., aggregation = "timepoint", "jama2024",
+  %    "olm", or "ccd") scores the selected PFR_RESP/SFR_RESP columns;
   %    phoenix_respiratory(..., pao2.spo2.delta) for direct calls
   Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \coloneqq
   \begin{cases}
@@ -944,8 +949,9 @@ are more reliable in unstable patients, then fall back to cuff measurements.
 Use the youngest, within a window, mean arterial pressure.
   \begin{equation}
     \label{eq:map-current-candidates}
-    % R: prepare_phoenix_data(..., map.sdbp.delta) constructs candidate MAP
-    %    values in select_map_candidate().
+    % R: prepare_phoenix_data(..., map.sdbp.delta) and
+    %    phoenix_cardiovascular(..., map.sdbp.delta) construct candidate MAP
+    %    values through select_map_candidate().
     \begin{aligned}
     \widehat{\mathrm{MAP}}_{1}(t; \m{bp})
       &\coloneqq \mathcal{C}[\mapa](t;\m{bp}), \\
@@ -990,8 +996,8 @@ minutes, between systolic and diastolic pressures used to estimate MAP.
 The effective staleness of each MAP candidate is
   \begin{equation}
     \label{eq:map-current-candidate-staleness}
-    % R: prepare_phoenix_data() computes eta_i(t) as candidate effective
-    %    staleness in select_map_candidate().
+    % R: select_map_candidate() computes eta_i(t) as candidate effective
+    %    staleness for prepare_phoenix_data() and phoenix_cardiovascular().
     \begin{aligned}
     \eta_{1}(t) &\coloneqq
       \begin{cases}
@@ -1024,7 +1030,8 @@ minutes, used to decide when candidate sources are treated as having similar
 freshness and the source hierarchy should break the tie.
   \begin{equation}
     \label{eq:map-current-priority}
-    % R: prepare_phoenix_data(..., map.delta) chooses MAP-star in
+    % R: prepare_phoenix_data(..., map.delta) and
+    %    phoenix_cardiovascular(..., map.delta) choose MAP-star through
     %    select_map_candidate().
     \mathrm{MAP}^{\star}(t; \m{bp}) \coloneqq
   \begin{cases}
@@ -1696,7 +1703,8 @@ a systemic anti-infectious agent was administered.
 Suspected infection status is defined as:
 \begin{equation}
   \label{eq:suspected-infection}
-  % R: prepare_phoenix_data() constructs SUSPECTED_INFECTION.
+  % R: prepare_phoenix_data() constructs row-level SUSPECTED_INFECTION;
+  %    score_prepared_phoenix_data() collapses it over T for PSS gating.
   \SI \coloneqq \mathbb{I}\left\{t_{1} \in T \right\} \times \mathbb{I}\left\{t_{2} \in T \right\}.
 \end{equation}
 That is, a patient is considered to have a suspected infection if during the
@@ -1729,8 +1737,9 @@ development work evaluated the underlying organ dysfunction score in conjunction
 with suspected infection~\citep{Sanchez-Pinto2024,Schlapbach2024}.
 \begin{equation}
   \label{eq:odss}
-  % R: score_prepared_phoenix_data(..., aggregation = "jama2024") computes window-level ODSS.
-  %    phoenix() and phoenix8() compute the row-level organ-score sums used before maximization over T.
+  % R: score_prepared_phoenix_data(..., aggregation = "timepoint") computes the
+  %    row-level ODSS columns; aggregation = "jama2024" maximizes those columns
+  %    over T. phoenix() and phoenix8() compute direct row-level organ-score sums.
   \ODSS{d} \coloneqq
   \maxtinT \sum_{x \in \Omega_{d}} \DS*{x}, \quad d \in \left\{4, 8\right\},
 \end{equation}

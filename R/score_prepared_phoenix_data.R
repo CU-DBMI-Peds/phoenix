@@ -116,13 +116,21 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   # infection gating is identical across aggregation schemes.
   ods <- phxdft_unique(phxdft_select(score_this, attr(x, "id.vars")))
   if (nrow(score_this) > 0L) {
+    f <-
+      get(
+        x = aggregation,
+        mode = "function",
+        envir = environment(score_prepared_phoenix_data),
+        inherits = FALSE
+      )
     ods <-
-      switch(
-        aggregation,
-        jama2024 = jama2024(x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-        olm     = olm(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-        ccd     = ccd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose),
-        fcd     = fcd(    x = score_this, id.vars = attr(x, "id.vars"), eclock = attr(x, "eclock"), sigma = sigma, kappa = kappa, verbose = verbose)
+      f(
+        x = score_this,
+        id.vars = attr(x, "id.vars"),
+        eclock = attr(x, "eclock"),
+        sigma = sigma,
+        kappa = kappa,
+        verbose = verbose
       )
   }
 
@@ -130,9 +138,15 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   # Start from all encounters in the prepared data, not only encounters with
   # rows inside [T0, T1).  Encounters with no rows in the scoring window are kept
   # and receive zero scores below.
-  iddf <- phxdft_unique(phxdft_select(x, attr(x, "id.vars")))
+  if (aggregation == "timepoint") {
+    join_by_vars <- c(attr(x, "id.vars"), attr(x, "eclock"))
+    iddf <- phxdft_select(score_this, join_by_vars)
+  } else {
+    join_by_vars <- c(attr(x, "id.vars"))
+    iddf <- phxdft_unique(phxdft_select(x, join_by_vars))
+  }
   rtn <- phxdft_left_join(iddf, si, attr(x, "id.vars"))
-  rtn <- phxdft_left_join(rtn, ods, attr(x, "id.vars"))
+  rtn <- phxdft_left_join(rtn, ods, join_by_vars)
 
   # No suspected-infection rows in the window means suspected infection is 0.
   # This also handles encounters with no rows at all in the scoring window.
@@ -146,14 +160,23 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   score_columns <-
     switch(
       aggregation,
+      timepoint = list(
+        ods4 = "odss_4_timepoint",
+        shock_ods = "odss_4_timepoint_septic_shock",
+        pss4 = "pss_4_timepoint",
+        sepsis = "sepsis_timepoint",
+        shock = "septic_shock_timepoint",
+        ods8 = "odss_8_timepoint",
+        pss8 = "pss_8_timepoint"
+      ),
       jama2024 = list(
-        ods4 = "odss_4",
-        shock_ods = "odss_4_septic_shock",
-        pss4 = "pss_4",
-        sepsis = "sepsis",
-        shock = "septic_shock",
-        ods8 = "odss_8",
-        pss8 = "pss_8"
+        ods4 = "odss_4_jama2024",
+        shock_ods = "odss_4_jama2024_septic_shock",
+        pss4 = "pss_4_jama2024",
+        sepsis = "sepsis_jama2024",
+        shock = "septic_shock_jama2024",
+        ods8 = "odss_8_jama2024",
+        pss8 = "pss_8_jama2024"
       ),
       olm = list(
         ods4 = "odss_4_olm",
@@ -213,7 +236,7 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
     phxdft_select(
       rtn,
       c(
-        attr(x, "id.vars"),
+        join_by_vars,
         "suspected_infection",
         score_columns[["ods4"]],
         score_columns[["pss4"]],
@@ -234,15 +257,26 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
 }
 
 respiratory_pf_col <- function(x) {
+  # `prepare_phoenix_data()` always leaves the independently constructed `PFR`
+  # column in place.  When the PaO2-vs-SpO2 freshness selector is requested, it
+  # also creates `PFR_RESP`, the row-level P/F input selected for respiratory
+  # scoring.  Use `PFR_RESP` when available so timepoint, jama2024, OLM, and CCD
+  # all consume the same prepared respiratory input.
   if ("PFR_RESP" %in% names(x)) "PFR_RESP" else "PFR"
 }
 
 respiratory_sf_col <- function(x) {
+  # `SFR_RESP` is the S/F companion to `PFR_RESP`.  These helper functions keep
+  # score_prepared_phoenix_data() compatible with older prepared data that only
+  # contain `PFR` and `SFR`.
+  #
+  # FCD intentionally does not use these helpers.  It aggregates `PFR` and `SFR`
+  # separately across the full window before scoring, so the row-level
+  # PaO2-vs-SpO2 selector is not part of the FCD definition.
   if ("SFR_RESP" %in% names(x)) "SFR_RESP" else "SFR"
 }
 
 timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-
   if (verbose) message("    building organ system scores...")
   # Compute all organ system scores at every time point in the scoring window.
   # The `phoenix_*()` functions return row-level organ scores.  They do not apply
@@ -250,10 +284,12 @@ timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # `prepare_phoenix_data()` applies eq:pfr-sfr-selector, when requested, by
   # creating the row-level PFR_RESP and SFR_RESP scoring columns.
 
-  # TODO: How do I get the pf_ratio_eclock, sf_ratio_eclock, elcock,
-  # pao2.spo2.delta values into this call?  Perhaps these need to be attributes
-  # for the prepared_phoenix_data object.  Same concern for the cardivascular
-  # scoring and the map.sdbp.delta and map.delta.
+  # The relative-freshness parameters are preparation-time controls, not
+  # scoring-time controls.  `prepare_phoenix_data()` applies `pao2.spo2.delta`
+  # by creating `PFR_RESP` and `SFR_RESP`, and applies `map.sdbp.delta` and
+  # `map.delta` by selecting the final row-level `MAP`.  This scorer consumes
+  # those prepared columns directly so the freshness rules are applied exactly
+  # once.
   respscore <-
     phoenix_respiratory(
       pf_ratio = x[[respiratory_pf_col(x)]],
@@ -320,7 +356,7 @@ timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "odss_4",
+      j = "odss_4_timepoint",
       # TeX: eq:odss with eq:omega4.
       value = respscore + cardscore + neuroscore + coagscore
     )
@@ -328,15 +364,15 @@ timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <-
     phxdft_set(
       x = oss,
-      j = "odss_4_septic_shock",
+      j = "odss_4_timepoint_septic_shock",
       # TeX: eq:septicshock.
-      value = as.integer(cardscore >= kappa) * oss[["odss_4"]]
+      value = as.integer(cardscore >= kappa) * oss[["odss_4_timepoint"]]
     )
 
   oss <-
     phxdft_set(
       x = oss,
-      j = "odss_8",
+      j = "odss_8_timepoint",
       # TeX: eq:odss with eq:omega8.
       value = respscore + cardscore + neuroscore + coagscore +
               immunscore + endoscore + renalscore + hepaticscore
@@ -368,17 +404,16 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # Collapse from many time points per encounter to one row per encounter by
   # taking the maximum time-aligned ODSS.
   oss <-
-    #aggregate(
-    #  x = phxdft_select(oss, c("odss_4", "odss_4_septic_shock", "odss_8")),
-    #  by = phxdft_select(oss, id.vars),
-    #  FUN = max
-    #)
     phxdft_aggregate(
       data = oss,
-      y    = c("odss_4", "odss_4_septic_shock", "odss_8"),
+      y    = c("odss_4_timepoint", "odss_4_timepoint_septic_shock", "odss_8_timepoint"),
       by   = id.vars,
       FUN  = max
     )
+
+  oss <- phxdft_setnames(x = oss, old = "odss_4_timepoint", new = "odss_4_jama2024")
+  oss <- phxdft_setnames(x = oss, old = "odss_4_timepoint_septic_shock", new = "odss_4_jama2024_septic_shock")
+  oss <- phxdft_setnames(x = oss, old = "odss_8_timepoint", new = "odss_8_jama2024")
 
   oss
 
@@ -404,11 +439,6 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
   if (verbose) message("    aggregating....")
   oss <-
-    #aggregate(
-    #  x = phxdft_select(oss, c("respscore", "cardscore", "neuroscore", "coagscore", "endoscore", "immunscore", "hepaticscore", "renalscore")),
-    #  by = phxdft_select(oss, id.vars),
-    #  FUN = max
-    #)
     phxdft_aggregate(
       data = oss,
       y    = c("respscore", "cardscore", "neuroscore", "coagscore", "endoscore", "immunscore", "hepaticscore", "renalscore"),

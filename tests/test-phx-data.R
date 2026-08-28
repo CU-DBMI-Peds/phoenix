@@ -379,13 +379,6 @@ scored_phoenix_data <-
     score_prepared_phoenix_data(prepared_phoenix_data, aggregation = "ccd"),
     score_prepared_phoenix_data(prepared_phoenix_data, aggregation = "fcd")
   )
-#scored_phoenix_data <-
-#  lapply(
-#    scored_phoenix_data,
-#    function(x) {
-#      x[, c("encounter_id", names(x)[startsWith(names(x), "pss_4")])]
-#    }
-#  )
 scored_phoenix_data <-
   Reduce(
     f = function(x, y) merge(x, y, by = c("encounter_id", "suspected_infection")),
@@ -400,13 +393,6 @@ scored_phoenix_data_Inf <-
     score_prepared_phoenix_data(prepared_phoenix_data, T1 = Inf, aggregation = "ccd"),
     score_prepared_phoenix_data(prepared_phoenix_data, T1 = Inf, aggregation = "fcd")
   )
-#scored_phoenix_data_Inf <-
-#  lapply(
-#    scored_phoenix_data_Inf,
-#    function(x) {
-#      x[, c("encounter_id", names(x)[startsWith(names(x), "pss_4")])]
-#    }
-#  )
 scored_phoenix_data_Inf <-
   Reduce(
     f = function(x, y) merge(x, y, by = c("encounter_id", "suspected_infection")),
@@ -416,32 +402,32 @@ scored_phoenix_data_Inf <-
 expected <-
   structure(
     list(
-      encounter_id        = c("19960610", "20010609", "20220626"),
-      suspected_infection = c(1L, 1L,  1L),
-      odss_4              = c(1L, 1L,  5L),
-      pss_4               = c(1L, 1L,  5L),
-      sepsis              = c(0L, 0L,  1L),
-      septic_shock        = c(0L, 0L,  1L),
-      odss_8              = c(1L, 3L,  8L),
-      pss_8               = c(1L, 3L,  8L),
-      odss_4_olm          = c(3L, 1L,  7L),
-      pss_4_olm           = c(3L, 1L,  7L),
-      sepsis_olm          = c(1L, 0L,  1L),
-      septic_shock_olm    = c(1L, 0L,  1L),
-      odss_8_olm          = c(3L, 4L, 10L),
-      pss_8_olm           = c(3L, 4L, 10L),
-      odss_4_ccd          = c(3L, 1L,  9L),
-      pss_4_ccd           = c(3L, 1L,  9L),
-      sepsis_ccd          = c(1L, 0L,  1L),
-      septic_shock_ccd    = c(1L, 0L,  1L),
-      odss_8_ccd          = c(3L, 4L, 12L),
-      pss_8_ccd           = c(3L, 4L, 12L),
-      odss_4_fcd          = c(5L, 1L, 10L),
-      pss_4_fcd           = c(5L, 1L, 10L),
-      sepsis_fcd          = c(1L, 0L,  1L),
-      septic_shock_fcd    = c(1L, 0L,  1L),
-      odss_8_fcd          = c(5L, 4L, 13L),
-      pss_8_fcd           = c(5L, 4L, 13L)
+      encounter_id          = c("19960610", "20010609", "20220626"),
+      suspected_infection   = c(1L, 1L,  1L),
+      odss_4_jama2024       = c(1L, 1L,  5L),
+      pss_4_jama2024        = c(1L, 1L,  5L),
+      sepsis_jama2024       = c(0L, 0L,  1L),
+      septic_shock_jama2024 = c(0L, 0L,  1L),
+      odss_8_jama2024       = c(1L, 3L,  8L),
+      pss_8_jama2024        = c(1L, 3L,  8L),
+      odss_4_olm            = c(3L, 1L,  7L),
+      pss_4_olm             = c(3L, 1L,  7L),
+      sepsis_olm            = c(1L, 0L,  1L),
+      septic_shock_olm      = c(1L, 0L,  1L),
+      odss_8_olm            = c(3L, 4L, 10L),
+      pss_8_olm             = c(3L, 4L, 10L),
+      odss_4_ccd            = c(3L, 1L,  9L),
+      pss_4_ccd             = c(3L, 1L,  9L),
+      sepsis_ccd            = c(1L, 0L,  1L),
+      septic_shock_ccd      = c(1L, 0L,  1L),
+      odss_8_ccd            = c(3L, 4L, 12L),
+      pss_8_ccd             = c(3L, 4L, 12L),
+      odss_4_fcd            = c(5L, 1L, 10L),
+      pss_4_fcd             = c(5L, 1L, 10L),
+      sepsis_fcd            = c(1L, 0L,  1L),
+      septic_shock_fcd      = c(1L, 0L,  1L),
+      odss_8_fcd            = c(5L, 4L, 13L),
+      pss_8_fcd             = c(5L, 4L, 13L)
     ),
     row.names = c(NA, -3L),
     class = "data.frame"
@@ -450,32 +436,32 @@ expected <-
 expected_Inf <-
   structure(
     list(
-      encounter_id        = c("19960610", "20010609", "20220626"),
-      suspected_infection = c(1L, 1L,  1L),
-      odss_4              = c(3L, 1L,  7L),
-      pss_4               = c(3L, 1L,  7L),
-      sepsis              = c(1L, 0L,  1L),
-      septic_shock        = c(0L, 0L,  1L),
-      odss_8              = c(3L, 3L,  9L),
-      pss_8               = c(3L, 3L,  9L),
-      odss_4_olm          = c(5L, 2L,  8L),
-      pss_4_olm           = c(5L, 2L,  8L),
-      sepsis_olm          = c(1L, 1L,  1L),
-      septic_shock_olm    = c(1L, 1L,  1L),
-      odss_8_olm          = c(5L, 5L, 12L),
-      pss_8_olm           = c(5L, 5L, 12L),
-      odss_4_ccd          = c(5L, 4L,  9L),
-      pss_4_ccd           = c(5L, 4L,  9L),
-      sepsis_ccd          = c(1L, 1L,  1L),
-      septic_shock_ccd    = c(1L, 1L,  1L),
-      odss_8_ccd          = c(5L, 7L, 13L),
-      pss_8_ccd           = c(5L, 7L, 13L),
-      odss_4_fcd          = c(5L, 6L, 10L),
-      pss_4_fcd           = c(5L, 6L, 10L),
-      sepsis_fcd          = c(1L, 1L,  1L),
-      septic_shock_fcd    = c(1L, 1L,  1L),
-      odss_8_fcd          = c(5L, 9L, 14L),
-      pss_8_fcd           = c(5L, 9L, 14L)
+      encounter_id          = c("19960610", "20010609", "20220626"),
+      suspected_infection   = c(1L, 1L,  1L),
+      odss_4_jama2024       = c(3L, 1L,  7L),
+      pss_4_jama2024        = c(3L, 1L,  7L),
+      sepsis_jama2024       = c(1L, 0L,  1L),
+      septic_shock_jama2024 = c(0L, 0L,  1L),
+      odss_8_jama2024       = c(3L, 3L,  9L),
+      pss_8_jama2024        = c(3L, 3L,  9L),
+      odss_4_olm            = c(5L, 2L,  8L),
+      pss_4_olm             = c(5L, 2L,  8L),
+      sepsis_olm            = c(1L, 1L,  1L),
+      septic_shock_olm      = c(1L, 1L,  1L),
+      odss_8_olm            = c(5L, 5L, 12L),
+      pss_8_olm             = c(5L, 5L, 12L),
+      odss_4_ccd            = c(5L, 4L,  9L),
+      pss_4_ccd             = c(5L, 4L,  9L),
+      sepsis_ccd            = c(1L, 1L,  1L),
+      septic_shock_ccd      = c(1L, 1L,  1L),
+      odss_8_ccd            = c(5L, 7L, 13L),
+      pss_8_ccd             = c(5L, 7L, 13L),
+      odss_4_fcd            = c(5L, 6L, 10L),
+      pss_4_fcd             = c(5L, 6L, 10L),
+      sepsis_fcd            = c(1L, 1L,  1L),
+      septic_shock_fcd      = c(1L, 1L,  1L),
+      odss_8_fcd            = c(5L, 9L, 14L),
+      pss_8_fcd             = c(5L, 9L, 14L)
     ),
     row.names = c(NA, -3L),
     class = "data.frame"
