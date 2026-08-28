@@ -10,7 +10,7 @@ score_prepared_phoenix_data(
   T1 = 1440,
   sigma = 2,
   kappa = 1,
-  aggregation = c("jama2024", "olm", "ccd", "fcd"),
+  aggregation = c("jama2024", "olm", "ccd", "fcd", "timepoint"),
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -63,6 +63,7 @@ Aggregation schemes:
   \item{olm}{Organ-level maxima.}
   \item{ccd}{Organ-level maxima with cardiovascular component decoupling.}
   \item{fcd}{Full component decoupling.}
+  \item{timepoint}{Provides scores for every row of the input data with an encounter clock in [T0, T1).}
 }
 }
 \references{

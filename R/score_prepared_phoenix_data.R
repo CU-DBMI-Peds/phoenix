@@ -15,11 +15,8 @@
 #'   \item{olm}{Organ-level maxima.}
 #'   \item{ccd}{Organ-level maxima with cardiovascular component decoupling.}
 #'   \item{fcd}{Full component decoupling.}
+#'   \item{timepoint}{Provides scores for every row of the input data with an encounter clock in [T0, T1).}
 #' }
-#'
-#'
-#'
-#'
 #'
 #' @param x an object returned from \code{\link{prepare_phoenix_data}}
 #' @param T0 The start of observation window for assessing if the patient has
@@ -52,7 +49,7 @@
 #' \code{citation('phoenix')}.
 #'
 #' @export
-score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd"), verbose = getOption("phoenix_verbose", interactive())) {
+score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd", "timepoint"), verbose = getOption("phoenix_verbose", interactive())) {
   # This function scores the wide longitudinal data set returned by
   # `prepare_phoenix_data()`.  It returns one row per encounter, not one row per
   # encounter/time point.
@@ -244,22 +241,7 @@ respiratory_sf_col <- function(x) {
   if ("SFR_RESP" %in% names(x)) "SFR_RESP" else "SFR"
 }
 
-jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
-  # The scoring method used when Phoenix was developed and published in JAMA
-  # (2024).
-  #
-  # At each time point, compute the organ scores first.  Then sum the organ
-  # scores at that same time point.  The four-organ ODSS is the largest
-  # time-aligned sum observed in the scoring window:
-  #
-  #   max_t(resp_t + card_t + neuro_t + coag_t)
-  #
-  # The eight-organ ODSS uses the same time-aligned rule but includes endocrine,
-  # immunologic, hepatic, and renal scores as well.  This method does not let
-  # organ systems peak at different times and then add those peaks together.
-  #
-  # TeX: eq:odss, eq:pss, eq:omega4, eq:omega8, eq:sepsis, and eq:septicshock in
-  # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
+timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
 
   if (verbose) message("    building organ system scores...")
   # Compute all organ system scores at every time point in the scoring window.
@@ -267,6 +249,11 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # suspected-infection gating.
   # `prepare_phoenix_data()` applies eq:pfr-sfr-selector, when requested, by
   # creating the row-level PFR_RESP and SFR_RESP scoring columns.
+
+  # TODO: How do I get the pf_ratio_eclock, sf_ratio_eclock, elcock,
+  # pao2.spo2.delta values into this call?  Perhaps these need to be attributes
+  # for the prepared_phoenix_data object.  Same concern for the cardivascular
+  # scoring and the map.sdbp.delta and map.delta.
   respscore <-
     phoenix_respiratory(
       pf_ratio = x[[respiratory_pf_col(x)]],
@@ -280,7 +267,7 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
       vasoactives = x[["DOBUTAMINE"]] + x[["DOPAMINE"]] + x[["EPINEPHRINE"]] + x[["MILRINONE"]] + x[["NOREPINEPHRINE"]] + x[["VASOPRESSIN"]],
       lactate = x[["LACTATE"]],
       mean_arterial_pressure = x[["MAP"]],
-      age = x[["AGE"]],
+      age = x[["AGE"]]
     )
 
   coagscore <-
@@ -355,6 +342,28 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
               immunscore + endoscore + renalscore + hepaticscore
     )
 
+  oss
+}
+
+jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+  # The scoring method used when Phoenix was developed and published in JAMA
+  # (2024).
+  #
+  # At each time point, compute the organ scores first.  Then sum the organ
+  # scores at that same time point.  The four-organ ODSS is the largest
+  # time-aligned sum observed in the scoring window:
+  #
+  #   max_t(resp_t + card_t + neuro_t + coag_t)
+  #
+  # The eight-organ ODSS uses the same time-aligned rule but includes endocrine,
+  # immunologic, hepatic, and renal scores as well.  This method does not let
+  # organ systems peak at different times and then add those peaks together.
+  #
+  # TeX: eq:odss, eq:pss, eq:omega4, eq:omega8, eq:sepsis, and eq:septicshock in
+  # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
+
+  oss <- timepoint(x = x, id.vars = id.vars, eclock = eclock, sigma = sigma, kappa = kappa, verbose = verbose)
+
   if (verbose) message("    aggregating....")
   # Collapse from many time points per encounter to one row per encounter by
   # taking the maximum time-aligned ODSS.
@@ -391,74 +400,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # TeX: eq:odss-olm, eq:pss-olm, eq:sepsis-olm, and eq:septicshock-olm in
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
-  if (verbose) message("    building organ system scores...")
-  # Compute row-level organ scores before aggregating.  The per-organ maximum is
-  # computed after all rows in the scoring window have been scored.
-  # `prepare_phoenix_data()` applies eq:pfr-sfr-selector, when requested, by
-  # creating the row-level PFR_RESP and SFR_RESP scoring columns.
-  respscore <-
-    phoenix_respiratory(
-      pf_ratio = x[[respiratory_pf_col(x)]],
-      sf_ratio = x[[respiratory_sf_col(x)]],
-      invasive_mechanical_ventilation = x[["IMV"]],
-      other_respiratory_support = x[["ORS"]]
-    )
-
-  cardscore <-
-    phoenix_cardiovascular(
-      vasoactives = x[["DOBUTAMINE"]] + x[["DOPAMINE"]] + x[["EPINEPHRINE"]] + x[["MILRINONE"]] + x[["NOREPINEPHRINE"]] + x[["VASOPRESSIN"]],
-      lactate = x[["LACTATE"]],
-      mean_arterial_pressure = x[["MAP"]],
-      age = x[["AGE"]],
-    )
-
-  coagscore <-
-    phoenix_coagulation(
-      platelets = x[["PLATELETS"]],
-      inr = x[["INR"]],
-      d_dimer = x[["DDIMER"]],
-      fibrinogen = x[["FIBRINOGEN"]]
-    )
-
-  neuroscore <-
-    phoenix_neurologic(
-      gcs = x[["GCS"]],
-      fixed_pupils = x[["FIXEDPUPILS"]]
-    )
-
-  endoscore <-
-    phoenix_endocrine(
-      glucose = x[["GLUCOSE"]]
-    )
-
-  immunscore <-
-    phoenix_immunologic(
-      anc = x[["ANC"]],
-      alc = x[["ALC"]]
-    )
-
-  renalscore <-
-    phoenix_renal(
-      creatinine = x[["CREATININE"]],
-      age = x[["AGE"]]
-    )
-
-  hepaticscore <-
-    phoenix_hepatic(
-      bilirubin = x[["BILIRUBIN"]],
-      alt = x[["ALT"]]
-    )
-
-  oss <- phxdft_select(x, c(id.vars, eclock))
-  oss <- phxdft_set(oss, j = "respscore", value = respscore)
-  oss <- phxdft_set(oss, j = "cardscore", value = cardscore)
-  oss <- phxdft_set(oss, j = "neuroscore", value = neuroscore)
-  oss <- phxdft_set(oss, j = "coagscore", value = coagscore)
-  oss <- phxdft_set(oss, j = "endoscore", value = endoscore)
-  oss <- phxdft_set(oss, j = "immunscore", value = immunscore)
-  oss <- phxdft_set(oss, j = "hepaticscore", value = hepaticscore)
-  oss <- phxdft_set(oss, j = "renalscore", value = renalscore)
-
+  oss <- timepoint(x = x, id.vars = id.vars, eclock = eclock, sigma = sigma, kappa = kappa, verbose = verbose)
 
   if (verbose) message("    aggregating....")
   oss <-
