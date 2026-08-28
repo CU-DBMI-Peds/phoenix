@@ -1,4 +1,4 @@
-# Version 1.1.3.9009
+# Version 1.1.3.9010
 
 ## API Changes
 
@@ -62,6 +62,10 @@
   returns row-level ODSS, PSS, sepsis, and septic-shock values for each prepared
   encounter-clock row in `[T0, T1)`, using the same suspected-infection gate
   defined over the full scoring window.
+* Include row-level organ system scores and cardiovascular component scores in
+  `aggregation = "timepoint"` output. These audit columns show how each
+  encounter-clock ODSS and PSS value was produced without adding ambiguous
+  component columns to interval-level aggregation outputs.
 * `score_prepared_phoenix_data()` now returns organ dysfunction summary score
   (ODSS) columns separately from Phoenix Sepsis Score (PSS) columns. ODSS is
   computed regardless of suspected infection status; PSS is the suspected
@@ -97,6 +101,8 @@
 * Use a strict namespace lookup for prepared-data aggregation helpers so
   `score_prepared_phoenix_data()` can dispatch to internal aggregation functions
   without relying on a switch statement or attached package symbols.
+* Return a well-formed zero-row result for `aggregation = "timepoint"` when the
+  requested interval contains no prepared encounter-clock rows.
 
 # Version 1.1.3:
 

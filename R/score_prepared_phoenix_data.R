@@ -15,7 +15,8 @@
 #'   \item{olm}{Organ-level maxima.}
 #'   \item{ccd}{Organ-level maxima with cardiovascular component decoupling.}
 #'   \item{fcd}{Full component decoupling.}
-#'   \item{timepoint}{Provides scores for every row of the input data with an encounter clock in [T0, T1).}
+#'   \item{timepoint}{Provides scores for every row of the input data with an
+#'   encounter clock in [T0, T1).}
 #' }
 #'
 #' @param x an object returned from \code{\link{prepare_phoenix_data}}
@@ -31,16 +32,15 @@
 #'   See Details.
 #' @param verbose when \code{TRUE}, display progress messages
 #'
-#' @return A scored data frame with one row per encounter identifier. The output
-#'   always includes \code{suspected_infection}. For the selected aggregation it
-#'   includes four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
-#'   eight-organ ODSS, and eight-organ PSS. For example,
-#'   \code{aggregation = "jama2024"} returns
-#'   \code{odss_4},
-#'   \code{pss_4}, \code{sepsis},
-#'   \code{septic_shock},
-#'   \code{odss_8}, and
-#'   \code{pss_8}.
+#' @return A scored data frame. Summary aggregations return one row per
+#'   encounter identifier. \code{aggregation = "timepoint"} returns one row per
+#'   encounter-clock row in \code{[T0, T1)}. The output always includes
+#'   \code{suspected_infection}. For the selected aggregation it includes
+#'   four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
+#'   eight-organ ODSS, and eight-organ PSS. Score columns include the
+#'   aggregation suffix, for example \code{odss_4_jama2024} or
+#'   \code{odss_4_timepoint}. Timepoint output also includes row-level organ
+#'   scores and cardiovascular component scores for auditing.
 #'
 #' @seealso \code{\link{prepare_inputs_range}},
 #' \code{\link{prepare_inputs_discrete}}
@@ -51,8 +51,9 @@
 #' @export
 score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd", "timepoint"), verbose = getOption("phoenix_verbose", interactive())) {
   # This function scores the wide longitudinal data set returned by
-  # `prepare_phoenix_data()`.  It returns one row per encounter, not one row per
-  # encounter/time point.
+  # `prepare_phoenix_data()`.  Summary aggregations return one row per
+  # encounter. The timepoint aggregation returns one row per encounter-clock row
+  # in [T0, T1) and includes row-level audit scores.
   #
   # The important distinction is:
   #   ODSS = organ dysfunction summary score, computed from physiology.
@@ -95,13 +96,18 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
       i = which((si[[attr(x, "eclock")]] >= T0) & (si[[attr(x, "eclock")]] < T1))
     )
 
-  si <-
-    phxdft_aggregate(
-      data = si,
-      y    = "suspected_infection",
-      by   = attr(x, "id.vars"),
-      FUN  = max
-    )
+  if (nrow(si) > 0L) {
+    si <-
+      phxdft_aggregate(
+        data = si,
+        y    = "suspected_infection",
+        by   = attr(x, "id.vars"),
+        FUN  = max
+      )
+  } else {
+    si <- phxdft_select(si, attr(x, "id.vars"))
+    si <- phxdft_set(si, j = "suspected_infection", value = integer())
+  }
 
   if (verbose) message("  identifying records to score...")
   # Organ dysfunction summary scores are computed for all records in [T0, T1).
@@ -110,11 +116,17 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   score_this <-
     phxdft_subset(x, i = which((x[[attr(x, "eclock")]] >= T0) & (x[[attr(x, "eclock")]] < T1)))
 
+  if (aggregation == "timepoint") {
+    join_by_vars <- c(attr(x, "id.vars"), attr(x, "eclock"))
+  } else {
+    join_by_vars <- attr(x, "id.vars")
+  }
+
   if (verbose) message("  applying scoring...")
   # Each aggregation helper below returns ODSS-type columns only.  The common
   # PSS/sepsis/septic-shock logic is applied after the switch so the suspected
   # infection gating is identical across aggregation schemes.
-  ods <- phxdft_unique(phxdft_select(score_this, attr(x, "id.vars")))
+  ods <- phxdft_unique(phxdft_select(score_this, join_by_vars))
   if (nrow(score_this) > 0L) {
     f <-
       get(
@@ -139,10 +151,8 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
   # rows inside [T0, T1).  Encounters with no rows in the scoring window are kept
   # and receive zero scores below.
   if (aggregation == "timepoint") {
-    join_by_vars <- c(attr(x, "id.vars"), attr(x, "eclock"))
     iddf <- phxdft_select(score_this, join_by_vars)
   } else {
-    join_by_vars <- c(attr(x, "id.vars"))
     iddf <- phxdft_unique(phxdft_select(x, join_by_vars))
   }
   rtn <- phxdft_left_join(iddf, si, attr(x, "id.vars"))
@@ -167,7 +177,20 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
         sepsis = "sepsis_timepoint",
         shock = "septic_shock_timepoint",
         ods8 = "odss_8_timepoint",
-        pss8 = "pss_8_timepoint"
+        pss8 = "pss_8_timepoint",
+        audit = c(
+          "resp_score_timepoint",
+          "card_score_timepoint",
+          "vaso_score_timepoint",
+          "map_score_timepoint",
+          "lactate_score_timepoint",
+          "neuro_score_timepoint",
+          "coag_score_timepoint",
+          "endo_score_timepoint",
+          "immu_score_timepoint",
+          "hepatic_score_timepoint",
+          "renal_score_timepoint"
+        )
       ),
       jama2024 = list(
         ods4 = "odss_4_jama2024",
@@ -176,7 +199,8 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
         sepsis = "sepsis_jama2024",
         shock = "septic_shock_jama2024",
         ods8 = "odss_8_jama2024",
-        pss8 = "pss_8_jama2024"
+        pss8 = "pss_8_jama2024",
+        audit = character()
       ),
       olm = list(
         ods4 = "odss_4_olm",
@@ -185,7 +209,8 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
         sepsis = "sepsis_olm",
         shock = "septic_shock_olm",
         ods8 = "odss_8_olm",
-        pss8 = "pss_8_olm"
+        pss8 = "pss_8_olm",
+        audit = character()
       ),
       ccd = list(
         ods4 = "odss_4_ccd",
@@ -194,7 +219,8 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
         sepsis = "sepsis_ccd",
         shock = "septic_shock_ccd",
         ods8 = "odss_8_ccd",
-        pss8 = "pss_8_ccd"
+        pss8 = "pss_8_ccd",
+        audit = character()
       ),
       fcd = list(
         ods4 = "odss_4_fcd",
@@ -203,18 +229,24 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
         sepsis = "sepsis_fcd",
         shock = "septic_shock_fcd",
         ods8 = "odss_8_fcd",
-        pss8 = "pss_8_fcd"
+        pss8 = "pss_8_fcd",
+        audit = character()
       )
     )
   for (col in c(score_columns[["ods4"]], score_columns[["shock_ods"]], score_columns[["ods8"]])) {
     # Missing ODSS values mean there was no available dysfunction evidence in
     # the requested window.  By definition, that contributes zero points.
     if (!col %in% names(rtn)) {
-      rtn <- phxdft_set(rtn, j = col, value = 0L)
+      rtn <- phxdft_set(rtn, j = col, value = rep(0L, nrow(rtn)))
     } else {
       values <- rtn[[col]]
       values[is.na(values)] <- 0L
       rtn <- phxdft_set(rtn, j = col, value = values)
+    }
+  }
+  for (col in score_columns[["audit"]]) {
+    if (!col %in% names(rtn)) {
+      rtn <- phxdft_set(rtn, j = col, value = rep(0L, nrow(rtn)))
     }
   }
   # TeX: PSS is max_T SI times ODSS; sepsis and septic shock indicators are
@@ -243,7 +275,8 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
         score_columns[["sepsis"]],
         score_columns[["shock"]],
         score_columns[["ods8"]],
-        score_columns[["pss8"]]
+        score_columns[["pss8"]],
+        score_columns[["audit"]]
       )
     )
 
@@ -298,13 +331,13 @@ timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
       other_respiratory_support = x[["ORS"]]
     )
 
-  cardscore <-
-    phoenix_cardiovascular(
-      vasoactives = x[["DOBUTAMINE"]] + x[["DOPAMINE"]] + x[["EPINEPHRINE"]] + x[["MILRINONE"]] + x[["NOREPINEPHRINE"]] + x[["VASOPRESSIN"]],
-      lactate = x[["LACTATE"]],
-      mean_arterial_pressure = x[["MAP"]],
-      age = x[["AGE"]]
-    )
+  vasoactives <-
+    x[["DOBUTAMINE"]] + x[["DOPAMINE"]] + x[["EPINEPHRINE"]] +
+    x[["MILRINONE"]] + x[["NOREPINEPHRINE"]] + x[["VASOPRESSIN"]]
+  vasoscore <- vasoactive_score(vasoactives)
+  lactatescore <- lactate_score(x[["LACTATE"]])
+  mapscore <- map_score(x[["MAP"]], x[["AGE"]])
+  cardscore <- vasoscore + lactatescore + mapscore
 
   coagscore <-
     phoenix_coagulation(
@@ -346,12 +379,26 @@ timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss <- phxdft_select(x, c(id.vars, eclock))
   oss <- phxdft_set(oss, j = "respscore", value = respscore)
   oss <- phxdft_set(oss, j = "cardscore", value = cardscore)
+  oss <- phxdft_set(oss, j = "vasoscore", value = vasoscore)
+  oss <- phxdft_set(oss, j = "mapscore", value = mapscore)
+  oss <- phxdft_set(oss, j = "lactatescore", value = lactatescore)
   oss <- phxdft_set(oss, j = "neuroscore", value = neuroscore)
   oss <- phxdft_set(oss, j = "coagscore", value = coagscore)
   oss <- phxdft_set(oss, j = "endoscore", value = endoscore)
   oss <- phxdft_set(oss, j = "immunscore", value = immunscore)
   oss <- phxdft_set(oss, j = "hepaticscore", value = hepaticscore)
   oss <- phxdft_set(oss, j = "renalscore", value = renalscore)
+  oss <- phxdft_set(oss, j = "resp_score_timepoint", value = respscore)
+  oss <- phxdft_set(oss, j = "card_score_timepoint", value = cardscore)
+  oss <- phxdft_set(oss, j = "vaso_score_timepoint", value = vasoscore)
+  oss <- phxdft_set(oss, j = "map_score_timepoint", value = mapscore)
+  oss <- phxdft_set(oss, j = "lactate_score_timepoint", value = lactatescore)
+  oss <- phxdft_set(oss, j = "neuro_score_timepoint", value = neuroscore)
+  oss <- phxdft_set(oss, j = "coag_score_timepoint", value = coagscore)
+  oss <- phxdft_set(oss, j = "endo_score_timepoint", value = endoscore)
+  oss <- phxdft_set(oss, j = "immu_score_timepoint", value = immunscore)
+  oss <- phxdft_set(oss, j = "hepatic_score_timepoint", value = hepaticscore)
+  oss <- phxdft_set(oss, j = "renal_score_timepoint", value = renalscore)
 
   oss <-
     phxdft_set(

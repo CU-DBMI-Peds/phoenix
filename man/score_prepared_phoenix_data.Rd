@@ -35,16 +35,15 @@ See Details.}
 \item{verbose}{when \code{TRUE}, display progress messages}
 }
 \value{
-A scored data frame with one row per encounter identifier. The output
-  always includes \code{suspected_infection}. For the selected aggregation it
-  includes four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
-  eight-organ ODSS, and eight-organ PSS. For example,
-  \code{aggregation = "jama2024"} returns
-  \code{odss_4},
-  \code{pss_4}, \code{sepsis},
-  \code{septic_shock},
-  \code{odss_8}, and
-  \code{pss_8}.
+A scored data frame. Summary aggregations return one row per
+  encounter identifier. \code{aggregation = "timepoint"} returns one row per
+  encounter-clock row in \code{[T0, T1)}. The output always includes
+  \code{suspected_infection}. For the selected aggregation it includes
+  four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
+  eight-organ ODSS, and eight-organ PSS. Score columns include the
+  aggregation suffix, for example \code{odss_4_jama2024} or
+  \code{odss_4_timepoint}. Timepoint output also includes row-level organ
+  scores and cardiovascular component scores for auditing.
 }
 \description{
 Apply the published and experimental aggregation schemes to prepared Phoenix
@@ -63,7 +62,8 @@ Aggregation schemes:
   \item{olm}{Organ-level maxima.}
   \item{ccd}{Organ-level maxima with cardiovascular component decoupling.}
   \item{fcd}{Full component decoupling.}
-  \item{timepoint}{Provides scores for every row of the input data with an encounter clock in [T0, T1).}
+  \item{timepoint}{Provides scores for every row of the input data with an
+  encounter clock in [T0, T1).}
 }
 }
 \references{

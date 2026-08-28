@@ -160,6 +160,16 @@ assert_end_to_end <- function(backend) {
   fcd <- score_prepared_phoenix_data(prepared, T0 = 0, T1 = 1440, aggregation = "fcd", verbose = FALSE)
   fcd <- sort_by_encounter(fcd)
 
+  timepoint <-
+    score_prepared_phoenix_data(
+      prepared,
+      T0 = 0,
+      T1 = 1440,
+      aggregation = "timepoint",
+      verbose = FALSE
+    )
+  timepoint <- sort_by_encounter(timepoint)
+
   stopifnot(
     isTRUE(all.equal(olm[["odss_4_olm"]][1], 5)),
     isTRUE(all.equal(olm[["pss_4_olm"]][1], 5)),
@@ -197,6 +207,76 @@ assert_end_to_end <- function(backend) {
     isTRUE(all.equal(fcd[["septic_shock_fcd"]][2], 0)),
     isTRUE(all.equal(fcd[["odss_8_fcd"]][2], 1)),
     isTRUE(all.equal(fcd[["pss_8_fcd"]][2], 0))
+  )
+
+  timepoint_audit_columns <-
+    c(
+      "resp_score_timepoint",
+      "card_score_timepoint",
+      "vaso_score_timepoint",
+      "map_score_timepoint",
+      "lactate_score_timepoint",
+      "neuro_score_timepoint",
+      "coag_score_timepoint",
+      "endo_score_timepoint",
+      "immu_score_timepoint",
+      "hepatic_score_timepoint",
+      "renal_score_timepoint"
+    )
+
+  stopifnot(
+    all(timepoint_audit_columns %in% names(timepoint)),
+    eclock %in% names(timepoint),
+    isTRUE(
+      all.equal(
+        timepoint[["card_score_timepoint"]],
+        timepoint[["vaso_score_timepoint"]] +
+          timepoint[["map_score_timepoint"]] +
+          timepoint[["lactate_score_timepoint"]]
+      )
+    ),
+    isTRUE(
+      all.equal(
+        timepoint[["odss_4_timepoint"]],
+        timepoint[["resp_score_timepoint"]] +
+          timepoint[["card_score_timepoint"]] +
+          timepoint[["neuro_score_timepoint"]] +
+          timepoint[["coag_score_timepoint"]]
+      )
+    ),
+    isTRUE(
+      all.equal(
+        timepoint[["odss_8_timepoint"]],
+        timepoint[["odss_4_timepoint"]] +
+          timepoint[["endo_score_timepoint"]] +
+          timepoint[["immu_score_timepoint"]] +
+          timepoint[["hepatic_score_timepoint"]] +
+          timepoint[["renal_score_timepoint"]]
+      )
+    ),
+    identical(
+      timepoint[["pss_4_timepoint"]],
+      timepoint[["suspected_infection"]] * timepoint[["odss_4_timepoint"]]
+    ),
+    identical(
+      timepoint[["pss_8_timepoint"]],
+      timepoint[["suspected_infection"]] * timepoint[["odss_8_timepoint"]]
+    )
+  )
+
+  empty_timepoint <-
+    score_prepared_phoenix_data(
+      prepared,
+      T0 = 1,
+      T1 = 1,
+      aggregation = "timepoint",
+      verbose = FALSE
+    )
+
+  stopifnot(
+    nrow(empty_timepoint) == 0L,
+    all(timepoint_audit_columns %in% names(empty_timepoint)),
+    eclock %in% names(empty_timepoint)
   )
 }
 
