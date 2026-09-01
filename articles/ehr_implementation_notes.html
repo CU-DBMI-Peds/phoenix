@@ -451,7 +451,7 @@ same as, or before, the time of PaO<sub>2</sub> value. For example, if
 FiO<sub>2</sub> was reported at 11:31 and PaO<sub>2</sub> was reported
 at 11:45 then the PFR would be valid to use. If the FiO<sub>2</sub> is
 then updated at 11:59, the PaO<sub>2</sub> value from 11:45 would not be
-valid to use in the calculation of the PFR</p>
+valid to use in the calculation of the PFR.</p>
 <table class="table">
 <caption>* New value <br><sup>c</sup> value carried forward</caption>
 <colgroup>
@@ -751,23 +751,751 @@ dysfunction</li>
 <ul>
 <li>If it has been more than 6 hours since the last known data point
 indicating the patient has IMV, then consider the patient to no longer
-have IMV</li>
+have IMV.</li>
 </ul>
 </li>
 </ul>
+<p><strong>Step-By-Step Instructions:</strong> NOTE: these instructions
+are intended for prospective or real-time assessments and extends the
+logic from the retrospective data analysis used to develop the Phoenix
+criteria.</p>
+<ol style="list-style-type: decimal">
+<li>Pick the score time, t. Example: ``We are scoring the patient at
+10:15.’’</li>
+<li>Look back only as far as the respiratory look-back window allows.
+For published Phoenix, this is 6 hours.</li>
+<li>Determine the PFR at time t.</li>
+<li>Determine the SFR at time t.</li>
+<li>Select PFR <em>or</em> SFR to score:
+<ol style="list-style-type: lower-alpha">
+<li>If at time t, SFR is defined and PFR is not, use SFR.</li>
+<li>If at time t, PFR is defined and SFR is not, use PFR.</li>
+<li>If at time t, SFR and PFR are both defined, then:
+<ol style="list-style-type: lower-roman">
+<li>If the age of the PFR value is less than, or no more than one minute
+older, than the age of the SFR value, use the PFR value.</li>
+<li>If the SFR is more than one minute younger than the PFR value, use
+the SFR.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Score</li>
+</ol>
+<p><strong>Example:</strong> Minutes into an encounter the observed
+FiO<sub>2</sub>, PaO<sub>2</sub>, and SpO<sub>2</sub> values and the
+carried forward values. PFR and SFR values. Notes (below the table)
+explain why PFR, SFR, or neither is used.</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+<col width="10%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">Minute</th>
+<th align="right">FiO<sub>2</sub> Observed</th>
+<th align="right">FiO<sub>2</sub>
+</th>
+<th align="right">PaO<sub>2</sub> Observed</th>
+<th align="right">PAO2</th>
+<th align="right">SPO2 Observed</th>
+<th align="right">SPO2</th>
+<th align="right">PFR</th>
+<th align="right">SFR</th>
+<th align="left">Notes</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">34</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">100</td>
+<td align="right">100</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">1.</td>
+</tr>
+<tr class="even">
+<td align="right">69</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">100</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">1.</td>
+</tr>
+<tr class="odd">
+<td align="right">94</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">99</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">2.</td>
+</tr>
+<tr class="even">
+<td align="right">96</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">2.</td>
+</tr>
+<tr class="odd">
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right">115</td>
+<td align="right">115</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">115</td>
+<td align="right"></td>
+<td align="left">3.</td>
+</tr>
+<tr class="even">
+<td align="right">118</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right">115</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">115</td>
+<td align="right"></td>
+<td align="left">3.</td>
+</tr>
+<tr class="odd">
+<td align="right">124</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right">115</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="left">4.</td>
+</tr>
+<tr class="even">
+<td align="right">134</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right">115</td>
+<td align="right">100</td>
+<td align="right">100</td>
+<td align="right">115</td>
+<td align="right"></td>
+<td align="left">3.</td>
+</tr>
+<tr class="odd">
+<td align="right">154</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right">115</td>
+<td align="right">98</td>
+<td align="right">98</td>
+<td align="right">115</td>
+<td align="right"></td>
+<td align="left">3.</td>
+</tr>
+<tr class="even">
+<td align="right">186</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">98</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="left">3.</td>
+</tr>
+<tr class="odd">
+<td align="right">207</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">98</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="left">3.</td>
+</tr>
+<tr class="even">
+<td align="right">212</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="left">4.</td>
+</tr>
+<tr class="odd">
+<td align="right">214</td>
+<td align="right"></td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="left">4.</td>
+</tr>
+<tr class="even">
+<td align="right">274</td>
+<td align="right">0.8</td>
+<td align="right">0.8</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right">96</td>
+<td align="right">96</td>
+<td align="right"></td>
+<td align="right">120</td>
+<td align="left">4.</td>
+</tr>
+<tr class="odd">
+<td align="right">275</td>
+<td align="right"></td>
+<td align="right">0.8</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">96</td>
+<td align="right"></td>
+<td align="right">120</td>
+<td align="left">4.</td>
+</tr>
+<tr class="even">
+<td align="right">278</td>
+<td align="right"></td>
+<td align="right">0.8</td>
+<td align="right">93</td>
+<td align="right">93</td>
+<td align="right"></td>
+<td align="right">96</td>
+<td align="right">116.25</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">304</td>
+<td align="right"></td>
+<td align="right">0.8</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right"></td>
+<td align="right">96</td>
+<td align="right">116.25</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+<tr class="even">
+<td align="right">315</td>
+<td align="right"></td>
+<td align="right">0.8</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right"></td>
+<td align="right">96</td>
+<td align="right">116.25</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">334</td>
+<td align="right"></td>
+<td align="right">0.8</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right">95</td>
+<td align="right">95</td>
+<td align="right"></td>
+<td align="right">118.75</td>
+<td align="left">6.</td>
+</tr>
+<tr class="even">
+<td align="right">366</td>
+<td align="right"></td>
+<td align="right">0.8</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right"></td>
+<td align="right">95</td>
+<td align="right"></td>
+<td align="right">118.75</td>
+<td align="left">6.</td>
+</tr>
+<tr class="odd">
+<td align="right">374</td>
+<td align="right"></td>
+<td align="right">0.8</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right"></td>
+<td align="right">95</td>
+<td align="right"></td>
+<td align="right">118.75</td>
+<td align="left">6.</td>
+</tr>
+<tr class="even">
+<td align="right">394</td>
+<td align="right">0.75</td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right">94</td>
+<td align="right">94</td>
+<td align="right"></td>
+<td align="right">125.33</td>
+<td align="left">6.</td>
+</tr>
+<tr class="odd">
+<td align="right">395</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right"></td>
+<td align="right">94</td>
+<td align="right"></td>
+<td align="right">125.33</td>
+<td align="left">6.</td>
+</tr>
+<tr class="even">
+<td align="right">399</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">93</td>
+<td align="right"></td>
+<td align="right">94</td>
+<td align="right"></td>
+<td align="right">125.33</td>
+<td align="left">6.</td>
+</tr>
+<tr class="odd">
+<td align="right">401</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right">89</td>
+<td align="right">89</td>
+<td align="right"></td>
+<td align="right">94</td>
+<td align="right">118.66</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+<tr class="even">
+<td align="right">405</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">89</td>
+<td align="right"></td>
+<td align="right">94</td>
+<td align="right">118.66</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">414</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">89</td>
+<td align="right"></td>
+<td align="right">94</td>
+<td align="right">118.66</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+<tr class="even">
+<td align="right">431</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">89</td>
+<td align="right"></td>
+<td align="right">94</td>
+<td align="right">118.66</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+<tr class="odd">
+<td align="right">439</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">89</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">129.33</td>
+<td align="left">6.</td>
+</tr>
+<tr class="even">
+<td align="right">454</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">89</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">129.33</td>
+<td align="left">6.</td>
+</tr>
+<tr class="odd">
+<td align="right">462</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">89</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">129.33</td>
+<td align="left">6.</td>
+</tr>
+<tr class="even">
+<td align="right">509</td>
+<td align="right"></td>
+<td align="right">0.75</td>
+<td align="right"></td>
+<td align="right">89</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">129.33</td>
+<td align="left">6.</td>
+</tr>
+<tr class="odd">
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="right">…</td>
+<td align="left">…</td>
+</tr>
+<tr class="even">
+<td align="right">1501</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right">112</td>
+<td align="right">112</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">224</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="right">1504</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right"></td>
+<td align="right">112</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">224</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="right">1534</td>
+<td align="right">0.5</td>
+<td align="right">0.5</td>
+<td align="right"></td>
+<td align="right">112</td>
+<td align="right">100</td>
+<td align="right">100</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">7.</td>
+</tr>
+<tr class="odd">
+<td align="right">1594</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right"></td>
+<td align="right">112</td>
+<td align="right">98</td>
+<td align="right">98</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">7.</td>
+</tr>
+<tr class="even">
+<td align="right">1614</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right"></td>
+<td align="right">112</td>
+<td align="right"></td>
+<td align="right">98</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">7.</td>
+</tr>
+<tr class="odd">
+<td align="right">1654</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right"></td>
+<td align="right">112</td>
+<td align="right">100</td>
+<td align="right">100</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">7.</td>
+</tr>
+<tr class="even">
+<td align="right">1717</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right">117</td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">234</td>
+<td align="right"></td>
+<td align="left">8.</td>
+</tr>
+<tr class="odd">
+<td align="right">1718</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">234</td>
+<td align="right"></td>
+<td align="left">8.</td>
+</tr>
+<tr class="even">
+<td align="right">1727</td>
+<td align="right"></td>
+<td align="right">0.5</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right">234</td>
+<td align="right"></td>
+<td align="left">8.</td>
+</tr>
+<tr class="odd">
+<td align="right">1745</td>
+<td align="right">0.45</td>
+<td align="right">0.45</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">7.</td>
+</tr>
+<tr class="even">
+<td align="right">1757</td>
+<td align="right"></td>
+<td align="right">0.45</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">99</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">7.</td>
+</tr>
+<tr class="odd">
+<td align="right">1774</td>
+<td align="right"></td>
+<td align="right">0.45</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right">98</td>
+<td align="right">98</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="left">7.</td>
+</tr>
+<tr class="even">
+<td align="right">1834</td>
+<td align="right"></td>
+<td align="right">0.45</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">215.56</td>
+<td align="left">9.</td>
+</tr>
+<tr class="odd">
+<td align="right">1839</td>
+<td align="right"></td>
+<td align="right">0.45</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">215.56</td>
+<td align="left">9.</td>
+</tr>
+<tr class="even">
+<td align="right">1894</td>
+<td align="right">0.4</td>
+<td align="right">0.4</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right">97</td>
+<td align="right">97</td>
+<td align="right"></td>
+<td align="right">242.5</td>
+<td align="left">9.</td>
+</tr>
+<tr class="odd">
+<td align="right">1954</td>
+<td align="right"></td>
+<td align="right">0.4</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right">95</td>
+<td align="right">95</td>
+<td align="right"></td>
+<td align="right">237.5</td>
+<td align="left">9.</td>
+</tr>
+<tr class="even">
+<td align="right">1955</td>
+<td align="right"></td>
+<td align="right">0.4</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">95</td>
+<td align="right"></td>
+<td align="right">237.5</td>
+<td align="left">9.</td>
+</tr>
+<tr class="odd">
+<td align="right">1972</td>
+<td align="right"></td>
+<td align="right">0.4</td>
+<td align="right"></td>
+<td align="right">117</td>
+<td align="right"></td>
+<td align="right">95</td>
+<td align="right"></td>
+<td align="right">237.5</td>
+<td align="left">9.</td>
+</tr>
+<tr class="even">
+<td align="right">1983</td>
+<td align="right"></td>
+<td align="right">0.4</td>
+<td align="right">79</td>
+<td align="right">79</td>
+<td align="right"></td>
+<td align="right">95</td>
+<td align="right">197.5</td>
+<td align="right"></td>
+<td align="left">5.</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol style="list-style-type: decimal">
+<li>No PFR or SFR because there is no FiO<sub>2</sub>
+</li>
+<li>SpO<sub>2</sub> is greater than 97 and thus not to be used. There is
+no SFR at this time.</li>
+<li>SpO<sub>2</sub> is greater than 97 and thus not to be used.
+PaO<sub>2</sub> observed and is younger than FiO<sub>2</sub>. Use
+PFR.</li>
+<li>SpO<sub>2</sub> is ≤ 97; can be used for SFR. SpO<sub>2</sub> is
+younger than FiO<sub>2</sub>. SFR is younger than PFR. Use SFR.</li>
+<li>SFR and PFR are both valid. PaO<sub>2</sub> is younger than
+SpO<sub>2</sub>. Use PFR.</li>
+<li>SFR and PFR are both valid. SpO<sub>2</sub> is younger than
+PaO<sub>2</sub>. Use SFR.</li>
+<li>SpO<sub>2</sub> &gt; 97; do not calculate SFR. PaO<sub>2</sub> is
+<em>older</em> than FiO<sub>2</sub>; do not calculate PFR. There is no
+valid PFR nor SFR value at this time.</li>
+<li>SpO<sub>2</sub> &gt; 97; do not calculate SFR. PaO<sub>2</sub> is
+<em>younger</em> than FiO<sub>2</sub>: calculate PFR and use it.</li>
+<li>SpO<sub>2</sub> ≤ 97 and younger than FiO<sub>2</sub>; calculate
+SFR; PaO<sub>2</sub> is <em>older</em> than FiO<sub>2</sub>: do not
+calculate PFR. Use SFR.</li>
+</ol>
 </div>
 </div>
 <div class="section level3">
 <h3 id="scoring">Scoring<a class="anchor" aria-label="anchor" href="#scoring"></a>
 </h3>
-<p>Scoring is based on the lowest available
-PaO<sub>2</sub>/FiO<sub>2</sub> (PFR) and
-SpO<sub>2</sub>/FiO<sub>2</sub> (SFR) with consideration for IMV and
-ORS.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># R code: booleans are implicitly coerced to integers</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_respiratory.html">phoenix_respiratory</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; imv * (((pfr &lt; 100) | (sfr &lt; 148)) + ((pfr &lt; 200) | (sfr &lt; 220))) + ors * ((pfr &lt; 400) | (sfr &lt; 292))</span></span></code></pre></div>
+<p>Scoring is based on PFR <em>or</em> SFR. The Respiratory scores are
+based on the following limits. Treat b1, b2, b3 as 0/1 indicators.</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center"></th>
+<th align="center">PaO<sub>2</sub> limit</th>
+<th align="center">SpO<sub>2</sub> limit</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">b1</td>
+<td align="center">&lt; 400</td>
+<td align="center">&lt; 292</td>
+</tr>
+<tr class="even">
+<td align="center">b2</td>
+<td align="center">&lt; 200</td>
+<td align="center">&lt; 220</td>
+</tr>
+<tr class="odd">
+<td align="center">b3</td>
+<td align="center">&lt; 100</td>
+<td align="center">&lt; 148</td>
+</tr>
+</tbody>
+</table>
+<p>The respiratory score is then</p>
+<p>ORS * b1 + IMV * (b2 + b3)</p>
 <hr>
 </div>
 </div>
@@ -1237,7 +1965,7 @@ and it is within the look back window.</li>
 <p>Up to six points can be earned from cardiovascular dysfunction. Up to
 two points for vasoactives, up to two points for lactate, and up to two
 points for MAP.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># vas: number of vasoactive meds</span></span>
 <span><span class="co"># lct: lactate in mmol/L</span></span>
 <span><span class="co"># age: age in months</span></span>
@@ -1302,7 +2030,7 @@ points for MAP.</p>
 </h3>
 <p>While there are four inputs and a patient could get a point for each
 one, the final score is capped at two points.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_coagulation.html">phoenix_coagulation</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; rtn &lt;- as.integer(plt &lt; 100) + as.integer(inr &gt; 1.3) + as.integer(ddm &gt; 2) + as.integer(fib &lt; 100)</span></span>
 <span><span class="co">#&gt; pmin(rtn, 2)</span></span></code></pre></div>
@@ -1391,7 +2119,7 @@ recorded GCS-V, i.e. 1 for 1T</li>
 </ul>
 <p>A patient with a GCS ≤ 10 and bilaterally fixed pupils will have a
 score of 2.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># fpl: 1 if bilaterally fixed pupils; 0 otherwise</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_neurologic.html">phoenix_neurologic</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; pmin(fpl * 2 + as.integer(gcs &lt;= 10), 2)</span></span></code></pre></div>
@@ -1428,7 +2156,7 @@ score of 2.</p>
 </h3>
 <p>Scoring for Phoenix-8 only. 1 point if glucose &lt; 50 or &gt;
 150</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_endocrine.html">phoenix_endocrine</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; as.integer((glc &lt; 50) | (glc &gt; 150))</span></span></code></pre></div>
 </div>
@@ -1476,7 +2204,7 @@ might use cells / mm³</li>
 <h3 id="scoring-5">Scoring<a class="anchor" aria-label="anchor" href="#scoring-5"></a>
 </h3>
 <p>At most one point</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_immunologic.html">phoenix_immunologic</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; as.integer((anc &lt; 0.5) | (alc &lt; 1))</span></span></code></pre></div>
 <hr>
@@ -1507,7 +2235,7 @@ might use cells / mm³</li>
 <h3 id="scoring-6">Scoring<a class="anchor" aria-label="anchor" href="#scoring-6"></a>
 </h3>
 <p>Age-adjusted creatinine</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_renal.html">phoenix_renal</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; (age &gt;= 0 &amp; age &lt; 1) * (crt &gt;= 0.8) + (age &gt;= 1 &amp; age &lt; 12) * (crt &gt;= 0.3) + (age &gt;= 12 &amp; age &lt; 24) * (crt &gt;= 0.4) + (age &gt;= 24 &amp; age &lt; 60) * (crt &gt;= 0.6) + (age &gt;= 60 &amp; age &lt; 144) * (crt &gt;= 0.7) + (age &gt;= 144 &amp; age &lt;= 216) * (crt &gt;= 1)</span></span></code></pre></div>
 <hr>
@@ -1548,7 +2276,7 @@ might use cells / mm³</li>
 <h3 id="scoring-7">Scoring<a class="anchor" aria-label="anchor" href="#scoring-7"></a>
 </h3>
 <p>0 or 1 points</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html" class="external-link">body</a></span><span class="op">(</span><span class="fu">phoenix</span><span class="fu">::</span><span class="va"><a href="../reference/phoenix_hepatic.html">phoenix_hepatic</a></span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; as.integer((bil &gt;= 4) | (alt &gt; 102))</span></span></code></pre></div>
 <hr>

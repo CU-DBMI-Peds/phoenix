@@ -244,7 +244,7 @@ data checks can be performed before the score is determined.
     before, the time of PaO₂ value. For example, if FiO₂ was reported at
     11:31 and PaO₂ was reported at 11:45 then the PFR would be valid to
     use. If the FiO₂ is then updated at 11:59, the PaO₂ value from 11:45
-    would not be valid to use in the calculation of the PFR
+    would not be valid to use in the calculation of the PFR.
 
     | time | FiO₂ | PaO₂ | PFR | Note: |
     |---:|---:|---:|---:|---:|
@@ -320,19 +320,120 @@ data checks can be performed before the score is determined.
 - Look back: 6 hours
   - If it has been more than 6 hours since the last known data point
     indicating the patient has IMV, then consider the patient to no
-    longer have IMV
+    longer have IMV.
+
+**Step-By-Step Instructions:** NOTE: these instructions are intended for
+prospective or real-time assessments and extends the logic from the
+retrospective data analysis used to develop the Phoenix criteria.
+
+1.  Pick the score time, t. Example: \`\`We are scoring the patient at
+    10:15.’’
+2.  Look back only as far as the respiratory look-back window allows.
+    For published Phoenix, this is 6 hours.
+3.  Determine the PFR at time t.
+4.  Determine the SFR at time t.
+5.  Select PFR *or* SFR to score:
+    1.  If at time t, SFR is defined and PFR is not, use SFR.
+    2.  If at time t, PFR is defined and SFR is not, use PFR.
+    3.  If at time t, SFR and PFR are both defined, then:
+        1.  If the age of the PFR value is less than, or no more than
+            one minute older, than the age of the SFR value, use the PFR
+            value.
+        2.  If the SFR is more than one minute younger than the PFR
+            value, use the SFR.
+6.  Score
+
+**Example:** Minutes into an encounter the observed FiO₂, PaO₂, and SpO₂
+values and the carried forward values. PFR and SFR values. Notes (below
+the table) explain why PFR, SFR, or neither is used.
+
+| Minute | FiO₂ Observed | FiO₂ | PaO₂ Observed | PAO2 | SPO2 Observed | SPO2 | PFR | SFR | Notes |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---|
+| 34 |  |  |  |  | 100 | 100 |  |  | 1\. |
+| 69 |  |  |  |  |  | 100 |  |  | 1\. |
+| 94 | 1 | 1 |  |  | 99 | 99 |  |  | 2\. |
+| 96 |  | 1 |  |  |  | 99 |  |  | 2\. |
+| 97 |  | 1 | 115 | 115 |  | 99 | 115 |  | 3\. |
+| 118 |  | 1 |  | 115 |  | 99 | 115 |  | 3\. |
+| 124 |  | 1 |  | 115 | 97 | 97 |  | 97 | 4\. |
+| 134 |  | 1 |  | 115 | 100 | 100 | 115 |  | 3\. |
+| 154 |  | 1 |  | 115 | 98 | 98 | 115 |  | 3\. |
+| 186 |  | 1 | 97 | 97 |  | 98 | 97 |  | 3\. |
+| 207 |  | 1 |  | 97 |  | 98 | 97 |  | 3\. |
+| 212 |  | 1 |  | 97 | 97 | 97 |  | 97 | 4\. |
+| 214 |  | 1 |  | 97 | 97 | 97 |  | 97 | 4\. |
+| 274 | 0.8 | 0.8 |  | 97 | 96 | 96 |  | 120 | 4\. |
+| 275 |  | 0.8 |  | 97 |  | 96 |  | 120 | 4\. |
+| 278 |  | 0.8 | 93 | 93 |  | 96 | 116.25 |  | 5\. |
+| 304 |  | 0.8 |  | 93 |  | 96 | 116.25 |  | 5\. |
+| 315 |  | 0.8 |  | 93 |  | 96 | 116.25 |  | 5\. |
+| 334 |  | 0.8 |  | 93 | 95 | 95 |  | 118.75 | 6\. |
+| 366 |  | 0.8 |  | 93 |  | 95 |  | 118.75 | 6\. |
+| 374 |  | 0.8 |  | 93 |  | 95 |  | 118.75 | 6\. |
+| 394 | 0.75 | 0.75 |  | 93 | 94 | 94 |  | 125.33 | 6\. |
+| 395 |  | 0.75 |  | 93 |  | 94 |  | 125.33 | 6\. |
+| 399 |  | 0.75 |  | 93 |  | 94 |  | 125.33 | 6\. |
+| 401 |  | 0.75 | 89 | 89 |  | 94 | 118.66 |  | 5\. |
+| 405 |  | 0.75 |  | 89 |  | 94 | 118.66 |  | 5\. |
+| 414 |  | 0.75 |  | 89 |  | 94 | 118.66 |  | 5\. |
+| 431 |  | 0.75 |  | 89 |  | 94 | 118.66 |  | 5\. |
+| 439 |  | 0.75 |  | 89 | 97 | 97 |  | 129.33 | 6\. |
+| 454 |  | 0.75 |  | 89 | 97 | 97 |  | 129.33 | 6\. |
+| 462 |  | 0.75 |  | 89 |  | 97 |  | 129.33 | 6\. |
+| 509 |  | 0.75 |  | 89 |  | 97 |  | 129.33 | 6\. |
+| … | … | … | … | … | … | … | … | … | … |
+| 1501 |  | 0.5 | 112 | 112 |  | 99 | 224 |  |  |
+| 1504 |  | 0.5 |  | 112 |  | 99 | 224 |  |  |
+| 1534 | 0.5 | 0.5 |  | 112 | 100 | 100 |  |  | 7\. |
+| 1594 |  | 0.5 |  | 112 | 98 | 98 |  |  | 7\. |
+| 1614 |  | 0.5 |  | 112 |  | 98 |  |  | 7\. |
+| 1654 |  | 0.5 |  | 112 | 100 | 100 |  |  | 7\. |
+| 1717 |  | 0.5 | 117 | 117 |  | 99 | 234 |  | 8\. |
+| 1718 |  | 0.5 |  | 117 |  | 99 | 234 |  | 8\. |
+| 1727 |  | 0.5 |  | 117 |  | 99 | 234 |  | 8\. |
+| 1745 | 0.45 | 0.45 |  | 117 |  | 99 |  |  | 7\. |
+| 1757 |  | 0.45 |  | 117 |  | 99 |  |  | 7\. |
+| 1774 |  | 0.45 |  | 117 | 98 | 98 |  |  | 7\. |
+| 1834 |  | 0.45 |  | 117 | 97 | 97 |  | 215.56 | 9\. |
+| 1839 |  | 0.45 |  | 117 |  | 97 |  | 215.56 | 9\. |
+| 1894 | 0.4 | 0.4 |  | 117 | 97 | 97 |  | 242.5 | 9\. |
+| 1954 |  | 0.4 |  | 117 | 95 | 95 |  | 237.5 | 9\. |
+| 1955 |  | 0.4 |  | 117 |  | 95 |  | 237.5 | 9\. |
+| 1972 |  | 0.4 |  | 117 |  | 95 |  | 237.5 | 9\. |
+| 1983 |  | 0.4 | 79 | 79 |  | 95 | 197.5 |  | 5\. |
+
+Notes:
+
+1.  No PFR or SFR because there is no FiO₂
+2.  SpO₂ is greater than 97 and thus not to be used. There is no SFR at
+    this time.
+3.  SpO₂ is greater than 97 and thus not to be used. PaO₂ observed and
+    is younger than FiO₂. Use PFR.
+4.  SpO₂ is ≤ 97; can be used for SFR. SpO₂ is younger than FiO₂. SFR is
+    younger than PFR. Use SFR.
+5.  SFR and PFR are both valid. PaO₂ is younger than SpO₂. Use PFR.
+6.  SFR and PFR are both valid. SpO₂ is younger than PaO₂. Use SFR.
+7.  SpO₂ \> 97; do not calculate SFR. PaO₂ is *older* than FiO₂; do not
+    calculate PFR. There is no valid PFR nor SFR value at this time.
+8.  SpO₂ \> 97; do not calculate SFR. PaO₂ is *younger* than FiO₂:
+    calculate PFR and use it.
+9.  SpO₂ ≤ 97 and younger than FiO₂; calculate SFR; PaO₂ is *older* than
+    FiO₂: do not calculate PFR. Use SFR.
 
 ### Scoring
 
-Scoring is based on the lowest available PaO₂/FiO₂ (PFR) and SpO₂/FiO₂
-(SFR) with consideration for IMV and ORS.
+Scoring is based on PFR *or* SFR. The Respiratory scores are based on
+the following limits. Treat b1, b2, b3 as 0/1 indicators.
 
-``` r
+|     | PaO₂ limit | SpO₂ limit |
+|:---:|:----------:|:----------:|
+| b1  |   \< 400   |   \< 292   |
+| b2  |   \< 200   |   \< 220   |
+| b3  |   \< 100   |   \< 148   |
 
-# R code: booleans are implicitly coerced to integers
-cat(tail(as.character(body(phoenix::phoenix_respiratory)), 1), sep = "\n")
-#> imv * (((pfr < 100) | (sfr < 148)) + ((pfr < 200) | (sfr < 220))) + ors * ((pfr < 400) | (sfr < 292))
-```
+The respiratory score is then
+
+ORS \* b1 + IMV \* (b2 + b3)
 
 ------------------------------------------------------------------------
 
