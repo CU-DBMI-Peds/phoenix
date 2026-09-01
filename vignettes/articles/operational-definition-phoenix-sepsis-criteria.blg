@@ -1,0 +1,77 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: operational-definition-phoenix-sepsis-criteria.aux
+The style file: plainnat.bst
+Database file #1: ../references.bib
+Warning--I'm ignoring Martin2001's extra "url" field
+--line 13 of file ../references.bib
+Warning--I'm ignoring Leteurtre2003's extra "url" field
+--line 43 of file ../references.bib
+Warning--I'm ignoring Bestati2010's extra "url" field
+--line 66 of file ../references.bib
+Warning--I'm ignoring Bestati2010's extra "url" field
+--line 67 of file ../references.bib
+Warning--I'm ignoring Haque2015's extra "url" field
+--line 89 of file ../references.bib
+Warning--I'm ignoring Matics2017's extra "url" field
+--line 109 of file ../references.bib
+Warning--I'm ignoring Matics2017's extra "url" field
+--line 110 of file ../references.bib
+Warning--I'm ignoring Bembea2022's extra "url" field
+--line 212 of file ../references.bib
+Warning--I'm ignoring Bembea2022's extra "url" field
+--line 213 of file ../references.bib
+Warning--I'm ignoring Yehya2022's extra "url" field
+--line 241 of file ../references.bib
+Warning--I'm ignoring Schlapbach2024's extra "url" field
+--line 322 of file ../references.bib
+Warning--I'm ignoring Schlapbach2024's extra "url" field
+--line 323 of file ../references.bib
+Warning--I'm ignoring Sanchez-Pinto2024's extra "url" field
+--line 383 of file ../references.bib
+Warning--I'm ignoring Sanchez-Pinto2024's extra "url" field
+--line 384 of file ../references.bib
+Warning--I'm ignoring Badke2025's extra "url" field
+--line 405 of file ../references.bib
+You've used 10 entries,
+            2773 wiz_defined-function locations,
+            722 strings with 13847 characters,
+and the built_in function-call counts, 14313 in all, are:
+= -- 1049
+> -- 1920
+< -- 2
++ -- 640
+- -- 630
+* -- 1598
+:= -- 2453
+add.period$ -- 50
+call.type$ -- 10
+change.case$ -- 240
+chr.to.int$ -- 10
+cite$ -- 20
+duplicate$ -- 208
+empty$ -- 403
+format.name$ -- 644
+if$ -- 2708
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 10
+newline$ -- 78
+num.names$ -- 40
+pop$ -- 440
+preamble$ -- 1
+purify$ -- 230
+quote$ -- 0
+skip$ -- 327
+stack$ -- 0
+substring$ -- 247
+swap$ -- 18
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 110
+warning$ -- 0
+while$ -- 48
+width$ -- 0
+write$ -- 177
+(There were 15 warnings)

@@ -1,0 +1,161 @@
+\begin{thebibliography}{10}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Badke et~al.(2025)Badke, Wang, Daniels, and Sanchez-Pinto]{Badke2025}
+Colleen~M. Badke, Austin Wang, Latasha~A. Daniels, and L.~Nelson Sanchez-Pinto.
+\newblock Validation of pediatric sequential organ failure assessment (psofa)
+  scores to predict critical events in the pediatric intensive care unit.
+\newblock \emph{Journal of intensive care medicine}, 40\penalty0 (5):\penalty0
+  565--570, May 2025.
+\newblock \doi{10.1177/08850666241307630}.
+\newblock URL \url{https://doi.org/10.1177/08850666241307630}.
+
+\bibitem[Bembea et~al.(2022)Bembea, Agus, Akcan-Arikan, Alexander, Basu,
+  Bennett, Bohn, Brandao, Brown, Carcillo, Checchia, Cholette, Cheifetz,
+  Cornell, Doctor, Eckerle, Erickson, Farris, Faustino, Fitzgerald, Fuhrman,
+  Giuliano, Guilliams, Gaies, Gorga, Hall, Hanson, Hartman, Hassinger, Irving,
+  Jeffries, Jouvet, Kannan, Karam, Khemani, Kissoon, Lacroix, Laussen, Leclerc,
+  Lee, Leteurtre, Lobner, McKiernan, Menon, Monagle, Muszynski, Odetola,
+  Parker, Pathan, Pierce, Pineda, Prince, Robinson, Rowan, Ryerson,
+  Sanchez-Pinto, Schlapbach, Selewski, Shekerdemian, Simon, Smith, Squires,
+  Squires, Sutherland, Ouellette, Spaeder, Srinivasan, Steiner, Tasker,
+  Thiagarajan, Thomas, Tissieres, Traube, Tucci, Typpo, Wainwright, Ward,
+  Watson, Weiss, Whitney, Willson, Wynn, Yehya, and Zimmerman]{Bembea2022}
+Melania~M. Bembea, Michael Agus, Ayse Akcan-Arikan, Peta Alexander, Rajit Basu,
+  Tellen~D. Bennett, Desmond Bohn, Leonardo~R. Brandao, Ann-Marie Brown,
+  Joseph~A. Carcillo, Paul Checchia, Jill Cholette, Ira~M. Cheifetz, Timothy
+  Cornell, Allan Doctor, Michelle Eckerle, Simon Erickson, Reid W.~D. Farris,
+  E.~Vincent~S. Faustino, Julie~C. Fitzgerald, Dana~Y. Fuhrman, John~S.
+  Giuliano, Kristin Guilliams, Michael Gaies, Stephen~M. Gorga, Mark Hall,
+  Sheila~J. Hanson, Mary Hartman, Amanda~B. Hassinger, Sharon~Y. Irving, Howard
+  Jeffries, Philippe Jouvet, Sujatha Kannan, Oliver Karam, Robinder~G. Khemani,
+  Niranjan Kissoon, Jacques Lacroix, Peter Laussen, Francis Leclerc, Jan~Hau
+  Lee, Stephane Leteurtre, Katie Lobner, Patrick~J. McKiernan, Kusum Menon,
+  Paul Monagle, Jennifer~A. Muszynski, Folafoluwa Odetola, Robert Parker,
+  Nazima Pathan, Richard~W. Pierce, Jose Pineda, Jose~M. Prince, Karen~A.
+  Robinson, Courtney~M. Rowan, Lindsay~M. Ryerson, L.~Nelson Sanchez-Pinto,
+  Luregn~J. Schlapbach, David~T. Selewski, Lara~S. Shekerdemian, Dennis Simon,
+  Lincoln~S. Smith, James~E. Squires, Robert~H. Squires, Scott~M. Sutherland,
+  Yves Ouellette, Michael~C. Spaeder, Vijay Srinivasan, Marie~E. Steiner,
+  Robert~C. Tasker, Ravi Thiagarajan, Neal Thomas, Pierre Tissieres, Chani
+  Traube, Marisa Tucci, Katri~V. Typpo, Mark~S. Wainwright, Shan~L. Ward,
+  R.~Scott Watson, Scott Weiss, Jane Whitney, Doug Willson, James~L. Wynn,
+  Nadir Yehya, and Jerry~J. Zimmerman.
+\newblock Pediatric organ dysfunction information update mandate (podium)
+  contemporary organ dysfunction criteria: Executive summary.
+\newblock \emph{Pediatrics}, 149\penalty0 (1 Suppl 1):\penalty0 S1--S12, Jan
+  2022.
+\newblock \doi{10.1542/peds.2021-052888B}.
+\newblock URL \url{https://doi.org/10.1542/peds.2021-052888B}.
+
+\bibitem[Bestati et~al.(2010)Bestati, Leteurtre, Duhamel, Proulx, Grandbastien,
+  Lacroix, and Leclerc]{Bestati2010}
+Nawar Bestati, Stephane Leteurtre, Alain Duhamel, Francois Proulx, Bruno
+  Grandbastien, Jacques Lacroix, and Francis Leclerc.
+\newblock Differences in organ dysfunctions between neonates and older
+  children: a prospective, observational, multicenter study.
+\newblock \emph{Critical care (London, England)}, 14\penalty0 (6):\penalty0
+  R202, 2010.
+\newblock \doi{10.1186/cc9323}.
+\newblock URL \url{https://doi.org/10.1186/cc9323}.
+
+\bibitem[Haque et~al.(2015)Haque, Siddiqui, Munir, Saleem, and Mian]{Haque2015}
+A.~Haque, N.~R. Siddiqui, O.~Munir, S.~Saleem, and A.~Mian.
+\newblock Association between vasoactive-inotropic score and mortality in
+  pediatric septic shock.
+\newblock \emph{Indian pediatrics}, 52\penalty0 (4):\penalty0 311--313, Apr
+  2015.
+\newblock \doi{10.1007/s13312-015-0630-1}.
+\newblock URL \url{https://doi.org/10.1007/s13312-015-0630-1}.
+
+\bibitem[Leteurtre et~al.(2003)Leteurtre, Martinot, Duhamel, Proulx,
+  Grandbastien, Cotting, Gottesman, Joffe, Pfenninger, Hubert, Lacroix, and
+  Leclerc]{Leteurtre2003}
+Stephane Leteurtre, Alain Martinot, Alain Duhamel, Francois Proulx, Bruno
+  Grandbastien, Jacques Cotting, Ronald Gottesman, Ari Joffe, Jurg Pfenninger,
+  Philippe Hubert, Jacques Lacroix, and Francis Leclerc.
+\newblock Validation of the paediatric logistic organ dysfunction (pelod)
+  score: prospective, observational, multicentre study.
+\newblock \emph{Lancet (London, England)}, 362\penalty0 (9379):\penalty0
+  192--197, Jul 2003.
+\newblock \doi{10.1016/S0140-6736(03)13908-6}.
+\newblock URL \url{https://doi.org/10.1016/S0140-6736(03)13908-6}.
+
+\bibitem[Martin and Bernard(2001)]{Martin2001}
+G.~S. Martin and G.~R. Bernard.
+\newblock Airway and lung in sepsis.
+\newblock \emph{Intensive care medicine}, 27 Suppl 1:\penalty0 S63--79, 2001.
+\newblock \doi{10.1007/pl00003798}.
+\newblock URL \url{https://doi.org/10.1007/pl00003798}.
+
+\bibitem[Matics and Sanchez-Pinto(2017)]{Matics2017}
+Travis~J. Matics and L.~Nelson Sanchez-Pinto.
+\newblock Adaptation and validation of a pediatric sequential organ failure
+  assessment score and evaluation of the sepsis-3 definitions in critically ill
+  children.
+\newblock \emph{JAMA pediatrics}, 171\penalty0 (10):\penalty0 e172352, Oct
+  2017.
+\newblock \doi{10.1001/jamapediatrics.2017.2352}.
+\newblock URL \url{https://doi.org/10.1001/jamapediatrics.2017.2352}.
+
+\bibitem[Sanchez-Pinto et~al.(2024)Sanchez-Pinto, Bennett, DeWitt, Russell,
+  Rebull, Martin, Akech, Albers, Alpern, Balamuth, Bembea, Chisti, Evans,
+  Horvat, Jaramillo-Bustamante, Kissoon, Menon, Scott, Weiss, Wiens, Zimmerman,
+  Argent, Sorce, Schlapbach, Watson, Biban, Carrol, Chiotos, Flauzino
+  De~Oliveira, Hall, Inwald, Ishimine, Levin, Lodha, Nadel, Nakagawa, Peters,
+  Randolph, Ranjit, Souza, Tissieres, and Wynn]{Sanchez-Pinto2024}
+L.~Nelson Sanchez-Pinto, Tellen~D. Bennett, Peter~E. DeWitt, Seth Russell,
+  Margaret~N. Rebull, Blake Martin, Samuel Akech, David~J. Albers, Elizabeth~R.
+  Alpern, Fran Balamuth, Melania Bembea, Mohammod~Jobayer Chisti, Idris Evans,
+  Christopher~M. Horvat, Juan~Camilo Jaramillo-Bustamante, Niranjan Kissoon,
+  Kusum Menon, Halden~F. Scott, Scott~L. Weiss, Matthew~O. Wiens, Jerry~J.
+  Zimmerman, Andrew~C. Argent, Lauren~R. Sorce, Luregn~J. Schlapbach, R.~Scott
+  Watson, Paolo Biban, Enitan Carrol, Kathleen Chiotos, Claudio Flauzino
+  De~Oliveira, Mark~W. Hall, David Inwald, Paul Ishimine, Michael Levin, Rakesh
+  Lodha, Simon Nadel, Satoshi Nakagawa, Mark~J. Peters, Adrienne~G. Randolph,
+  Suchitra Ranjit, Daniela~Carla Souza, Pierre Tissieres, and James~L. Wynn.
+\newblock Development and validation of the phoenix criteria for pediatric
+  sepsis and septic shock.
+\newblock \emph{JAMA}, 331\penalty0 (8):\penalty0 675--686, Feb 2024.
+\newblock \doi{10.1001/jama.2024.0196}.
+\newblock URL \url{https://doi.org/10.1001/jama.2024.0196}.
+
+\bibitem[Schlapbach et~al.(2024)Schlapbach, Watson, Sorce, Argent, Menon, Hall,
+  Akech, Albers, Alpern, Balamuth, Bembea, Biban, Carrol, Chiotos, Chisti,
+  DeWitt, Evans, Flauzino~de Oliveira, Horvat, Inwald, Ishimine,
+  Jaramillo-Bustamante, Levin, Lodha, Martin, Nadel, Nakagawa, Peters,
+  Randolph, Ranjit, Rebull, Russell, Scott, de~Souza, Tissieres, Weiss, Wiens,
+  Wynn, Kissoon, Zimmerman, Sanchez-Pinto, and Bennett]{Schlapbach2024}
+Luregn~J. Schlapbach, R.~Scott Watson, Lauren~R. Sorce, Andrew~C. Argent, Kusum
+  Menon, Mark~W. Hall, Samuel Akech, David~J. Albers, Elizabeth~R. Alpern, Fran
+  Balamuth, Melania Bembea, Paolo Biban, Enitan~D. Carrol, Kathleen Chiotos,
+  Mohammod~Jobayer Chisti, Peter~E. DeWitt, Idris Evans, Claudio Flauzino~de
+  Oliveira, Christopher~M. Horvat, David Inwald, Paul Ishimine, Juan~Camilo
+  Jaramillo-Bustamante, Michael Levin, Rakesh Lodha, Blake Martin, Simon Nadel,
+  Satoshi Nakagawa, Mark~J. Peters, Adrienne~G. Randolph, Suchitra Ranjit,
+  Margaret~N. Rebull, Seth Russell, Halden~F. Scott, Daniela~Carla de~Souza,
+  Pierre Tissieres, Scott~L. Weiss, Matthew~O. Wiens, James~L. Wynn, Niranjan
+  Kissoon, Jerry~J. Zimmerman, L.~Nelson Sanchez-Pinto, and Tellen~D. Bennett.
+\newblock International consensus criteria for pediatric sepsis and septic
+  shock.
+\newblock \emph{JAMA}, 331\penalty0 (8):\penalty0 665--674, Feb 2024.
+\newblock \doi{10.1001/jama.2024.0179}.
+\newblock URL \url{https://doi.org/10.1001/jama.2024.0179}.
+
+\bibitem[Yehya et~al.(2022)Yehya, Khemani, Erickson, Smith, Rowan, Jouvet,
+  Willson, Cheifetz, Ward, and Thomas]{Yehya2022}
+Nadir Yehya, Robinder~G. Khemani, Simon Erickson, Lincoln~S. Smith, Courtney~M.
+  Rowan, Philippe Jouvet, Doug~F. Willson, Ira~M. Cheifetz, Shan Ward, and
+  Neal~J. Thomas.
+\newblock Respiratory dysfunction criteria in critically ill children: The
+  podium consensus conference.
+\newblock \emph{Pediatrics}, 149\penalty0 (1 Suppl 1):\penalty0 S48--S52, Jan
+  2022.
+\newblock \doi{10.1542/peds.2021-052888G}.
+\newblock URL \url{https://doi.org/10.1542/peds.2021-052888G}.
+
+\end{thebibliography}

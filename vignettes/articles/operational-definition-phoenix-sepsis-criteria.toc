@@ -1,0 +1,52 @@
+\contentsline {section}{\numberline {1}Objective}{3}{section.1}%
+\contentsline {section}{\numberline {2}Notation}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Symbols}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Function Definitions}{5}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Defining Organ System Dysfunction Scores}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Respiratory}{7}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Data from the EHR}{7}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Constructed Variables}{7}{subsubsection.3.1.2}%
+\contentsline {paragraph}{PF Ratio}{8}{section*.1}%
+\contentsline {paragraph}{SF Ratio}{8}{section*.2}%
+\contentsline {paragraph}{Invasive Mechanical Ventilation}{8}{section*.3}%
+\contentsline {paragraph}{Other Respiratory Support}{9}{section*.4}%
+\contentsline {subsubsection}{\numberline {3.1.3}Respiratory Organ Dysfunction Score}{9}{subsubsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.2}Cardiovascular}{9}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Data from the EHR}{9}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Constructed Variable}{9}{subsubsection.3.2.2}%
+\contentsline {paragraph}{Vasoactive Medications}{10}{section*.5}%
+\contentsline {paragraph}{Mean Arterial Pressure (MAP)}{10}{section*.6}%
+\contentsline {paragraph}{Lactate}{11}{section*.7}%
+\contentsline {subsubsection}{\numberline {3.2.3}Cardiovascular Dysfunction Score}{12}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Neurological}{12}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Data from the EHR}{12}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Constructed Variable}{12}{subsubsection.3.3.2}%
+\contentsline {paragraph}{GCS}{13}{section*.8}%
+\contentsline {paragraph}{Pupils}{13}{section*.9}%
+\contentsline {subsubsection}{\numberline {3.3.3}Neurological Organ Dysfunction Score}{13}{subsubsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.4}Coagulation}{13}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Data from the EHR}{14}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Constructed Variable}{14}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Coagulation Organ Dysfunction Score}{14}{subsubsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.5}Endocrine}{15}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Data from the EHR}{15}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}Constructed Variables}{15}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.3}Endocrine Organ Dysfunction Score}{15}{subsubsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.6}Immunologic}{15}{subsection.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}Data from the EHR}{15}{subsubsection.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}Constructed Variables}{16}{subsubsection.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.3}Immunologic Organ Dysfunction Score}{16}{subsubsection.3.6.3}%
+\contentsline {subsection}{\numberline {3.7}Hepatic}{16}{subsection.3.7}%
+\contentsline {subsubsection}{\numberline {3.7.1}Data from the EHR}{16}{subsubsection.3.7.1}%
+\contentsline {subsubsection}{\numberline {3.7.2}Constructed Variables}{16}{subsubsection.3.7.2}%
+\contentsline {subsubsection}{\numberline {3.7.3}Hepatic Organ Dysfunction Score}{16}{subsubsection.3.7.3}%
+\contentsline {subsection}{\numberline {3.8}Renal}{17}{subsection.3.8}%
+\contentsline {subsubsection}{\numberline {3.8.1}Data from the EHR}{17}{subsubsection.3.8.1}%
+\contentsline {subsubsection}{\numberline {3.8.2}Constructed Variables}{17}{subsubsection.3.8.2}%
+\contentsline {subsubsection}{\numberline {3.8.3}Renal Organ Dysfunction Score}{17}{subsubsection.3.8.3}%
+\contentsline {section}{\numberline {4}Suspected Infection}{18}{section.4}%
+\contentsline {section}{\numberline {5}Organ Dysfunction Summary Score and Phoenix Sepsis Score}{18}{section.5}%
+\contentsline {section}{\numberline {6}Exploratory Aggregation Schemes}{20}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Organ-Level Maxima}{20}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Organ-Level + Cardiovascular Component Decoupling}{20}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Full Component Decoupling}{21}{subsection.6.3}%
