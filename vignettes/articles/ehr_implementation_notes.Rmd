@@ -225,7 +225,7 @@ can be performed before the score is determined.
     the time of PaO~2~ value.  For example, if FiO~2~ was reported at 11:31 and
     PaO~2~ was reported at 11:45 then the PFR would be valid to use.  If the
     FiO~2~ is then updated at 11:59, the PaO~2~ value from 11:45 would not be
-    valid to use in the calculation of the PFR
+    valid to use in the calculation of the PFR.
 
     | time  | FiO~2~           | PaO~2~          | PFR    | Note:                                                        |
     |   --: | ---:             | ---:            | ---:   | ------:                                                      |
@@ -299,7 +299,7 @@ can be performed before the score is determined.
 * Look back: 6 hours
   * If it has been more than 6 hours since the last known data point
     indicating the patient has IMV, then consider the patient to no longer
-    have IMV
+    have IMV.
 
 **Step-By-Step Instructions:**
 NOTE: these instructions are intended for prospective or real-time assessments
@@ -311,10 +311,10 @@ the Phoenix criteria.
    published Phoenix, this is 6 hours.
 3. Determine the PFR at time t.
 4. Determine the SFR at time t.
-5. Select PFR _or_ SFR to score.
+5. Select PFR _or_ SFR to score:
    a. If at time t, SFR is defined and PFR is not, use SFR.
    b. If at time t, PFR is defined and SFR is not, use PFR.
-   c. If at time t, SFR and PFR are defined, then:
+   c. If at time t, SFR and PFR are both defined, then:
       i. If the age of the PFR value is less than, or no more than one minute
       older, than the age of the SFR value, use the PFR value.
       ii. If the SFR is more than one minute younger than the PFR value, use the
@@ -323,9 +323,9 @@ the Phoenix criteria.
 
 **Example:** Minutes into an encounter the observed FiO~2~, PaO~2~, and SpO~2~
 values and the carried forward values.  PFR and SFR values.  Notes (below the
-table) explain why PFR, SFR, or neigther is used.
+table) explain why PFR, SFR, or neither is used.
 
- | Minute | FiO~2~ Observerd | FiO~2~ | PaO~2~ Observerd | PAO2 | SPO2 Observerd | SPO2 | PFR    | SFR    | Notes |
+ | Minute | FiO~2~ Observed  | FiO~2~ | PaO~2~ Observed  | PAO2 | SPO2 Observed  | SPO2 | PFR    | SFR    | Notes |
  | --:    | --:              | --:    | --:              | --:  | --:            | --:  | --:    | --:    | :--   |
  | 34     |                  |        |                  |      | 100            | 100  |        |        | 1.    |
  | 69     |                  |        |                  |      |                | 100  |        |        | 1.    |
@@ -382,18 +382,18 @@ table) explain why PFR, SFR, or neigther is used.
 
 Notes:
 
-1. No PFR or SFR becuase there is not FiO~2~
+1. No PFR or SFR because there is no FiO~2~
 2. SpO~2~ is greater than 97 and thus not to be used.  There is no SFR at this time.
-3. SpO~2~ is greater than 97 and thus not bo be used.  PaO~2~ observed and is younger than FiO~2~.  Use PFR.
-4. SpO~2~ is &leq; 97; can be used to find SFR.  SpO~2~ is younger than FiO~2~.  SFR is younger than PFR.  Use SFR.
+3. SpO~2~ is greater than 97 and thus not to be used.  PaO~2~ observed and is younger than FiO~2~.  Use PFR.
+4. SpO~2~ is &leq; 97; can be used for SFR.  SpO~2~ is younger than FiO~2~.  SFR is younger than PFR.  Use SFR.
 5. SFR and PFR are both valid.  PaO~2~ is younger than SpO~2~.  Use PFR.
 6. SFR and PFR are both valid.  SpO~2~ is younger than PaO~2~.  Use SFR.
 7. SpO~2~ &gt; 97; do not calculate SFR.  PaO~2~ is _older_ than FiO~2~; do not calculate PFR.  There is no valid PFR nor SFR value at this time.
-8. SpO~2~ &gt; 97; do not calculate SFR.  PaO~2~ is _younger_ than FiO~2~: calculate PRF and use it.
-9. SpO~2~ &leq; 97 and younger than FiO~2~; calculate SFR;  PaO~2~ is _older_ than FiO~2~: do not calculate FiO~2~.  Use SFR.
+8. SpO~2~ &gt; 97; do not calculate SFR.  PaO~2~ is _younger_ than FiO~2~: calculate PFR and use it.
+9. SpO~2~ &leq; 97 and younger than FiO~2~; calculate SFR;  PaO~2~ is _older_ than FiO~2~: do not calculate PFR.  Use SFR.
 
 ## Scoring
-Scoring is based on PFR _or_ SFR.  If PFR with being used, then the scores are
+Scoring is based on PFR _or_ SFR.  The Respiratory scores are
 based on the following limits.  Treat b1, b2, b3 as 0/1 indicators.
 
 |        | PaO~2~ limit | SpO~2~ limit |
@@ -410,7 +410,7 @@ The respiratory score is then
 ```{r, include = FALSE}
 # R code: booleans are implicitly coerced to integers
 # NOTE (20260827) **DO NOT INCLUDE THIS CHUNK IN THE OUTPUT**  The scoring
-# approach has not been implimented in on the main branch of the project yet.
+# approach has not been implemented on the main branch of the project yet.
 # The implimentation is on the feature-operationalize branch.  Omit this chunk
 # for now and add it back when the implimentation has been merged into main.
 cat(tail(as.character(body(phoenix::phoenix_respiratory)), 1), sep = "\n")
