@@ -1,0 +1,34 @@
+---
+title: "Preparing and scoring longitudinal Phoenix data"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Preparing and scoring longitudinal Phoenix data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<!-- This is intentionally a placeholder for the end-to-end operational workflow. -->
+
+# Overview
+
+This vignette will demonstrate the longitudinal Phoenix workflow for EHR or
+event-level data:
+
+```r
+# prepare_*() inputs -> prepare_phoenix_data() -> score_prepared_phoenix_data()
+```
+
+It will cover input preparation, encounter identifiers and clocks, look-back
+rules, suspected-infection inputs, scoring windows, aggregation choices, and
+interpretation of the resulting organ dysfunction and Phoenix Sepsis scores.
+
+# Current guidance
+
+Until this vignette is complete, consult the package help for
+`prepare_inputs_range()`, `prepare_inputs_discrete()`,
+`prepare_phoenix_data()`, and `score_prepared_phoenix_data()`. The existing
+`vignette("phoenix", package = "phoenix")` covers applying the Phoenix rubric
+to already prepared, row-level data.

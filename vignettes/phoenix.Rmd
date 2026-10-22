@@ -38,6 +38,16 @@ international consensus for the criteria
 This R package provides utilities to quickly and easily apply the Phoenix
 Sepsis scoring rubric to your data sets.
 
+This vignette focuses on applying that rubric to a row (or vector of rows) of
+already prepared data with the organ-system scoring functions and the
+`phoenix()`/`phoenix8()` wrappers. This vignette documents the row-level
+scoring interface described in [@DeWitt2024](https://doi.org/10.1093/jamiaopen/ooae066),
+first released in `phoenix` 1.0.0 and retained through the 1.x releases.
+
+For the longitudinal EHR or event-level workflow introduced in `phoenix` 2.0.0,
+including input preparation, carry-forward rules, and window-level scoring, see
+`vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
+
 # Phoenix Sepsis and Septic Shock
 
 There are two sets of criteria: Phoenix and Phoenix-8.  It was
@@ -144,8 +154,11 @@ years).
 
 # Package Use
 
-There are functions to apply the Phoenix criteria to a data set for each of
-the organ systems and wrappers for full Phoenix and Phoenix-8 scores.
+There are functions to apply the Phoenix criteria to each row of an
+already-prepared data set for the organ systems, plus wrappers for full Phoenix
+and Phoenix-8 scores. This vignette demonstrates that row-level scoring
+interface. The longitudinal preparation and scoring workflow is described in
+`vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
 
 Inputs for the organ dysfunction scoring functions are expected to be
 numeric vectors and to have a common length _or_ a length of 1.  For example,
