@@ -574,6 +574,78 @@ test_bad_lookback <-
 stopifnot(inherits(test_bad_lookback, "error"))
 
 ###############################################################################
+# The default pupil look-back is the six-hour window used in the original
+# Phoenix implementation. It includes an observation exactly at its boundary,
+# but excludes it one minute later. Supplying a longer window remains possible.
+pupil_lookback_df <-
+  data.frame(
+    hospital = c("H1", "H1", "H1"),
+    patient = c("P1", "P1", "P1"),
+    encounter = c("E1", "E1", "E1"),
+    minutes_from_admission = c(0, 360, 361),
+    value = c(1, 15, 15),
+    stringsAsFactors = FALSE
+  )
+
+prepared_pupils_lookback <-
+  prepare_pupils(
+    x = pupil_lookback_df[1, ],
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+prepared_gcstotal_lookback <-
+  prepare_gcstotal(
+    x = pupil_lookback_df[2:3, ],
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "value",
+    verbose = FALSE
+  )
+
+test_default_pupil_lookback <-
+  prepare_phoenix_data(
+    pupils = prepared_pupils_lookback,
+    gcstotal = prepared_gcstotal_lookback,
+    verbose = FALSE
+  )
+test_default_pupil_lookback <-
+  sort_phxdata(test_default_pupil_lookback, id.vars = id.vars, eclock = eclock)
+
+stopifnot(
+  isTRUE(all.equal(test_default_pupil_lookback[[eclock]], c(0, 360, 361))),
+  identical(test_default_pupil_lookback[["PUPILS"]], c(1L, 1L, 0L)),
+  isTRUE(
+    all.equal(
+      test_default_pupil_lookback[["PUPILS_eclock"]],
+      c(0, 0, NA)
+    )
+  )
+)
+
+test_extended_pupil_lookback <-
+  prepare_phoenix_data(
+    pupils = prepared_pupils_lookback,
+    gcstotal = prepared_gcstotal_lookback,
+    pupil.lookback = 720,
+    verbose = FALSE
+  )
+test_extended_pupil_lookback <-
+  sort_phxdata(test_extended_pupil_lookback, id.vars = id.vars, eclock = eclock)
+
+stopifnot(
+  identical(test_extended_pupil_lookback[["PUPILS"]], c(1L, 1L, 1L)),
+  isTRUE(
+    all.equal(
+      test_extended_pupil_lookback[["PUPILS_eclock"]],
+      c(0, 0, 0)
+    )
+  )
+)
+
+###############################################################################
 # Constructed variables should carry source eclocks.  The source eclock is not
 # the row's time point; it is the time of the observed value that supports the
 # constructed variable after LOCF.  This mirrors the historical timecourse SQL.

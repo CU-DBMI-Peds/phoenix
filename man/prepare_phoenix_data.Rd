@@ -51,7 +51,7 @@ prepare_phoenix_data(
   bp.lookback = 360,
   lac.lookback = 360,
   gcs.lookback = 720,
-  pupil.lookback = 720,
+  pupil.lookback = 360,
   coag.lookback = 1440,
   endocrine.lookback = 720,
   immunologic.lookback = 1440,
@@ -157,7 +157,7 @@ prepare_phoenix_data(
 
 \item{gcs.lookback}{The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).}
 
-\item{pupil.lookback}{The number of minutes to look back in an encounter for carry-forward of pupil status (fixed or unfixed)}
+\item{pupil.lookback}{The number of minutes to look back in an encounter for carry-forward of pupil status.}
 
 \item{coag.lookback}{The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platelets, INR, and D-Dimer.}
 

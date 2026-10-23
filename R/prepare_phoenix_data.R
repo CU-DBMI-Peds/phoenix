@@ -49,7 +49,7 @@
 #' @param bp.lookback The number of minutes to look back in an encounter for carry-forward blood pressure values
 #' @param lac.lookback The number of minutes to look back in an encounter for carry-forward of lactate values
 #' @param gcs.lookback The number of minutes to look back in an encounter for carry-forward of GCS (Eye, Verbal, Motor, and Total).
-#' @param pupil.lookback The number of minutes to look back in an encounter for carry-forward of pupil status (fixed or unfixed)
+#' @param pupil.lookback The number of minutes to look back in an encounter for carry-forward of pupil status.
 #' @param coag.lookback The number of minutes to look back in an encounter for carry-forward of coagulation variables: fibrinogen, platelets, INR, and D-Dimer.
 #' @param endocrine.lookback The number of minutes to look back in an encounter for carry-forward of endocrine variables: glucose
 #' @param immunologic.lookback The number of minutes to look back in an encounter for carry-forward of immunologic variables: ALC, ANC
@@ -142,7 +142,7 @@ prepare_phoenix_data <-
     bp.lookback          =  360,
     lac.lookback         =  360,
     gcs.lookback         =  720,
-    pupil.lookback       =  720,
+    pupil.lookback       =  360,
     coag.lookback        = 1440,
     endocrine.lookback   =  720,
     immunologic.lookback = 1440,

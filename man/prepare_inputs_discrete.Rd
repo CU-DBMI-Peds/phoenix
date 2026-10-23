@@ -223,6 +223,10 @@ be unique for an input. These functions check this assumption and aggregate
 duplicate observations, if needed, using the
 \code{tie.breaker} method.
 
+These functions validate observations at their recorded time. Carry-forward
+and look-back windows are applied later by \code{\link{prepare_phoenix_data}}
+when inputs are assembled.
+
 Default values are based on the values used when building the Phoenix
 criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024).
 }
