@@ -1,5 +1,5 @@
 ---
-title: "The Phoenix Sepsis Criteria"
+title: "Applying the Phoenix Scoring Rubric"
 output:
  rmarkdown::html_vignette:
    toc: true
@@ -7,7 +7,7 @@ output:
    number_sections: false
 bibliography: references.bib
 vignette: >
- %\VignetteIndexEntry{The Phoenix Sepsis Criteria}
+ %\VignetteIndexEntry{Applying the Phoenix Scoring Rubric}
  %\VignetteEngine{knitr::rmarkdown}
  %\VignetteEncoding{UTF-8}
 ---
@@ -27,16 +27,13 @@ packageVersion("phoenix")
 ```
 
 
-# Development and International Consensus
+# Scope: Applying the Rubric to Prepared Data
 
 Details on the development of the diagnostic Phoenix Sepsis Criteria are in
 [@Sanchez-Pinto2024](https://doi.org/10.1001/jama.2024.0196).  This
 manuscript covers the data-driven and modified Delphi process leading to an
 international consensus for the criteria
 ([@Schlapbach2024](https://doi.org/10.1001/jama.2024.0179)).
-
-This R package provides utilities to quickly and easily apply the Phoenix
-Sepsis scoring rubric to your data sets.
 
 This vignette focuses on applying that rubric to a row (or vector of rows) of
 already prepared data with the organ-system scoring functions and the
@@ -45,8 +42,11 @@ scoring interface described in [@DeWitt2024](https://doi.org/10.1093/jamiaopen/o
 first released in `phoenix` 1.0.0 and retained through the 1.x releases.
 
 For the longitudinal EHR or event-level workflow introduced in `phoenix` 2.0.0,
-including input preparation, carry-forward rules, and window-level scoring, see
-`vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
+including input preparation, carry-forward rules, time-aligned scoring, and
+suspected-infection-gated criteria, see
+`vignette("longitudinal-preparation-and-scoring", package = "phoenix")`. The
+formal operational definition is available in the
+[online-only PDF](articles/operational-definition-phoenix-sepsis-criteria.pdf).
 
 **Important:** `phoenix()` and `phoenix8()` calculate row-level organ
 dysfunction scores and retain legacy score-threshold indicators named
@@ -55,7 +55,7 @@ suspected infection, so their indicators are not complete diagnostic criteria
 unless suspected infection has been established separately. The longitudinal
 workflow constructs and applies the suspected-infection gate.
 
-# Phoenix Sepsis and Septic Shock
+# Clinical Criteria Context
 
 There are two sets of criteria: Phoenix and Phoenix-8.  It was
 determined during the development of the criteria that a score based on four
@@ -115,7 +115,7 @@ cat(ftnt, sep = "\n\n")
 ```
 
 
-# Development of the Criteria
+# Rubric Considerations
 
 Details on the development of the criteria are described in
 @Sanchez-Pinto2024 and @Schlapbach2024 and end users
@@ -133,38 +133,28 @@ we encourage end users of this package to do the same: missing values are
 missing and should not be imputed.
 **__The Phoenix criteria are valid on "known data."__**
 
-**Worst in first 24 hours:** The score was developed on the worst measured
-value during the first 24 hours of a hospital encounter.
-For example, consider the following
-patient encounter and organ dysfunction scores:
-
-| encounter time | resp | card | coag | neuro | total |
-| :------------: | :--: | :--: | :--: | :---: | :---: |
-| 0              |  1   |  0   |  0   |   1   |  2    |
-| 120            |  0   |  1   |  0   |   1   |  2    |
-| 720            |  0   |  0   |  0   |   1   |  1    |
-
-This patient never had a total score greater than 2 during the first 720 minutes
-of the encounter.  However, if we took the max score for the four components
-and summed them for the total, then the resulting score would be 3.
-
-The development of the Phoenix criteria was based on the worst total score
-observed during the first 24 hours of an encounter.  The correct score
-for the patient in the above example is 2, not 3.  Please keep this in mind
-when you are preparing your data sets.
+**First-24-hour, time-aligned scoring:** The criteria were developed using the
+worst *total* score observed during the first 24 hours of an encounter. This is
+not equivalent to taking the maximum score for each organ system independently
+and then summing those maxima. Applying this encounter-level rule requires
+temporally aligned data and is outside the scope of these row-level functions.
+For the implemented workflow, see
+`vignette("longitudinal-preparation-and-scoring", package = "phoenix")`; for
+the complete specification, see the
+[online-only operational-definition PDF](articles/operational-definition-phoenix-sepsis-criteria.pdf).
 
 **Age Restrictions:**
 The Phoenix criteria excluded data from newborns before discharge from their
 birth hospitalization and children with a postconceptional age of less than 37
 weeks. The eligible age interval is [0, 216) months.
 
-# Package Use
+# Applying the Rubric
 
-There are functions to apply the Phoenix criteria to each row of an
-already-prepared data set for the organ systems, plus wrappers for full Phoenix
-and Phoenix-8 scores. This vignette demonstrates that row-level scoring
-interface. The longitudinal preparation and scoring workflow is described in
-`vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
+The `phoenix_*()` functions apply the organ-system rubric to each row of an
+already-prepared data set. The `phoenix()` and `phoenix8()` wrappers assemble
+the four- and eight-organ scores, respectively. This vignette demonstrates
+that row-level scoring interface; it does not prepare event-level data, align
+measurements in time, or establish suspected infection.
 
 Inputs for the organ dysfunction scoring functions are expected to be
 numeric vectors and to have a common length _or_ a length of 1.  For example,
