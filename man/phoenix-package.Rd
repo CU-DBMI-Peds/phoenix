@@ -148,7 +148,10 @@ JAMA.
     }
 }
 
-\code{vignette('phoenix')} for more details and examples.
+\code{vignette('quick-start')} for a concise introduction,
+\code{vignette('phoenix')} for row-level rubric scoring details, and
+\code{vignette('longitudinal-preparation-and-scoring')} for the
+longitudinal EHR workflow.
 }
 \author{
 \strong{Maintainer}: Peter DeWitt \email{peter.dewitt@cuanschutz.edu} (\href{https://orcid.org/0000-0002-6391-0795}{ORCID}) [cover designer]

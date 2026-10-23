@@ -30,6 +30,9 @@ to use a patient's full electronic health record (EHR). Detailed guidance on
 the process is provided in the online article [TODO: URL TO WEBSITE
 ARTICLE](urlgoeshere) (and new publication? URL to go here).
 
+For a concise introduction to both row-level scoring and this EHR workflow,
+start with `vignette("quick-start", package = "phoenix")`.
+
 The general workflow has four steps:
 
 Unlike the direct `phoenix()` and `phoenix8()` wrappers, this workflow prepares

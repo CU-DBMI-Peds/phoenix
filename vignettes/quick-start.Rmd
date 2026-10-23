@@ -1,0 +1,165 @@
+---
+title: "Quick Start"
+output:
+ rmarkdown::html_vignette:
+   toc: true
+   toc_depth: 2
+   number_sections: false
+bibliography: references.bib
+vignette: >
+ %\VignetteIndexEntry{Quick Start}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+
+```{r label = "setup", include = FALSE}
+library(qwraps2)
+options(qwraps2_markup = "markdown")
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+
+```{r}
+library(phoenix)
+packageVersion("phoenix")
+```
+
+This is a quick start guide for using the `phoenix` R package.  Additional
+detail is found in the other vignettes.
+
+# Row-wise scoring
+
+The `sepsis` data.frame contails a moment in time recored for 20 synthetic patients.
+```{r}
+str(sepsis)
+```
+
+To apply the Phoenix scoring rubric to this data set:
+
+```{r}
+phoenix8_scores <-
+  phoenix8(
+    # respiratory
+    pf_ratio = pao2 / fio2,
+    sf_ratio = ifelse(spo2 <= 97, spo2 / fio2, NA_real_),
+    invasive_mechanical_ventilation = vent,
+    other_respiratory_support = as.integer(fio2 > 0.21),
+    # cardiovascular
+    vasoactives = dobutamine + dopamine + epinephrine + milrinone +
+    norepinephrine + vasopressin,
+    lactate = lactate,
+    age = age, # Also used in the renal assessment.
+    mean_arterial_pressure = dbp + (sbp - dbp)/3,
+    # coagulation
+    platelets = platelets,
+    inr = inr,
+    d_dimer = d_dimer,
+    fibrinogen = fibrinogen,
+    # neurologic
+    gcs = gcs_total,
+    fixed_pupils = as.integer(pupil == "both-fixed"),
+    # endocrine
+    glucose = glucose,
+    # immunologic
+    anc = anc,
+    alc = alc,
+    # renal (also uses age)
+    creatinine = creatinine,
+    # hepatic
+    bilirubin = bilirubin,
+    alt = alt,
+
+    # the data set
+    data = sepsis
+  )
+str(phoenix8_scores)
+```
+
+# Applying to EHR Data
+
+The data set `phx` has synthetic data for three encounters/patients.
+
+```{r}
+str(phx)
+```
+
+## Prepare Data
+
+```{r}
+split_phx <- split(phx, f = phx[["variable"]])
+
+split_phx[["o2support"]] <- split_phx[["oxygen_flow"]]
+split_phx[["o2support"]][["value"]] <- as.integer(split_phx[["oxygen_flow"]][["value"]] > 0)
+split_phx[["o2support"]][["variable"]] <- "o2support"
+split_phx[["oxygen_flow"]] <- NULL
+
+prepper <- function(x) {
+  variable <- unique(x[["variable"]])
+  stopifnot(length(variable) == 1L)
+  common_args <- list(id.vars = "encounter_id", eclock = "encounter_clock", value.var = "value")
+
+  map <- switch(variable,
+    absolute_lymphocyte_count              = "alc",
+    absolute_neutrophil_count              = "anc",
+    age_months                             = "age",
+    alanine_aminotransferase               = "alt",
+    creatinine                             = "creatinine",
+    diastolic_blood_pressure_arterial_line = "dbp_arterial",
+    diastolic_blood_pressure_cuff          = "dbp_cuff",
+    fibrin_degradation_fragment            = "ddimer",
+    fibrinogen                             = "fibrinogen",
+    fraction_of_inspired_oxygen            = "fio2",
+    glasgow_coma_scale_eye                 = "gcseye",
+    glasgow_coma_scale_motor               = "gcsmotor",
+    glasgow_coma_scale_total               = "gcstotal",
+    glasgow_coma_scale_verbal              = "gcsverbal",
+    glucose                                = "glucose",
+    infectious_test                        = "antiinfectioustests",
+    international_normalized_ratio         = "inr",
+    lactate                                = "lactate",
+    left_pupil_fixed                       = "pupilleft",
+    mean_airway_pressure_ventilator        = "mean_airway_pressure_ventilator",
+    mean_arterial_pressure_arterial_line   = "mean_arterial_pressure_arterial",
+    mean_arterial_pressure_cuff            = "mean_arterial_pressure_cuff",
+    partial_pressure_of_arterial_oxygen    = "pao2",
+    peripheral_capillary_oxygen_saturation = "spo2",
+    platelets                              = "platelets",
+    positive_end_expiratory_pressure       = "positive_end_expiratory_pressure",
+    right_pupil_fixed                      = "pupilright",
+    systemic_antimicrobial_medication      = "antimicrobials",
+    systemic_vasoactive_epinephrine        = "epinephrine",
+    systemic_vasoactive_milrinone          = "milrinone",
+    systolic_blood_pressure_arterial_line  = "sbp_arterial",
+    systolic_blood_pressure_cuff           = "sbp_cuff",
+    total_bilirubin                        = "bilirubin",
+    o2support                              = "o2support"
+  )
+
+  f <- get(paste0("prepare_", map), mode = "function")
+
+  if (variable == "age_months") {
+    rtn <- do.call(f, c(list(x = x), common_args[-2]))
+  } else {
+    rtn <- do.call(f, c(list(x = x), common_args))
+  }
+  setNames(list(rtn), map)
+}
+
+prepared_inputs <- unname(lapply(split_phx, prepper))
+prepared_inputs <- unlist(prepared_inputs, recursive = FALSE, use.names = TRUE)
+prepared_data   <- do.call(prepare_phoenix_data, prepared_inputs)
+scored_data     <- score_prepared_phoenix_data(prepared_data)
+scored_data
+```
+
+The output is a `data.frame` with one row per encounter.  The
+`suspected_infection` column is a 0/1 indicator for suspected infection, `odss_4_` is the
+organ dysfunction summary score based on the four systems for Phoenix
+(respiratory, cardiovascular, neurologic, and coagulation).  The `pss_4_` is the
+Phoenix score, it is the product of the `suspected_infection` and `odss_4_`
+columns.  `sepsis_` and `septic_shock_` are 0/1 indicators.   The suffix
+`jama2024` indicate these are the values consistent with the aggregation method
+used in @Sanchez-Pinto2024 and @Schlapbach2024.
+
+# References
+<div id="refs"></div>

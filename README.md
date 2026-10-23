@@ -89,17 +89,20 @@ Install the development version of `phoenix` directly from github via the
 *NOTE:* If you are working on a Windows machine you will need to download and
 install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 
-### Overview and Examples
-The best overview for this package is the R vignette which you can view locally
-after installing the R package via
+### Vignettes
+
+Start with the quick-start vignette, which demonstrates both row-level rubric
+scoring and the longitudinal EHR workflow. View it locally after installing the
+package:
+
 ```r
-vignette(topic = "phoenix", package = "phoenix")
-vignette(topic = "longitudinal-preparation-and-scoring", package = "phoenix")
+vignette(topic = "quick-start", package = "phoenix")
 ```
-or you can read them  online
-[here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
-and
-[here](https://cu-dbmi-peds.github.io/phoenix/articles/longitudinal-preparation-and-scoring.html)
+
+It is also available [online](https://cu-dbmi-peds.github.io/phoenix/articles/quick-start.html).
+For complete reference material, see the
+[rubric vignette](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
+and the [longitudinal preparation and scoring vignette](https://cu-dbmi-peds.github.io/phoenix/articles/longitudinal-preparation-and-scoring.html).
 
 ### Which R workflow should I use?
 

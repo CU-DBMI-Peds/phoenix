@@ -41,6 +41,9 @@ already prepared data with the organ-system scoring functions and the
 scoring interface described in [@DeWitt2024](https://doi.org/10.1093/jamiaopen/ooae066),
 first released in `phoenix` 1.0.0 and retained through the 1.x releases.
 
+For a concise introduction to both row-level scoring and the longitudinal EHR
+workflow, start with `vignette("quick-start", package = "phoenix")`.
+
 For the longitudinal EHR or event-level workflow introduced in `phoenix` 2.0.0,
 including input preparation, carry-forward rules, time-aligned scoring, and
 suspected-infection-gated criteria, see

@@ -219,7 +219,8 @@ See reference details in \code{\link{phoenix-package}} or by calling
     }
 }
 
-\code{vignette('phoenix')} for row-level scoring examples and
+\code{vignette('quick-start')} for a concise introduction,
+\code{vignette('phoenix')} for row-level scoring examples, and
 \code{vignette('longitudinal-preparation-and-scoring')} for the
 suspected-infection-gated EHR workflow.
 }

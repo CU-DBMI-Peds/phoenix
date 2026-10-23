@@ -143,7 +143,10 @@
 #'     }
 #' }
 #'
-#' \code{vignette('phoenix')} for more details and examples.
+#' \code{vignette('quick-start')} for a concise introduction,
+#' \code{vignette('phoenix')} for row-level rubric scoring details, and
+#' \code{vignette('longitudinal-preparation-and-scoring')} for the
+#' longitudinal EHR workflow.
 #'
 #' @docType package
 #' @keywords internal
