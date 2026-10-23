@@ -147,10 +147,10 @@ for the patient in the above example is 2, not 3.  Please keep this in mind
 when you are preparing your data sets.
 
 **Age Restrictions:**
-Age measurements are not adjusted for prematurity.  The Phoenix criteria were
-developed for non-birth hospitalizations, children with gestational age &gt; 37
-weeks, and patients aged from 0 months up to, but not including, 216 months (18
-years).
+The Phoenix criteria excluded data from newborns before discharge from their
+birth hospitalization and children with a postconceptional age of less than 37
+weeks. Patients are aged from 0 months up to, but not including, 216 months
+(18 years).
 
 # Package Use
 

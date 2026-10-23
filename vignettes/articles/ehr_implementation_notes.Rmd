@@ -35,8 +35,8 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 ## Exclusion Criteria
 
-* Patients still in their original birth hospitalization
-* Gestational age less than 37 weeks at encounter start
+* Newborns before discharge from their birth hospitalization
+* Postconceptional age less than 37 weeks
 * Age less than 0 months or greater than or equal to 216 months at encounter start
 
 ## Data cleaning and preparation
@@ -126,8 +126,8 @@ Inclusion Criteria
 
 Exclusion Criteria
 
-* Patients still in their original birth hospitalization
-* Gestational age less than 37 weeks at encounter start
+* Newborns before discharge from their birth hospitalization
+* Postconceptional age less than 37 weeks
 * Age less than 0 months or greater than or equal to 216 months at encounter start
 
 # Suspected Infection
