@@ -37,12 +37,12 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 * Newborns before discharge from their birth hospitalization
 * Postconceptional age less than 37 weeks
-* Age less than 0 months or greater than or equal to 216 months at encounter start
+* Age at encounter start outside [0, 216) months
 
 ## Data cleaning and preparation
 
 * Verify all variables are in the expected units; convert as necessary. E.g. age in months; lactate in mmol/L, etc.
-* As appropriate replace invalid values with NULL; e.g. if age in months is outside [0, 216), consider whether the patient should be scored at all.
+* As appropriate, replace invalid values with NULL; for example, if age in months is outside [0, 216), consider whether the patient should be scored at all.
 * No imputation for NULL/invalid values
 * Last observation carry-forward within the appropriate window for each variable; the maximum carry-forward is 24 hours.
 * Variables not present or not known should be passed in as NULL
@@ -121,14 +121,14 @@ If at time T~3~ FiO~2~ is updated:
 
 Inclusion Criteria
 
-* Age greater than or equal to 0 months and less than 216 months at encounter start
+* Age at encounter start in [0, 216) months
 * Suspected infection
 
 Exclusion Criteria
 
 * Newborns before discharge from their birth hospitalization
 * Postconceptional age less than 37 weeks
-* Age less than 0 months or greater than or equal to 216 months at encounter start
+* Age at encounter start outside [0, 216) months
 
 # Suspected Infection
 
@@ -367,7 +367,7 @@ The overall metadata for vasoactives:
 
 ### Age
 * Units: months
-* Expected Values: [0, 216)
+* Expected values: [0, 216) months
 * Caveats:
 * Look back:
 

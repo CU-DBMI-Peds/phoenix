@@ -149,8 +149,7 @@ when you are preparing your data sets.
 **Age Restrictions:**
 The Phoenix criteria excluded data from newborns before discharge from their
 birth hospitalization and children with a postconceptional age of less than 37
-weeks. Patients are aged from 0 months up to, but not including, 216 months
-(18 years).
+weeks. The eligible age interval is [0, 216) months.
 
 # Package Use
 
