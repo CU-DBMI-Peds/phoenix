@@ -123,15 +123,20 @@ are encouraged to review these papers.  A few general notes about the data and
 use follow.  Additional details are provided in the sections for each organ
 system.
 
-**Missing data = 0 points:** During the development of the Phoenix criteria
-missing data were mapped to zero points. This was done as it was reasonable to
-assume that for some labs and metrics, missing data could indicate that there
-was no concern and the testing was not ordered.  Further, the Phoenix criteria
-were developed to be useful in high-, medium-, and low-resource settings
-where some labs and values might be uncommon or impossible to get.  As such,
-we encourage end users of this package to do the same: missing values are
-missing and should not be imputed.
-**__The Phoenix criteria are valid on "known data."__**
+**Unavailable criteria = 0 points:** During development of the Phoenix
+criteria, unavailable criteria contributed zero points. Do not impute an
+unmeasured laboratory or vital-sign value; an unavailable criterion does not
+mean that the patient is healthy or normal. Invalid, incorrectly scaled, or
+otherwise unusable source values should be corrected or excluded before
+scoring.
+
+The direct scoring functions in this vignette expect inputs that are already
+cleaned and in their documented units. For longitudinal data,
+last-observation-carried-forward (LOCF) is different from imputation: it
+carries an actually observed, valid value forward only while it remains within
+the applicable look-back window. When no such value is available, the
+criterion contributes zero points. Use the `prepare_*()` functions and the
+longitudinal workflow for that preparation and time alignment.
 
 **First-24-hour, time-aligned scoring:** The criteria were developed using the
 worst *total* score observed during the first 24 hours of an encounter. This is

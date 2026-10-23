@@ -50,10 +50,10 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 ## Data cleaning and preparation
 
 * Verify all variables are in the expected units; convert as necessary. E.g. age in months; lactate in mmol/L, etc.
-* As appropriate, replace invalid values with NULL; for example, if age in months is outside [0, 216), consider whether the patient should be scored at all.
-* No imputation for NULL/invalid values
-* Last observation carry-forward within the appropriate window for each variable; the maximum carry-forward is 24 hours.
-* Variables not present or not known should be passed in as NULL
+* Invalid, incorrectly scaled, or otherwise unusable source values require data-quality review. Correct them when possible or exclude the observation before scoring; for example, if age in months is outside [0, 216), consider whether the patient should be scored at all.
+* Do not impute an unmeasured laboratory or vital-sign value.
+* Last-observation-carried-forward (LOCF) carries an actually observed, valid value forward within the appropriate window for each variable; it is a time-alignment step, not imputation. The maximum carry-forward is 24 hours.
+* In tabular R input, no raw observation is represented by omitting its observation row. `NULL` should refer only to an entirely absent optional input object.
 
 ## Gotchas
 
@@ -65,10 +65,10 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 # General Data Formatting Notes
 
-* `NULL` values are treated as non-score generating criteria. Do not populate null/unknown/not applicable values with estimates or outdated information.
-* Values outside the ranges mentioned below are treated as `NULL`
+* After applicable LOCF, an unavailable criterion is non-score generating. Do not populate an unavailable criterion with an estimate or an outdated value.
+* Validate values against the ranges mentioned below. Correct or exclude out-of-range values before scoring; do not treat them as normal findings.
 * Before sending data to the package, please verify the data. Some values may provide warnings, others may generate errors. Verify that your code can handle warnings and errors.
-* Ideally, both input values and time of the measurement are available so that last observation carried forward logic can be implemented with limits and conditions for age of inputs.
+* Ideally, both input values and time of measurement are available so that LOCF can be applied within the input-specific limits and conditions for the age of inputs.
 
 ## Special Considerations for EHR Data
 
@@ -76,16 +76,21 @@ Phoenix was developed on a retrospective data set which provided the luxury of
 easily looking backward in time within an encounter.  When applying the
 Phoenix criteria to an active encounter there are several things to consider.
 
-### Missing values
-Missing values at a specific moment in time need to be dealt with in two steps:
+### Missing values and LOCF
+
+Do not impute an unmeasured value. LOCF is different: it carries forward an
+actually observed, valid prior value while that value remains within the
+applicable look-back window. Missing values at a specific moment in time are
+handled in two steps:
 
 1. Is there a prior known value?  If so, and the prior known value is within the
    lookback window, use the last known value.  That is,
    last-observation-carried-forward with a lookback window.
 
-2. Consider the missing value to indicate a "healthy" value.  If using the R
-   package or the Python module you need not do anything as the functions
-   therein will return zero points in the score for the missing value.
+2. If no prior valid value is available within the look-back window, the
+   criterion is unavailable and contributes zero points. This does not mean the
+   patient is healthy or normal. The R package and Python module apply the
+   zero-point scoring consequence for unavailable criteria.
 
 Example: Say we know FiO~2~ at time T~0~ and we know lactate at time T~0~ as
 well.
@@ -111,17 +116,17 @@ like:
 | time | FiO~2~                                                | Lactate |
 | :--: | :---                                                  | :---    |
 | T~0~ | 0.40                                                  | 6.8     |
-| T~1~ | 0.40 (Assuming T~1~ - T~0~ < 6 hours; NULL Otherwise) | 7.3     |
-| T~2~ | 0.40 (Assuming T~2~ - T~0~ < 6 hours; NULL Otherwise) | 7.1     |
+| T~1~ | 0.40 (if T~1~ - T~0~ < 6 hours; unavailable otherwise) | 7.3     |
+| T~2~ | 0.40 (if T~2~ - T~0~ < 6 hours; unavailable otherwise) | 7.1     |
 
 If at time T~3~ FiO~2~ is updated:
 
  | time | FiO~2~                                                | Lactate                                              |
  | :--: | :---                                                  | :---                                                 |
  | T~0~ | 0.40                                                  | 6.8                                                  |
- | T~1~ | 0.40 (Assuming T~1~ - T~0~ < 6 hours; NULL Otherwise) | 7.3                                                  |
- | T~2~ | 0.40 (Assuming T~2~ - T~0~ < 6 hours; NULL Otherwise) | 7.1                                                  |
- | T~3~ | 0.80 (good new value)                                 | 7.1 (Assuming T~3~ - T~2~ < 6 hours; NULL Otherwise) |
+ | T~1~ | 0.40 (if T~1~ - T~0~ < 6 hours; unavailable otherwise) | 7.3                                                  |
+ | T~2~ | 0.40 (if T~2~ - T~0~ < 6 hours; unavailable otherwise) | 7.1                                                  |
+ | T~3~ | 0.80 (good new value)                                 | 7.1 (if T~3~ - T~2~ < 6 hours; unavailable otherwise) |
 
 <hr>
 

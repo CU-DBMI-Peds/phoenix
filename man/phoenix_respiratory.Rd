@@ -92,6 +92,17 @@ selected oxygenation ratio below 3-point threshold and invasive mechanical venti
 }
 }
 
+\section{Input preparation}{
+
+This direct, row-level function expects inputs that are already cleaned and
+expressed in the documented units. Do not impute an unmeasured clinical
+value. For longitudinal data, use the \code{prepare_*()} functions and
+\code{\link{prepare_phoenix_data}} to carry an actually observed, valid value
+forward only within its applicable look-back window. That time-alignment step
+is not imputation; when no valid value is available, the criterion contributes
+zero points.
+}
+
 \examples{
 
 # Using the provided example data set:

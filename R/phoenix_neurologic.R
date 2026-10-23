@@ -38,6 +38,8 @@
 #' As with all Phoenix organ dysfunction scores, missing input values map to
 #' scores of zero.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
@@ -66,11 +68,11 @@
 #' @examples
 #' # using the example sepsis data set
 #' # Expected units:
-#' #   GCS integer values from 3, 4, 5, ..., 15 
+#' #   GCS integer values from 3, 4, 5, ..., 15
 #' #   fixed_pupils: 1 if bilaterally fixed pupils, 0 otherwise
 #'
 #' phoenix_neurologic(
-#'   gcs = gcs_total, 
+#'   gcs = gcs_total,
 #'   fixed_pupils = as.integer(pupil == "both-fixed"),
 #'   data = sepsis
 #' )
@@ -111,6 +113,7 @@ phoenix_neurologic <- function(gcs = NA_integer_, fixed_pupils = NA_real_, data 
     stop(msg)
   }
 
+  # Substitute non-score-generating values for unavailable criteria.
   fpl <- as.integer(fpl)
   fpl[is.na(fpl)] <- 0L
   stopifnot(all(fpl %in% c(0L, 1L)))

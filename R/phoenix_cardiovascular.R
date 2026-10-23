@@ -91,6 +91,8 @@
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
@@ -304,7 +306,7 @@ phoenix_cardiovascular <-
     stop(msg)
   }
 
-  # set "healthy" value for missing data
+  # Substitute non-score-generating values for unavailable criteria.
   vas <- as.integer(replace(vas, which(is.na(vas)), 0))
   lct <- replace(lct, which(is.na(lct)), 0)
 

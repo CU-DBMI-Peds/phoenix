@@ -54,6 +54,8 @@
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
@@ -225,7 +227,7 @@ phoenix_respiratory <-
   pfr_missing <- is.na(pfr)
   sfr_missing <- is.na(sfr)
 
-  # set "healthy" value for missing data
+  # Substitute non-score-generating values for unavailable criteria.
   pfr <- replace(pfr, which(is.na(pfr)), 500)
   sfr <- replace(sfr, which(is.na(sfr)), 500)
   invasive_mechanical_ventilation <- as.integer(replace(invasive_mechanical_ventilation, which(is.na(invasive_mechanical_ventilation)), 0))

@@ -79,6 +79,8 @@
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the row-level four-organ

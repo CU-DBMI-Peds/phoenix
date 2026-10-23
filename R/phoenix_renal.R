@@ -34,6 +34,8 @@
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
@@ -104,7 +106,7 @@ phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.f
     stop(msg)
   }
 
-  # set "healthy" value for missing data
+  # Substitute non-score-generating values for unavailable criteria.
   missing_idx <- which(is.na(age) | is.na(crt))
   age <- replace(age, missing_idx, 0)
   crt <- replace(crt, missing_idx, 0)

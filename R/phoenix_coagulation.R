@@ -15,6 +15,8 @@
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
@@ -94,7 +96,7 @@ phoenix_coagulation <- function(platelets = NA_real_, inr = NA_real_, d_dimer = 
     stop(msg)
   }
 
-  # set "healthy" value for missing data
+  # Substitute non-score-generating values for unavailable criteria.
   plt <- replace(plt, which(is.na(plt)), Inf)
   inr <- replace(inr, which(is.na(inr)), 0)
   ddm <- replace(ddm, which(is.na(ddm)), 0)

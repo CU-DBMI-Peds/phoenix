@@ -56,6 +56,27 @@ status.
    windows, score thresholds, and aggregation methods. End users may modify
    those defaults as desired.
 
+## Missingness, invalid input, and time alignment
+
+Do not impute an unmeasured laboratory or vital-sign value. In this workflow,
+last-observation-carried-forward (LOCF) is not imputation: it carries an
+actually observed, valid value forward in the time-indexed data only while it
+remains within that input's look-back window. Once that window expires, the
+criterion is unavailable and contributes zero points to the relevant scoring
+component.
+
+The `prepare_*()` functions validate observed rows. Raw missing values should
+normally be represented by omitting the observation row, rather than by
+including an `NA` value. Invalid, incorrectly scaled, or otherwise unusable
+source values are data-quality problems: correct them when possible or exclude
+them before preparation. They should not be treated as normal findings.
+
+For example, an encounter with no lactate observation has no lactate row to
+prepare. In contrast, a lactate recorded as `680` when the source unit was
+mg/dL rather than mmol/L is an invalidly scaled observation. Convert it to the
+expected unit or exclude it before calling `prepare_lactate()`; do not use it
+as a missing or normal value.
+
 ## Example Data
 ```{r}
 library(phoenix)

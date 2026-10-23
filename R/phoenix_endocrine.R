@@ -14,6 +14,8 @@
 #' will map to a score of zero - this is consistent with the development of the
 #' criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso \itemize{ \item \code{\link{phoenix}} for generating the diagnostic
 #' Phoenix Sepsis score based on the four organ systems: \itemize{ \item
 #' \code{\link{phoenix_cardiovascular}}, \item
@@ -59,7 +61,7 @@ phoenix_endocrine <- function(glucose = NA_real_, data = parent.frame(), ...) {
 
   glc <- eval(expr = substitute(glucose), envir = data, enclos = parent.frame())
 
-  # set "healthy" value for missing data
+  # Substitute a non-score-generating value for an unavailable criterion.
   glc <- replace(glc, which(is.na(glc)), 100)
 
   # TeX: eq:endo.

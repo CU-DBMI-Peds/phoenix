@@ -14,6 +14,8 @@
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
@@ -82,7 +84,7 @@ phoenix_immunologic <- function(anc = NA_real_, alc = NA_real_, data = parent.fr
     stop(msg)
   }
 
-  # set "healthy" value for missing data
+  # Substitute non-score-generating values for unavailable criteria.
   # IMPORTANT: Recall the expected input units are 1000 cells / mm^3
   anc <- replace(anc, which(is.na(anc)), 555)
   alc <- replace(alc, which(is.na(alc)), 1111)

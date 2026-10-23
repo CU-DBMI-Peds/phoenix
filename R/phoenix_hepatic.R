@@ -14,6 +14,8 @@
 #' set will map to a score of zero - this is consistent with the development of
 #' the criteria.
 #'
+#' @inheritSection phoenix Input preparation
+#'
 #' @seealso
 #' \itemize{
 #'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
@@ -81,7 +83,7 @@ phoenix_hepatic <- function(bilirubin = NA_real_, alt = NA_real_, data = parent.
     stop(msg)
   }
 
-  # set "healthy" value for missing data
+  # Substitute non-score-generating values for unavailable criteria.
   bil <- replace(bil, which(is.na(bil)), 0)
   alt <- replace(alt, which(is.na(alt)), 0)
 

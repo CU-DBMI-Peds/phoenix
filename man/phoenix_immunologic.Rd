@@ -31,6 +31,17 @@ part of Phoenix-8 and not Phoenix.
 1 point if ANC < 0.500 or ALC < 1.000 (units are 1000 cells per cubic millimeter).
 }
 
+\section{Input preparation}{
+
+This direct, row-level function expects inputs that are already cleaned and
+expressed in the documented units. Do not impute an unmeasured clinical
+value. For longitudinal data, use the \code{prepare_*()} functions and
+\code{\link{prepare_phoenix_data}} to carry an actually observed, valid value
+forward only within its applicable look-back window. That time-alignment step
+is not imputation; when no valid value is available, the criterion contributes
+zero points.
+}
+
 \examples{
 
 # using the example sepsis data set

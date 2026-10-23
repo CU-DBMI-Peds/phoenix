@@ -61,14 +61,25 @@ Reactive pupils and GCS > 10 \tab 0 point
 }
 }
 
+\section{Input preparation}{
+
+This direct, row-level function expects inputs that are already cleaned and
+expressed in the documented units. Do not impute an unmeasured clinical
+value. For longitudinal data, use the \code{prepare_*()} functions and
+\code{\link{prepare_phoenix_data}} to carry an actually observed, valid value
+forward only within its applicable look-back window. That time-alignment step
+is not imputation; when no valid value is available, the criterion contributes
+zero points.
+}
+
 \examples{
 # using the example sepsis data set
 # Expected units:
-#   GCS integer values from 3, 4, 5, ..., 15 
+#   GCS integer values from 3, 4, 5, ..., 15
 #   fixed_pupils: 1 if bilaterally fixed pupils, 0 otherwise
 
 phoenix_neurologic(
-  gcs = gcs_total, 
+  gcs = gcs_total,
   fixed_pupils = as.integer(pupil == "both-fixed"),
   data = sepsis
 )
