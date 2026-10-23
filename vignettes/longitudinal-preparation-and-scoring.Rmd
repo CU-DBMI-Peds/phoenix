@@ -32,3 +32,581 @@ Until this vignette is complete, consult the package help for
 `prepare_phoenix_data()`, and `score_prepared_phoenix_data()`. The existing
 `vignette("phoenix", package = "phoenix")` covers applying the Phoenix rubric
 to already prepared, row-level data.
+
+# Operationalized implimentation of the Phoenix Criteria
+
+For version 1.x of the `phoenix` pacakge, the provided funcitons focues on
+applying the scoring rubric rowwise to a dataset.   As of v2.0.0, a new set of
+functions have been introduced to apply the Phoenix criteria as it was build in 
+[@Sanchez-Pinto2024](https://doi.org/10.1001/jama.2024.0196) and
+[@Schlapbach2024](https://doi.org/10.1001/jama.2024.0179).
+
+The scoring rubric is only part of the process of applying the Phoenix criteria.
+The focus of this package for v1.x was that.  Here we provide utilities to
+utilize a full electronic health record (EHR) for patients.  Detailed
+explainations of the process are defined in the online article [TODO: URL TO
+WEBSITE ARTILE](urlgoeshere) (and new publication? url to go here)
+
+The general workflow has four steps:
+
+0. Gather data.
+
+1. Call `prepare_<input>()` functions to process each possible input
+   for Phoenix or Phoenix-8 scoring.  These functions ensure the inputs are
+   structed as needed for later process and that input values are within valid
+   ranges.  The defualt temporal tie breakers, aggregations, and valid
+   values/ranges are set to be consistent with @Sanchez-Pinto2024 but can be
+   modified by end users if desired.
+
+2. Pass the returns from step 1 into `prepare_phoenix_data()`.  This function
+   call uses several default settngs for lookback windows and other dynamic
+   variables consistent with @Sanchez-Pinto2024 but can be modified by the end
+   user if desired.
+
+3. Pass the return from step 2 to `score_prepared_phoenix_data()`.  This
+   function uses defaults consistent with @Sanchez-Pinto2024 for observation
+   windows, score thresholds, and aggregation methods.  End user may modify
+   those defaults as desired.
+
+## Example Data
+```{r}
+library(phoenix)
+options(phoenix_verbose = TRUE)
+```
+
+The `phoenix` package comes with a synthetic data set `phx` used for this
+example.  The data.frame is "long" data and has four columns:
+
+1. `encounter_id`: a character string denoting `r length(unique(phx[["encounter_id"]]))`
+   encounters. (Yes, these ids look like dates, they are dates, but have nothing
+   to do with any patient, these are the dates when the Colorado Avalance won
+   each of the first three Stanley Cups in franchise history.)
+2. `encounter_clock`: the time, in minutes, from the start of the encounter to
+   the reported observation, if applicable.
+3. `variable`: a character sting, the variable being reported.
+4. `value`: the value of the `variable` at time `encounter_clock` for the
+   `encounter_id`.
+```{r, echo = TRUE, results = "markup"}
+str(phx)
+head(phx)
+subset(phx, encounter_id == "19960610" & is.na(encounter_clock))
+subset(phx, encounter_id == "19960610" & encounter_clock < 5)
+```
+For this data set we can see that the patient associated with `encounter_id`
+19960610 is
+`r subset(phx, encounter_id == "19960610" & variable == "age_months")[["value"]]`
+months old, and within the first five minutes of the encounter, their
+FiO<sub>2</sub> value was
+`r paste0(100 * subset(phx, encounter_id == "19960610" & encounter_clock == 3 & variable == "fraction_of_inspired_oxygen")[["value"]], "%")`.
+
+The variables in this dataset are:
+```{r}
+sort(unique(phx[["variable"]]))
+```
+
+## Prepare Inputs
+
+Each of the possible inputs for the Phoenix-8 scoring have a `prepare_<input>()`
+function call.  Calling each of these functions is required such that the input
+is structured as expected when processing the data prior to scoring.  For this
+section we will process the variables in the default order of the inputs to the
+`prepare_phoenix_data()` call.  Roughly, that means will prepare the inputs the
+order needed to assess the respiratory, cardiovascular, neurologic, coagulation,
+endocrine, immunologic, renal, and hepatic systems dysfunction respectively.
+
+All of the `prepared_<input>()` have some similar inputs the end user needs to
+specify:
+
+* `x`: a data.frame, or an object that inherits from a data.frame such as a
+  data.table or tibble, containing one Phoenix input in long format.
+
+* `id.vars`: a character vector of one or more column names in `x` that identify
+  the encounter. Common examples are site, patient, and encounter identifiers.
+  The same `id.vars`, in the same order, must be used for all inputs that will
+  be combined with `prepare_phoenix_data`.
+
+* `eclock`: a character vector of length one naming the encounter-clock column
+  in `x`. The encounter clock is expected to be numeric, usually minutes from
+  encounter start, with 0 denoting the start of the encounter. Age is static for
+  the encounter and ignores `eclock`.
+
+* `value.var`: a character vector of length one naming the column in `x` that
+  contains the observed value for the Phoenix input being prepared.
+
+Additional inputs for valid ranges, tie breakers, can be made. Using the
+defaults will be consistent with the process used for @Sanchez-Pinto2024.
+
+We will put the prepared inputs into a list for easier bookkeeping and later
+use.
+```{r}
+prepared_inputs <- list()
+```
+
+### Respiratory Inputs
+
+#### FiO<sub>2</sub>
+
+The fraction of inspired oxygen is expected to be between 0.21 and 1.00.
+
+```{r prepare-fio2}
+prepared_inputs[["fio2"]] <-
+  prepare_fio2(
+    x = subset(phx, variable == "fraction_of_inspired_oxygen"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+We got a message that duplicate rows were found and aggregated.  This message
+was provided because the `options(phoenix_verbose = TRUE)` was set.  If that is
+not set the default is to provide messages in an interactive mode and no
+messages in a non-interative mode.
+
+Let's look at a duplicated row:
+```{r}
+subset(
+  x = phx, 
+  subset = 
+    variable == "fraction_of_inspired_oxygen" &
+    encounter_clock == 10808 &
+    encounter_id == 20220626
+)
+
+subset(
+  x = prepared_inputs[["fio2"]],
+  subset = 
+    encounter_clock == 10808 &
+    encounter_id == 20220626
+)
+```
+The default behavior is to take the max FiO<sub>2</sub> value when there are two
+values at the same moment in time.
+
+The fraction of inspired oxygen is expected to be between 0.21 and 1.00.  If
+your data has a value such as 21, which is not uncommon to see in EHR data, an
+error will be thrown:
+```{r prepare-fio2-1, error = TRUE}
+prepare_fio2(
+  x = data.frame(patid = 1, eid = 2, t = 0, fio2 = 21),
+  id.vars = c("patid", "eid"),
+  eclock = "t",
+  value.var = "fio2"
+)
+```
+
+#### SpO<sub>2</sub>
+
+The SpO<sub>2</sub> (aka: pulse ox) is expected to be an integer value with a
+max value of 100.  The default valid range is any non-negative integer less than
+100.  End users may find it useful to set a more restrictive lower bound.
+
+```{r}
+prepared_inputs[["spo2"]] <-
+  prepare_spo2(
+    x = subset(phx, variable == "peripheral_capillary_oxygen_saturation"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+#### PaO<sub>2</sub>
+
+The partial pressure of arterial_oxygen is expected to be reported in units of
+mmHg with non-negative values.
+
+```{r}
+prepared_inputs[["pao2"]] <-
+  prepare_pao2(
+    x = subset(phx, variable == "partial_pressure_of_arterial_oxygen"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+#### Invasive Mechanical Ventalation
+There are multiple possible inputs for invasive mechanical ventalation.  One
+option is to simply have an indicator, 0/1 for intubation.  If you have that
+in your dataset then you can call
+`prepare_invasive_mechanical_ventilation_indicator()`.  No such variable is in
+the `phx` data. Instead there are several specific modes of invasive mechanical
+ventalation based on measurements of positive end expiratory pressure (PEEP) or
+mean airway pressue from a ventilator or high frequence oscillatory ventilation
+(HFOV). 
+
+```{r}
+prepared_inputs[["mean_airway_pressure_ventilator"]] <-
+  prepare_mean_airway_pressure_ventilator(
+    x = subset(phx, variable == "mean_airway_pressure_ventilator"),
+    id.vars = c("encounter_id"),
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["positive_end_expiratory_pressure"]] <-
+  prepare_positive_end_expiratory_pressure(
+    x = subset(phx, variable == "positive_end_expiratory_pressure"),
+    id.vars = c("encounter_id"),
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+
+# Two other functions but not with the phx data
+# prepare_invasive_mechanical_ventilation_indicator()
+# prepare_mean_airway_pressure_hfov()
+```
+
+#### O<sub>2</sub> Support
+
+O<sub>2</sub> support is expected to be an indicator for any non-invasive oxygen
+support.  In the `phx` data we have the `oxygen_flow` variable.  We will get an
+error if passing that variable in directly to
+`prepare_o2support()`.
+
+```{r, error = TRUE}
+prepare_o2support(
+  x = subset(phx, variable == "oxygen_flow"),
+  id.vars = c("encounter_id"),
+  eclock = "encounter_clock",
+  value.var = "value"
+)
+```
+
+The reason for the error is that `oxygen_flow` is reported in liters per minute
+and we simply need an indicator.
+
+```{r}
+head(subset(phx, variable == "oxygen_flow"))
+o2 <- subset(phx, variable == "oxygen_flow")
+o2[["o2support"]] <- as.integer(o2[["value"]] > 0)
+
+prepared_inputs[["o2support"]] <-
+  prepare_o2support(
+    x = o2,
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "o2support"
+  )
+```
+
+### Cardiovascular Inputs
+
+Lactate, measured in mmol/L, is expected to be a non-negative floating point
+value.
+
+```{r}
+prepared_inputs[["lactate"]] <-
+  prepare_lactate(
+    x = subset(phx, variable == "lactate"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+Vasoactive medications are expected to be reported as indicators, 1 if the
+patient is currently receiving a systemic vasoactive medication.  The dosage is
+not considered here.   There are six medications of interest: dobutamine,
+dopamine, epinephrine, milrinone, norepinephrine, and vasopressin.
+
+For the example dataset `phx` only milrinone and epinephrine are reported.
+
+```{r}
+head(subset(phx, startsWith(variable, "systemic")))
+prepared_inputs[["epinephrine"]] <-
+  prepare_epinephrine(
+    x = subset(phx, variable == "systemic_vasoactive_epinephrine"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["milrinone"]] <-
+  prepare_milrinone(
+    x = subset(phx, variable == "systemic_vasoactive_milrinone"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+
+# Other prepare_<input>() funcitons for vasoactive medications
+# prepare_dobutamine()
+# prepare_dopamine()
+# prepare_norepinephrine()
+# prepare_vasopressin()
+```
+
+The mean arterial blood pressure pressure can come from several sources, an
+arterial line directly, a cuff, and direct value, or estimated based on
+systolic and diastolic pressures.  All the inputs here are expected to be
+reported units of mmHg.
+
+```{r}
+prepared_inputs[["mean_arterial_pressure_arterial"]] <-
+  prepare_mean_arterial_pressure_arterial(
+    x = subset(phx, variable == "mean_arterial_pressure_arterial_line"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["mean_arterial_pressure_cuff"]] <-
+  prepare_mean_arterial_pressure_cuff(
+    x = subset(phx, variable == "mean_arterial_pressure_cuff"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+
+prepared_inputs[["dbp_arterial"]] <-
+  prepare_dbp_arterial(
+    x = subset(phx, variable == "diastolic_blood_pressure_arterial_line"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["dbp_cuff"]] <-
+  prepare_dbp_cuff(
+    x = subset(phx, variable == "diastolic_blood_pressure_cuff"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+
+prepared_inputs[["sbp_arterial"]] <-
+  prepare_sbp_arterial(
+    x = subset(phx, variable == "systolic_blood_pressure_arterial_line"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["sbp_cuff"]] <-
+  prepare_sbp_cuff(
+    x = subset(phx, variable == "systolic_blood_pressure_cuff"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+Lastly, the Phoenix score based on mean arterial pressure is also based on the
+age of the patient in months. Note: no need to specify the `eclock` for
+preparing age as we are using the admission age in months.
+
+```{r}
+prepared_inputs[["age"]] <-
+  prepare_age(
+    x = subset(phx, variable == "age_months"),
+    id.vars = "encounter_id",
+    value.var = "value"
+  )
+```
+
+### Neurological Inputs
+
+The inputs for the neurologic organ dysfunction score is the total Glasgow Comma
+Score (GCS) which can be reported directly or as the sum of the three
+categories: eye, verbal, and motor.   There is a non-trivial hierachry for how
+to assess the GCS over time.  We prepare the variables here and will let
+`prepare_phoenix_data()` do the heavy lifting.
+
+```{r}
+prepared_inputs[["gcseye"]] <-
+  prepare_gcseye(
+    x = subset(phx, variable == "glasgow_coma_scale_eye"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["gcsverbal"]] <-
+  prepare_gcsverbal(
+    x = subset(phx, variable == "glasgow_coma_scale_verbal"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["gcsmotor"]] <-
+  prepare_gcsmotor(
+    x = subset(phx, variable == "glasgow_coma_scale_motor"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["gcstotal"]] <-
+  prepare_gcstotal(
+    x = subset(phx, variable == "glasgow_coma_scale_total"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+An indicator for bilaterally fixed pupils is also used in the neurologic
+assessment.  We provide prepare methods for bilateral fixation,
+`prepare_pupils()` and for each eye.   This allows for longitudinal lookbacks
+for each eye if that level of information is known without requiring the end
+user to construct the unified indicator.
+
+```{r}
+prepared_inputs[["pupilleft"]] <-
+  prepare_pupilleft(
+    x = subset(phx, variable == "left_pupil_fixed"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["pupilright"]] <-
+  prepare_pupilright(
+    x = subset(phx, variable == "right_pupil_fixed"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+
+# If you have an indicator for bilaterally fixed pupils use:
+# prepare_pupils()
+```
+
+### Coagulation Inputs
+The inputs for coagulation are platelets measured in 1000 / μL, INR (unitless),
+DDimer in mg/L (FEU), and fibrinogen in mg/dL.
+
+```{r}
+prepared_inputs[["platelets"]] <-
+  prepare_platelets(
+    x = subset(phx, variable == "platelets"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["inr"]] <-
+  prepare_inr(
+    x = subset(phx, variable == "international_normalized_ratio"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["ddimer"]] <-
+  prepare_ddimer(
+    x = subset(phx, variable == "fibrin_degradation_fragment"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["fibrinogen"]] <-
+  prepare_fibrinogen(
+    x = subset(phx, variable == "fibrinogen"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+### Endocrine Inputs
+The endocrine system is only part of the Phoenix-8 scoring and can be ignored if
+you are only intersted in the four-system Phoenix score.  That said, the one
+input for this system is glucose measured in mg / dL.
+```{r}
+prepared_inputs[["glucose"]] <-
+  prepare_glucose(
+    x = subset(phx, variable == "glucose"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+### Immunologic Inputs
+The immunologic system is only part of the Phoenix-8 scoring and can be ignored
+if you are only intersted in the four-system Phoenix score.  The
+absolute lymphocyte count (ALC) measured in 1000 cells / mm<sup>3</sup> and
+absolute neutrophile count (ANC) also measured in 1000 cells / mm<sup>3</sup>
+are the two inputs.
+```{r}
+prepared_inputs[["alc"]] <-
+  prepare_alc(
+    x = subset(phx, variable == "absolute_lymphocyte_count"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["anc"]] <-
+  prepare_anc(
+    x = subset(phx, variable == "absolute_neutrophil_count"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+### Renal Inputs
+The renal system is only part of the Phoenix-8 scoring and can be ignored if you
+are only interested in the four-system Phoenix score.  The inputs for this
+system are creatinine measured in mm / dL and age measured in months.  We only
+need to prepare creating since age was already prepared in the cardiovascular
+section.
+```{r}
+prepared_inputs[["creatinine"]] <-
+  prepare_creatinine(
+    x = subset(phx, variable == "creatinine"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+### Hepatic Inputs
+The hepatic system is only part of the Phoenix-8 scoring and can be ignored if
+you are only interested in the four-system Phoenix score.  There are two inputs
+for this system, alanine aminotransferase (ALT) measured in IU / L, and total
+bilirubin measued in mg / dL.
+```{r}
+prepared_inputs[["bilirubin"]] <-
+  prepare_bilirubin(
+    x = subset(phx, variable == "bilirubin"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["alt"]] <-
+  prepare_alt(
+    x = subset(phx, variable == "alanine_aminotransferase"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+### Suspected Infection
+The Phoenix definition of sepsis is life threatening organ dysfunction in the
+presence of a suspected infection.  Here we prepare the two inputs, an indicator
+for the ordering of an infectious test and an indicator for a dose of a systemic
+anitmicrobial medication.
+```{r}
+prepared_inputs[["antimicrobials"]] <-
+  prepare_antimicrobials(
+    x = subset(phx, variable == "systemic_antimicrobial_medication"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+prepared_inputs[["antiinfectioustests"]] <-
+  prepare_antiinfectioustests(
+    x = subset(phx, variable == "infectious_test"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+```
+
+## Prepare Phoenix Data
+The `prepare_<input>()` methods prepare the data such that the lookback windows
+and relativistic hierarchies can be applied to the data consistently.  Each input
+to `prepare_phoenix_data()` must be the return from the respective
+`prepare_<input>()` functions.
+
+```{r}
+do.call(what = prepare_phoenix_data, args = prepared_inputs)
+```
+
+
+# References
+<div id="refs"></div>
