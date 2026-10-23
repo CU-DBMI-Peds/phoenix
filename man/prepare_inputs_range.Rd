@@ -179,7 +179,7 @@ prepare_platelets(
   value.var,
   valid.range = c(0, Inf),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 

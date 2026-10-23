@@ -461,10 +461,12 @@ prepare_platelets <-
     value.var,
     valid.range = c(0, Inf),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: coagulation EHR input Platelets; used in eq:coag-component-platelets.
+  # Same-time duplicates retain the lower platelet count, the worse value for
+  # Phoenix coagulation scoring.
   rtn <-
     prepare_variable(
       x = x,

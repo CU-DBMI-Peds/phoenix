@@ -92,10 +92,44 @@ run_range_case <- function(fun_name,
 # Family-Wise Coagulation Coverage
 ################################################################################
 
-run_range_case("prepare_platelets", "PLATELETS", "platelet_count", c(200, 250, 180, 150), c(250, 180, 150), c(200, 180, 150), c(0, 1000))
+run_range_case("prepare_platelets", "PLATELETS", "platelet_count", c(200, 250, 180, 150), c(200, 180, 150), c(200, 180, 150), c(0, 1000))
 run_range_case("prepare_inr", "INR", "international_normalized_ratio", c(1.1, 1.3, 1.5, 1.7), c(1.3, 1.5, 1.7), c(1.1, 1.5, 1.7), c(0, 5))
 run_range_case("prepare_ddimer", "DDIMER", "d_dimer_value", c(0.5, 0.8, 1.1, 1.4), c(0.8, 1.1, 1.4), c(0.5, 1.1, 1.4), c(0, 5))
 run_range_case("prepare_fibrinogen", "FIBRINOGEN", "fibrinogen_value", c(100, 150, 125, 175), c(150, 125, 175), c(100, 125, 175), c(0, 500))
+
+# Platelets are unusual among the coagulation inputs: low rather than high
+# values are score-worsening. The default therefore retains the lower value;
+# callers can explicitly request the higher value if their source data require
+# a different duplicate-resolution rule.
+platelet_duplicates <-
+  data.frame(
+    hospital = c("H1", "H1"),
+    patient = c("P1", "P1"),
+    encounter = c("E1", "E1"),
+    minutes_from_admission = c(0, 0),
+    platelet_count = c(80, 140)
+  )
+
+prepared_platelets_max <-
+  lapply(
+    X = make_backends(platelet_duplicates),
+    FUN = function(x) {
+      prepare_platelets(
+        x = x,
+        id.vars = c("hospital", "patient", "encounter"),
+        eclock = "minutes_from_admission",
+        value.var = "platelet_count",
+        tie.breaker = max,
+        verbose = FALSE
+      )
+    }
+  )
+
+stopifnot(
+  identical(sort_prepared(prepared_platelets_max[["DF"]])[["value"]], 140),
+  identical(sort_prepared(prepared_platelets_max[["DT"]])[["value"]], 140),
+  identical(sort_prepared(prepared_platelets_max[["TB"]])[["value"]], 140)
+)
 
 ################################################################################
 #                                 End of File                                  #
