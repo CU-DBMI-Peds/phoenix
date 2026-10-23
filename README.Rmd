@@ -29,25 +29,6 @@ described in:
 
 * ["International Consensus Criteria for Pediatric Sepsis and Septic Shock"](https://doi.org/10.1001/jama.2024.0179) by Schlapbach, Watson, Sorce, et al. (2024).
 
-The best overview for this package is the R vignette which you can view locally
-after installing the R package via
-```r
-vignette("phoenix")
-```
-or you can read it online
-[here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
-
-## Which R workflow should I use?
-
-* Use the `phoenix_*()` functions when you already have clean, row-level inputs
-  and need individual organ-system scores.
-* Use `phoenix()` or `phoenix8()` for row-level organ dysfunction scores. Their
-  legacy sepsis and septic-shock indicators do not incorporate suspected
-  infection and therefore are not complete diagnostic criteria.
-* Use `prepare_*()`, `prepare_phoenix_data()`, and
-  `score_prepared_phoenix_data()` for longitudinal EHR data and for
-  suspected-infection-gated Phoenix sepsis and septic-shock criteria. See
-  `vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
 
 The Phoenix Criteria have been implemented in
 
@@ -112,15 +93,29 @@ Install the development version of `phoenix` directly from github via the
 *NOTE:* If you are working on a Windows machine you will need to download and
 install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 
-### Examples
-
-Details on the Phoenix criteria and the use of the R package can be found in the
-manual for the package, the
-[Get started](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html) on
-the website, or the vignette within R
-```{r eval = FALSE}
-vignette("phoenix")
+### Overview and Examples
+The best overview for this package is the R vignette which you can view locally
+after installing the R package via
+```r
+vignette(topic = "phoenix", package = "phoenix")
+vignette(topic = "longitudinal-preparation-and-scoring", package = "phoenix")
 ```
+or you can read them  online
+[here](https://cu-dbmi-peds.github.io/phoenix/articles/phoenix.html)
+and
+[here](https://cu-dbmi-peds.github.io/phoenix/articles/longitudinal-preparation-and-scoring.html)
+
+### Which R workflow should I use?
+
+* Use the `phoenix_*()` functions when you already have clean, row-level inputs
+  and need individual organ-system scores.
+* Use `phoenix()` or `phoenix8()` for row-level organ dysfunction scores. Their
+  legacy sepsis and septic-shock indicators do not incorporate suspected
+  infection and therefore are not complete diagnostic criteria.
+* Use `prepare_*()`, `prepare_phoenix_data()`, and
+  `score_prepared_phoenix_data()` for longitudinal EHR data and for
+  suspected-infection-gated Phoenix sepsis and septic-shock criteria. See
+  `vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
 
 ## Python
 
@@ -129,7 +124,6 @@ A python module is available on PyPi.  You can install it via `pip`
 ```{python, eval = FALSE}
 pip install phoenix-sepsis
 ```
-
 
 ### Examples
 
