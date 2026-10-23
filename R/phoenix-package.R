@@ -125,16 +125,16 @@
 #'
 #' @seealso
 #' \itemize{
-#'   \item \code{\link{phoenix}} for generating the diagnostic Phoenix
-#'     Sepsis score based on the four organ systems:
+#'   \item \code{\link{phoenix}} for generating the row-level four-organ
+#'     Phoenix score:
 #'     \itemize{
 #'       \item \code{\link{phoenix_cardiovascular}},
 #'       \item \code{\link{phoenix_coagulation}},
 #'       \item \code{\link{phoenix_neurologic}},
 #'       \item \code{\link{phoenix_respiratory}},
 #'     }
-#'   \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-#'     Sepsis criteria based on the four organ systems noted above and
+#'   \item \code{\link{phoenix8}} for generating the row-level Phoenix-8 score
+#'     based on the four organ systems noted above and
 #'     \itemize{
 #'       \item \code{\link{phoenix_endocrine}},
 #'       \item \code{\link{phoenix_immunologic}},

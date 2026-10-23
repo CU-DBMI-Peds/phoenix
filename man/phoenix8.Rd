@@ -2,7 +2,7 @@
 % Please edit documentation in R/phoenix8.R
 \name{phoenix8}
 \alias{phoenix8}
-\title{The Phoenix 8 Sepsis Score}
+\title{Row-Level Phoenix-8 Organ Dysfunction Scores}
 \usage{
 phoenix8(
   pf_ratio = NA_real_,
@@ -95,8 +95,11 @@ a \code{data.frame} with 12 integer columns.
   \item \code{phoenix_coagulation_score}
   \item \code{phoenix_neurologic_score}
   \item \code{phoenix_sepsis_score}
-  \item \code{phoenix_sepsis} 0 = not septic; 1 = septic (phoenix_sepsis_score greater or equal 2)
-  \item \code{phoenix_septic_shock} 0 = no septic shock; 1 = septic shock (sepsis with cardiovascular dysfunction)
+  \item \code{phoenix_sepsis} A legacy score-threshold indicator: 1 when
+  the four-organ score is at least 2. It does not assess suspected infection.
+  \item \code{phoenix_septic_shock} A legacy score-threshold indicator: 1
+  when the four-organ score is at least 2 and there is cardiovascular
+  dysfunction. It does not assess suspected infection.
   \item \code{phoenix_endocrine_score}
   \item \code{phoenix_immunologic_score}
   \item \code{phoenix_renal_score}
@@ -109,11 +112,20 @@ set will map to a score of zero - this is consistent with the development of
 the criteria.
 }
 \description{
-The extended Phoenix criteria using a total eight organ systems.  This is
-intended mostly for research as an extension of the Phoenix Sepsis Criteria
-which is based on four organ systems.
+\code{phoenix8()} calculates the extended, eight-organ Phoenix-8 score. This
+is intended mostly for research as an extension of the four-organ Phoenix
+score.
 }
 \details{
+Like \code{\link{phoenix}}, this direct, row-level wrapper does not assess
+suspected infection. Its \code{phoenix_sepsis} and
+\code{phoenix_septic_shock} columns are legacy score-threshold indicators,
+not complete diagnostic criteria unless suspected infection has been
+established separately. For longitudinal EHR data, use
+\code{\link{prepare_phoenix_data}} followed by
+\code{\link{score_prepared_phoenix_data}}, which constructs and applies the
+suspected-infection gate.
+
 The Phoenix Sepsis Criteria is based on the scores from
 respiratory, cardiovascular, coagulation, and neurologic systems.  Phoenix 8 uses
 these four plus endocrine, immunologic, renal, and hepatic.  Details on the
@@ -178,16 +190,16 @@ See reference details in \code{\link{phoenix-package}} or by calling
 }
 \seealso{
 \itemize{
-  \item \code{\link{phoenix}} for generating the diagnostic Phoenix
-    Sepsis score based on the four organ systems:
+  \item \code{\link{phoenix}} for generating the row-level four-organ
+    Phoenix score:
     \itemize{
       \item \code{\link{phoenix_cardiovascular}},
       \item \code{\link{phoenix_coagulation}},
       \item \code{\link{phoenix_neurologic}},
       \item \code{\link{phoenix_respiratory}},
     }
-  \item \code{\link{phoenix8}} for generating the diagnostic Phoenix 8
-    Sepsis criteria based on the four organ systems noted above and
+  \item \code{\link{phoenix8}} for generating the row-level Phoenix-8 score
+    based on the four organ systems noted above and
     \itemize{
       \item \code{\link{phoenix_endocrine}},
       \item \code{\link{phoenix_immunologic}},
@@ -196,5 +208,7 @@ See reference details in \code{\link{phoenix-package}} or by calling
     }
 }
 
-\code{vignette('phoenix')} for more details and examples.
+\code{vignette('phoenix')} for row-level scoring examples and
+\code{vignette('longitudinal-preparation-and-scoring')} for the
+suspected-infection-gated EHR workflow.
 }

@@ -32,6 +32,11 @@ ARTICLE](urlgoeshere) (and new publication? URL to go here).
 
 The general workflow has four steps:
 
+Unlike the direct `phoenix()` and `phoenix8()` wrappers, this workflow prepares
+the antimicrobial and infectious-test inputs, establishes suspected infection,
+and gates the Phoenix Sepsis Score and sepsis/septic-shock indicators on that
+status.
+
 0. Gather data.
 
 1. Call `prepare_<input>()` functions to process each possible input

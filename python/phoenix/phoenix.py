@@ -314,9 +314,12 @@ def phoenix(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilatio
         A pandas DataFrame with columns for each of the respiratory,
         cardiovascular, coagulation, and neurologic
         scores, the Phoenix score (sum of respiratory, cardiovascular,
-        coagulation, and neurologic), indicator for sepsis
-        (Phoenix score of at least two points), and indicator for septic shock
-        (sepsis with at least one cardiovascular point).
+        coagulation, and neurologic), and legacy score-threshold indicators
+        for sepsis (Phoenix score of at least two points) and septic shock
+        (that threshold with at least one cardiovascular point). This function
+        does not assess suspected infection, so these indicators are not
+        complete diagnostic criteria unless suspected infection has been
+        established separately.
     """
     invasive_mechanical_ventilation = _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv)
     mean_arterial_pressure = _resolve_mean_arterial_pressure(mean_arterial_pressure, map)
@@ -399,9 +402,12 @@ def phoenix8(pf_ratio = np.nan, sf_ratio = np.nan, invasive_mechanical_ventilati
     Returns:
         A pandas DataFrame with columns for each of the eight organ dysfunction
         scores, the Phoenix score (sum of respiratory, cardiovascular,
-        coagulation, and neurologic), the Phoenix-8 score, indicator for sepsis
-        (Phoenix score of at least two points), and indicator for septic shock
-        (sepsis with at least one cardiovascular point).
+        coagulation, and neurologic), the Phoenix-8 score, and legacy
+        score-threshold indicators for sepsis (Phoenix score of at least two
+        points) and septic shock (that threshold with at least one
+        cardiovascular point). This function does not assess suspected
+        infection, so these indicators are not complete diagnostic criteria
+        unless suspected infection has been established separately.
     """
     invasive_mechanical_ventilation = _resolve_invasive_mechanical_ventilation(invasive_mechanical_ventilation, imv)
     mean_arterial_pressure = _resolve_mean_arterial_pressure(mean_arterial_pressure, map)

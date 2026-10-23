@@ -110,7 +110,9 @@ and
   infection and therefore are not complete diagnostic criteria.
 * Use `prepare_*()`, `prepare_phoenix_data()`, and
   `score_prepared_phoenix_data()` for longitudinal EHR data and for
-  suspected-infection-gated Phoenix sepsis and septic-shock criteria. See
+  suspected-infection-gated Phoenix sepsis and septic-shock criteria. Sepsis
+  requires suspected infection plus a Phoenix Sepsis Score of at least 2;
+  septic shock additionally requires at least one cardiovascular point. See
   `vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
 
 ## Python

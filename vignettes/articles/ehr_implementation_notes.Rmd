@@ -31,7 +31,15 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 ## Scoring Requirement
 
-* Phoenix score is only valid in the case of suspected infection
+* Diagnostic Phoenix sepsis and septic-shock criteria require suspected
+  infection.
+* The direct R and Python `phoenix()`/`phoenix8()` functions calculate
+  score-threshold indicators but do not assess suspected infection. Callers
+  using those functions must establish suspected infection separately.
+* The R longitudinal workflow, `prepare_*()` → `prepare_phoenix_data()` →
+  `score_prepared_phoenix_data()`, establishes suspected infection and applies
+  that gate to the returned Phoenix Sepsis Score, sepsis, and septic-shock
+  indicators.
 
 ## Exclusion Criteria
 

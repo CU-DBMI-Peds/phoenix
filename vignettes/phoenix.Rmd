@@ -48,6 +48,13 @@ For the longitudinal EHR or event-level workflow introduced in `phoenix` 2.0.0,
 including input preparation, carry-forward rules, and window-level scoring, see
 `vignette("longitudinal-preparation-and-scoring", package = "phoenix")`.
 
+**Important:** `phoenix()` and `phoenix8()` calculate row-level organ
+dysfunction scores and retain legacy score-threshold indicators named
+`phoenix_sepsis` and `phoenix_septic_shock`. Those direct wrappers do not assess
+suspected infection, so their indicators are not complete diagnostic criteria
+unless suspected infection has been established separately. The longitudinal
+workflow constructs and applies the suspected-infection gate.
+
 # Phoenix Sepsis and Septic Shock
 
 There are two sets of criteria: Phoenix and Phoenix-8.  It was
@@ -566,6 +573,12 @@ The `phoenix()` function is a wrapper around `phoenix_respiratory()`,
 dysfunction scores, a total score, and two indicator columns, one for sepsis
 (total score &geq; 2) and another for septic shock (total score &geq; 2 and
 cardiovascular dysfunction &geq; 1).
+
+These two indicators are legacy score-threshold indicators only: `phoenix()`
+does not evaluate suspected infection. They should not be interpreted as
+diagnostic sepsis or septic shock unless suspected infection has been
+established separately. Use the longitudinal workflow for package-supported,
+suspected-infection-gated criteria.
 
 The range of Phoenix Sepsis scores is from 0 to 13.
 

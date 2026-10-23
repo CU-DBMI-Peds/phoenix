@@ -285,9 +285,11 @@ print(hepatic)
 ### Phoenix Scoring
 
 The Phoenix score is the sum of the respiratory, cardiovascular, coagulation,
-and neurologic scores.  Sepsis is defined as a total score of at least two
-points and septic shock is defined as sepsis with at least one cardiovascular
-point.
+and neurologic scores. The `phoenix()` and `phoenix8()` functions return legacy
+score-threshold indicators for a Phoenix score of at least two points and for
+that threshold with at least one cardiovascular point. These functions do not
+assess suspected infection, so their indicators are not complete diagnostic
+criteria unless suspected infection has been established separately.
 
 
 ``` python
