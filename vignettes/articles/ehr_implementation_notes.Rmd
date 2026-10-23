@@ -18,16 +18,18 @@ infection using organ dysfunction-based data from the first 24 hours of the
 encounter. Please see the original manuscripts for details.
 [@Sanchez-Pinto2024;@Schlapbach2024].
 
-The purpose of this document is to provide details about the expected inputs for
-the scoring in order to assist EHR implementation. The phoenix R package and
-Python module, along with the example SQL code, assume that the data have been
-prepared as expected and returns scores accordingly.
+This document describes the expected scoring inputs to support EHR
+implementation. The phoenix R package and Python module, along with the example
+SQL code, assume that data have been prepared as expected and return scores
+accordingly.
 
 <hr>
 
 # Overview
 
-Here is a quick checklist to summarize how the Phoenix package should be integrated within an EHR. This is to aid understanding and verification; users still need to review all guidance from this full document.
+This checklist summarizes how the Phoenix package should be integrated into an
+EHR. It supports understanding and verification, but users should still review
+the guidance in this full document.
 
 ## Scoring Requirement
 
@@ -49,7 +51,8 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 ## Data cleaning and preparation
 
-* Verify all variables are in the expected units; convert as necessary. E.g. age in months; lactate in mmol/L, etc.
+* Verify that all variables use the expected units and convert them as needed;
+  for example, age in months and lactate in mmol/L.
 * Invalid, incorrectly scaled, or otherwise unusable source values require data-quality review. Correct them when possible or exclude the observation before scoring; for example, if age in months is outside [0, 216), consider whether the patient should be scored at all.
 * Do not impute an unmeasured laboratory or vital-sign value.
 * Last-observation-carried-forward (LOCF) carries an actually observed, valid value forward within the appropriate window for each variable; it is a time-alignment step, not imputation. The maximum carry-forward is 24 hours.
@@ -57,9 +60,14 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 ## Gotchas
 
-* Phoenix package doesn't calculate mean arterial pressure (MAP); Calculate MAP from SBP and DBP if not directly available; if both cuff and arterial values present, arterial MAP should be used.
-* Carefully review requirements of each input value. For example, only calculate SF ratio and pass into Phoenix package when SpO2 <= 97; only calculate and pass in PF ratio when FiO2 value is from the same time as or before the time of PaO2 lab.
-* Use the last known good value when calling Phoenix functions.
+* The Phoenix package does not calculate mean arterial pressure (MAP). Calculate
+  MAP from SBP and DBP if it is not directly available. When both cuff and
+  arterial measurements are present, use arterial MAP preferentially.
+* Carefully review the requirements for each input. For example, calculate and
+  pass an S/F ratio only when SpO2 <= 97. Calculate and pass a P/F ratio only
+  when the FiO2 value is measured at the same time as, or before, the PaO2
+  laboratory result.
+* Use the last known valid value only within its applicable look-back window.
 
 <hr>
 
@@ -72,9 +80,9 @@ Here is a quick checklist to summarize how the Phoenix package should be integra
 
 ## Special Considerations for EHR Data
 
-Phoenix was developed on a retrospective data set which provided the luxury of
-easily looking backward in time within an encounter.  When applying the
-Phoenix criteria to an active encounter there are several things to consider.
+Phoenix was developed on a retrospective data set, which made it possible to
+look backward in time within an encounter. When applying the Phoenix criteria
+to an active encounter, several considerations apply.
 
 ### Missing values and LOCF
 
@@ -84,7 +92,7 @@ applicable look-back window. Missing values at a specific moment in time are
 handled in two steps:
 
 1. Is there a prior known value?  If so, and the prior known value is within the
-   lookback window, use the last known value.  That is,
+   look-back window, use the last known value. That is,
    last-observation-carried-forward with a lookback window.
 
 2. If no prior valid value is available within the look-back window, the
@@ -99,8 +107,8 @@ well.
 |:--:  | :---   | :---    |
 | T~0~ | 0.40   | 6.8     |
 
-Later, at times T~2~ > T~1~ > T~0~ the lactate value is updated.  As such we
-might see data like this:
+Later, at times T~2~ > T~1~ > T~0~, the lactate value is updated. We might
+therefore see data like this:
 
 | time | FiO~2~ | Lactate |
 |:--:  | :---   | :---    |
@@ -108,10 +116,9 @@ might see data like this:
 | T~1~ |        | 7.3     |
 | T~2~ |        | 7.1     |
 
-It is important that when calculating the Phoenix score that the
-missing value for FiO~2~ at time T~1~ is handled correctly:  The last known
-value within the lookback window needs to be used.  That is: the data would look
-like:
+When calculating the Phoenix score, the missing FiO~2~ value at time T~1~ must
+be handled correctly. Use the last known value within the look-back window. The
+data would then look like this:
 
 | time | FiO~2~                                                | Lactate |
 | :--: | :---                                                  | :---    |
@@ -191,12 +198,13 @@ and
 
 # General notes for all subscores
 
-Reasonable values for observations and labs used during development of the Phoenix Sepsis Score are documented in
-file [standard_names_and_units.csv](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv)
+Reasonable values for observations and laboratory results used during
+development of the Phoenix Sepsis Score are documented in
+[standard_names_and_units.csv](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria/blob/main/harmonization/standard_names_and_units.csv)
 within the project [GitHub archive](https://github.com/CU-DBMI-Peds/phoenix_sepsis_criteria).
 
-"Look Back" for each input below indicates the length of time a last value should
-be carried forward.
+“Look Back” for each input below indicates how long the last value should be
+carried forward.
 
 # Respiratory
 

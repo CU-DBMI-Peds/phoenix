@@ -111,7 +111,7 @@ stopifnot(
 
 ################################################################################
 # testing phxdft_select
-# set colummns - change the order of the columns
+# Set columns: change the order of the columns.
 DF  <- getFromNamespace(x = "phxdft_select", ns = "phoenix")(DF,  col = c("D", "B", "C", "A"))
 TBL <- getFromNamespace(x = "phxdft_select", ns = "phoenix")(TBL, col = c("D", "B", "C", "A"))
 DT  <- getFromNamespace(x = "phxdft_select", ns = "phoenix")(DT,  col = c("D", "B", "C", "A"))
@@ -156,7 +156,7 @@ stopifnot(
   identical(getFromNamespace(x = "phxdft_subset", ns = "phoenix")(DT), DT)
 )
 
-# with no row specfied, it is the same as calling phxdft_select
+# With no row specified, this is the same as calling phxdft_select.
 stopifnot(
   identical(
     getFromNamespace(x = "phxdft_subset", ns = "phoenix")(DF,  col = c("D", "B", "C", "A")),

@@ -24,12 +24,13 @@ library(phoenix)
 packageVersion("phoenix")
 ```
 
-This is a quick start guide for using the `phoenix` R package.  Additional
-detail is found in the other vignettes.
+This quick start guide introduces the `phoenix` R package. Additional details
+are available in the other vignettes.
 
-# Row-wise scoring
+# Row-level scoring
 
-The `sepsis` data.frame contails a moment in time recored for 20 synthetic patients.
+The `sepsis` data frame contains one recorded moment in time for each of 20
+synthetic patients.
 ```{r}
 str(sepsis)
 ```
@@ -77,7 +78,7 @@ str(phoenix8_scores)
 
 # Applying to EHR Data
 
-The data set `phx` has synthetic data for three encounters/patients.
+The `phx` data set contains synthetic data for three patient encounters.
 
 ```{r}
 str(phx)
@@ -152,14 +153,14 @@ scored_data     <- score_prepared_phoenix_data(prepared_data)
 scored_data
 ```
 
-The output is a `data.frame` with one row per encounter.  The
-`suspected_infection` column is a 0/1 indicator for suspected infection, `odss_4_` is the
-organ dysfunction summary score based on the four systems for Phoenix
-(respiratory, cardiovascular, neurologic, and coagulation).  The `pss_4_` is the
-Phoenix score, it is the product of the `suspected_infection` and `odss_4_`
-columns.  `sepsis_` and `septic_shock_` are 0/1 indicators.   The suffix
-`jama2024` indicate these are the values consistent with the aggregation method
-used in @Sanchez-Pinto2024 and @Schlapbach2024.
+The output is a `data.frame` with one row per encounter. The
+`suspected_infection` column is a 0/1 indicator for suspected infection, and
+`odss_4_` is the four-organ dysfunction summary score (respiratory,
+cardiovascular, neurologic, and coagulation). The `pss_4_` column is the
+Phoenix score: the product of `suspected_infection` and `odss_4_`. `sepsis_`
+and `septic_shock_` are 0/1 indicators. The `jama2024` suffix indicates that
+these values use the aggregation method described in @Sanchez-Pinto2024 and
+@Schlapbach2024.
 
 # References
 <div id="refs"></div>

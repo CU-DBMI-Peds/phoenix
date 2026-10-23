@@ -1028,7 +1028,7 @@ stopifnot(
 
 
 ################################################################################
-# Defaut valid range checks 0 to 100
+# Default valid-range checks: 0 to 100.
 testdata <- list()
 testdata[["DF"]] <-
   data.frame(

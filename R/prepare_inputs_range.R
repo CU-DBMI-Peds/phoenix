@@ -1,8 +1,8 @@
 #' Prepare Continuous Observation, Intervention, Medication, and Test Inputs for
 #' Phoenix Scoring
 #'
-#' Functions for checking the basic structure and values for the input data for
-#' Assessing Phoenix.
+#' Functions for checking the basic structure and values of input data used to
+#' assess Phoenix.
 #'
 #' The input data is expected to be in a "long" format with \code{id.vars}
 #' (examples: hospital id, patient id, encounter id). A column for reporting the
@@ -14,9 +14,9 @@
 #' \code{prepare_age()} is the exception; its default upper limit is exclusive
 #' to match the expected age interval of [0, 216) months.
 #'
-#' There is an expectation when going to Phoenix scoring that the
-#' \code{x[[c(id.vars, eclock)]]} are unique for each input.  These functions
-#' check this assumption and will aggregate, if needed, using the
+#' Phoenix scoring expects each \code{x[[c(id.vars, eclock)]]} combination to
+#' be unique for an input. These functions check this assumption and aggregate
+#' duplicate observations, if needed, using the
 #' \code{tie.breaker} method.
 #'
 #' Every function below is a thin wrapper around `prepare_variable()`.  The

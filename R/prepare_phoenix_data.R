@@ -351,7 +351,7 @@ prepare_phoenix_data <-
         lookback <- lac.lookback
       } else if (j %in% GCSVARS) {
         # infinite lookback for GCS variables at the moment, a more nuanced use
-        # of the lookback follows when building the GCS varaible that will be
+        # of the lookback follows when building the GCS variable that will be
         # used in the scoring.
         lookback <- Inf
       } else if (j %in% PUPILVARS) {

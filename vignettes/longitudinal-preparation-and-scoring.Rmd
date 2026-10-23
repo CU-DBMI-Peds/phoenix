@@ -192,8 +192,8 @@ subset(
 The default behavior is to take the maximum FiO<sub>2</sub> value when there are two
 values at the same moment in time.
 
-The fraction of inspired oxygen is expected to be between 0.21 and 1.00.  If
-your data has a value such as 21, which is not uncommon to see in EHR data, an
+The fraction of inspired oxygen is expected to be between 0.21 and 1.00. If
+your data contain a value such as 21, which is not uncommon in EHR data, an
 error will be thrown:
 ```{r prepare-fio2-1, error = TRUE}
 prepare_fio2(
@@ -615,8 +615,8 @@ to `prepare_phoenix_data()` must be the return from the respective
 in `prepared_inputs`, we can pass that list directly to
 `prepare_phoenix_data()` via `do.call()`.
 
-The return is a `data.frame` with the additional class of
-`prepared_phoenix_data` which will be useful for scoring the data.
+The result is a `data.frame` with the additional `prepared_phoenix_data` class,
+which is used when scoring the data.
 
 ```{r, message = FALSE}
 prepared_phoenix_data <-
@@ -637,7 +637,7 @@ and the `jama2024` aggregation method.
 jama2024 <- score_prepared_phoenix_data(x = prepared_phoenix_data)
 ```
 
-The return is a `data.frame` with one row per unique `id.vars` combination (in
+The result is a `data.frame` with one row per unique `id.vars` combination (in
 this case, just `encounter_id`). The `suspected_infection` column is a 0/1
 indicator for suspected infection within the observation window $T$.
 The other columns use several terms and are of the form:

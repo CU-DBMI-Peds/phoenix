@@ -218,9 +218,9 @@ as \code{c(0, 1)} for indicators or the known score sets for GCS
 components/subscores. End users are not expected to change those allowable
 values.
 
-There is an expectation when going to Phoenix scoring that the
-\code{x[[c(id.vars, eclock)]]} are unique for each input.  These functions
-check this assumption and will aggregate, if needed, using the
+Phoenix scoring expects each \code{x[[c(id.vars, eclock)]]} combination to
+be unique for an input. These functions check this assumption and aggregate
+duplicate observations, if needed, using the
 \code{tie.breaker} method.
 
 Default values are based on the values used when building the Phoenix
