@@ -183,6 +183,19 @@ prepare_variable <-
   stopifnot(is.character(value.var))
   stopifnot(value.var %in% names(x))
 
+  # `value` is the standardized output column used when prepared inputs are
+  # stacked in prepare_phoenix_data(). Renaming a different input column to
+  # `value` while retaining an existing `value` column would create duplicate
+  # column names and an invalid prepared object.
+  if (!identical(value.var, "value") && "value" %in% names(x)) {
+    stop(
+      "`value` is reserved by the Phoenix preparation interface. When ",
+      "`value.var` is not `\"value\"`, `x` must not already contain a ",
+      "`value` column.",
+      call. = FALSE
+    )
+  }
+
   xv <- sprintf("%s[['%s']]", deparse1(substitute(x)), value.var)
 
   if (!is.numeric(x[[value.var]])) {
@@ -243,9 +256,18 @@ prepare_variable <-
   } else if (!is.null(valid.values)) {
     # Discrete inputs use a fixed set of allowed values, for example c(0, 1) for
     # binary indicators or c(1, ..., 6) for GCS motor.
-    out <- !all(x[[value.var]] %in% valid.values)
-    if (out) {
-      stop(sprintf("There are %s not in `valid.values`.", xv), call. = FALSE)
+    invalid.values <-
+      sort(unique(x[[value.var]][!(x[[value.var]] %in% valid.values)]))
+    if (length(invalid.values)) {
+      stop(
+        sprintf(
+          "Invalid values in %s: %s. Expected one of: %s.",
+          xv,
+          paste(invalid.values, collapse = ", "),
+          paste(valid.values, collapse = ", ")
+        ),
+        call. = FALSE
+      )
     }
   } else {
     msg <- sprintf("%s values not validated.", xv)

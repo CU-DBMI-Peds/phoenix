@@ -115,7 +115,7 @@ run_indicator_case <- function(fun_name, variable_label, prepared_class, value.v
 
   stopifnot(
     sapply(test_invalid, inherits, "error"),
-    sapply(sapply(test_invalid, getElement, "message"), grepl, pattern = "not in `valid.values`")
+    sapply(sapply(test_invalid, getElement, "message"), grepl, pattern = "Invalid values in")
   )
 }
 

@@ -76,7 +76,7 @@ run_discrete_case <- function(fun_name,
   )
   stopifnot(
     sapply(test_invalid, inherits, "error"),
-    sapply(sapply(test_invalid, getElement, "message"), grepl, pattern = "not in `valid.values`")
+    sapply(sapply(test_invalid, getElement, "message"), grepl, pattern = "Invalid values in")
   )
 
   test_bad_type_df <- df

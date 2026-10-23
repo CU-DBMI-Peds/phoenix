@@ -325,7 +325,7 @@ run_discrete_case <- function(fun_name,
   )
   stopifnot(
     sapply(test_invalid, inherits, "error"),
-    sapply(sapply(test_invalid, getElement, "message"), grepl, pattern = "not in `valid.values`")
+    sapply(sapply(test_invalid, getElement, "message"), grepl, pattern = "Invalid values in")
   )
 
   test_factor_df <- df
@@ -1655,7 +1655,7 @@ test_values_outside_valid_values <-
 
 stopifnot(
   sapply(test_values_outside_valid_values, inherits, "error"),
-  sapply(sapply(test_values_outside_valid_values, getElement, "message"), grepl, pattern = "not in `valid.values`")
+  sapply(sapply(test_values_outside_valid_values, getElement, "message"), grepl, pattern = "Invalid values in")
 )
 
 # now update the invalid values to valid ones for testing output from "valid"
