@@ -153,6 +153,39 @@ The Phoenix criteria excluded data from newborns before discharge from their
 birth hospitalization and children with a postconceptional age of less than 37
 weeks. The eligible age interval is [0, 216) months.
 
+# Common Pitfalls
+
+The following issues can produce misleading scores or classifications:
+
+* A Phoenix Sepsis Score of at least 2 is not, by itself, a sepsis diagnosis.
+  Sepsis also requires suspected infection. The direct `phoenix()` and
+  `phoenix8()` wrappers do not establish that status; use the longitudinal
+  workflow when it must be determined from EHR data.
+
+* The `phoenix_sepsis` and `phoenix_septic_shock` columns returned by the
+  direct wrappers are legacy score-threshold indicators, not complete
+  diagnostic criteria.
+
+* Do not maximize the respiratory, cardiovascular, coagulation, and neurologic
+  scores separately and then sum them. Encounter-level criteria use the worst
+  *time-aligned total* score in the observation window.
+
+* Use an S/F ratio only when SpO<sub>2</sub> is at most 97. When SpO<sub>2</sub>
+  is greater than 97, pass `NA` for `sf_ratio` rather than calculating it.
+
+* Age 216 months is outside the eligible interval; use ages in [0, 216) months.
+
+* `vasoactives` is the count of qualifying systemic vasoactive medications,
+  not a dose-weighted measure.
+
+* If arterial and cuff blood-pressure measurements are both available, select
+  and document a source priority. The Phoenix development workflow preferred a
+  directly measured arterial MAP, then arterial SBP/DBP-derived MAP, then a
+  directly measured cuff MAP, then cuff SBP/DBP-derived MAP. When raw
+  candidates and source times are supplied, `phoenix_cardiovascular()` and
+  `prepare_phoenix_data()` apply this priority and their documented freshness
+  rules.
+
 # Applying the Rubric
 
 The `phoenix_*()` functions apply the organ-system rubric to each row of an
