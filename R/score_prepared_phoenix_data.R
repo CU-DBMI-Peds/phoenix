@@ -257,8 +257,9 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
       rtn <- phxdft_set(rtn, j = col, value = rep(0L, nrow(rtn)))
     }
   }
-  # TeX: PSS is max_T SI times ODSS; sepsis and septic shock indicators are
-  # thresholded PSS quantities.
+  # TeX: eq:pss, eq:pss-olm, eq:pss-ccd, and eq:pss-fcd define PSS from
+  # suspected infection and the aggregation-specific ODSS. The corresponding
+  # eq:sepsis* and eq:septicshock* definitions threshold those gated values.
   #
   # `shock_ods` is a temporary ODSS-like value that already includes the
   # cardiovascular dysfunction requirement.  After it is gated by suspected
