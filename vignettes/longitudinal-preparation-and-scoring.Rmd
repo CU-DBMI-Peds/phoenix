@@ -4,48 +4,31 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
+bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{Preparing and scoring longitudinal Phoenix data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-<!-- This is intentionally a placeholder for the end-to-end operational workflow. -->
-
-# Overview
-
-This vignette will demonstrate the longitudinal Phoenix workflow for EHR or
-event-level data:
-
-```r
-# prepare_*() inputs -> prepare_phoenix_data() -> score_prepared_phoenix_data()
+```{r setup, include = FALSE}
+options(qwraps2_markup = "markdown")
+knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-It will cover input preparation, encounter identifiers and clocks, look-back
-rules, suspected-infection inputs, scoring windows, aggregation choices, and
-interpretation of the resulting organ dysfunction and Phoenix Sepsis scores.
+# Operationalized implementation of the Phoenix Criteria
 
-# Current guidance
-
-Until this vignette is complete, consult the package help for
-`prepare_inputs_range()`, `prepare_inputs_discrete()`,
-`prepare_phoenix_data()`, and `score_prepared_phoenix_data()`. The existing
-`vignette("phoenix", package = "phoenix")` covers applying the Phoenix rubric
-to already prepared, row-level data.
-
-# Operationalized implimentation of the Phoenix Criteria
-
-For version 1.x of the `phoenix` pacakge, the provided funcitons focues on
-applying the scoring rubric rowwise to a dataset.   As of v2.0.0, a new set of
-functions have been introduced to apply the Phoenix criteria as it was build in 
+For version 1.x of the `phoenix` package, the provided functions focused on
+applying the scoring rubric rowwise to a data set. As of version 2.0.0, new
+functions apply the Phoenix criteria as they were developed in
 [@Sanchez-Pinto2024](https://doi.org/10.1001/jama.2024.0196) and
 [@Schlapbach2024](https://doi.org/10.1001/jama.2024.0179).
 
 The scoring rubric is only part of the process of applying the Phoenix criteria.
-The focus of this package for v1.x was that.  Here we provide utilities to
-utilize a full electronic health record (EHR) for patients.  Detailed
-explainations of the process are defined in the online article [TODO: URL TO
-WEBSITE ARTILE](urlgoeshere) (and new publication? url to go here)
+That was the focus of this package for version 1.x. Here, we provide utilities
+to use a patient's full electronic health record (EHR). Detailed guidance on
+the process is provided in the online article [TODO: URL TO WEBSITE
+ARTICLE](urlgoeshere) (and new publication? URL to go here).
 
 The general workflow has four steps:
 
@@ -53,19 +36,19 @@ The general workflow has four steps:
 
 1. Call `prepare_<input>()` functions to process each possible input
    for Phoenix or Phoenix-8 scoring.  These functions ensure the inputs are
-   structed as needed for later process and that input values are within valid
-   ranges.  The defualt temporal tie breakers, aggregations, and valid
-   values/ranges are set to be consistent with @Sanchez-Pinto2024 but can be
-   modified by end users if desired.
+   structured as needed for later processing and ensure that input values are
+   within valid ranges. The default temporal tie-breakers, aggregations, and
+   valid values and ranges are set to be consistent with @Sanchez-Pinto2024,
+   but end users can modify them if desired.
 
-2. Pass the returns from step 1 into `prepare_phoenix_data()`.  This function
-   call uses several default settngs for lookback windows and other dynamic
-   variables consistent with @Sanchez-Pinto2024 but can be modified by the end
-   user if desired.
+2. Pass the outputs from step 1 into `prepare_phoenix_data()`. This function
+   uses several default settings for look-back windows and other dynamic
+   variables consistent with @Sanchez-Pinto2024, but end users can modify them
+   if desired.
 
-3. Pass the return from step 2 to `score_prepared_phoenix_data()`.  This
+3. Pass the output from step 2 to `score_prepared_phoenix_data()`. This
    function uses defaults consistent with @Sanchez-Pinto2024 for observation
-   windows, score thresholds, and aggregation methods.  End user may modify
+   windows, score thresholds, and aggregation methods. End users may modify
    those defaults as desired.
 
 ## Example Data
@@ -78,12 +61,12 @@ The `phoenix` package comes with a synthetic data set `phx` used for this
 example.  The data.frame is "long" data and has four columns:
 
 1. `encounter_id`: a character string denoting `r length(unique(phx[["encounter_id"]]))`
-   encounters. (Yes, these ids look like dates, they are dates, but have nothing
-   to do with any patient, these are the dates when the Colorado Avalance won
+   encounters. (Yes, these IDs look like dates; they are dates, but have nothing
+   to do with any patient. They are the dates when the Colorado Avalanche won
    each of the first three Stanley Cups in franchise history.)
 2. `encounter_clock`: the time, in minutes, from the start of the encounter to
    the reported observation, if applicable.
-3. `variable`: a character sting, the variable being reported.
+3. `variable`: a character string naming the reported variable.
 4. `value`: the value of the `variable` at time `encounter_clock` for the
    `encounter_id`.
 ```{r, echo = TRUE, results = "markup"}
@@ -99,23 +82,22 @@ months old, and within the first five minutes of the encounter, their
 FiO<sub>2</sub> value was
 `r paste0(100 * subset(phx, encounter_id == "19960610" & encounter_clock == 3 & variable == "fraction_of_inspired_oxygen")[["value"]], "%")`.
 
-The variables in this dataset are:
+The variables in this data set are:
 ```{r}
 sort(unique(phx[["variable"]]))
 ```
 
 ## Prepare Inputs
 
-Each of the possible inputs for the Phoenix-8 scoring have a `prepare_<input>()`
-function call.  Calling each of these functions is required such that the input
-is structured as expected when processing the data prior to scoring.  For this
-section we will process the variables in the default order of the inputs to the
-`prepare_phoenix_data()` call.  Roughly, that means will prepare the inputs the
-order needed to assess the respiratory, cardiovascular, neurologic, coagulation,
-endocrine, immunologic, renal, and hepatic systems dysfunction respectively.
+Each possible input for Phoenix-8 scoring has a corresponding
+`prepare_<input>()` function. Calling each function ensures that its input is
+structured as expected before scoring. For this section, we process variables
+in the default order of the inputs to `prepare_phoenix_data()`: respiratory,
+cardiovascular, neurologic, coagulation, endocrine, immunologic, renal, and
+hepatic dysfunction.
 
-All of the `prepared_<input>()` have some similar inputs the end user needs to
-specify:
+All `prepare_<input>()` functions have several common arguments that end users
+need to specify:
 
 * `x`: a data.frame, or an object that inherits from a data.frame such as a
   data.table or tibble, containing one Phoenix input in long format.
@@ -133,8 +115,8 @@ specify:
 * `value.var`: a character vector of length one naming the column in `x` that
   contains the observed value for the Phoenix input being prepared.
 
-Additional inputs for valid ranges, tie breakers, can be made. Using the
-defaults will be consistent with the process used for @Sanchez-Pinto2024.
+Additional arguments can specify valid ranges and tie-breakers. Using the
+defaults is consistent with the process used for @Sanchez-Pinto2024.
 
 We will put the prepared inputs into a list for easier bookkeeping and later
 use.
@@ -157,16 +139,15 @@ prepared_inputs[["fio2"]] <-
     value.var = "value"
   )
 ```
-We got a message that duplicate rows were found and aggregated.  This message
-was provided because the `options(phoenix_verbose = TRUE)` was set.  If that is
-not set the default is to provide messages in an interactive mode and no
-messages in a non-interative mode.
+We received a message that duplicate rows were found and aggregated because
+`options(phoenix_verbose = TRUE)` was set. Otherwise, messages are shown by
+default in interactive sessions and suppressed in non-interactive sessions.
 
 Let's look at a duplicated row:
 ```{r}
 subset(
-  x = phx, 
-  subset = 
+  x = phx,
+  subset =
     variable == "fraction_of_inspired_oxygen" &
     encounter_clock == 10808 &
     encounter_id == 20220626
@@ -174,12 +155,12 @@ subset(
 
 subset(
   x = prepared_inputs[["fio2"]],
-  subset = 
+  subset =
     encounter_clock == 10808 &
     encounter_id == 20220626
 )
 ```
-The default behavior is to take the max FiO<sub>2</sub> value when there are two
+The default behavior is to take the maximum FiO<sub>2</sub> value when there are two
 values at the same moment in time.
 
 The fraction of inspired oxygen is expected to be between 0.21 and 1.00.  If
@@ -196,8 +177,8 @@ prepare_fio2(
 
 #### SpO<sub>2</sub>
 
-The SpO<sub>2</sub> (aka: pulse ox) is expected to be an integer value with a
-max value of 100.  The default valid range is any non-negative integer less than
+The SpO<sub>2</sub> (pulse oximetry) is expected to be an integer value with a
+maximum value of 100. The default valid range is any non-negative integer less than
 100.  End users may find it useful to set a more restrictive lower bound.
 
 ```{r}
@@ -212,7 +193,7 @@ prepared_inputs[["spo2"]] <-
 
 #### PaO<sub>2</sub>
 
-The partial pressure of arterial_oxygen is expected to be reported in units of
+The partial pressure of arterial oxygen is expected to be reported in units of
 mmHg with non-negative values.
 
 ```{r}
@@ -225,15 +206,15 @@ prepared_inputs[["pao2"]] <-
   )
 ```
 
-#### Invasive Mechanical Ventalation
-There are multiple possible inputs for invasive mechanical ventalation.  One
-option is to simply have an indicator, 0/1 for intubation.  If you have that
-in your dataset then you can call
+#### Invasive Mechanical Ventilation
+There are multiple possible inputs for invasive mechanical ventilation. One
+option is an intubation indicator (0/1). If your data include that indicator,
+you can call
 `prepare_invasive_mechanical_ventilation_indicator()`.  No such variable is in
-the `phx` data. Instead there are several specific modes of invasive mechanical
-ventalation based on measurements of positive end expiratory pressure (PEEP) or
-mean airway pressue from a ventilator or high frequence oscillatory ventilation
-(HFOV). 
+the `phx` data. Instead, there are several specific indicators of invasive
+mechanical ventilation based on measurements of positive end-expiratory pressure
+(PEEP) or mean airway pressure from a ventilator or high-frequency oscillatory ventilation
+(HFOV).
 
 ```{r}
 prepared_inputs[["mean_airway_pressure_ventilator"]] <-
@@ -278,14 +259,14 @@ and we simply need an indicator.
 ```{r}
 head(subset(phx, variable == "oxygen_flow"))
 o2 <- subset(phx, variable == "oxygen_flow")
-o2[["o2support"]] <- as.integer(o2[["value"]] > 0)
+o2[["value"]] <- as.integer(o2[["value"]] > 0)
 
 prepared_inputs[["o2support"]] <-
   prepare_o2support(
     x = o2,
     id.vars = "encounter_id",
     eclock = "encounter_clock",
-    value.var = "o2support"
+    value.var = "value"
   )
 ```
 
@@ -309,7 +290,7 @@ patient is currently receiving a systemic vasoactive medication.  The dosage is
 not considered here.   There are six medications of interest: dobutamine,
 dopamine, epinephrine, milrinone, norepinephrine, and vasopressin.
 
-For the example dataset `phx` only milrinone and epinephrine are reported.
+For the example data set `phx`, only milrinone and epinephrine are reported.
 
 ```{r}
 head(subset(phx, startsWith(variable, "systemic")))
@@ -328,17 +309,16 @@ prepared_inputs[["milrinone"]] <-
     value.var = "value"
   )
 
-# Other prepare_<input>() funcitons for vasoactive medications
+# Other prepare_<input>() functions for vasoactive medications
 # prepare_dobutamine()
 # prepare_dopamine()
 # prepare_norepinephrine()
 # prepare_vasopressin()
 ```
 
-The mean arterial blood pressure pressure can come from several sources, an
-arterial line directly, a cuff, and direct value, or estimated based on
-systolic and diastolic pressures.  All the inputs here are expected to be
-reported units of mmHg.
+Mean arterial pressure can come directly from an arterial line or cuff, or it
+can be estimated from systolic and diastolic pressures. All inputs here are
+expected to be reported in mmHg.
 
 ```{r}
 prepared_inputs[["mean_arterial_pressure_arterial"]] <-
@@ -387,9 +367,9 @@ prepared_inputs[["sbp_cuff"]] <-
   )
 ```
 
-Lastly, the Phoenix score based on mean arterial pressure is also based on the
-age of the patient in months. Note: no need to specify the `eclock` for
-preparing age as we are using the admission age in months.
+Lastly, the Phoenix score based on mean arterial pressure also depends on the
+patient's age in months. There is no need to specify `eclock` when preparing
+age because this example uses age at admission.
 
 ```{r}
 prepared_inputs[["age"]] <-
@@ -402,9 +382,9 @@ prepared_inputs[["age"]] <-
 
 ### Neurological Inputs
 
-The inputs for the neurologic organ dysfunction score is the total Glasgow Comma
-Score (GCS) which can be reported directly or as the sum of the three
-categories: eye, verbal, and motor.   There is a non-trivial hierachry for how
+The input for the neurologic organ dysfunction score is the total Glasgow Coma
+Scale (GCS), which can be reported directly or calculated as the sum of the
+three categories: eye, verbal, and motor. There is a non-trivial hierarchy for how
 to assess the GCS over time.  We prepare the variables here and will let
 `prepare_phoenix_data()` do the heavy lifting.
 
@@ -440,10 +420,10 @@ prepared_inputs[["gcstotal"]] <-
 ```
 
 An indicator for bilaterally fixed pupils is also used in the neurologic
-assessment.  We provide prepare methods for bilateral fixation,
-`prepare_pupils()` and for each eye.   This allows for longitudinal lookbacks
-for each eye if that level of information is known without requiring the end
-user to construct the unified indicator.
+assessment. We provide `prepare_pupils()` for bilateral fixation and separate
+preparation methods for each eye. This supports longitudinal look-backs for
+each eye when that level of information is available, without requiring end
+users to construct the combined indicator.
 
 ```{r}
 prepared_inputs[["pupilleft"]] <-
@@ -502,8 +482,8 @@ prepared_inputs[["fibrinogen"]] <-
 
 ### Endocrine Inputs
 The endocrine system is only part of the Phoenix-8 scoring and can be ignored if
-you are only intersted in the four-system Phoenix score.  That said, the one
-input for this system is glucose measured in mg / dL.
+you are only interested in the four-system Phoenix score. The one input for
+this system is glucose, measured in mg/dL.
 ```{r}
 prepared_inputs[["glucose"]] <-
   prepare_glucose(
@@ -516,9 +496,9 @@ prepared_inputs[["glucose"]] <-
 
 ### Immunologic Inputs
 The immunologic system is only part of the Phoenix-8 scoring and can be ignored
-if you are only intersted in the four-system Phoenix score.  The
+if you are only interested in the four-system Phoenix score. The
 absolute lymphocyte count (ALC) measured in 1000 cells / mm<sup>3</sup> and
-absolute neutrophile count (ANC) also measured in 1000 cells / mm<sup>3</sup>
+absolute neutrophil count (ANC), also measured in 1000 cells / mm<sup>3</sup>,
 are the two inputs.
 ```{r}
 prepared_inputs[["alc"]] <-
@@ -540,8 +520,8 @@ prepared_inputs[["anc"]] <-
 ### Renal Inputs
 The renal system is only part of the Phoenix-8 scoring and can be ignored if you
 are only interested in the four-system Phoenix score.  The inputs for this
-system are creatinine measured in mm / dL and age measured in months.  We only
-need to prepare creating since age was already prepared in the cardiovascular
+system are creatinine, measured in mg/dL, and age, measured in months. We only
+need to prepare creatinine because age was already prepared in the cardiovascular
 section.
 ```{r}
 prepared_inputs[["creatinine"]] <-
@@ -557,7 +537,7 @@ prepared_inputs[["creatinine"]] <-
 The hepatic system is only part of the Phoenix-8 scoring and can be ignored if
 you are only interested in the four-system Phoenix score.  There are two inputs
 for this system, alanine aminotransferase (ALT) measured in IU / L, and total
-bilirubin measued in mg / dL.
+bilirubin measured in mg/dL.
 ```{r}
 prepared_inputs[["bilirubin"]] <-
   prepare_bilirubin(
@@ -576,10 +556,11 @@ prepared_inputs[["alt"]] <-
 ```
 
 ### Suspected Infection
-The Phoenix definition of sepsis is life threatening organ dysfunction in the
-presence of a suspected infection.  Here we prepare the two inputs, an indicator
+The Phoenix definition of sepsis is life-threatening organ dysfunction in the
+presence of a suspected infection. Here we prepare the two inputs: an indicator
 for the ordering of an infectious test and an indicator for a dose of a systemic
-anitmicrobial medication.
+antimicrobial medication.
+
 ```{r}
 prepared_inputs[["antimicrobials"]] <-
   prepare_antimicrobials(
@@ -598,15 +579,120 @@ prepared_inputs[["antiinfectioustests"]] <-
 ```
 
 ## Prepare Phoenix Data
-The `prepare_<input>()` methods prepare the data such that the lookback windows
-and relativistic hierarchies can be applied to the data consistently.  Each input
+The `prepare_<input>()` methods prepare the data so that look-back windows and
+relative hierarchies can be applied consistently. Each input
 to `prepare_phoenix_data()` must be the return from the respective
-`prepare_<input>()` functions.
+`prepare_<input>()` function. By carefully selecting the names of the elements
+in `prepared_inputs`, we can pass that list directly to
+`prepare_phoenix_data()` via `do.call()`.
 
-```{r}
-do.call(what = prepare_phoenix_data, args = prepared_inputs)
+The return is a `data.frame` with the additional class of
+`prepared_phoenix_data` which will be useful for scoring the data.
+
+```{r, message = FALSE}
+prepared_phoenix_data <-
+  do.call(what = prepare_phoenix_data, args = prepared_inputs)
+str(prepared_phoenix_data)
 ```
 
+## Score the Prepared Phoenix Data
+
+Score `prepared_phoenix_data` with a call to `score_prepared_phoenix_data()`.
+This additional layer defines the observation window, score thresholds, and
+aggregation method. By default, it uses the first 24 hours of the encounter,
+expressed in minutes as $T = [T_0, T_1) = [0, 1440)$; a sepsis threshold of
+$\sigma = 2$ points; a septic-shock cardiovascular threshold of $\kappa = 1$;
+and the `jama2024` aggregation method.
+
+```{r}
+jama2024 <- score_prepared_phoenix_data(x = prepared_phoenix_data)
+```
+
+The return is a `data.frame` with one row per unique `id.vars` combination (in
+this case, just `encounter_id`). The `suspected_infection` column is a 0/1
+indicator for suspected infection within the observation window $T$.
+The other columns use several terms and are of the form:
+
+    <score>_<number-of-organ-systems>_<aggregation>
+
+* `odss`: the organ dysfunction summary score
+* `pss`: the Phoenix Sepsis Score, the product of the `suspected_infection`
+  and `odss` columns
+* number of organ systems: either 4 or 8
+* aggregation: `jama2024` is the method consistent with @Sanchez-Pinto2024.
+  The exploratory schemes are OLM (organ-level maximization), CCD
+  (cardiovascular component decoupling), and FCD
+  (full component decoupling).
+
+In the preceding example, all three encounters had suspected infection. What if
+that were not the case? Let's copy `prepared_inputs` and edit only the
+antimicrobials. We will omit encounter 20220626 from the copy.
+
+```{r, message = FALSE}
+prepared_inputs_2 <- prepared_inputs
+prepared_inputs_2[["antimicrobials"]] <-
+  prepare_antimicrobials(
+    x = subset(phx, encounter_id != "20220626" & variable == "systemic_antimicrobial_medication"),
+    id.vars = "encounter_id",
+    eclock = "encounter_clock",
+    value.var = "value"
+  )
+jama2024_2 <-
+  score_prepared_phoenix_data(x = do.call(prepare_phoenix_data, args = prepared_inputs_2))
+jama2024_2
+```
+
+Notice that encounter 20220626 no longer has suspected infection. The
+`odss_4_jama2024` column is still 5, but `pss_4_jama2024` is now 0, as is the
+sepsis indicator. This is because ODSS is the organ dysfunction score without
+considering infection status, whereas PSS and the sepsis flags account for
+suspected infection status.
+
+The Phoenix (`jama2024`) aggregation requires organ dysfunctions to be
+concurrent in time. If we relax this requirement and sum the worst organ-system
+scores over the observation window, we obtain the organ-level maximization
+(OLM) aggregation.
+
+```{r}
+olm <-
+  score_prepared_phoenix_data(x = prepared_phoenix_data, aggregation = "olm")
+olm
+```
+
+Notice that in this output the column names use `olm` as a suffix.  Also,
+encounter 19960610 has a higher score and is now classified as a case of sepsis
+whereas under `jama2024` this encounter was not a case of sepsis.
+
+The other aggregation methods can compound this effect.
+
+```{r, message = FALSE}
+ccd <-
+  score_prepared_phoenix_data(x = prepared_phoenix_data, aggregation = "ccd")
+ccd
+```
+```{r, message = FALSE}
+fcd <-
+  score_prepared_phoenix_data(x = prepared_phoenix_data, aggregation = "fcd")
+fcd
+```
+
+```{r, echo = FALSE, fig.width = 6, fig.height = 3}
+plot_data <-
+  rbind(
+    with(jama2024, data.frame(encounter_id = encounter_id, y = odss_4_jama2024, aggregation = "jama2024")),
+    with(olm, data.frame(encounter_id = encounter_id, y = odss_4_olm, aggregation = "olm")),
+    with(ccd, data.frame(encounter_id = encounter_id, y = odss_4_ccd, aggregation = "ccd")),
+    with(fcd, data.frame(encounter_id = encounter_id, y = odss_4_fcd, aggregation = "fcd"))
+  )
+plot_data[["aggregation"]] <-
+  factor(plot_data[["aggregation"]], levels = c("jama2024", "olm", "ccd", "fcd"))
+
+ggplot2::ggplot(data = plot_data) +
+  ggplot2::aes(x = aggregation, y = y) +
+  ggplot2::geom_point(position = ggplot2::position_dodge(w = 0.2)) +
+  ggplot2::scale_y_continuous(name = "", breaks = 0:10) +
+  ggplot2::facet_wrap( ~ encounter_id, nrow = 1L)
+```
 
 # References
 <div id="refs"></div>
