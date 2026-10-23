@@ -42,11 +42,19 @@
 #'   \code{odss_4_timepoint}. Timepoint output also includes row-level organ
 #'   scores and cardiovascular component scores for auditing.
 #'
-#' @seealso \code{\link{prepare_inputs_range}},
-#' \code{\link{prepare_inputs_discrete}}
+#' @seealso \code{\link{prepare_inputs_range}}, \code{\link{prepare_inputs_discrete}}
+#'
+#' The longitudinal workflow vignette:
+#' \code{vignette("longitudinal-preparation-and-scoring", package = "phoenix")}.
 #'
 #' @references See reference details in \code{\link{phoenix-package}} or by calling
 #' \code{citation('phoenix')}.
+#'
+#' @examples
+#' # See vignette("longitudinal-preparation-and-scoring", package = "phoenix")
+#' # for more detailed examples on this function as it requires calling the
+#' # prepare_<input>() methods and prepare_phoenix_data() before calling the
+#' # scoring method.
 #'
 #' @export
 score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd", "timepoint"), verbose = getOption("phoenix_verbose", interactive())) {

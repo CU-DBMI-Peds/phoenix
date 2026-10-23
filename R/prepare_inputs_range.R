@@ -37,6 +37,20 @@
 #' @references See reference details in \code{\link{phoenix-package}} or by calling
 #' \code{citation('phoenix')}.
 #'
+#' @seealso The longitudinal workflow vignette:
+#' \code{vignette("longitudinal-preparation-and-scoring", package = "phoenix")}.
+#'
+#' @examples
+#' # Prepare a continuous input from the package's long-format example data.
+#' fio2 <- prepare_fio2(
+#'   x = subset(phx, variable == "fraction_of_inspired_oxygen"),
+#'   id.vars = "encounter_id",
+#'   eclock = "encounter_clock",
+#'   value.var = "value",
+#'   verbose = FALSE
+#' )
+#' head(fio2)
+#'
 #' @inheritParams prepare_variable
 #'
 #' @name prepare_inputs_range

@@ -66,11 +66,20 @@ Aggregation schemes:
   encounter clock in [T0, T1).}
 }
 }
+\examples{
+# See vignette("longitudinal-preparation-and-scoring", package = "phoenix")
+# for more detailed examples on this function as it requires calling the
+# prepare_<input>() methods and prepare_phoenix_data() before calling the
+# scoring method.
+
+}
 \references{
 See reference details in \code{\link{phoenix-package}} or by calling
 \code{citation('phoenix')}.
 }
 \seealso{
-\code{\link{prepare_inputs_range}},
-\code{\link{prepare_inputs_discrete}}
+\code{\link{prepare_inputs_range}}, \code{\link{prepare_inputs_discrete}}
+
+The longitudinal workflow vignette:
+\code{vignette("longitudinal-preparation-and-scoring", package = "phoenix")}.
 }

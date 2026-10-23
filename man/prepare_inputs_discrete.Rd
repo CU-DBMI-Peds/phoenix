@@ -226,7 +226,40 @@ check this assumption and will aggregate, if needed, using the
 Default values are based on the values used when building the Phoenix
 criteria, see Sanchez-Pinto, Bennett, DeWitt, Russell, et al. (2024).
 }
+\examples{
+
+# Systemic milrinone
+head(subset(phx, variable == "systemic_vasoactive_milrinone") )
+
+milrinone <-
+ prepare_milrinone(
+   x = subset(phx, variable == "systemic_vasoactive_milrinone"),
+   id.vars = "encounter_id",
+   eclock = "encounter_clock",
+   value.var = "value"
+  )
+
+head(milrinone)
+str(milrinone)
+
+# Convert oxygen flow to the binary non-invasive oxygen-support indicator.
+o2support_input <- subset(phx, variable == "oxygen_flow")
+o2support_input[["value"]] <- as.integer(o2support_input[["value"]] > 0)
+
+o2support <- prepare_o2support(
+  x = o2support_input,
+  id.vars = "encounter_id",
+  eclock = "encounter_clock",
+  value.var = "value"
+)
+head(o2support)
+
+}
 \references{
 See reference details in \code{\link{phoenix-package}} or by calling
 \code{citation('phoenix')}.
+}
+\seealso{
+The longitudinal workflow vignette:
+\code{vignette("longitudinal-preparation-and-scoring", package = "phoenix")}.
 }

@@ -69,6 +69,30 @@
 #'
 #' @param verbose when \code{TRUE} print messages showing the progress
 #'
+#' @seealso The longitudinal workflow vignette:
+#' \code{vignette("longitudinal-preparation-and-scoring", package = "phoenix")}.
+#'
+#' @examples
+#' # Assemble a longitudinal data set from prepared inputs. Inputs not supplied
+#' # here remain unavailable and contribute no points when scored.
+#' # See vignette("longitudinal-preparation-and-scoring", package = "phoenix")
+#' # for more detail.
+#' fio2 <- prepare_fio2(
+#'   x = subset(phx, variable == "fraction_of_inspired_oxygen"),
+#'   id.vars = "encounter_id",
+#'   eclock = "encounter_clock",
+#'   value.var = "value",
+#'   verbose = FALSE
+#' )
+#' age <- prepare_age(
+#'   x = subset(phx, variable == "age_months"),
+#'   id.vars = "encounter_id",
+#'   value.var = "value",
+#'   verbose = FALSE
+#' )
+#' prepared <- prepare_phoenix_data(fio2 = fio2, age = age, verbose = FALSE)
+#' head(prepared[c("encounter_id", "encounter_clock", "FIO2", "AGE")])
+#'
 #' @export
 prepare_phoenix_data <-
   function(
