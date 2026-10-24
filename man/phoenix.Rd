@@ -93,6 +93,9 @@ the criteria.
 cardiovascular, coagulation, and neurologic dysfunction scores.
 }
 \details{
+All clinical inputs must have length one or share a common length. Scalar
+inputs, including missing defaults, are recycled to that common length.
+
 This direct, row-level wrapper does not assess suspected infection. Its
 \code{phoenix_sepsis} and \code{phoenix_septic_shock} columns are retained
 legacy score-threshold indicators: they respectively require a four-organ

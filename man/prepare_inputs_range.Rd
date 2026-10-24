@@ -102,7 +102,7 @@ prepare_lactate(
   value.var,
   valid.range = c(0, 50),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -113,7 +113,7 @@ prepare_sbp_cuff(
   value.var,
   valid.range = c(1, 300),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -124,7 +124,7 @@ prepare_sbp_arterial(
   value.var,
   valid.range = c(1, 300),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -135,7 +135,7 @@ prepare_dbp_cuff(
   value.var,
   valid.range = c(1, 200),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -146,7 +146,7 @@ prepare_dbp_arterial(
   value.var,
   valid.range = c(1, 200),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -157,7 +157,7 @@ prepare_mean_arterial_pressure_cuff(
   value.var,
   valid.range = c(1, 300),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -168,7 +168,7 @@ prepare_mean_arterial_pressure_arterial(
   value.var,
   valid.range = c(1, 300),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -190,7 +190,7 @@ prepare_inr(
   value.var,
   valid.range = c(0, Inf),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -201,7 +201,7 @@ prepare_ddimer(
   value.var,
   valid.range = c(0, 500),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -212,7 +212,7 @@ prepare_fibrinogen(
   value.var,
   valid.range = c(0, Inf),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -223,7 +223,7 @@ prepare_glucose(
   value.var,
   valid.range = c(5, 2000),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -256,7 +256,7 @@ prepare_creatinine(
   value.var,
   valid.range = c(0, 50),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -267,7 +267,7 @@ prepare_bilirubin(
   value.var,
   valid.range = c(0, 100),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 
@@ -278,7 +278,7 @@ prepare_alt(
   value.var,
   valid.range = c(0, Inf),
   valid.range.closed = c(TRUE, TRUE),
-  tie.breaker = max,
+  tie.breaker = min,
   verbose = getOption("phoenix_verbose", interactive())
 )
 

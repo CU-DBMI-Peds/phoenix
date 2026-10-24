@@ -3,6 +3,9 @@
 #' \code{phoenix()} calculates the four-organ Phoenix score from respiratory,
 #' cardiovascular, coagulation, and neurologic dysfunction scores.
 #'
+#' All clinical inputs must have length one or share a common length. Scalar
+#' inputs, including missing defaults, are recycled to that common length.
+#'
 #' This direct, row-level wrapper does not assess suspected infection. Its
 #' \code{phoenix_sepsis} and \code{phoenix_septic_shock} columns are retained
 #' legacy score-threshold indicators: they respectively require a four-organ
@@ -152,6 +155,28 @@ phoenix <- function(pf_ratio = NA_real_,
   # default. Prepared-data scoring uses its own default for eq:pfr-sfr-selector.
   cl[["pao2.spo2.delta"]] <- pao2.spo2.delta
   cl[["data"]] <- NULL
+
+  non_clinical <- c(
+    "", "data", "pao2.spo2.delta", "map.sdbp.delta", "map.delta"
+  )
+  clinical <- setdiff(names(cl), non_clinical)
+  lengths <- vapply(
+    cl[clinical],
+    function(x) length(eval(x, envir = data, enclos = parent.frame())),
+    integer(1)
+  )
+  n <- max(c(1L, lengths))
+
+  if (!all(lengths %in% c(1L, n))) {
+    stop("All clinical inputs must have length 1 or the same length.")
+  }
+
+  age_value <- if ("age" %in% clinical) {
+    eval(cl[["age"]], envir = data, enclos = parent.frame())
+  } else {
+    NA_real_
+  }
+  cl[["age"]] <- phx_recycle_scalar(age_value, n)
 
   cl[[1]] <- get("phoenix_respiratory", mode = "function")
   resp <- eval(as.call(cl), envir = data, enclos = parent.frame())

@@ -117,6 +117,9 @@ is intended mostly for research as an extension of the four-organ Phoenix
 score.
 }
 \details{
+All clinical inputs must have length one or share a common length. Scalar
+inputs, including missing defaults, are recycled to that common length.
+
 Like \code{\link{phoenix}}, this direct, row-level wrapper does not assess
 suspected infection. Its \code{phoenix_sepsis} and
 \code{phoenix_septic_shock} columns are legacy score-threshold indicators,

@@ -425,6 +425,44 @@ stopifnot(identical(p_a, p8_a[, 1:7]))
 stopifnot(identical(p_a, p8_b[, 1:7]))
 stopifnot(identical(p_a, p8_c[, 1:7]))
 
+# verify additional-organ inputs set the common output length
+extra_organ_scores <- phoenix8(
+  glucose = c(100, 160),
+  anc = c(1, 0.4),
+  creatinine = c(0.5, 0.7),
+  bilirubin = c(3, 4),
+  alt = c(100, 103),
+  age = 24
+)
+
+incompatible_length_error <- tryCatch(
+  phoenix8(glucose = c(100, 160), bilirubin = c(3, 4, 5)),
+  error = function(e) e
+)
+
+phoenix_incompatible_length_error <- tryCatch(
+  phoenix(platelets = c(150, 50), gcs = c(15, 10, 8)),
+  error = function(e) e
+)
+
+stopifnot(
+  identical(nrow(extra_organ_scores), 2L),
+  identical(extra_organ_scores[["phoenix_endocrine_score"]], c(0L, 1L)),
+  identical(extra_organ_scores[["phoenix_immunologic_score"]], c(0L, 1L)),
+  identical(extra_organ_scores[["phoenix_renal_score"]], c(0L, 1L)),
+  identical(extra_organ_scores[["phoenix_hepatic_score"]], c(0L, 1L)),
+  inherits(incompatible_length_error, "error"),
+  identical(
+    incompatible_length_error[["message"]],
+    "All clinical inputs must have length 1 or the same length."
+  ),
+  inherits(phoenix_incompatible_length_error, "error"),
+  identical(
+    phoenix_incompatible_length_error[["message"]],
+    "All clinical inputs must have length 1 or the same length."
+  )
+)
+
 sparse_phoenix <- phoenix()
 sparse_phoenix8 <- phoenix8()
 
