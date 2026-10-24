@@ -21,6 +21,25 @@
 #' @name phxdft_data_frame_tools
 NULL
 
+# Recycle a validated scalar input to a shared scoring length.
+#
+# @param x A vector whose length is one or `n`.
+# @param n The shared scoring length.
+#
+# @return `x`, recycled to length `n` when it is scalar.
+#
+# @noRd
+# @keywords internal
+phx_recycle_scalar <- function(x, n) {
+  stopifnot(length(n) == 1L, n >= 1L, length(x) %in% c(1L, n))
+
+  if (length(x) == 1L && n > 1L) {
+    rep(x, n)
+  } else {
+    x
+  }
+}
+
 #' @rdname phxdft_data_frame_tools
 #' @family data.frame tools
 #' @noRd

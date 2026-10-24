@@ -113,5 +113,16 @@ stopifnot(
 )
 
 ################################################################################
+# verify scalar inputs are recycled before shared missingness is assessed
+stopifnot(
+  identical(
+    phoenix_renal(creatinine = c(NA, 0.7), age = 24),
+    c(0L, 1L)
+  ),
+  identical(
+    phoenix_renal(creatinine = 0.7, age = c(24, NA)), c(1L, 0L))
+)
+
+################################################################################
 #                                 End of File                                  #
 ################################################################################

@@ -142,6 +142,25 @@ stopifnot(
     c(2L, 0L)
   )
 )
+
+################################################################################
+# verify scalar inputs are recycled before shared missingness is assessed
+stopifnot(
+  identical(
+    phoenix_cardiovascular(
+      age = 24,
+      mean_arterial_pressure = c(NA, 40)
+    ),
+    c(0L, 1L)
+  ),
+  identical(
+    phoenix_cardiovascular(
+      age = c(24, NA),
+      mean_arterial_pressure = 40
+    ),
+    c(1L, 0L)
+  )
+)
 stopifnot(identical(
   x[["message"]],
  "All inputs need to either have the same length or have length 1. Length of vasoactives is 0; Length of lactate is 1; Length of age is 1; Length of mean_arterial_pressure is 1."

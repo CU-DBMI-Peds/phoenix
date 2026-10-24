@@ -306,6 +306,11 @@ phoenix_cardiovascular <-
     stop(msg)
   }
 
+  vas <- phx_recycle_scalar(vas, n)
+  lct <- phx_recycle_scalar(lct, n)
+  age <- phx_recycle_scalar(age, n)
+  mean_arterial_pressure <- phx_recycle_scalar(mean_arterial_pressure, n)
+
   # Substitute non-score-generating values for unavailable criteria.
   vas <- as.integer(replace(vas, which(is.na(vas)), 0))
   lct <- replace(lct, which(is.na(lct)), 0)

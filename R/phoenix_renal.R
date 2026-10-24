@@ -106,6 +106,9 @@ phoenix_renal <- function(creatinine = NA_real_, age = NA_real_, data = parent.f
     stop(msg)
   }
 
+  crt <- phx_recycle_scalar(crt, n)
+  age <- phx_recycle_scalar(age, n)
+
   # Substitute non-score-generating values for unavailable criteria.
   missing_idx <- which(is.na(age) | is.na(crt))
   age <- replace(age, missing_idx, 0)
