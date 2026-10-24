@@ -126,7 +126,7 @@ phxdft_subset <- function(x, i, cols) {
 
     if (missing(cols)) {
       if (requireNamespace(package = "data.table", quietly = TRUE) && inherits(x, "data.table")) {
-        return(x[rows, , drop = FALSE, with = FALSE])
+        return(x[rows, , drop = FALSE])
       } else if (requireNamespace(package = "dplyr", quietly = TRUE) && inherits(x, "tbl_df")) {
         slice <- getExportedValue(name = "slice", ns = "dplyr")
         return(slice(x, rows))
