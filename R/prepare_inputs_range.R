@@ -249,7 +249,7 @@ prepare_lactate <-
     value.var,
     valid.range = c(0, 50),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: cardiovascular EHR input Lactate; used in eq:lactate.
@@ -279,7 +279,7 @@ prepare_sbp_cuff <-
     value.var,
     valid.range = c(1, 300),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: cardiovascular EHR input \sbpc; used in eq:map-current-candidates.
@@ -309,7 +309,7 @@ prepare_sbp_arterial <-
     value.var,
     valid.range = c(1, 300),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: cardiovascular EHR input \sbpa; used in eq:map-current-candidates.
@@ -339,7 +339,7 @@ prepare_dbp_cuff <-
     value.var,
     valid.range = c(1, 200),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: cardiovascular EHR input \dbpc; used in eq:map-current-candidates.
@@ -369,7 +369,7 @@ prepare_dbp_arterial <-
     value.var,
     valid.range = c(1, 200),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: cardiovascular EHR input \dbpa; used in eq:map-current-candidates.
@@ -399,7 +399,7 @@ prepare_mean_arterial_pressure_cuff <-
     value.var,
     valid.range = c(1, 300),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: cardiovascular EHR input \mapc; used in
@@ -430,7 +430,7 @@ prepare_mean_arterial_pressure_arterial <-
     value.var,
     valid.range = c(1, 300),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: cardiovascular EHR input \mapa; used in
@@ -493,7 +493,7 @@ prepare_inr <-
     value.var,
     valid.range = c(0, Inf),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: coagulation EHR input INR; used in eq:coag-component-inr.
@@ -523,7 +523,7 @@ prepare_ddimer <-
     value.var,
     valid.range = c(0, 500),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: coagulation EHR input DDimer; used in eq:coag-component-ddimer.
@@ -553,7 +553,7 @@ prepare_fibrinogen <-
     value.var,
     valid.range = c(0, Inf),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: coagulation EHR input Fibrinogen; used in eq:coag-component-fibrinogen.
@@ -583,7 +583,7 @@ prepare_glucose <-
     value.var,
     valid.range = c(5, 2000),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: endocrine EHR input Glucose; used in eq:endo.
@@ -673,7 +673,7 @@ prepare_creatinine <-
     value.var,
     valid.range = c(0, 50),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: renal EHR input Creatinine; used in eq:renal-score.
@@ -703,7 +703,7 @@ prepare_bilirubin <-
     value.var,
     valid.range = c(0, 100),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: hepatic EHR input Bilirubin; used in eq:bilirubin and eq:hepatic.
@@ -733,7 +733,7 @@ prepare_alt <-
     value.var,
     valid.range = c(0, Inf),
     valid.range.closed = c(TRUE, TRUE),
-    tie.breaker = max,
+    tie.breaker = min,
     verbose = getOption("phoenix_verbose", interactive())
   ) {
   # TeX: hepatic EHR input ALT; used in eq:alt and eq:hepatic.

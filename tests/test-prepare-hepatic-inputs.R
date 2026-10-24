@@ -48,7 +48,7 @@ run_range_case <- function(fun_name,
 
   prepared_custom <- lapply(
     X = testdata,
-    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, tie.breaker = min, verbose = FALSE))
+    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, tie.breaker = max, verbose = FALSE))
   )
   prepared_custom <- lapply(prepared_custom, sort_prepared)
 
@@ -71,8 +71,8 @@ run_range_case <- function(fun_name,
   )
 }
 
-run_range_case("prepare_bilirubin", "BILIRUBIN", "bilirubin_value", c(3.2, 4.0, 4.3, 3.5), c(4.0, 4.3, 3.5), c(3.2, 4.3, 3.5), c(0, 20))
-run_range_case("prepare_alt", "ALT", "alt_value", c(99, 102, 106, 110), c(102, 106, 110), c(99, 106, 110), c(0, 1000))
+run_range_case("prepare_bilirubin", "BILIRUBIN", "bilirubin_value", c(3.2, 4.0, 4.3, 3.5), c(3.2, 4.3, 3.5), c(4.0, 4.3, 3.5), c(0, 20))
+run_range_case("prepare_alt", "ALT", "alt_value", c(99, 102, 106, 110), c(99, 106, 110), c(102, 106, 110), c(0, 1000))
 
 ################################################################################
 #                                 End of File                                  #

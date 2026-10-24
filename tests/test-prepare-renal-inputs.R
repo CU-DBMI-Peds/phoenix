@@ -74,7 +74,7 @@ run_range_case <- function(fun_name,
   )
 }
 
-run_range_case("prepare_creatinine", "CREATININE", "creatinine_value", c(0.8, 0.3, 0.6, 1.0), c(0.8, 0.6, 1.0), c(0.3, 0.6, 1.0), c(0, 5), max, min)
+run_range_case("prepare_creatinine", "CREATININE", "creatinine_value", c(0.8, 0.3, 0.6, 1.0), c(0.3, 0.6, 1.0), c(0.8, 0.6, 1.0), c(0, 5), min, max)
 
 test_creatinine_above_default_range <-
   lapply(

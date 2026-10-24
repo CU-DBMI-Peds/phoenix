@@ -58,7 +58,7 @@ run_range_case <- function(fun_name,
 
   prepared_custom <- lapply(
     X = testdata,
-    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, tie.breaker = min, verbose = FALSE))
+    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, tie.breaker = max, verbose = FALSE))
   )
   prepared_custom <- lapply(prepared_custom, sort_prepared)
   stopifnot(
@@ -92,10 +92,10 @@ run_range_case <- function(fun_name,
 # Family-Wise Coagulation Coverage
 ################################################################################
 
-run_range_case("prepare_platelets", "PLATELETS", "platelet_count", c(200, 250, 180, 150), c(200, 180, 150), c(200, 180, 150), c(0, 1000))
-run_range_case("prepare_inr", "INR", "international_normalized_ratio", c(1.1, 1.3, 1.5, 1.7), c(1.3, 1.5, 1.7), c(1.1, 1.5, 1.7), c(0, 5))
-run_range_case("prepare_ddimer", "DDIMER", "d_dimer_value", c(0.5, 0.8, 1.1, 1.4), c(0.8, 1.1, 1.4), c(0.5, 1.1, 1.4), c(0, 5))
-run_range_case("prepare_fibrinogen", "FIBRINOGEN", "fibrinogen_value", c(100, 150, 125, 175), c(150, 125, 175), c(100, 125, 175), c(0, 500))
+run_range_case("prepare_platelets", "PLATELETS", "platelet_count", c(200, 250, 180, 150), c(200, 180, 150), c(250, 180, 150), c(0, 1000))
+run_range_case("prepare_inr", "INR", "international_normalized_ratio", c(1.1, 1.3, 1.5, 1.7), c(1.1, 1.5, 1.7), c(1.3, 1.5, 1.7), c(0, 5))
+run_range_case("prepare_ddimer", "DDIMER", "d_dimer_value", c(0.5, 0.8, 1.1, 1.4), c(0.5, 1.1, 1.4), c(0.8, 1.1, 1.4), c(0, 5))
+run_range_case("prepare_fibrinogen", "FIBRINOGEN", "fibrinogen_value", c(100, 150, 125, 175), c(100, 125, 175), c(150, 125, 175), c(0, 500))
 
 # Platelets are unusual among the coagulation inputs: low rather than high
 # values are score-worsening. The default therefore retains the lower value;

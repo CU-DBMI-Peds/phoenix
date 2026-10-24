@@ -825,23 +825,23 @@ pressure thresholds). See Table~\ref{tab:card-ehr}.
 
     \rowcolor{gray!20}
     % R: prepare_lactate()
-    Lactate & Lactate & Real & mmol / L & $[0, \infty)$ & $\max$ \\
+    Lactate & Lactate & Real & mmol / L & $[0, \infty)$ & $\min$ \\
 
     % R: prepare_sbp_cuff()
-    \sbpc & systolic blood pressure reported from a cuff & Real & mmHg & $[0, \infty)$ & $\max$ \\
+    \sbpc & systolic blood pressure reported from a cuff & Real & mmHg & $[0, \infty)$ & $\min$ \\
     \rowcolor{gray!20}
     % R: prepare_dbp_cuff()
-    \dbpc & diastolic blood pressure reported from a cuff & Real & mmHg & $[1, 200]$ & $\max$ \\
+    \dbpc & diastolic blood pressure reported from a cuff & Real & mmHg & $[1, 200]$ & $\min$ \\
     % R: prepare_mean_arterial_pressure_cuff()
-    \mapc & mean arterial pressure reported from a cuff & Real & mmHg & $[0, \infty)$ & $\max$ \\
+    \mapc & mean arterial pressure reported from a cuff & Real & mmHg & $[0, \infty)$ & $\min$ \\
     \rowcolor{gray!20}
     % R: prepare_sbp_arterial()
-    \sbpa & systolic blood pressure reported from arterial line & Real & mmHg & $[0, \infty)$ & $\max$ \\
+    \sbpa & systolic blood pressure reported from arterial line & Real & mmHg & $[0, \infty)$ & $\min$ \\
     % R: prepare_dbp_arterial()
-    \dbpa & diastolic blood pressure reported from arterial line & Real & mmHg & $[1, 200]$ & $\max$ \\
+    \dbpa & diastolic blood pressure reported from arterial line & Real & mmHg & $[1, 200]$ & $\min$ \\
     \rowcolor{gray!20}
     % R: prepare_mean_arterial_pressure_arterial()
-    \mapa & mean arterial pressure reported from arterial line & Real & mmHg & $[0, \infty)$ & $\max$ \\
+    \mapa & mean arterial pressure reported from arterial line & Real & mmHg & $[0, \infty)$ & $\min$ \\
 
     % R: prepare_age()
     Age & Patient's age & Real & months & $[0, 216)$ & $\min$ \\
@@ -1352,11 +1352,11 @@ platelets, INR, D-dimer, and fibrinogen. See Table~\ref{tab:coag-ehr}.
     % R: prepare_platelets()
     Platelets  & Platelets  & Real & 1000 / $\mu$L & $[0, \infty)$ & $\min$ \\
     % R: prepare_inr()
-    INR        & INR        & Real & unitless      & $[0, \infty)$ & $\max$ \\
+    INR        & INR        & Real & unitless      & $[0, \infty)$ & $\min$ \\
     % R: prepare_ddimer()
-    DDimer     & D-Dimer    & Real & mg/L (FEU)    & $[0, \infty)$ & $\max$ \\
+    DDimer     & D-Dimer    & Real & mg/L (FEU)    & $[0, \infty)$ & $\min$ \\
     % R: prepare_fibrinogen()
-    Fibrinogen & Fibrinogen & Real & mg/dL         & $[0, \infty)$ & $\max$ \\
+    Fibrinogen & Fibrinogen & Real & mg/dL         & $[0, \infty)$ & $\min$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1435,7 +1435,7 @@ assessment: glucose. See Table~\ref{tab:endo-ehr}.
     Real &
     mg/dL &
     $[0, \infty)$ &
-    $\max$ \\
+    $\min$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1573,14 +1573,14 @@ Table~\ref{tab:hepatic-ehr}.
     Real &
     mg/dL &
     $[0, \infty)$ &
-    $\max$ \\
+    $\min$ \\
     % R: prepare_alt()
     ALT &
     Alanine aminotransferase &
     Real &
     IU / L &
     $[0, \infty)$ &
-    $\max$ \\
+    $\min$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1654,7 +1654,7 @@ See Table~\ref{tab:renal-ehr}.
     Real &
     mg / dL &
     $[0, \infty)$ &
-    $\max$ \\
+    $\min$ \\
     % R: prepare_age()
     Age & Patient's age & Real & months & $[0, 216)$ & $\min$ \\
     \bottomrule

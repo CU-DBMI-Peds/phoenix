@@ -57,7 +57,7 @@ run_range_case <- function(fun_name,
 
   prepared_custom <- lapply(
     X = testdata,
-    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, tie.breaker = min, verbose = FALSE))
+    FUN = function(x) do.call(FUN, list(x = x, id.vars = id.vars, eclock = eclock, value.var = value.var, tie.breaker = max, verbose = FALSE))
   )
   prepared_custom <- lapply(prepared_custom, sort_prepared)
 
@@ -113,7 +113,7 @@ run_range_case <- function(fun_name,
   )
 }
 
-run_range_case("prepare_glucose", "GLUCOSE", "glucose_value", c(80, 110, 95, 120), c(110, 95, 120), c(80, 95, 120), c(0, 300))
+run_range_case("prepare_glucose", "GLUCOSE", "glucose_value", c(80, 110, 95, 120), c(80, 95, 120), c(110, 95, 120), c(0, 300))
 
 ################################################################################
 #                                 End of File                                  #

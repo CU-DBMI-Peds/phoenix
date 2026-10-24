@@ -1,3 +1,11 @@
+# Version 1.1.3.9012
+
+## Bug Fixes
+
+* Align same-timestamp input tie-breakers for lactate, blood pressure,
+  coagulation, glucose, hepatic, and creatinine values with the historical SQL
+  implementation by retaining the minimum value.
+
 # Version 1.1.3.9011
 
 ## API Changes
