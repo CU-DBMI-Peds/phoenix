@@ -571,7 +571,20 @@ test_bad_lookback <-
     error = function(e) e
   )
 
-stopifnot(inherits(test_bad_lookback, "error"))
+test_bad_lactate_lookback <-
+  tryCatch(
+    prepare_phoenix_data(
+      fio2 = prepared_fio2[["DF"]],
+      lac.lookback = -1,
+      verbose = FALSE
+    ),
+    error = function(e) e
+  )
+
+stopifnot(
+  inherits(test_bad_lookback, "error"),
+  inherits(test_bad_lactate_lookback, "error")
+)
 
 ###############################################################################
 # The default pupil look-back is the six-hour window used in the original

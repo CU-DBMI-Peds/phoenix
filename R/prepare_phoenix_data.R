@@ -174,6 +174,7 @@ prepare_phoenix_data <-
   stopifnot(is.numeric(resp.lookback)        && length(resp.lookback) == 1        && resp.lookback >= 0)
   stopifnot(is.numeric(vaso.lookback)        && length(vaso.lookback) == 1        && vaso.lookback >= 0)
   stopifnot(is.numeric(bp.lookback)          && length(bp.lookback) == 1          && bp.lookback >= 0)
+  stopifnot(is.numeric(lac.lookback)         && length(lac.lookback) == 1         && lac.lookback >= 0)
   stopifnot(is.numeric(gcs.lookback)         && length(gcs.lookback) == 1         && gcs.lookback >= 0)
   stopifnot(is.numeric(pupil.lookback)       && length(pupil.lookback) == 1       && pupil.lookback >= 0)
   stopifnot(is.numeric(coag.lookback)        && length(coag.lookback) == 1        && coag.lookback >= 0)
