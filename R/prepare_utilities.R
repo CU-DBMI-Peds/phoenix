@@ -337,6 +337,13 @@ prepare_variable <-
     }
   }
 
+  # Time-varying prepared inputs have a fixed long-format schema. This removes
+  # source metadata equally from duplicate and non-duplicate paths so prepared
+  # inputs can be stacked regardless of their original extra columns.
+  if (variable.name != "AGE") {
+    x <- phxdft_select(x, c(id.vars, eclock, value.var))
+  }
+
   if (value.var != "value") {
     x <- phxdft_setnames(x, old = value.var, new = "value")
   }

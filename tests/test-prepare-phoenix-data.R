@@ -144,6 +144,74 @@ if (inherits(prepared_fio2[["TB"]], "tbl_df") &&
 }
 
 ###############################################################################
+# Extra raw metadata must not affect the prepared schema or subsequent stacking,
+# whether or not duplicate observations are present.
+metadata_fio2 <- fio2_df
+metadata_fio2[["source"]] <- "chart"
+metadata_fio2_dups <- rbind(metadata_fio2, metadata_fio2)
+metadata_fio2_dups[["source"]][2L] <- "laboratory"
+
+prepare_metadata_fio2 <- function(x) {
+  prepare_fio2(
+    x = x,
+    id.vars = id.vars,
+    eclock = eclock,
+    value.var = "fio2",
+    verbose = FALSE
+  )
+}
+
+prepared_metadata_fio2 <- lapply(
+  make_backends(metadata_fio2), prepare_metadata_fio2
+)
+prepared_metadata_fio2_dups <- lapply(
+  make_backends(metadata_fio2_dups), prepare_metadata_fio2
+)
+
+prepared_metadata_inputs <- c(
+  prepared_metadata_fio2,
+  prepared_metadata_fio2_dups
+)
+
+stopifnot(all(vapply(
+  prepared_metadata_inputs,
+  function(x) identical(names(x), c(id.vars, eclock, "value", "variable")),
+  logical(1)
+)))
+
+metadata_assembled <- Map(
+  f = function(fio2, spo2, pao2) {
+    prepare_phoenix_data(
+      fio2 = fio2,
+      spo2 = spo2,
+      pao2 = pao2,
+      resp.lookback = 360,
+      verbose = FALSE
+    )
+  },
+  fio2 = prepared_metadata_fio2,
+  spo2 = prepared_spo2,
+  pao2 = prepared_pao2
+)
+metadata_assembled_dups <- Map(
+  f = function(fio2, spo2, pao2) {
+    prepare_phoenix_data(
+      fio2 = fio2,
+      spo2 = spo2,
+      pao2 = pao2,
+      resp.lookback = 360,
+      verbose = FALSE
+    )
+  },
+  fio2 = prepared_metadata_fio2_dups,
+  spo2 = prepared_spo2,
+  pao2 = prepared_pao2
+)
+
+invisible(lapply(metadata_assembled, assert_assembled_resp))
+invisible(lapply(metadata_assembled_dups, assert_assembled_resp))
+
+###############################################################################
 # Single-input assembly should work through the same backend-aware path.
 test_single_input <-
   prepare_phoenix_data(
