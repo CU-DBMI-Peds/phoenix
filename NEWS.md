@@ -1,3 +1,12 @@
+# Version 1.1.3.9013
+
+## Other Changes
+
+* Set minimum versions for data.table to 1.16.0.
+  Need at least 1.15.0 to recognize `.datatable.aware` in the calling
+  environment.  Need at least 1.16.0 for `set()` to create new columns even when
+  no rows are updated.
+
 # Version 1.1.3.9012
 
 ## Bug Fixes
