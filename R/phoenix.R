@@ -134,6 +134,7 @@ phoenix <- function(pf_ratio = NA_real_,
                     data = parent.frame(), pao2.spo2.delta = NULL,
                     ..., imv = NULL, map = NULL) {
 
+  caller <- parent.frame()
   cl <- as.list(match.call())
   if ("imv" %in% names(cl) && "invasive_mechanical_ventilation" %in% names(cl)) {
     stop("Use only one of `invasive_mechanical_ventilation` or its deprecated alias `imv`.", call. = FALSE)
@@ -162,7 +163,7 @@ phoenix <- function(pf_ratio = NA_real_,
   clinical <- setdiff(names(cl), non_clinical)
   lengths <- vapply(
     cl[clinical],
-    function(x) length(eval(x, envir = data, enclos = parent.frame())),
+    function(x) length(eval(x, envir = data, enclos = caller)),
     integer(1)
   )
   n <- max(c(1L, lengths))
@@ -172,20 +173,20 @@ phoenix <- function(pf_ratio = NA_real_,
   }
 
   age_value <- if ("age" %in% clinical) {
-    eval(cl[["age"]], envir = data, enclos = parent.frame())
+    eval(cl[["age"]], envir = data, enclos = caller)
   } else {
     NA_real_
   }
   cl[["age"]] <- phx_recycle_scalar(age_value, n)
 
   cl[[1]] <- get("phoenix_respiratory", mode = "function")
-  resp <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  resp <- eval(as.call(cl), envir = data, enclos = caller)
   cl[[1]] <- get("phoenix_cardiovascular", mode = "function")
-  card <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  card <- eval(as.call(cl), envir = data, enclos = caller)
   cl[[1]] <- get("phoenix_coagulation", mode = "function")
-  coag <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  coag <- eval(as.call(cl), envir = data, enclos = caller)
   cl[[1]] <- get("phoenix_neurologic", mode = "function")
-  neur <- eval(as.call(cl), envir = data, enclos = parent.frame())
+  neur <- eval(as.call(cl), envir = data, enclos = caller)
 
   # TeX: row-level sum over eq:omega4 used in eq:odss.
   # The sepsis and septic shock columns are legacy ungated indicators; PSS-gated

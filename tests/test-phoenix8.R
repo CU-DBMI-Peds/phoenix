@@ -479,6 +479,31 @@ stopifnot(
 )
 
 ################################################################################
+# caller scope is retained when supplied data does not contain an input
+caller_scope_phoenix <- local({
+  values <- c(3, 12)
+  phoenix(lactate = values, data = data.frame(z = 1:2))
+})
+
+caller_scope_phoenix8 <- local({
+  values <- c(100, 180)
+  phoenix8(glucose = values, data = data.frame(z = 1:2))
+})
+
+# A data column takes precedence over a same-named object in the caller.
+data_precedence_phoenix <- local({
+  values <- c(3, 12)
+  phoenix(lactate = values, data = data.frame(values = c(100, 180)))
+})
+
+stopifnot(
+  identical(caller_scope_phoenix[["phoenix_cardiovascular_score"]], c(0L, 2L)),
+  identical(caller_scope_phoenix[["phoenix_sepsis_score"]], c(0L, 2L)),
+  identical(caller_scope_phoenix8[["phoenix_endocrine_score"]], c(0L, 1L)),
+  identical(data_precedence_phoenix[["phoenix_cardiovascular_score"]], c(2L, 2L))
+)
+
+################################################################################
 # verify namespace-loaded, package-detached usage
 phoenix_fun <- getExportedValue("phoenix", "phoenix")
 phoenix8_fun <- getExportedValue("phoenix", "phoenix8")
