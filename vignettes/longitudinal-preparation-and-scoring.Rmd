@@ -631,10 +631,10 @@ This additional layer defines the observation window, score thresholds, and
 aggregation method. By default, it uses the first 24 hours of the encounter,
 expressed in minutes as $T = [T_0, T_1) = [0, 1440)$; a sepsis threshold of
 $\sigma = 2$ points; a septic-shock cardiovascular threshold of $\kappa = 1$;
-and the `jama2024` aggregation method.
+and the `cod` aggregation method.
 
 ```{r}
-jama2024 <- score_prepared_phoenix_data(x = prepared_phoenix_data)
+cod <- score_prepared_phoenix_data(x = prepared_phoenix_data)
 ```
 
 The result is a `data.frame` with one row per unique `id.vars` combination (in
@@ -648,7 +648,7 @@ The other columns use several terms and are of the form:
 * `pss`: the Phoenix Sepsis Score, the product of the `suspected_infection`
   and `odss` columns
 * number of organ systems: either 4 or 8
-* aggregation: `jama2024` is the method consistent with @Sanchez-Pinto2024.
+* aggregation: `cod` is the method consistent with @Sanchez-Pinto2024.
   The exploratory schemes are OLM (organ-level maximization), CCD
   (cardiovascular component decoupling), and FCD
   (full component decoupling).
@@ -666,18 +666,18 @@ prepared_inputs_2[["antimicrobials"]] <-
     eclock = "encounter_clock",
     value.var = "value"
   )
-jama2024_2 <-
+cod_2 <-
   score_prepared_phoenix_data(x = do.call(prepare_phoenix_data, args = prepared_inputs_2))
-jama2024_2
+cod_2
 ```
 
 Notice that encounter 20220626 no longer has suspected infection. The
-`odss_4_jama2024` column is still 5, but `pss_4_jama2024` is now 0, as is the
+`odss_4_cod` column is still 5, but `pss_4_cod` is now 0, as is the
 sepsis indicator. This is because ODSS is the organ dysfunction score without
 considering infection status, whereas PSS and the sepsis flags account for
 suspected infection status.
 
-The Phoenix (`jama2024`) aggregation requires organ dysfunctions to be
+The Phoenix (`cod`) aggregation requires organ dysfunctions to be
 concurrent in time. If we relax this requirement and sum the worst organ-system
 scores over the observation window, we obtain the organ-level maximization
 (OLM) aggregation.
@@ -690,7 +690,7 @@ olm
 
 Notice that in this output the column names use `olm` as a suffix.  Also,
 encounter 19960610 has a higher score and is now classified as a case of sepsis
-whereas under `jama2024` this encounter was not a case of sepsis.
+whereas under `cod` this encounter was not a case of sepsis.
 
 The other aggregation methods can compound this effect.
 
@@ -708,13 +708,13 @@ fcd
 ```{r, echo = FALSE, fig.width = 6, fig.height = 3}
 plot_data <-
   rbind(
-    with(jama2024, data.frame(encounter_id = encounter_id, y = odss_4_jama2024, aggregation = "jama2024")),
+    with(cod, data.frame(encounter_id = encounter_id, y = odss_4_cod, aggregation = "cod")),
     with(olm, data.frame(encounter_id = encounter_id, y = odss_4_olm, aggregation = "olm")),
     with(ccd, data.frame(encounter_id = encounter_id, y = odss_4_ccd, aggregation = "ccd")),
     with(fcd, data.frame(encounter_id = encounter_id, y = odss_4_fcd, aggregation = "fcd"))
   )
 plot_data[["aggregation"]] <-
-  factor(plot_data[["aggregation"]], levels = c("jama2024", "olm", "ccd", "fcd"))
+  factor(plot_data[["aggregation"]], levels = c("cod", "olm", "ccd", "fcd"))
 
 ggplot2::ggplot(data = plot_data) +
   ggplot2::aes(x = aggregation, y = y) +

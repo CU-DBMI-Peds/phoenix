@@ -11,7 +11,7 @@
 #'
 #' Aggregation schemes:
 #' \describe{
-#'   \item{jama2024}{Published, time-aligned Phoenix aggregation.}
+#'   \item{cod}{Published, time-aligned Phoenix aggregation.}
 #'   \item{olm}{Organ-level maxima.}
 #'   \item{ccd}{Organ-level maxima with cardiovascular component decoupling.}
 #'   \item{fcd}{Full component decoupling.}
@@ -28,7 +28,7 @@
 #' @param kappa numeric (integer) value, minimum cardiovascular score required
 #' to flag septic shock.
 #' @param aggregation The aggregation approach to apply to the data.  Default is
-#'   "jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
+#'   "cod" the scoring method used to develop the Phoenix Sepsis Criteria.
 #'   See Details.
 #' @param verbose when \code{TRUE}, display progress messages
 #'
@@ -38,7 +38,7 @@
 #'   \code{suspected_infection}. For the selected aggregation it includes
 #'   four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
 #'   eight-organ ODSS, and eight-organ PSS. Score columns include the
-#'   aggregation suffix, for example \code{odss_4_jama2024} or
+#'   aggregation suffix, for example \code{odss_4_cod} or
 #'   \code{odss_4_timepoint}. Timepoint output also includes row-level organ
 #'   scores and cardiovascular component scores for auditing.
 #'
@@ -57,7 +57,7 @@
 #' # scoring method.
 #'
 #' @export
-score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("jama2024", "olm", "ccd", "fcd", "timepoint"), verbose = getOption("phoenix_verbose", interactive())) {
+score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa = 1, aggregation = c("cod", "olm", "ccd", "fcd", "timepoint"), verbose = getOption("phoenix_verbose", interactive())) {
   # This function scores the wide longitudinal data set returned by
   # `prepare_phoenix_data()`.  Summary aggregations return one row per
   # encounter. The timepoint aggregation returns one row per encounter-clock row
@@ -200,14 +200,14 @@ score_prepared_phoenix_data <- function(x, T0 = 0, T1 = 1440, sigma = 2, kappa =
           "renal_score_timepoint"
         )
       ),
-      jama2024 = list(
-        ods4 = "odss_4_jama2024",
-        shock_ods = "odss_4_jama2024_septic_shock",
-        pss4 = "pss_4_jama2024",
-        sepsis = "sepsis_jama2024",
-        shock = "septic_shock_jama2024",
-        ods8 = "odss_8_jama2024",
-        pss8 = "pss_8_jama2024",
+      cod = list(
+        ods4 = "odss_4_cod",
+        shock_ods = "odss_4_cod_septic_shock",
+        pss4 = "pss_4_cod",
+        sepsis = "sepsis_cod",
+        shock = "septic_shock_cod",
+        ods8 = "odss_8_cod",
+        pss8 = "pss_8_cod",
         audit = character()
       ),
       olm = list(
@@ -302,7 +302,7 @@ respiratory_pf_col <- function(x) {
   # `prepare_phoenix_data()` always leaves the independently constructed `PFR`
   # column in place.  When the PaO2-vs-SpO2 freshness selector is requested, it
   # also creates `PFR_RESP`, the row-level P/F input selected for respiratory
-  # scoring.  Use `PFR_RESP` when available so timepoint, jama2024, OLM, and CCD
+  # scoring.  Use `PFR_RESP` when available so timepoint, cod, OLM, and CCD
   # all consume the same prepared respiratory input.
   if ("PFR_RESP" %in% names(x)) "PFR_RESP" else "PFR"
 }
@@ -437,7 +437,7 @@ timepoint <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   oss
 }
 
-jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
+cod <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # The scoring method used when Phoenix was developed and published in JAMA
   # (2024).
   #
@@ -467,9 +467,9 @@ jama2024 <- function(x, id.vars, eclock, sigma, kappa, verbose) {
       FUN  = max
     )
 
-  oss <- phxdft_setnames(x = oss, old = "odss_4_timepoint", new = "odss_4_jama2024")
-  oss <- phxdft_setnames(x = oss, old = "odss_4_timepoint_septic_shock", new = "odss_4_jama2024_septic_shock")
-  oss <- phxdft_setnames(x = oss, old = "odss_8_timepoint", new = "odss_8_jama2024")
+  oss <- phxdft_setnames(x = oss, old = "odss_4_timepoint", new = "odss_4_cod")
+  oss <- phxdft_setnames(x = oss, old = "odss_4_timepoint_septic_shock", new = "odss_4_cod_septic_shock")
+  oss <- phxdft_setnames(x = oss, old = "odss_8_timepoint", new = "odss_8_cod")
 
   oss
 
@@ -484,7 +484,7 @@ olm <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   #
   #   max_t(resp_t) + max_t(card_t) + max_t(neuro_t) + max_t(coag_t)
   #
-  # This can be larger than `jama2024` because respiratory dysfunction could
+  # This can be larger than `cod` because respiratory dysfunction could
   # peak at one time, cardiovascular dysfunction at another time, and both peaks
   # would be counted.
   #
@@ -694,7 +694,7 @@ fcd <- function(x, id.vars, eclock, sigma, kappa, verbose) {
   # vignettes/articles/operational-definition-phoenix-sepsis-criteria.tex
 
   # Aggregate each component to one worst value per encounter before calling
-  # `phoenix8()`.  This is intentionally different from `jama2024`, which scores
+  # `phoenix8()`.  This is intentionally different from `cod`, which scores
   # each time point first and only then takes the maximum summed score. Because
   # FCD aggregates PFR and SFR separately before scoring, the row-level
   # PaO2-vs-SpO2 selector in eq:pfr-sfr-selector is not applied here.

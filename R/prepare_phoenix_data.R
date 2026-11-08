@@ -489,7 +489,7 @@ prepare_phoenix_data <-
   # `PFR` and `SFR` remain the independently constructed ratios for FCD, where
   # PFR and SFR are aggregated independently over the full scoring interval.
   # `PFR_RESP` and `SFR_RESP` are the row-level respiratory scoring inputs used
-  # by jama2024, OLM, and CCD. With `pao2.spo2.delta = NULL`, both ratios pass
+  # by cod, OLM, and CCD. With `pao2.spo2.delta = NULL`, both ratios pass
   # through unchanged and the published PFR-or-SFR threshold logic is retained.
   # With non-NULL `pao2.spo2.delta`, only the selected row-level ratio is kept.
   # TeX: eq:pfr-sfr-selector.

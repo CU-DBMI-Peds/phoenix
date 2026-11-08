@@ -158,7 +158,7 @@ The output is a `data.frame` with one row per encounter. The
 `odss_4_` is the four-organ dysfunction summary score (respiratory,
 cardiovascular, neurologic, and coagulation). The `pss_4_` column is the
 Phoenix score: the product of `suspected_infection` and `odss_4_`. `sepsis_`
-and `septic_shock_` are 0/1 indicators. The `jama2024` suffix indicates that
+and `septic_shock_` are 0/1 indicators. The `cod` suffix indicates that
 these values use the aggregation method described in @Sanchez-Pinto2024 and
 @Schlapbach2024.
 

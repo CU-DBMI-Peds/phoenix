@@ -48,9 +48,9 @@
   with the organ-level scoring functions, where omitted or missing inputs map to
   zero contribution for that component.
 * Prepared-data scoring columns now include an aggregation suffix for every
-  aggregation method, including the default `jama2024` method. For example,
-  `odss_4`, `pss_4`, and `sepsis` are now returned as `odss_4_jama2024`,
-  `pss_4_jama2024`, and `sepsis_jama2024`.
+  aggregation method, including the default `cod` method. For example,
+  `odss_4`, `pss_4`, and `sepsis` are now returned as `odss_4_cod`,
+  `pss_4_cod`, and `sepsis_cod`.
 
 ## New Features
 
@@ -66,11 +66,11 @@
   and suspected infection.
 * Prepared Phoenix data now include `PFR_RESP`, `SFR_RESP`, `PFR_RESP_eclock`,
   and `SFR_RESP_eclock`. These are the row-level respiratory scoring inputs used
-  by `timepoint`, `jama2024`, `olm`, and `ccd`. The independent `PFR` and `SFR`
+  by `timepoint`, `cod`, `olm`, and `ccd`. The independent `PFR` and `SFR`
   columns are retained for FCD, where PFR and SFR are aggregated independently
   over the scoring interval.
 * Add `score_prepared_phoenix_data()` for scoring prepared longitudinal data
-  within a user-defined observation window. The default `jama2024` method
+  within a user-defined observation window. The default `cod` method
   reproduces the Phoenix and Phoenix-8 score definitions. Exploratory
   aggregation methods are available as `olm` (organ-level maxima), `ccd`
   (organ-level maxima with cardiovascular component decoupling), and `fcd`

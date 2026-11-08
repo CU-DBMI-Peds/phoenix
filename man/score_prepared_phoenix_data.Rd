@@ -10,7 +10,7 @@ score_prepared_phoenix_data(
   T1 = 1440,
   sigma = 2,
   kappa = 1,
-  aggregation = c("jama2024", "olm", "ccd", "fcd", "timepoint"),
+  aggregation = c("cod", "olm", "ccd", "fcd", "timepoint"),
   verbose = getOption("phoenix_verbose", interactive())
 )
 }
@@ -29,7 +29,7 @@ sepsis or septic shock.}
 to flag septic shock.}
 
 \item{aggregation}{The aggregation approach to apply to the data.  Default is
-"jama2024" the scoring method used to develop the Phoenix Sepsis Criteria.
+"cod" the scoring method used to develop the Phoenix Sepsis Criteria.
 See Details.}
 
 \item{verbose}{when \code{TRUE}, display progress messages}
@@ -41,7 +41,7 @@ A scored data frame. Summary aggregations return one row per
   \code{suspected_infection}. For the selected aggregation it includes
   four-organ ODSS, four-organ PSS, sepsis and septic shock indicators,
   eight-organ ODSS, and eight-organ PSS. Score columns include the
-  aggregation suffix, for example \code{odss_4_jama2024} or
+  aggregation suffix, for example \code{odss_4_cod} or
   \code{odss_4_timepoint}. Timepoint output also includes row-level organ
   scores and cardiovascular component scores for auditing.
 }
@@ -58,7 +58,7 @@ PSS columns.
 
 Aggregation schemes:
 \describe{
-  \item{jama2024}{Published, time-aligned Phoenix aggregation.}
+  \item{cod}{Published, time-aligned Phoenix aggregation.}
   \item{olm}{Organ-level maxima.}
   \item{ccd}{Organ-level maxima with cardiovascular component decoupling.}
   \item{fcd}{Full component decoupling.}

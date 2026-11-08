@@ -276,21 +276,22 @@ Detailed definitions for the functions will follow in
     administration occur within $T$; otherwise 0.
     \\
 
-    $\mathrm{ODSS}_{d}(T;\boldsymbol{m},\mathrm{Age})$
+    $\ODSS{d}[COD]$
     &
-    Organ Dysfunction Summary Score for the organ-system set $\Omega_d$.
+    Organ Dysfunction Summary Score for the organ-system set $\Omega_d$ using
+    concurrent organ dysfunction (COD) aggregation.
     &
     Summarizes organ dysfunction over $T$ independently of suspected
     infection status.
     \\
 
     \rowcolor{gray!20}
-    $\mathrm{PSS}_{d}(T;\boldsymbol{m},\mathrm{Age})$
+    $\PSS{d}[COD]$
     &
-    Phoenix Sepsis Score for the organ-system set $\Omega_d$.
+    Phoenix Sepsis Score for the organ-system set $\Omega_d$ using COD
+    aggregation.
     &
-    Defined as $\mathrm{SI}(T)\mathrm{ODSS}_{d}
-    (T;\boldsymbol{m},\mathrm{Age})$.
+    Defined as $\mathrm{SI}(T)\ODSS{d}[COD]$.
     \\
 \end{longtable}
 
@@ -752,7 +753,7 @@ and
 \begin{equation}
   \label{eq:pfr-sfr-selector}
   % R: prepare_phoenix_data(..., pao2.spo2.delta) for prepared data;
-  %    score_prepared_phoenix_data(..., aggregation = "timepoint", "jama2024",
+  %    score_prepared_phoenix_data(..., aggregation = "timepoint", "cod",
   %    "olm", or "ccd") scores the selected PFR_RESP/SFR_RESP columns;
   %    phoenix_respiratory(..., pao2.spo2.delta) for direct calls
   Q\left(t; \m{resp}, \delta_{\paotwo,\spotwo}\right) \coloneqq
@@ -1714,10 +1715,12 @@ least one infectious test has been ordered.
 \section{Organ Dysfunction Summary Score and Phoenix Sepsis Score}\label{define-phoenix-sepsis-score}
 
 This section combines the organ dysfunction scores with suspected infection to
-define the Phoenix Sepsis Score, sepsis, and septic shock. It also distinguishes
-the organ dysfunction summary score (ODSS), which can be computed regardless of
-suspected infection status, from the Phoenix Sepsis Score (PSS), which is gated
-by suspected infection.
+define the Phoenix Sepsis Score, sepsis, and septic shock. The published
+aggregation is concurrent organ dysfunction (COD): it sums organ-system scores
+on a common encounter-time axis and then takes the maximum of that sum. This
+section also distinguishes the organ dysfunction summary score (ODSS), which can
+be computed regardless of suspected infection status, from the Phoenix Sepsis
+Score (PSS), which is gated by suspected infection.
 
 Define the look-back windows as the vector:
 \begin{equation}
@@ -1730,17 +1733,17 @@ entities $x.$ Each scoring function depends only on the elements of
 $\boldsymbol{m}$, and on $\mathrm{Age},$ that are relevant to its definition;
 all other arguments are ignored.
 
-The ODSS permits organ-dysfunction burden to be summarized independently of
-suspected infection status. However, ODSS is introduced here as a convenience
+The COD ODSS permits organ-dysfunction burden to be summarized independently
+of suspected infection status. However, ODSS is introduced here as a convenience
 measure and has not been evaluated as a standalone clinical score; the Phoenix
 development work evaluated the underlying organ dysfunction score in conjunction
 with suspected infection~\citep{Sanchez-Pinto2024,Schlapbach2024}.
 \begin{equation}
   \label{eq:odss}
   % R: score_prepared_phoenix_data(..., aggregation = "timepoint") computes the
-  %    row-level ODSS columns; aggregation = "jama2024" maximizes those columns
+  %    row-level ODSS columns; aggregation = "cod" maximizes those columns
   %    over T. phoenix() and phoenix8() compute direct row-level organ-score sums.
-  \ODSS{d} \coloneqq
+  \ODSS{d}[COD] \coloneqq
   \maxtinT \sum_{x \in \Omega_{d}} \DS*{x}, \quad d \in \left\{4, 8\right\},
 \end{equation}
 where
@@ -1754,27 +1757,29 @@ and
   \Omega_{8} \coloneqq \Omega_{4} \cup \{\mathrm{Endo}, \mathrm{Immu}, \mathrm{Hepatic}, \mathrm{Renal}\}.
 \end{equation}
 
-The Phoenix Sepsis Score is then:
+The Phoenix Sepsis Score using COD aggregation is then:
 \begin{equation}
   \label{eq:pss}
-  % R: score_prepared_phoenix_data(..., aggregation = "jama2024")
-  \PSS{d} \coloneqq \SI \ODSS{d}, \quad d \in \left\{4, 8\right\}.
+  % R: score_prepared_phoenix_data(..., aggregation = "cod")
+  \PSS{d}[COD] \coloneqq \SI \ODSS{d}[COD],
+  \quad d \in \left\{4, 8\right\}.
 \end{equation}
 
 Sepsis is defined as organ-dysfunction in the presence of a suspected
 infection, that is:
 \begin{equation}
   \label{eq:sepsis}
-  % R: score_prepared_phoenix_data(..., aggregation = "jama2024")
-  \Sepsis \coloneqq \mathbb{I} \left\{\PSS{4} \geq \sigma \right\}.
+  % R: score_prepared_phoenix_data(..., aggregation = "cod")
+  \Sepsis[COD] \coloneqq
+  \mathbb{I} \left\{\PSS{4}[COD] \geq \sigma \right\}.
 \end{equation}
 
 Septic shock is sepsis with at least $\kappa$ point(s) from cardiovascular dysfunction.
 \begin{equation}
   \label{eq:septicshock}
-  % R: score_prepared_phoenix_data(..., aggregation = "jama2024")
+  % R: score_prepared_phoenix_data(..., aggregation = "cod")
   \begin{split}
-    \SepticShock & \coloneqq \SI \\ & \times
+    \SepticShock[COD] & \coloneqq \SI \\ & \times
     \mathbb{I} \left\{
       \maxtinT \left( \sum_{x \in \Omega_{4}} \DS*{x} \mathbb{I}\left\{\DS{Card} \geq \kappa \right\} \right)
     \geq \sigma \right\},
@@ -1862,12 +1867,12 @@ Importantly, restricting the maximization to $t \in T$ does not truncate the
 underlying data. For any $t \in T$, the carry-forward operator
 $\mathcal{C}[\cdot](t;m)$ can still use measurements recorded before $T$ (even
 at negative times) as long as they fall within the look-back window $m$.
-Conceptually, the ODSS corresponding to the published
-aggregation~\citep{Sanchez-Pinto2024,Schlapbach2024}
-is time-aligned: at each time $t$ we sum the organ dysfunction components
-evaluated at that same time, then take the maximum of that sum over $T$. This
-preserves temporal alignment across organ systems, so a high score reflects
-concurrent multi-organ dysfunction at a single time point.
+Conceptually, the COD ODSS corresponding to the published
+aggregation~\citep{Sanchez-Pinto2024,Schlapbach2024} is time-aligned: at each
+time $t$ we sum the organ dysfunction components evaluated at that same time,
+then take the maximum of that sum over $T$. This preserves temporal alignment
+across organ systems, so a high score reflects concurrent multi-organ
+dysfunction at a single time point.
 
 \section{Exploratory Aggregation Schemes}\label{sec:eas}
 
@@ -1881,9 +1886,9 @@ or the highest score in fixed time blocks.
 
 \subsection{Organ-Level Maxima}\label{sec:olm}
 
-The primary definition for ODSS in \eqref{eq:odss} looks for the max of the sum
-of the organ dysfunction scores.  This exploratory scheme looks at the sum of
-the max of each of the organ system dysfunction scores.
+The COD definition for ODSS in \eqref{eq:odss} looks for the maximum of the
+sum of the organ dysfunction scores. This exploratory scheme looks at the sum
+of the maximum of each organ-system dysfunction score.
 \begin{equation}
   \label{eq:odss-olm}
   % R: score_prepared_phoenix_data(..., aggregation = "olm"); olm()
@@ -1895,11 +1900,11 @@ $\ODSS{d}[OLM]$ decouples time across organ systems. It takes the
 maximum score for each organ system independently and then sums those maxima.
 This measures the overall burden of dysfunction over the interval, not
 necessarily dysfunction occurring at the same time. As a result,
-$\ODSS{d}[OLM]$ can be larger than $\ODSS{d}$, because peaks
+$\ODSS{d}[OLM]$ can be larger than $\ODSS{d}[COD]$, because peaks
 from different time points can accumulate. That is, by construction,
 \begin{equation}
   \label{eq:odss-olm-bound}
-  \ODSS{d} \leq \ODSS{d}[OLM].
+  \ODSS{d}[COD] \leq \ODSS{d}[OLM].
 \end{equation}
 This follows from the max-sum inequality:
 \begin{equation}
