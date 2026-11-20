@@ -1,6 +1,7 @@
 \documentclass[letterpaper,10pt]{article}
 \usepackage{fullpage}
 \usepackage{longtable,booktabs,array}
+\usepackage{graphics,pdflscape}
 \usepackage{hyperref}
 \usepackage{natbib}
 \usepackage{draftwatermark}
@@ -1805,6 +1806,33 @@ aggregation schemes below. See, for example, daily PELOD scoring using the most
 abnormal value each day and pSOFA evaluations that use maximum/mean daily scores
 or the highest score in fixed time blocks.
 \citep{Leteurtre2003,Bestati2010,Matics2017,Badke2025}
+
+In the following we define the organ-level maxima (OLM), cardiovascular
+component decoupling (CCD), and full component decoupling (FCD).
+Figure~\ref{fig:aggregations} illustrates the order of operations and conceptual
+structure of the COD, OLM, CCD, and FCD approaches.
+
+\begin{landscape}
+  \begin{figure}
+    \label{fig:aggregations}
+    \caption{Temporal aggregation of the Phoenix Sepsis Score in an illustrative
+    encounter with suspected infection. A, Each row shows the eligible inputs and
+    four organ system scores at one scoring time after applying component-specific
+    lookback windows. B, Horizontal arrows indicate calculations within a row.
+    Downward arrows indicate maxima or minima over the observation window.
+    Concurrent organ dysfunction (COD), the published scheme, takes the highest
+    row total (4 points at minute 960). Organ-level maxima (OLM) sums the four
+    organ-specific maxima (5 points). Cardiovascular component decoupling (CCD)
+    also takes separate maxima for the vasoactive medication, lactate, and mean
+    arterial pressure scores (7 points). Full component decoupling (FCD) yields 10
+    points. Three changes each add 1 point relative to CCD in this encounter:
+    pairing the low \paotwo/\fiotwo ratio at minute 0 with invasive ventilation at
+    minute 480, counting two vasoactive drugs given at different times, and
+    combining coagulation abnormalities across times up to the 2-point cap.}
+    \center
+    \includegraphics[width=1.25\textwidth]{phoenix-aggregation.pdf}
+  \end{figure}
+\end{landscape}
 
 \subsection{Organ-Level Maxima}\label{sec:olm}
 
