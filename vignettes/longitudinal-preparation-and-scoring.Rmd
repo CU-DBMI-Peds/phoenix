@@ -635,6 +635,7 @@ and the `cod` aggregation method.
 
 ```{r}
 cod <- score_prepared_phoenix_data(x = prepared_phoenix_data)
+cod
 ```
 
 The result is a `data.frame` with one row per unique `id.vars` combination (in
